@@ -1,4 +1,4 @@
-import { formatarDataCurta, ehHoje } from "./utils.js";
+import { formatarDataCurta, formatarHorario, ehHoje } from "./utils.js";
 
 /** Padrão de "passos de dança" abstrato usado como textura nas miniaturas — sem clichês figurativos. */
 function svgTextura() {
@@ -14,30 +14,39 @@ function svgTextura() {
     </svg>`;
 }
 
-/** Retorna o elemento <article> pronto para inserir no DOM. Único ponto de verdade do card de evento. */
-export function criarEventCard(evento, local) {
+/**
+ * Retorna o elemento <article> pronto para inserir no DOM. Único ponto de
+ * verdade do card de evento — usado na Home e na Agenda.
+ *
+ * opcoes.ctaLabel: texto do botão de ação (padrão "Ver detalhes"). Existe um
+ * único rótulo hoje porque não há RSVP/favoritos ainda; no dia em que houver,
+ * o rótulo passa a variar por evento sem precisar duplicar o componente.
+ */
+export function criarEventCard(evento, local, opcoes = {}) {
+  const { ctaLabel = "Ver detalhes" } = opcoes;
   const art = document.createElement("article");
   art.className = "event-card";
 
   const hoje = ehHoje(evento);
   const gratuito = evento.entrada === "gratuito";
+  const href = `evento.html?slug=${encodeURIComponent(evento.slug)}`;
 
   art.innerHTML = `
-    <a href="evento.html?slug=${encodeURIComponent(evento.slug)}" class="thumb" aria-hidden="true" tabindex="-1">
+    <a href="${href}" class="thumb" aria-hidden="true" tabindex="-1">
       ${svgTextura()}
       <span class="badge-type">${evento.tipo}</span>
       ${hoje ? `<span class="pulse-today"><span class="pulse-bars"><span></span><span></span><span></span></span>Hoje</span>` : ""}
     </a>
     <div class="body">
-      <h3><a href="evento.html?slug=${encodeURIComponent(evento.slug)}">${evento.titulo}</a></h3>
+      <h3><a href="${href}">${evento.titulo}</a></h3>
       <p class="meta">
         <span>📍 ${local ? local.nome : evento.cidade}</span>
         <span>· ${evento.cidade}</span>
-        <span>· ${formatarDataCurta(evento.data)}, ${evento.horario}</span>
+        <span>· ${formatarDataCurta(evento.inicio)}, ${formatarHorario(evento.inicio)}</span>
       </p>
       <div class="footer-row">
         <span class="price-tag ${gratuito ? "free" : ""}">${gratuito ? "Gratuito" : evento.preco}</span>
-        <a class="btn btn-primary btn-sm" href="evento.html?slug=${encodeURIComponent(evento.slug)}">Quero ir</a>
+        <a class="btn btn-primary btn-sm" href="${href}">${ctaLabel}</a>
       </div>
     </div>
   `;
@@ -63,6 +72,21 @@ export function criarEstadoVazio(titulo, mensagem, cta) {
     <p>${mensagem}</p>
     ${cta ? `<a class="btn btn-ghost" href="${cta.href}">${cta.texto}</a>` : ""}
   `;
+  return div;
+}
+
+/** Bloco de resumo da semana usado na Home (contagem de eventos, cidades e aulas). */
+export function criarResumoSemana(resumo) {
+  const div = document.createElement("p");
+  div.className = "week-summary";
+  if (resumo.totalEventos === 0) {
+    div.textContent = "Nenhum evento cadastrado para esta semana ainda.";
+    return div;
+  }
+  const evTxt = resumo.totalEventos === 1 ? "1 evento" : `${resumo.totalEventos} eventos`;
+  const cidTxt = resumo.totalCidades === 1 ? "1 cidade" : `${resumo.totalCidades} cidades`;
+  const aulaTxt = resumo.totalAulas === 1 ? "1 aula" : `${resumo.totalAulas} aulas`;
+  div.innerHTML = `<strong>${evTxt}</strong> nesta semana, em <strong>${cidTxt}</strong> da Grande Vitória — incluindo <strong>${aulaTxt}</strong>.`;
   return div;
 }
 

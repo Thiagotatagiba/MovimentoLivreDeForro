@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Agenda — Movimento Livre de Forró</title>
-  <meta name="description" content="Agenda completa de forró pé de serra na Grande Vitória: filtre por cidade, tipo de evento e entrada gratuita ou paga." />
+  <meta name="description" content="Agenda completa de forró pé de serra na Grande Vitória: busque por nome, filtre por cidade, tipo, horário e entrada, ou veja a semana inteira de uma vez." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -34,13 +34,23 @@
     <div class="wrap">
       <section class="hero" style="padding-block: var(--sp-6) var(--sp-4);">
         <h1 style="font-size: var(--text-2xl);">Agenda completa</h1>
-        <p class="lede">Filtre por período, cidade, tipo de evento e entrada.</p>
+        <p class="lede">Busque, filtre e veja a semana inteira de forró na Grande Vitória.</p>
 
-        <div class="date-tabs" id="date-tabs" role="tablist" aria-label="Filtrar por período">
-          <button role="tab" aria-selected="false" data-janela="hoje">Hoje</button>
-          <button role="tab" aria-selected="false" data-janela="amanha">Amanhã</button>
-          <button role="tab" aria-selected="true" data-janela="semana">Semana</button>
-          <button role="tab" aria-selected="false" data-janela="mes">Mês</button>
+        <label class="sr-only" for="campo-busca">Buscar eventos</label>
+        <input type="search" id="campo-busca" class="search-input" placeholder="Buscar por nome, cidade ou tipo de evento…" />
+
+        <div class="agenda-toolbar">
+          <div class="date-tabs" id="date-tabs" role="tablist" aria-label="Filtrar por período">
+            <button role="tab" aria-selected="false" data-janela="hoje">Hoje</button>
+            <button role="tab" aria-selected="false" data-janela="amanha">Amanhã</button>
+            <button role="tab" aria-selected="true" data-janela="semana">Semana</button>
+            <button role="tab" aria-selected="false" data-janela="mes">Mês</button>
+          </div>
+
+          <div class="view-toggle" id="view-toggle" role="group" aria-label="Modo de visualização">
+            <button type="button" data-view="lista" aria-pressed="true">Lista</button>
+            <button type="button" data-view="semana" aria-pressed="false">Semana</button>
+          </div>
         </div>
 
         <div class="filters" role="group" aria-label="Filtros de eventos">
@@ -69,6 +79,21 @@
             <option value="">Gratuito e pago</option>
             <option value="gratuito">Gratuito</option>
             <option value="pago">Pago</option>
+          </select>
+
+          <label class="sr-only" for="filtro-periodo">Horário</label>
+          <select id="filtro-periodo" class="filter-select">
+            <option value="">Qualquer horário</option>
+            <option value="manha">Manhã</option>
+            <option value="tarde">Tarde</option>
+            <option value="noite">Noite</option>
+          </select>
+
+          <label class="sr-only" for="filtro-musica">Música</label>
+          <select id="filtro-musica" class="filter-select">
+            <option value="">Ao vivo e DJ</option>
+            <option value="Música ao vivo">Música ao vivo</option>
+            <option value="DJ">DJ</option>
           </select>
         </div>
       </section>

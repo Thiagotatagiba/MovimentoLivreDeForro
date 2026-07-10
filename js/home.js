@@ -1,6 +1,6 @@
-import { carregarEventos, carregarLocais } from "./data.js";
-import { criarEventCard, criarEsqueletos, criarEstadoVazio, ligarMenuMobile } from "./components.js";
-import { dentroDaJanela } from "./utils.js";
+import { eventosService } from "./services/eventosService.js";
+import { locaisService } from "./services/locaisService.js";
+import { criarEventCard, criarEsqueletos, criarEstadoVazio, criarResumoSemana, ligarMenuMobile } from "./components.js";
 
 const JANELAS = { hoje: 0, amanha: 1, semana: 6 };
 
@@ -8,22 +8,22 @@ async function init() {
   ligarMenuMobile();
 
   const grid = document.querySelector("#home-event-grid");
+  const resumoEl = document.querySelector("#week-summary");
   const tabs = document.querySelectorAll("#date-tabs button");
   grid.replaceChildren(criarEsqueletos(3));
 
-  let eventos, locais;
+  let locaisPorSlug;
   try {
-    [eventos, locais] = await Promise.all([carregarEventos(), carregarLocais()]);
+    locaisPorSlug = await locaisService.mapaPorSlug();
+    const resumo = await eventosService.resumoDaSemana();
+    resumoEl.replaceChildren(criarResumoSemana(resumo));
   } catch (erro) {
     grid.replaceChildren(criarEstadoVazio("Não deu pra carregar a agenda agora", "Verifique sua conexão e tente novamente."));
     return;
   }
 
-  const locaisPorSlug = new Map(locais.map((l) => [l.slug, l]));
-
-  function render(janelaChave) {
-    const dias = JANELAS[janelaChave];
-    const filtrados = eventos.filter((e) => dentroDaJanela(e, dias));
+  async function render(janelaChave) {
+    const filtrados = await eventosService.listarPorJanela(JANELAS[janelaChave]);
     grid.replaceChildren();
 
     if (filtrados.length === 0) {

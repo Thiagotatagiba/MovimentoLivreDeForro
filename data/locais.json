@@ -1,30 +1,42 @@
 [
   {
+    "id": "loc-forro-do-nicinha",
     "slug": "forro-do-nicinha",
     "nome": "Forró da Nicinha",
     "cidade": "Vitória",
     "endereco": "Rua Chapot Prevost, 100 — Centro, Vitória/ES",
+    "latitude": -20.3181,
+    "longitude": -40.3378,
     "instagram": "https://instagram.com/forrodanicinha"
   },
   {
+    "id": "loc-quintal-do-pe-de-serra",
     "slug": "quintal-do-pe-de-serra",
     "nome": "Quintal Pé de Serra",
     "cidade": "Vila Velha",
     "endereco": "Av. Champagnat, 450 — Praia da Costa, Vila Velha/ES",
+    "latitude": -20.3395,
+    "longitude": -40.2916,
     "instagram": "https://instagram.com/quintalpedeserra"
   },
   {
+    "id": "loc-casa-do-forro-serra",
     "slug": "casa-do-forro-serra",
     "nome": "Casa do Forró Serra",
     "cidade": "Serra",
     "endereco": "Av. Central, 220 — Laranjeiras, Serra/ES",
+    "latitude": -20.1219,
+    "longitude": -40.2983,
     "instagram": "https://instagram.com/casadoforroserra"
   },
   {
+    "id": "loc-galpao-cultural-cariacica",
     "slug": "galpao-cultural-cariacica",
     "nome": "Galpão Cultural Cariacica",
     "cidade": "Cariacica",
     "endereco": "Rua das Palmeiras, 88 — Campo Grande, Cariacica/ES",
+    "latitude": -20.2634,
+    "longitude": -40.4165,
     "instagram": "https://instagram.com/galpaoculturalcariacica"
   }
 ]

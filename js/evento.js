@@ -1,6 +1,8 @@
-import { buscarEventoPorSlug, buscarLocalPorSlug, eventosRelacionados } from "./data.js";
+import { eventosService } from "./services/eventosService.js";
+import { locaisService } from "./services/locaisService.js";
 import { criarEventCard, ligarMenuMobile } from "./components.js";
-import { formatarDataLonga } from "./utils.js";
+import { formatarDataLonga, formatarHorario } from "./utils.js";
+import { botaoAcesso } from "./access.js";
 
 async function init() {
   ligarMenuMobile();
@@ -14,16 +16,17 @@ async function init() {
     return;
   }
 
-  const evento = await buscarEventoPorSlug(slug);
+  const evento = await eventosService.buscarPorSlug(slug);
   if (!evento) {
     main.innerHTML = `<div class="empty-state"><h3>Esse evento não existe mais</h3><p>Ele pode ter sido removido ou o link está incorreto.</p><a class="btn btn-ghost" href="agenda.html">Ver agenda completa</a></div>`;
     return;
   }
 
-  const local = await buscarLocalPorSlug(evento.localSlug);
+  const local = await locaisService.buscarPorSlug(evento.localSlug);
   document.title = `${evento.titulo} — Movimento Livre de Forró`;
 
   const gratuito = evento.entrada === "gratuito";
+  const acesso = botaoAcesso(evento);
 
   main.innerHTML = `
     <nav class="breadcrumb wrap" aria-label="Trilha de navegação">
@@ -60,13 +63,14 @@ async function init() {
         </div>
 
         <aside class="info-card" aria-label="Informações práticas">
-          <div class="info-row"><span class="label">Data</span><span class="value">${formatarDataLonga(evento.data)}</span></div>
-          <div class="info-row"><span class="label">Horário</span><span class="value">${evento.horario}</span></div>
-          <div class="info-row"><span class="label">Local</span><span class="value">${local ? local.nome : evento.cidade}</span></div>
-          <div class="info-row"><span class="label">Endereço</span><span class="value">${local ? local.endereco : evento.cidade}</span></div>
+          <div class="info-row"><span class="label">Data</span><span class="value">${formatarDataLonga(evento.inicio)}</span></div>
+          <div class="info-row"><span class="label">Horário</span><span class="value">${formatarHorario(evento.inicio)}</span></div>
+          <div class="info-row"><span class="label">Local</span><span class="value">${local ? local.nome : (evento.enderecoTexto ?? evento.cidade)}</span></div>
+          <div class="info-row"><span class="label">Endereço</span><span class="value">${local ? local.endereco : (evento.enderecoTexto ?? evento.cidade)}</span></div>
           <div class="info-row"><span class="label">Entrada</span><span class="value">${gratuito ? "Gratuito" : evento.preco}</span></div>
-          <div style="display:flex; flex-direction:column; gap:0.75rem; margin-top:0.5rem;">
-            <a class="btn btn-primary" href="${evento.whatsapp}" target="_blank" rel="noopener">Quero ir · Falar no WhatsApp</a>
+          <div class="cta-stack" style="display:flex; flex-direction:column; gap:0.75rem; margin-top:0.5rem;">
+            ${acesso ? `<a class="btn ${acesso.variante}" href="${acesso.url}" target="_blank" rel="noopener">${acesso.rotulo}</a>` : ""}
+            <a class="btn btn-ghost" href="${evento.whatsapp}" target="_blank" rel="noopener">Falar no WhatsApp</a>
             <a class="btn btn-ghost" href="${evento.instagram}" target="_blank" rel="noopener">Ver no Instagram</a>
             <button class="btn btn-ghost" id="btn-compartilhar" type="button">Compartilhar</button>
           </div>
@@ -76,17 +80,14 @@ async function init() {
   `;
 
   const gridRelacionados = document.querySelector("#grid-relacionados");
-  const relacionados = await eventosRelacionados(evento);
+  const relacionados = await eventosService.listarRelacionados(evento);
   if (relacionados.length === 0) {
     document.querySelector("#relacionados").remove();
   } else {
-    const locaisCache = new Map();
-    for (const rel of relacionados) {
-      if (rel.localSlug && !locaisCache.has(rel.localSlug)) {
-        locaisCache.set(rel.localSlug, await buscarLocalPorSlug(rel.localSlug));
-      }
-      gridRelacionados.appendChild(criarEventCard(rel, locaisCache.get(rel.localSlug)));
-    }
+    const locaisPorSlug = await locaisService.mapaPorSlug();
+    relacionados.forEach((rel) => {
+      gridRelacionados.appendChild(criarEventCard(rel, locaisPorSlug.get(rel.localSlug)));
+    });
   }
 
   const btnShare = document.querySelector("#btn-compartilhar");

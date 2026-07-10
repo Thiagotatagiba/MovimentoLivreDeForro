@@ -1,17 +1,21 @@
 // Utilitários de data e formatação — usados por todas as páginas.
+// Trabalham sempre em cima de datas ISO 8601 com offset (ex. "2026-07-09T20:00:00-03:00"),
+// o mesmo formato usado por evento.inicio/evento.fim e compatível com o
+// campo start.dateTime do Google Calendar.
 
 const DIA_SEMANA = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
-const MES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+const NOME_MES = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
 
-/** Converte "2026-07-09" (string local, sem fuso) em Date à meia-noite local. */
-export function parseDataLocal(isoDate) {
-  const [ano, mes, dia] = isoDate.split("-").map(Number);
-  return new Date(ano, mes - 1, dia);
+export function paraDataHora(iso) {
+  return new Date(iso);
+}
+
+function meiaNoite(d) {
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
 }
 
 export function hojeLocal() {
-  const agora = new Date();
-  return new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
+  return meiaNoite(new Date());
 }
 
 export function diffEmDias(dataA, dataB) {
@@ -19,49 +23,62 @@ export function diffEmDias(dataA, dataB) {
   return Math.round((dataA.getTime() - dataB.getTime()) / MS_DIA);
 }
 
-export function rotuloRelativo(isoDate) {
-  const diff = diffEmDias(parseDataLocal(isoDate), hojeLocal());
+/** Chave "AAAA-MM-DD" no calendário local, usada para agrupar eventos por dia. */
+export function chaveDia(iso) {
+  const d = paraDataHora(iso);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+export function rotuloRelativo(iso) {
+  const diff = diffEmDias(meiaNoite(paraDataHora(iso)), hojeLocal());
   if (diff === 0) return "Hoje";
   if (diff === 1) return "Amanhã";
   return null;
 }
 
-export function formatarDataLonga(isoDate) {
-  const d = parseDataLocal(isoDate);
-  const relativo = rotuloRelativo(isoDate);
-  const base = `${DIA_SEMANA[d.getDay()]}, ${d.getDate()} de ${nomeMesLongo(d.getMonth())}`;
+export function formatarDataLonga(iso) {
+  const d = paraDataHora(iso);
+  const relativo = rotuloRelativo(iso);
+  const base = `${DIA_SEMANA[d.getDay()]}, ${d.getDate()} de ${NOME_MES[d.getMonth()]}`;
   return relativo ? `${relativo} · ${capitalize(base)}` : capitalize(base);
 }
 
-export function formatarDataCurta(isoDate) {
-  const d = parseDataLocal(isoDate);
-  return `${capitalize(DIA_SEMANA[d.getDay()]).slice(0, 3)}, ${d.getDate()} ${MES[d.getMonth()]}`;
+export function formatarDataCurta(iso) {
+  const d = paraDataHora(iso);
+  return `${capitalize(DIA_SEMANA[d.getDay()]).slice(0, 3)}, ${d.getDate()} ${NOME_MES[d.getMonth()].slice(0, 3)}`;
 }
 
-function nomeMesLongo(indice) {
-  const nomes = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
-  return nomes[indice];
+export function formatarHorario(iso) {
+  const d = paraDataHora(iso);
+  return d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 }
 
 function capitalize(s) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-/** Filtra eventos dentro de uma janela de dias a partir de hoje. 0 = só hoje, 1 = hoje+amanhã, 6 = semana. */
+/** Um evento está dentro de uma janela de `dias` a partir de hoje (0 = só hoje, 6 = semana...). */
 export function dentroDaJanela(evento, dias) {
-  const diff = diffEmDias(parseDataLocal(evento.data), hojeLocal());
+  const diff = diffEmDias(meiaNoite(paraDataHora(evento.inicio)), hojeLocal());
   return diff >= 0 && diff <= dias;
 }
 
 export function ehHoje(evento) {
-  return diffEmDias(parseDataLocal(evento.data), hojeLocal()) === 0;
+  return diffEmDias(meiaNoite(paraDataHora(evento.inicio)), hojeLocal()) === 0;
 }
 
-export const ROTULO_TIPO = {
-  "Baile": "Baile",
-  "Aula": "Aula",
-  "Festival": "Festival",
-  "Workshop": "Workshop",
+/** Período do dia do evento — usado no filtro de horário da Agenda. */
+export function periodoDoDia(evento) {
+  const h = paraDataHora(evento.inicio).getHours();
+  if (h >= 5 && h < 12) return "manha";
+  if (h >= 12 && h < 18) return "tarde";
+  return "noite";
+}
+
+export const ROTULO_PERIODO = {
+  manha: "Manhã",
+  tarde: "Tarde",
+  noite: "Noite",
 };
 
 export const ROTULO_ENTRADA = {
