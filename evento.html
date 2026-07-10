@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Evento — Movimento Livre de Forró</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#evento-conteudo">Pular para o conteúdo</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a href="index.html" class="brand"><span class="brand-mark" aria-hidden="true"></span>Movimento Livre de Forró</a>
+      <nav class="nav-primary" aria-label="Navegação principal">
+        <a href="agenda.html">Agenda</a>
+      </nav>
+      <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-mobile">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+    <nav class="nav-mobile" id="menu-mobile" aria-label="Navegação mobile">
+      <a href="index.html">Início</a>
+      <a href="agenda.html">Agenda</a>
+    </nav>
+  </header>
+
+  <main id="evento-conteudo" style="padding-block: var(--sp-6) var(--sp-8);">
+    <div class="wrap"><div class="skeleton-card" style="height:360px;" aria-hidden="true"></div></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>© 2026 Movimento Livre de Forró</span>
+      <span>Grande Vitória · ES</span>
+    </div>
+  </footer>
+
+  <script type="module" src="js/evento.js"></script>
+</body>
+</html>

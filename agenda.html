@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agenda — Movimento Livre de Forró</title>
+  <meta name="description" content="Agenda completa de forró pé de serra na Grande Vitória: filtre por cidade, tipo de evento e entrada gratuita ou paga." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a href="index.html" class="brand"><span class="brand-mark" aria-hidden="true"></span>Movimento Livre de Forró</a>
+      <nav class="nav-primary" aria-label="Navegação principal">
+        <a href="agenda.html" aria-current="page">Agenda</a>
+      </nav>
+      <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-mobile">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+    <nav class="nav-mobile" id="menu-mobile" aria-label="Navegação mobile">
+      <a href="index.html">Início</a>
+      <a href="agenda.html" aria-current="page">Agenda</a>
+    </nav>
+  </header>
+
+  <main id="conteudo">
+    <div class="wrap">
+      <section class="hero" style="padding-block: var(--sp-6) var(--sp-4);">
+        <h1 style="font-size: var(--text-2xl);">Agenda completa</h1>
+        <p class="lede">Filtre por período, cidade, tipo de evento e entrada.</p>
+
+        <div class="date-tabs" id="date-tabs" role="tablist" aria-label="Filtrar por período">
+          <button role="tab" aria-selected="false" data-janela="hoje">Hoje</button>
+          <button role="tab" aria-selected="false" data-janela="amanha">Amanhã</button>
+          <button role="tab" aria-selected="true" data-janela="semana">Semana</button>
+          <button role="tab" aria-selected="false" data-janela="mes">Mês</button>
+        </div>
+
+        <div class="filters" role="group" aria-label="Filtros de eventos">
+          <label class="sr-only" for="filtro-cidade">Cidade</label>
+          <select id="filtro-cidade" class="filter-select">
+            <option value="">Todas as cidades</option>
+            <option value="Vitória">Vitória</option>
+            <option value="Vila Velha">Vila Velha</option>
+            <option value="Serra">Serra</option>
+            <option value="Cariacica">Cariacica</option>
+            <option value="Viana">Viana</option>
+            <option value="Guarapari">Guarapari</option>
+          </select>
+
+          <label class="sr-only" for="filtro-tipo">Tipo</label>
+          <select id="filtro-tipo" class="filter-select">
+            <option value="">Todos os tipos</option>
+            <option value="Baile">Baile</option>
+            <option value="Aula">Aula</option>
+            <option value="Festival">Festival</option>
+            <option value="Workshop">Workshop</option>
+          </select>
+
+          <label class="sr-only" for="filtro-entrada">Entrada</label>
+          <select id="filtro-entrada" class="filter-select">
+            <option value="">Gratuito e pago</option>
+            <option value="gratuito">Gratuito</option>
+            <option value="pago">Pago</option>
+          </select>
+        </div>
+      </section>
+
+      <section id="agenda-lista" aria-live="polite"></section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>© 2026 Movimento Livre de Forró</span>
+      <span>Grande Vitória · ES</span>
+    </div>
+  </footer>
+
+  <script type="module" src="js/agenda.js"></script>
+</body>
+</html>
