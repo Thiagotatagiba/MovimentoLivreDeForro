@@ -1,6 +1,7 @@
 import { eventosService } from "./services/eventosService.js";
 import { locaisService } from "./services/locaisService.js";
-import { criarEventCard, criarEsqueletos, criarEstadoVazio, criarResumoSemana, ligarMenuMobile } from "./components.js";
+import { criarEventCard, criarEsqueletos, criarEstadoVazio, criarResumoSemana, criarBannerHoje, ligarMenuMobile } from "./components.js";
+import { hojeLocal } from "./utils.js";
 
 const JANELAS = { hoje: 0, amanha: 1, semana: 6 };
 
@@ -8,6 +9,7 @@ async function init() {
   ligarMenuMobile();
 
   const grid = document.querySelector("#home-event-grid");
+  const bannerEl = document.querySelector("#today-banner");
   const resumoEl = document.querySelector("#week-summary");
   const tabs = document.querySelectorAll("#date-tabs button");
   grid.replaceChildren(criarEsqueletos(3));
@@ -15,7 +17,11 @@ async function init() {
   let locaisPorSlug;
   try {
     locaisPorSlug = await locaisService.mapaPorSlug();
-    const resumo = await eventosService.resumoDaSemana();
+    const [eventosHoje, resumo] = await Promise.all([
+      eventosService.listarPorJanela(JANELAS.hoje),
+      eventosService.resumoDaSemana(),
+    ]);
+    bannerEl.replaceChildren(criarBannerHoje(eventosHoje, hojeLocal().toISOString()));
     resumoEl.replaceChildren(criarResumoSemana(resumo));
   } catch (erro) {
     grid.replaceChildren(criarEstadoVazio("Não deu pra carregar a agenda agora", "Verifique sua conexão e tente novamente."));
@@ -31,7 +37,7 @@ async function init() {
         criarEstadoVazio(
           "Nenhum forró encontrado por aqui ainda",
           "Que tal dar uma olhada na agenda completa da semana?",
-          { href: "agenda.html", texto: "Ver agenda completa" }
+          [{ href: "agenda.html", texto: "Ver agenda completa" }]
         )
       );
       return;

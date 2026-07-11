@@ -61,3 +61,19 @@ export function botaoAcesso(evento) {
 
   return { rotulo: estado.rotulo, url: acesso.url, variante: estado.variante };
 }
+
+// Badge informativa de acesso — independente do botão estar ativo ou não.
+// É o que aparece nos cards e na página do evento para deixar claro, mesmo
+// sem link de compra, como funciona a entrada (gratuito, couvert, no local...).
+const BADGE_ACESSO = {
+  ingresso: { rotulo: "Ingresso antecipado", modificador: "badge--ticket" },
+  gratuito: { rotulo: "Gratuito", modificador: "badge--free" },
+  couvert: { rotulo: "Couvert na entrada", modificador: "badge--couvert" },
+  local: { rotulo: "Pagamento no local", modificador: "badge--local" },
+  lista: { rotulo: "Lista de convidados", modificador: "badge--list" },
+};
+
+export function badgeAcesso(evento) {
+  const tipo = evento?.acesso?.tipo;
+  return tipo && BADGE_ACESSO[tipo] ? BADGE_ACESSO[tipo] : null;
+}

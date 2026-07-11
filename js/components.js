@@ -1,4 +1,5 @@
-import { formatarDataCurta, formatarHorario, ehHoje } from "./utils.js";
+import { formatarDataCurta, formatarDataCompleta, formatarHorario, ehHoje } from "./utils.js";
+import { badgeAcesso } from "./access.js";
 
 /** Padrão de "passos de dança" abstrato usado como textura nas miniaturas — sem clichês figurativos. */
 function svgTextura() {
@@ -14,13 +15,32 @@ function svgTextura() {
     </svg>`;
 }
 
+/** Miniatura do card: foto real (lazy) quando existir, textura ilustrativa como fallback. */
+function miniaturaHtml(evento) {
+  if (evento.imagem) {
+    return `<img src="${evento.imagem}" alt="" loading="lazy" decoding="async" width="400" height="250" />`;
+  }
+  return svgTextura();
+}
+
+/** Badge padronizada de música — usa as mesmas classes .badge em todo o site. */
+function badgeMusicaHtml(evento) {
+  if (!evento.musica) return "";
+  const aoVivo = evento.musica === "Música ao vivo";
+  return `<span class="badge ${aoVivo ? "badge--live" : "badge--dj"}">${aoVivo ? "🎵 Ao vivo" : "🎧 DJ"}</span>`;
+}
+
+function badgeAcessoHtml(evento) {
+  const badge = badgeAcesso(evento);
+  if (!badge) return "";
+  return `<span class="badge ${badge.modificador}">${badge.rotulo}</span>`;
+}
+
 /**
  * Retorna o elemento <article> pronto para inserir no DOM. Único ponto de
- * verdade do card de evento — usado na Home e na Agenda.
+ * verdade do card de evento — usado na Home, na Agenda e nos relacionados.
  *
- * opcoes.ctaLabel: texto do botão de ação (padrão "Ver detalhes"). Existe um
- * único rótulo hoje porque não há RSVP/favoritos ainda; no dia em que houver,
- * o rótulo passa a variar por evento sem precisar duplicar o componente.
+ * opcoes.ctaLabel: texto do botão de ação (padrão "Ver detalhes").
  */
 export function criarEventCard(evento, local, opcoes = {}) {
   const { ctaLabel = "Ver detalhes" } = opcoes;
@@ -28,12 +48,11 @@ export function criarEventCard(evento, local, opcoes = {}) {
   art.className = "event-card";
 
   const hoje = ehHoje(evento);
-  const gratuito = evento.entrada === "gratuito";
   const href = `evento.html?slug=${encodeURIComponent(evento.slug)}`;
 
   art.innerHTML = `
     <a href="${href}" class="thumb" aria-hidden="true" tabindex="-1">
-      ${svgTextura()}
+      ${miniaturaHtml(evento)}
       <span class="badge-type">${evento.tipo}</span>
       ${hoje ? `<span class="pulse-today"><span class="pulse-bars"><span></span><span></span><span></span></span>Hoje</span>` : ""}
     </a>
@@ -44,8 +63,12 @@ export function criarEventCard(evento, local, opcoes = {}) {
         <span>· ${evento.cidade}</span>
         <span>· ${formatarDataCurta(evento.inicio)}, ${formatarHorario(evento.inicio)}</span>
       </p>
+      <div class="badges-row">
+        ${badgeAcessoHtml(evento)}
+        ${badgeMusicaHtml(evento)}
+      </div>
       <div class="footer-row">
-        <span class="price-tag ${gratuito ? "free" : ""}">${gratuito ? "Gratuito" : evento.preco}</span>
+        <span class="price-tag ${evento.entrada === "gratuito" ? "free" : ""}">${evento.entrada === "gratuito" ? "Gratuito" : evento.preco}</span>
         <a class="btn btn-primary btn-sm" href="${href}">${ctaLabel}</a>
       </div>
     </div>
@@ -64,14 +87,41 @@ export function criarEsqueletos(quantidade) {
   return frag;
 }
 
-export function criarEstadoVazio(titulo, mensagem, cta) {
+/**
+ * Estado vazio padronizado — nunca uma tela morta. `acoes` aceita links
+ * ({ texto, href }) e botões ({ texto, onClick }), misturados livremente.
+ */
+export function criarEstadoVazio(titulo, mensagem, acoes = []) {
   const div = document.createElement("div");
   div.className = "empty-state";
-  div.innerHTML = `
-    <h3>${titulo}</h3>
-    <p>${mensagem}</p>
-    ${cta ? `<a class="btn btn-ghost" href="${cta.href}">${cta.texto}</a>` : ""}
-  `;
+
+  const cabecalho = document.createElement("div");
+  cabecalho.innerHTML = `<h3>${titulo}</h3><p>${mensagem}</p>`;
+  div.appendChild(cabecalho);
+
+  if (acoes.length > 0) {
+    const linha = document.createElement("div");
+    linha.className = "empty-state-actions";
+    acoes.forEach((acao, indice) => {
+      const classe = indice === 0 ? "btn btn-primary" : "btn btn-ghost";
+      if (acao.href) {
+        const a = document.createElement("a");
+        a.className = classe;
+        a.href = acao.href;
+        a.textContent = acao.texto;
+        linha.appendChild(a);
+      } else if (acao.onClick) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = classe;
+        btn.textContent = acao.texto;
+        btn.addEventListener("click", acao.onClick);
+        linha.appendChild(btn);
+      }
+    });
+    div.appendChild(linha);
+  }
+
   return div;
 }
 
@@ -87,6 +137,37 @@ export function criarResumoSemana(resumo) {
   const cidTxt = resumo.totalCidades === 1 ? "1 cidade" : `${resumo.totalCidades} cidades`;
   const aulaTxt = resumo.totalAulas === 1 ? "1 aula" : `${resumo.totalAulas} aulas`;
   div.innerHTML = `<strong>${evTxt}</strong> nesta semana, em <strong>${cidTxt}</strong> da Grande Vitória — incluindo <strong>${aulaTxt}</strong>.`;
+  return div;
+}
+
+/**
+ * Banner "Hoje tem forró?" — a resposta mais direta possível à pergunta
+ * central do projeto, logo abaixo do título da Home.
+ */
+export function criarBannerHoje(eventosHoje, hojeIso) {
+  const div = document.createElement("div");
+  div.className = "today-banner";
+  const dataTxt = formatarDataCompleta(hojeIso);
+
+  if (eventosHoje.length === 0) {
+    div.innerHTML = `
+      <p class="today-banner-date">Hoje · ${dataTxt}</p>
+      <p class="today-banner-empty">Hoje não há eventos cadastrados. <a href="agenda.html?janela=amanha">Veja a programação de amanhã</a>.</p>
+    `;
+    return div;
+  }
+
+  const cidades = [...new Set(eventosHoje.map((e) => e.cidade))];
+  const contagem = eventosHoje.length === 1 ? "1 evento acontecendo hoje" : `${eventosHoje.length} eventos acontecendo hoje`;
+
+  div.innerHTML = `
+    <p class="today-banner-date">Hoje · ${dataTxt}</p>
+    <p class="today-banner-count">
+      <span class="pulse-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      🎉 ${contagem}
+    </p>
+    <p class="today-banner-cities">📍 ${cidades.join(" • ")}</p>
+  `;
   return div;
 }
 

@@ -51,11 +51,15 @@ Grid de 8px: `--sp-1` (4px) até `--sp-9` (96px). Qualquer margem/padding novo d
 - `.pulse-today` — marcador "Hoje" com animação de pulso (`--clay`). Só aparece quando `ehHoje(evento)` é verdadeiro.
 - `.chip` — marcador neutro dentro da página de evento (ex. "Música ao vivo").
 - `.price-tag` — preço ou "Gratuito" no rodapé do card.
+- **`.badge` + modificador** — sistema padronizado de badges informativas, usado no corpo do card e na página de evento (`.badges-row`). Modificadores: `.badge--free`, `.badge--ticket`, `.badge--couvert`, `.badge--local`, `.badge--list` (forma de acesso — mapeados em `js/access.js → badgeAcesso()`) e `.badge--live`, `.badge--dj` (tipo de música). Nenhum modificador usa `--clay`: essa cor continua reservada só ao marcador "Hoje".
+
+### Banner "Hoje tem forró?"
+- `.today-banner` — bloco de destaque na Home, logo abaixo do H1. Borda esquerda em `--clay` (mesma associação de "hoje" usada no resto do site). Três variações de conteúdo: data + contagem + cidades (há eventos), ou data + mensagem convidando para ver amanhã (não há eventos). Ver `criarBannerHoje()` em `js/components.js`.
 
 ### Cards
-- `.event-card` — componente único de card de evento, usado na Home, na Agenda e nos "Eventos relacionados". Ver `js/components.js → criarEventCard()`.
+- `.event-card` — componente único de card de evento, usado na Home, na Agenda e nos "Eventos relacionados". Ver `js/components.js → criarEventCard()`. Miniatura usa `<img loading="lazy">` quando `evento.imagem` existe; cai para a textura SVG ilustrativa quando não.
 - `.skeleton-card` — estado de carregamento, mesma altura/proporção do card real para evitar salto de layout.
-- `.empty-state` — estado vazio (sem eventos), sempre com uma ação de saída (ex. link para a agenda completa).
+- `.empty-state` / `.empty-state-actions` — estado vazio, **nunca sem uma saída**: `criarEstadoVazio(titulo, mensagem, acoes)` aceita uma lista de ações (links ou botões com `onClick`, ex. "Limpar filtros", "Ver o mês inteiro").
 
 ### Formulários / filtros
 - `.filter-select` — `<select>` estilizado, usado nos filtros da Agenda. Base para futuros campos de formulário (ex. formulário de organizador na Etapa 4).

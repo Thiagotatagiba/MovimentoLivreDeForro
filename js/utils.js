@@ -4,6 +4,7 @@
 // campo start.dateTime do Google Calendar.
 
 const DIA_SEMANA = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
+const DIA_SEMANA_COMPLETO = ["domingo", "segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado"];
 const NOME_MES = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
 
 export function paraDataHora(iso) {
@@ -46,6 +47,12 @@ export function formatarDataLonga(iso) {
 export function formatarDataCurta(iso) {
   const d = paraDataHora(iso);
   return `${capitalize(DIA_SEMANA[d.getDay()]).slice(0, 3)}, ${d.getDate()} ${NOME_MES[d.getMonth()].slice(0, 3)}`;
+}
+
+/** "Sexta-feira, 10 de julho" — usado no banner de destaque do dia na Home. */
+export function formatarDataCompleta(iso) {
+  const d = paraDataHora(iso);
+  return capitalize(`${DIA_SEMANA_COMPLETO[d.getDay()]}, ${d.getDate()} de ${NOME_MES[d.getMonth()]}`);
 }
 
 export function formatarHorario(iso) {

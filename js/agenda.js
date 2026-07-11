@@ -11,7 +11,9 @@ function lerEstadoDaURL() {
   const p = new URLSearchParams(window.location.search);
   return {
     janela: p.get("janela") || "semana",
-    view: p.get("view") === "semana" ? "semana" : "lista",
+    // A visualização "Semana" é o destaque da Agenda — é o padrão, a menos
+    // que a URL diga explicitamente o contrário.
+    view: p.get("view") === "lista" ? "lista" : "semana",
     cidade: p.get("cidade") || "",
     tipo: p.get("tipo") || "",
     entrada: p.get("entrada") || "",
@@ -57,7 +59,6 @@ async function init() {
 
   const estado = lerEstadoDaURL();
 
-  // Aplica o estado lido da URL nos controles antes da primeira renderização.
   filtroCidade.value = estado.cidade;
   filtroTipo.value = estado.tipo;
   filtroEntrada.value = estado.entrada;
@@ -79,14 +80,52 @@ async function init() {
     };
   }
 
+  function temFiltrosAtivos() {
+    return Object.values(filtrosAtuais()).some(Boolean);
+  }
+
+  function limparFiltros() {
+    filtroCidade.value = "";
+    filtroTipo.value = "";
+    filtroEntrada.value = "";
+    filtroPeriodo.value = "";
+    filtroMusica.value = "";
+    campoBusca.value = "";
+    render();
+  }
+
+  function irParaJanela(chave) {
+    tabs.forEach((b) => b.setAttribute("aria-selected", String(b.dataset.janela === chave)));
+    render();
+  }
+
+  function janelaAtual() {
+    return [...tabs].find((b) => b.getAttribute("aria-selected") === "true")?.dataset.janela || "semana";
+  }
+
+  function viewAtual() {
+    return [...viewButtons].find((b) => b.getAttribute("aria-pressed") === "true")?.dataset.view || "semana";
+  }
+
   async function renderLista() {
-    const janelaAtual = [...tabs].find((b) => b.getAttribute("aria-selected") === "true")?.dataset.janela || "semana";
-    const lista = await eventosService.listarComFiltros({ dias: JANELAS[janelaAtual], ...filtrosAtuais() });
+    const janela = janelaAtual();
+    const lista = await eventosService.listarComFiltros({ dias: JANELAS[janela], ...filtrosAtuais() });
     container.replaceChildren();
 
     if (lista.length === 0) {
+      const ativos = temFiltrosAtivos();
+      const acoes = [];
+      if (ativos) acoes.push({ texto: "Limpar filtros", onClick: limparFiltros });
+      if (janela !== "mes") acoes.push({ texto: "Ver o mês inteiro", onClick: () => irParaJanela("mes") });
+
       container.replaceChildren(
-        criarEstadoVazio("Nenhum evento com esses filtros", "Tente ampliar o período ou remover algum filtro para ver mais opções.")
+        criarEstadoVazio(
+          ativos ? "Nenhum evento com esses filtros" : "Nenhum evento neste período",
+          ativos
+            ? "Tente remover algum filtro — a comunidade cresce toda semana, pode ser que apareça algo em breve."
+            : "Experimente ampliar o período para encontrar mais opções.",
+          acoes
+        )
       );
       return;
     }
@@ -138,14 +177,16 @@ async function init() {
 
       const col = document.createElement("div");
       col.className = "week-day" + (i === 0 ? " is-today" : "");
+
       const titulo = document.createElement("h3");
-      titulo.textContent = `${DIA_SEMANA_ABREV[data.getDay()]} ${data.getDate()}`;
+      const rotulo = `${DIA_SEMANA_ABREV[data.getDay()]} ${data.getDate()}`;
+      titulo.innerHTML = eventosNoDia.length > 0 ? `${rotulo} <span class="day-count">${eventosNoDia.length}</span>` : rotulo;
       col.appendChild(titulo);
 
       if (eventosNoDia.length === 0) {
         const nota = document.createElement("p");
         nota.className = "empty-note";
-        nota.textContent = "Sem eventos";
+        nota.textContent = "Nenhum evento programado";
         col.appendChild(nota);
       } else {
         eventosNoDia.forEach((evento) => {
@@ -159,26 +200,21 @@ async function init() {
       grid.appendChild(col);
     }
 
-    if (lista.length === 0) {
-      container.appendChild(grid);
-      container.appendChild(
-        criarEstadoVazio("Nenhum evento nesta semana com esses filtros", "Tente remover algum filtro para ver mais opções.")
-      );
-      return;
-    }
     container.appendChild(grid);
-  }
 
-  function viewAtual() {
-    return [...viewButtons].find((b) => b.getAttribute("aria-pressed") === "true")?.dataset.view || "lista";
+    if (lista.length === 0 && temFiltrosAtivos()) {
+      container.appendChild(
+        criarEstadoVazio(
+          "Nenhum evento nesta semana com esses filtros",
+          "Tente remover algum filtro para ver mais opções.",
+          [{ texto: "Limpar filtros", onClick: limparFiltros }]
+        )
+      );
+    }
   }
 
   async function render() {
-    escreverEstadoNaURL({
-      janela: [...tabs].find((b) => b.getAttribute("aria-selected") === "true")?.dataset.janela || "semana",
-      view: viewAtual(),
-      ...filtrosAtuais(),
-    });
+    escreverEstadoNaURL({ janela: janelaAtual(), view: viewAtual(), ...filtrosAtuais() });
     if (viewAtual() === "semana") {
       await renderSemana();
     } else {

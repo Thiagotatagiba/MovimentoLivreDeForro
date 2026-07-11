@@ -242,6 +242,86 @@
 .week-event .time { display: block; font-weight: 700; }
 .week-day .empty-note { font-size: var(--text-xs); color: var(--muted); }
 
+/* ---------- Badges padronizadas ---------- */
+/* Base .badge + modificadores — usada nos cards e na página de evento.
+   Cores mapeiam ao mesmo vocabulário do resto do site: pine = ação/positivo,
+   sand = neutro/informativo, clay é reservado ao marcador "Hoje" e não é
+   usado aqui, para não diluir seu significado. */
+.badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.badge--free { background: var(--pine-tint); color: var(--pine); }
+.badge--ticket { background: var(--pine); color: #fff; }
+.badge--couvert { background: var(--sand); color: var(--ink-soft); }
+.badge--local { background: var(--sand); color: var(--ink-soft); }
+.badge--list { background: var(--sand); color: var(--ink-soft); }
+.badge--live { background: var(--pine-tint); color: var(--pine); }
+.badge--dj { background: var(--sand-line); color: var(--ink-soft); }
+
+/* ---------- Miniaturas com imagem real ---------- */
+.thumb img,
+.event-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- Banner "Hoje tem forró?" ---------- */
+.today-banner {
+  margin-top: var(--sp-5);
+  background: var(--surface);
+  border: 1px solid var(--sand-line);
+  border-left: 4px solid var(--clay);
+  border-radius: var(--radius-md);
+  padding: var(--sp-4) var(--sp-5);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.today-banner-date {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: capitalize;
+}
+.today-banner-count {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.today-banner-count .pulse-bars span { background: var(--clay); }
+.today-banner-cities { font-size: var(--text-base); color: var(--ink-soft); }
+.today-banner-empty { font-size: var(--text-base); color: var(--ink-soft); }
+.today-banner-empty a { color: var(--pine); font-weight: 600; text-decoration: underline; }
+
+/* ---------- Contagem de eventos por dia (grade semanal) ---------- */
+.day-count {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--sand);
+  color: var(--ink-soft);
+  font-size: 10px;
+  font-weight: 700;
+}
+
 /* ---------- Grid de eventos ---------- */
 .event-grid {
   display: grid;
@@ -435,6 +515,14 @@
   margin-bottom: var(--sp-2);
 }
 .empty-state .btn { margin-top: var(--sp-4); }
+.empty-state-actions {
+  margin-top: var(--sp-4);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-3);
+}
+.empty-state-actions .btn { margin-top: 0; }
 
 /* ---------- Página de evento ---------- */
 .event-hero {

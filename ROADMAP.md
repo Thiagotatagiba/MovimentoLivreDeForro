@@ -14,17 +14,31 @@ reconstruir o histórico de decisões a partir do zero.
 - Home com subtítulo institucional e resumo automático da semana (nº de eventos, cidades, aulas).
 - CTA dos cards padronizado como "Ver detalhes" (sem RSVP ainda).
 
-## Etapa 2 — Fortalecer a Agenda (em andamento)
+## Etapa 2 — Fortalecer a Agenda (concluída)
 
 Prioridade confirmada: a Agenda é o principal diferencial do projeto, então
-evolui antes das páginas de perfil (Locais/Professores/Bandas).
+evoluiu antes das páginas de perfil (Locais/Professores/Bandas).
 
-- [x] Visualização semanal tipo calendário (grade de 7 dias, com scroll horizontal no mobile)
-- [x] Busca por texto (nome do evento, cidade, tipo, descrição) — `eventosService.listarComFiltros({ busca })`
-- [x] Filtros avançados: horário (manhã/tarde/noite via `periodoDoDia`) e música (ao vivo/DJ)
-- [x] Preparação de dados para mapa interativo: `latitude`/`longitude` adicionados a cada local em `data/locais.json`
-- [x] Persistência de filtro na URL (`agenda.html?janela=semana&cidade=Serra&view=semana...`) — todo estado de filtro/visualização é lido e escrito na URL via `history.replaceState`, então qualquer configuração da agenda pode ser compartilhada por link
+- [x] Visualização semanal tipo calendário — e agora é o **padrão** ao abrir a Agenda, com contagem de eventos por dia e "Nenhum evento programado" nos dias vazios
+- [x] Busca por texto (nome do evento, cidade, tipo, descrição)
+- [x] Filtros avançados: horário (manhã/tarde/noite) e música (ao vivo/DJ)
+- [x] Preparação de dados para mapa interativo: `latitude`/`longitude` em cada local
+- [x] Persistência de filtro na URL, incluindo o modo de visualização
+- [x] Badges padronizadas nos cards (`.badge` + modificadores) para forma de acesso e tipo de música
+- [x] Estados vazios nunca "mortos": sempre oferecem uma ação (limpar filtros, ver o mês inteiro, ver amanhã)
+- [x] Botão "Abrir no Google Maps" na página do evento, com fallback em cascata (coordenadas do local → coordenadas do próprio evento → busca por endereço)
+- [x] Botão de acesso inteligente ("Ingressos" só quando há link; outros tipos mostram badge informativa mesmo sem botão)
+- [x] Cards e hero preparados para imagem real (`loading="lazy"` nos cards; fallback ilustrativo quando `imagem` é `null`)
+- [x] Modelo de evento com todos os campos necessários para uma futura sincronização com Google Calendar — mapeamento completo em `docs/MODELO_DE_DADOS.md`
 - [ ] Mapa interativo em si (fica para a Etapa 4, junto com o restante da UI de mapa)
+
+### "Hoje tem forró?" — banner de destaque da Home
+
+Adicionado como resposta imediata à pergunta central do projeto, logo abaixo
+do H1: dia da semana + data por extenso, contagem de eventos de hoje e as
+cidades onde estão acontecendo — ou uma mensagem amigável convidando para ver
+amanhã, quando não há nada hoje. Implementado em `criarBannerHoje()`
+(`js/components.js`), consumindo `eventosService.listarPorJanela(0)`.
 
 ## Etapa 3 — Locais, Professores, Bandas
 
