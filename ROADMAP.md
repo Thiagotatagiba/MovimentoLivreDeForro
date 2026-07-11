@@ -61,7 +61,7 @@ evoluiu antes das páginas de perfil.
 - [x] Botão de acesso inteligente ("Ingressos" só quando há link; outros tipos mostram badge informativa mesmo sem botão)
 - [x] Cards e hero preparados para imagem real (`loading="lazy"` nos cards; fallback ilustrativo quando `imagem` é `null`)
 - [x] Modelo de evento com todos os campos necessários para uma futura sincronização com Google Calendar — mapeamento completo em `docs/MODELO_DE_DADOS.md`
-- [x] **Cards compactos na lista da Agenda** (`.event-card--compact`) — imagem vira miniatura, informação em primeiro plano, mais eventos visíveis por tela. A imagem grande fica reservada à Home e à página do evento.
+- [x] Cards compactos na lista da Agenda — **substituído pela Grade** (ver Etapa 2.6 abaixo)
 - [ ] Mapa interativo em si (fica para a Etapa 7)
 
 ### "Hoje tem forró?" — banner de destaque da Home
@@ -71,6 +71,21 @@ semana + data por extenso, contagem de eventos de hoje e as cidades onde
 estão acontecendo — ou uma mensagem amigável convidando para ver amanhã,
 quando não há nada hoje. Implementado em `criarBannerHoje()`
 (`js/components.js`), consumindo `eventosService.listarPorJanela(0)`.
+
+## Etapa 2.6 — Agenda como vitrine de descoberta (Grade)
+
+Depois de testar, ficou claro que a Agenda deveria se parecer menos com um
+calendário e mais com Sympla/Shotgun/Fever: uma grade de cards onde a pessoa
+descobre eventos comparando-os lado a lado, não consultando dias vazios.
+
+- [x] **Grade virou a visualização padrão**, substituindo a antiga lista agrupada por dia. Sem cabeçalhos de data — cada card já mostra data e horário, e a grade é contínua.
+- [x] Grid responsivo: 1 coluna no mobile, 2 em tablet, 3 no desktop, 4 em telas largas (`.event-grid.is-grade`)
+- [x] Card redesenhado com hierarquia fixa: **Marca → Nome do evento → Data/Horário → Cidade/Local → Valor → Botão "Ingressos"** (condicional — só aparece quando o evento tem link de compra, reaproveitando `botaoAcesso()`)
+- [x] Imagem em `aspect-ratio: 4/3` (~40% da altura do card), grande o suficiente para ter presença visual sem competir com a informação
+- [x] Removidas as badges de tipo/música do corpo do card (ficaram só na página de evento) — a forma de acesso quando relevante (couvert, pagamento no local) aparece direto ao lado do valor, mantendo o card enxuto
+- [x] Visualização "Semana" (calendário) preservada como opção secundária, um clique de distância
+- [x] Card único: a mudança vale para Home, Agenda e "Eventos relacionados" ao mesmo tempo — não existem dois designs de card divergentes no projeto
+- [x] Removida a variante `.event-card--compact` (linha compacta), que ficou sem uso com a Grade substituindo a lista — não deixamos CSS morto no projeto
 
 ## Etapa 2.5 — Entidade Marca (modelo de dados concluído)
 

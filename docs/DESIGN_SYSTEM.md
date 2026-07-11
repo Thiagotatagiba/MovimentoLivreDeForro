@@ -51,17 +51,21 @@ Grid de 8px: `--sp-1` (4px) até `--sp-9` (96px). Qualquer margem/padding novo d
 - `.pulse-today` — marcador "Hoje" com animação de pulso (`--clay`). Só aparece quando `ehHoje(evento)` é verdadeiro.
 - `.chip` — marcador neutro dentro da página de evento (ex. "Música ao vivo").
 - `.price-tag` — preço ou "Gratuito" no rodapé do card.
-- **`.badge` + modificador** — sistema padronizado de badges informativas, usado no corpo do card e na página de evento (`.badges-row`). Modificadores: `.badge--type` (tipo do evento, usado na página de evento), `.badge--free`, `.badge--ticket`, `.badge--couvert`, `.badge--local`, `.badge--list` (forma de acesso — mapeados em `js/access.js → badgeAcesso()`) e `.badge--live`, `.badge--dj` (tipo de música). Nenhum modificador usa `--clay`: essa cor continua reservada só ao marcador "Hoje".
+- **`.badge` + modificador** — sistema padronizado de badges informativas, usado na página de evento (`.badges-row`). Modificadores: `.badge--type` (tipo do evento), `.badge--free`, `.badge--ticket`, `.badge--couvert`, `.badge--local`, `.badge--list` (forma de acesso — mapeados em `js/access.js → badgeAcesso()`) e `.badge--live`, `.badge--dj` (tipo de música). Nenhum modificador usa `--clay`: essa cor continua reservada só ao marcador "Hoje". O card de evento não usa mais badges — a forma de acesso (couvert, pagamento no local etc.) aparece direto na linha de valor (`.card-price`) quando relevante, mantendo o card enxuto.
 
 ### Banner "Hoje tem forró?"
 - `.today-banner` — bloco de destaque na Home, logo abaixo do H1. Borda esquerda em `--clay` (mesma associação de "hoje" usada no resto do site). Três variações de conteúdo: data + contagem + cidades (há eventos), ou data + mensagem convidando para ver amanhã (não há eventos). Ver `criarBannerHoje()` em `js/components.js`.
 
 ### Cards
 - `.event-card` — componente único de card de evento, usado na Home, na Agenda e nos "Eventos relacionados". Ver `js/components.js → criarEventCard(evento, contexto)`. Recebe `contexto.local` e `contexto.marca` para exibir endereço e identidade do baile — nunca busca esses dados sozinho.
-- `.card-eyebrow` — nome da Marca (identidade do baile) em destaque acima do título do evento. É a informação que gera reconhecimento repetido ("ah, é o Deck 16") mesmo quando o título do evento muda a cada edição.
-- **`.event-card--compact`** — variante em linha (imagem vira miniatura 92×92, informação ocupa o espaço restante), usada exclusivamente na visualização em lista da Agenda (`contexto.compacto: true`). A Agenda é uma ferramenta de consulta rápida — o card grande com imagem de destaque fica reservado à Home e à página do evento.
-- `.skeleton-card` / `.skeleton-card--compact` — estado de carregamento, mesma altura/proporção do card real (evita salto de layout).
+- **Hierarquia visual do card** (inspirada em Sympla/Shotgun/Fever, adaptada à identidade do projeto): `.card-eyebrow` (Marca) → título (Nome do evento) → `.card-line` (Data/Horário) → `.card-line--muted` (Cidade/Local) → `.card-price` (Valor) → botão "Ingressos" — este último só aparece quando o evento tem link de compra (`js/access.js → botaoAcesso()`). Sem ingresso, o card continua navegável pela imagem e pelo título; só o botão extra some, sem deixar espaço vazio.
+- A miniatura ocupa `aspect-ratio: 4/3` — proporcionalmente maior que o padrão anterior, para que a imagem tenha peso visual sem competir com a informação, que é o que decide se a pessoa vai ao evento.
+- `.skeleton-card` — estado de carregamento, mesma altura/proporção do card real (evita salto de layout).
 - `.empty-state` / `.empty-state-actions` — estado vazio, **nunca sem uma saída**: `criarEstadoVazio(titulo, mensagem, acoes)` aceita uma lista de ações (links ou botões com `onClick`, ex. "Limpar filtros", "Ver o mês inteiro").
+
+### Grades de eventos
+- `.event-grid` (base, até 3 colunas) — Home e "Eventos relacionados": listas curadas e curtas.
+- **`.event-grid.is-grade`** (até 4 colunas em telas largas) — visualização padrão da Agenda. Grade contínua sem agrupamento por dia: cada card já mostra a data, e a comparação lado a lado é o objetivo (descoberta, não consulta de calendário).
 
 ### Formulários / filtros
 - `.filter-select` — `<select>` estilizado, usado nos filtros da Agenda. Base para futuros campos de formulário (ex. formulário de organizador na Etapa 4).

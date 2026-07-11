@@ -166,7 +166,7 @@
 .search-input:focus { border-color: var(--pine); }
 .search-input::placeholder { color: var(--muted); }
 
-/* ---------- Toggle de visualização (Lista / Semana) ---------- */
+/* ---------- Toggle de visualização (Grade / Semana) ---------- */
 .view-toggle {
   display: inline-flex;
   border: 1px solid var(--sand-line);
@@ -333,9 +333,12 @@
 @media (min-width: 640px) { .event-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 960px) { .event-grid { grid-template-columns: repeat(3, 1fr); } }
 
-.event-grid.is-list {
+.event-grid.is-grade {
   grid-template-columns: 1fr;
 }
+@media (min-width: 640px) { .event-grid.is-grade { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .event-grid.is-grade { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1400px) { .event-grid.is-grade { grid-template-columns: repeat(4, 1fr); } }
 
 /* ---------- Card de evento ---------- */
 .event-card {
@@ -352,7 +355,7 @@
 
 .event-card .thumb {
   position: relative;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 3;
   background: linear-gradient(135deg, var(--pine) 0%, var(--pine-strong) 100%);
   overflow: hidden;
 }
@@ -397,7 +400,7 @@
   padding: var(--sp-4);
   display: flex;
   flex-direction: column;
-  gap: var(--sp-2);
+  gap: 4px;
   flex: 1;
 }
 .event-card .card-eyebrow {
@@ -412,69 +415,31 @@
   font-size: var(--text-lg);
   font-weight: 600;
   line-height: 1.25;
+  margin-bottom: 2px;
 }
-.event-card .meta {
+.event-card .card-line {
   font-size: var(--text-sm);
-  color: var(--muted);
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--sp-1) var(--sp-2);
+  color: var(--ink-soft);
 }
-.event-card .meta span { display: inline-flex; align-items: center; gap: 4px; }
-.event-card .footer-row {
+.event-card .card-line--muted { color: var(--muted); }
+
+/* Preço + botão sempre ancorados no rodapé do card, mesmo com títulos de
+   tamanhos diferentes na mesma linha da grade — é o que mantém os cards
+   visualmente alinhados lado a lado. */
+.event-card .card-footer {
   margin-top: auto;
+  padding-top: var(--sp-3);
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: var(--sp-2);
+  flex-direction: column;
+  gap: var(--sp-2);
 }
-.price-tag { font-size: var(--text-sm); font-weight: 700; color: var(--pine); }
-.price-tag.free { color: var(--pine); }
-
-/* ---------- Card compacto (lista da Agenda) ----------
-   A Agenda é uma ferramenta de consulta rápida: aqui a imagem vira uma
-   miniatura pequena e a informação textual é o que domina o espaço, para
-   caber mais eventos por tela e permitir comparar rapidamente, principalmente
-   no celular. A imagem grande fica reservada à página do evento. */
-.event-grid.is-compact { gap: var(--sp-3); }
-
-.event-card--compact {
-  flex-direction: row;
-  align-items: stretch;
+.event-card .card-price {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--pine);
 }
-.event-card--compact .thumb {
-  width: 92px;
-  min-width: 92px;
-  aspect-ratio: 1 / 1;
-}
-.event-card--compact .thumb .badge-type {
-  font-size: 9px;
-  padding: 2px 6px;
-  top: var(--sp-2);
-  left: var(--sp-2);
-}
-.event-card--compact .thumb .pulse-today {
-  font-size: 9px;
-  padding: 2px 6px;
-  top: var(--sp-2);
-  right: var(--sp-2);
-  gap: 3px;
-}
-.event-card--compact .pulse-bars { height: 7px; }
-.event-card--compact .body {
-  padding: var(--sp-3);
-  gap: 2px;
-}
-.event-card--compact .card-eyebrow { font-size: 10px; }
-.event-card--compact h3 { font-size: var(--text-sm); line-height: 1.3; }
-.event-card--compact .meta { font-size: 11px; gap: 2px var(--sp-2); }
-.event-card--compact .badges-row { gap: 4px; margin-top: 2px; }
-.event-card--compact .badge { font-size: 10px; padding: 2px 8px; }
-.event-card--compact .footer-row { padding-top: 4px; }
-.event-card--compact .price-tag { font-size: var(--text-xs); }
-.event-card--compact .btn-sm { padding: 5px 10px; font-size: 11px; }
-
-.skeleton-card--compact { height: 108px; }
+.btn-block { width: 100%; }
 
 /* ---------- Botões ---------- */
 .btn {
@@ -544,16 +509,6 @@
   color: var(--ink);
 }
 .filter-select:focus { border-color: var(--pine); }
-
-.day-group { margin-top: var(--sp-6); }
-.day-group h2 {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  font-weight: 600;
-  margin-bottom: var(--sp-3);
-  padding-bottom: var(--sp-2);
-  border-bottom: 1px solid var(--sand-line);
-}
 
 /* ---------- Estado vazio ---------- */
 .empty-state {
@@ -643,7 +598,7 @@
 
 /* ---------- Loading / skeleton ---------- */
 .skeleton-card {
-  height: 280px;
+  height: 360px;
   border-radius: var(--radius-md);
   background: linear-gradient(90deg, var(--sand) 25%, var(--sand-line) 37%, var(--sand) 63%);
   background-size: 400% 100%;

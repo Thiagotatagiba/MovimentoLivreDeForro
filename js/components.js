@@ -1,5 +1,5 @@
 import { formatarDataCurta, formatarDataCompleta, formatarHorario, ehHoje } from "./utils.js";
-import { badgeAcesso } from "./access.js";
+import { badgeAcesso, botaoAcesso } from "./access.js";
 
 /** Padrão de "passos de dança" abstrato usado como textura nas miniaturas — sem clichês figurativos. */
 function svgTextura() {
@@ -18,44 +18,41 @@ function svgTextura() {
 /** Miniatura do card: foto real (lazy) quando existir, textura ilustrativa como fallback. */
 function miniaturaHtml(evento) {
   if (evento.imagem) {
-    return `<img src="${evento.imagem}" alt="" loading="lazy" decoding="async" width="400" height="250" />`;
+    return `<img src="${evento.imagem}" alt="" loading="lazy" decoding="async" width="400" height="300" />`;
   }
   return svgTextura();
 }
 
-/** Badge padronizada de música — usa as mesmas classes .badge em todo o site. */
-function badgeMusicaHtml(evento) {
-  if (!evento.musica) return "";
-  const aoVivo = evento.musica === "Música ao vivo";
-  return `<span class="badge ${aoVivo ? "badge--live" : "badge--dj"}">${aoVivo ? "🎵 Ao vivo" : "🎧 DJ"}</span>`;
-}
-
-function badgeAcessoHtml(evento) {
-  const badge = badgeAcesso(evento);
-  if (!badge) return "";
-  return `<span class="badge ${badge.modificador}">${badge.rotulo}</span>`;
-}
-
 /**
  * Retorna o elemento <article> pronto para inserir no DOM. Único ponto de
- * verdade do card de evento — usado na Home, na Agenda (lista e semanal) e
- * nos relacionados.
+ * verdade do card de evento — usado na Home, na Agenda e nos relacionados.
+ *
+ * Hierarquia visual (inspirada em Sympla/Shotgun/Fever, adaptada à
+ * identidade do projeto): Marca → Nome do evento → Data/Horário →
+ * Cidade/Local → Valor → Botão de Ingressos (só quando o evento tem link
+ * de compra — ver js/access.js). Sem ingresso, o card continua navegável
+ * normalmente pela imagem e pelo título; só o botão extra some.
  *
  * @param {object} evento
  * @param {object} contexto
  * @param {object} [contexto.local] - local físico (endereço) do evento
  * @param {object} [contexto.marca] - identidade do baile (Marca) do evento
- * @param {string} [contexto.ctaLabel="Ver detalhes"] - texto do botão de ação
- * @param {boolean} [contexto.compacto=false] - variante compacta (linha), usada na lista da Agenda
  */
 export function criarEventCard(evento, contexto = {}) {
-  const { local, marca, ctaLabel = "Ver detalhes", compacto = false } = contexto;
+  const { local, marca } = contexto;
   const art = document.createElement("article");
-  art.className = compacto ? "event-card event-card--compact" : "event-card";
+  art.className = "event-card";
 
   const hoje = ehHoje(evento);
   const href = `evento.html?slug=${encodeURIComponent(evento.slug)}`;
   const nomeIdentidade = marca ? marca.nome : evento.cidade;
+  const nomeLocal = local ? local.nome : evento.cidade;
+
+  const acesso = botaoAcesso(evento);
+  const badgeInfo = badgeAcesso(evento);
+  // "Ingresso" e "Gratuito" já ficam claros só pelo valor; só vale anotar
+  // o tipo de acesso quando ele não é óbvio a partir do preço sozinho.
+  const notaAcesso = badgeInfo && !["ingresso", "gratuito"].includes(evento.acesso?.tipo) ? ` · ${badgeInfo.rotulo}` : "";
 
   art.innerHTML = `
     <a href="${href}" class="thumb" aria-hidden="true" tabindex="-1">
@@ -66,29 +63,22 @@ export function criarEventCard(evento, contexto = {}) {
     <div class="body">
       <p class="card-eyebrow">${nomeIdentidade}</p>
       <h3><a href="${href}">${evento.titulo}</a></h3>
-      <p class="meta">
-        <span>📍 ${local ? local.nome : evento.cidade}</span>
-        <span>· ${formatarDataCurta(evento.inicio)}, ${formatarHorario(evento.inicio)}</span>
-      </p>
-      <div class="badges-row">
-        ${badgeAcessoHtml(evento)}
-        ${badgeMusicaHtml(evento)}
-      </div>
-      <div class="footer-row">
-        <span class="price-tag ${evento.entrada === "gratuito" ? "free" : ""}">${evento.entrada === "gratuito" ? "Gratuito" : evento.preco}</span>
-        <a class="btn btn-primary btn-sm" href="${href}">${ctaLabel}</a>
+      <p class="card-line">${formatarDataCurta(evento.inicio)} · ${formatarHorario(evento.inicio)}</p>
+      <p class="card-line card-line--muted">📍 ${evento.cidade} · ${nomeLocal}</p>
+      <div class="card-footer">
+        <p class="card-price">${evento.preco}${notaAcesso}</p>
+        ${acesso ? `<a class="btn ${acesso.variante} btn-block" href="${acesso.url}" target="_blank" rel="noopener">${acesso.rotulo}</a>` : ""}
       </div>
     </div>
   `;
   return art;
 }
 
-export function criarEsqueletos(quantidade, opcoes = {}) {
-  const { compacto = false } = opcoes;
+export function criarEsqueletos(quantidade) {
   const frag = document.createDocumentFragment();
   for (let i = 0; i < quantidade; i++) {
     const div = document.createElement("div");
-    div.className = compacto ? "skeleton-card skeleton-card--compact" : "skeleton-card";
+    div.className = "skeleton-card";
     div.setAttribute("aria-hidden", "true");
     frag.appendChild(div);
   }

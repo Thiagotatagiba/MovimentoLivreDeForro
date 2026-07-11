@@ -2,7 +2,7 @@ import { eventosService } from "./services/eventosService.js";
 import { locaisService } from "./services/locaisService.js";
 import { marcasService } from "./services/marcasService.js";
 import { criarEventCard, criarEsqueletos, criarEstadoVazio, ligarMenuMobile } from "./components.js";
-import { chaveDia, formatarDataLonga, formatarHorario, hojeLocal } from "./utils.js";
+import { chaveDia, formatarHorario, hojeLocal } from "./utils.js";
 
 const JANELAS = { hoje: 0, amanha: 1, semana: 6, mes: 31 };
 const DIA_SEMANA_ABREV = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
@@ -12,9 +12,10 @@ function lerEstadoDaURL() {
   const p = new URLSearchParams(window.location.search);
   return {
     janela: p.get("janela") || "semana",
-    // A visualização "Semana" é o destaque da Agenda — é o padrão, a menos
-    // que a URL diga explicitamente o contrário.
-    view: p.get("view") === "lista" ? "lista" : "semana",
+    // "Grade" é o padrão: o objetivo principal do site é descobrir eventos
+    // navegando por cards, não consultar um calendário. Semana é a opção
+    // secundária, ativada só quando a URL pede explicitamente.
+    view: p.get("view") === "semana" ? "semana" : "grade",
     cidade: p.get("cidade") || "",
     tipo: p.get("tipo") || "",
     entrada: p.get("entrada") || "",
@@ -50,7 +51,7 @@ async function init() {
   const filtroMarca = document.querySelector("#filtro-marca");
   const campoBusca = document.querySelector("#campo-busca");
 
-  container.replaceChildren(criarEsqueletos(4, { compacto: true }));
+  container.replaceChildren(criarEsqueletos(8));
 
   let locaisPorSlug, marcasPorSlug;
   try {
@@ -121,14 +122,20 @@ async function init() {
   }
 
   function viewAtual() {
-    return [...viewButtons].find((b) => b.getAttribute("aria-pressed") === "true")?.dataset.view || "semana";
+    return [...viewButtons].find((b) => b.getAttribute("aria-pressed") === "true")?.dataset.view || "grade";
   }
 
   function contextoDoEvento(evento) {
-    return { local: locaisPorSlug.get(evento.localSlug), marca: marcasPorSlug.get(evento.marcaSlug), compacto: true };
+    return { local: locaisPorSlug.get(evento.localSlug), marca: marcasPorSlug.get(evento.marcaSlug) };
   }
 
-  async function renderLista() {
+  /**
+   * Grade de descoberta (estilo Sympla/Shotgun/Fever) — a visualização
+   * padrão da Agenda. Sem agrupamento por dia: os cards já mostram a data,
+   * e uma vitrine contínua favorece a navegação por comparação, não por
+   * consulta de calendário.
+   */
+  async function renderGrade() {
     const janela = janelaAtual();
     const lista = await eventosService.listarComFiltros({ dias: JANELAS[janela], ...filtrosAtuais() });
     container.replaceChildren();
@@ -151,32 +158,10 @@ async function init() {
       return;
     }
 
-    const porDia = new Map();
-    lista.forEach((evento) => {
-      const chave = chaveDia(evento.inicio);
-      if (!porDia.has(chave)) porDia.set(chave, { inicio: evento.inicio, eventos: [] });
-      porDia.get(chave).eventos.push(evento);
-    });
-
-    const frag = document.createDocumentFragment();
-    [...porDia.entries()].sort(([a], [b]) => a.localeCompare(b)).forEach(([, grupo]) => {
-      const secao = document.createElement("section");
-      secao.className = "day-group";
-      const titulo = document.createElement("h2");
-      titulo.textContent = formatarDataLonga(grupo.inicio);
-      secao.appendChild(titulo);
-
-      // Cards compactos: a Agenda é uma ferramenta de consulta rápida, não
-      // uma vitrine — a imagem vira miniatura e a informação fica em primeiro
-      // plano, para caber mais eventos por tela.
-      const grid = document.createElement("div");
-      grid.className = "event-grid is-list is-compact";
-      grupo.eventos.forEach((evento) => grid.appendChild(criarEventCard(evento, contextoDoEvento(evento))));
-      secao.appendChild(grid);
-
-      frag.appendChild(secao);
-    });
-    container.appendChild(frag);
+    const grid = document.createElement("div");
+    grid.className = "event-grid is-grade";
+    lista.forEach((evento) => grid.appendChild(criarEventCard(evento, contextoDoEvento(evento))));
+    container.appendChild(grid);
   }
 
   async function renderSemana() {
@@ -242,7 +227,7 @@ async function init() {
     if (viewAtual() === "semana") {
       await renderSemana();
     } else {
-      await renderLista();
+      await renderGrade();
     }
   }
 
