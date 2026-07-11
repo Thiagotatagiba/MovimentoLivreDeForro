@@ -1,5 +1,6 @@
 import { eventosService } from "./services/eventosService.js";
 import { locaisService } from "./services/locaisService.js";
+import { marcasService } from "./services/marcasService.js";
 import { criarEventCard, criarEsqueletos, criarEstadoVazio, criarResumoSemana, criarBannerHoje, ligarMenuMobile } from "./components.js";
 import { hojeLocal } from "./utils.js";
 
@@ -14,9 +15,9 @@ async function init() {
   const tabs = document.querySelectorAll("#date-tabs button");
   grid.replaceChildren(criarEsqueletos(3));
 
-  let locaisPorSlug;
+  let locaisPorSlug, marcasPorSlug;
   try {
-    locaisPorSlug = await locaisService.mapaPorSlug();
+    [locaisPorSlug, marcasPorSlug] = await Promise.all([locaisService.mapaPorSlug(), marcasService.mapaPorSlug()]);
     const [eventosHoje, resumo] = await Promise.all([
       eventosService.listarPorJanela(JANELAS.hoje),
       eventosService.resumoDaSemana(),
@@ -45,7 +46,9 @@ async function init() {
 
     const frag = document.createDocumentFragment();
     filtrados.slice(0, 6).forEach((evento) => {
-      frag.appendChild(criarEventCard(evento, locaisPorSlug.get(evento.localSlug)));
+      frag.appendChild(
+        criarEventCard(evento, { local: locaisPorSlug.get(evento.localSlug), marca: marcasPorSlug.get(evento.marcaSlug) })
+      );
     });
     grid.appendChild(frag);
   }

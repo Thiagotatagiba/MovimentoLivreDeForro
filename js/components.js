@@ -38,17 +38,24 @@ function badgeAcessoHtml(evento) {
 
 /**
  * Retorna o elemento <article> pronto para inserir no DOM. Único ponto de
- * verdade do card de evento — usado na Home, na Agenda e nos relacionados.
+ * verdade do card de evento — usado na Home, na Agenda (lista e semanal) e
+ * nos relacionados.
  *
- * opcoes.ctaLabel: texto do botão de ação (padrão "Ver detalhes").
+ * @param {object} evento
+ * @param {object} contexto
+ * @param {object} [contexto.local] - local físico (endereço) do evento
+ * @param {object} [contexto.marca] - identidade do baile (Marca) do evento
+ * @param {string} [contexto.ctaLabel="Ver detalhes"] - texto do botão de ação
+ * @param {boolean} [contexto.compacto=false] - variante compacta (linha), usada na lista da Agenda
  */
-export function criarEventCard(evento, local, opcoes = {}) {
-  const { ctaLabel = "Ver detalhes" } = opcoes;
+export function criarEventCard(evento, contexto = {}) {
+  const { local, marca, ctaLabel = "Ver detalhes", compacto = false } = contexto;
   const art = document.createElement("article");
-  art.className = "event-card";
+  art.className = compacto ? "event-card event-card--compact" : "event-card";
 
   const hoje = ehHoje(evento);
   const href = `evento.html?slug=${encodeURIComponent(evento.slug)}`;
+  const nomeIdentidade = marca ? marca.nome : evento.cidade;
 
   art.innerHTML = `
     <a href="${href}" class="thumb" aria-hidden="true" tabindex="-1">
@@ -57,10 +64,10 @@ export function criarEventCard(evento, local, opcoes = {}) {
       ${hoje ? `<span class="pulse-today"><span class="pulse-bars"><span></span><span></span><span></span></span>Hoje</span>` : ""}
     </a>
     <div class="body">
+      <p class="card-eyebrow">${nomeIdentidade}</p>
       <h3><a href="${href}">${evento.titulo}</a></h3>
       <p class="meta">
         <span>📍 ${local ? local.nome : evento.cidade}</span>
-        <span>· ${evento.cidade}</span>
         <span>· ${formatarDataCurta(evento.inicio)}, ${formatarHorario(evento.inicio)}</span>
       </p>
       <div class="badges-row">
@@ -76,11 +83,12 @@ export function criarEventCard(evento, local, opcoes = {}) {
   return art;
 }
 
-export function criarEsqueletos(quantidade) {
+export function criarEsqueletos(quantidade, opcoes = {}) {
+  const { compacto = false } = opcoes;
   const frag = document.createDocumentFragment();
   for (let i = 0; i < quantidade; i++) {
     const div = document.createElement("div");
-    div.className = "skeleton-card";
+    div.className = compacto ? "skeleton-card skeleton-card--compact" : "skeleton-card";
     div.setAttribute("aria-hidden", "true");
     frag.appendChild(div);
   }

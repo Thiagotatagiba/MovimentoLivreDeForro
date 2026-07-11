@@ -1,5 +1,6 @@
 import { eventosService } from "./services/eventosService.js";
 import { locaisService } from "./services/locaisService.js";
+import { marcasService } from "./services/marcasService.js";
 import { criarEventCard, ligarMenuMobile } from "./components.js";
 import { formatarDataLonga, formatarHorario } from "./utils.js";
 import { botaoAcesso, badgeAcesso } from "./access.js";
@@ -40,6 +41,7 @@ async function init() {
   }
 
   const local = await locaisService.buscarPorSlug(evento.localSlug);
+  const marca = await marcasService.buscarPorSlug(evento.marcaSlug);
   document.title = `${evento.titulo} — Movimento Livre de Forró`;
 
   const gratuito = evento.entrada === "gratuito";
@@ -58,11 +60,12 @@ async function init() {
 
       <div class="event-detail-grid">
         <div>
-          <p class="section-head eyebrow" style="margin-top:1.5rem">${evento.tipo}</p>
+          <p class="section-head eyebrow" style="margin-top:1.5rem">${marca ? marca.nome : evento.tipo}</p>
           <h1 style="font-family:var(--font-display); font-size:var(--text-2xl); font-weight:600;">${evento.titulo}</h1>
           <p style="margin-top:0.75rem; color:var(--ink-soft); max-width:60ch;">${evento.descricao}</p>
 
           <div class="badges-row" style="margin-top:1.5rem;">
+            <span class="badge badge--type">${evento.tipo}</span>
             ${badgeInfoAcesso ? `<span class="badge ${badgeInfoAcesso.modificador}">${badgeInfoAcesso.rotulo}</span>` : ""}
             <span class="badge ${evento.musica === "Música ao vivo" ? "badge--live" : "badge--dj"}">${evento.musica === "Música ao vivo" ? "🎵 Ao vivo" : "🎧 DJ"}</span>
           </div>
@@ -96,9 +99,11 @@ async function init() {
   if (relacionados.length === 0) {
     document.querySelector("#relacionados").remove();
   } else {
-    const locaisPorSlug = await locaisService.mapaPorSlug();
+    const [locaisPorSlug, marcasPorSlug] = await Promise.all([locaisService.mapaPorSlug(), marcasService.mapaPorSlug()]);
     relacionados.forEach((rel) => {
-      gridRelacionados.appendChild(criarEventCard(rel, locaisPorSlug.get(rel.localSlug)));
+      gridRelacionados.appendChild(
+        criarEventCard(rel, { local: locaisPorSlug.get(rel.localSlug), marca: marcasPorSlug.get(rel.marcaSlug) })
+      );
     });
   }
 

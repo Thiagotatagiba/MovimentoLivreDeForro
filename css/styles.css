@@ -269,6 +269,7 @@
 .badge--list { background: var(--sand); color: var(--ink-soft); }
 .badge--live { background: var(--pine-tint); color: var(--pine); }
 .badge--dj { background: var(--sand-line); color: var(--ink-soft); }
+.badge--type { background: var(--sand-line); color: var(--ink-soft); }
 
 /* ---------- Miniaturas com imagem real ---------- */
 .thumb img,
@@ -399,6 +400,13 @@
   gap: var(--sp-2);
   flex: 1;
 }
+.event-card .card-eyebrow {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--pine);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
 .event-card h3 {
   font-family: var(--font-display);
   font-size: var(--text-lg);
@@ -422,6 +430,51 @@
 }
 .price-tag { font-size: var(--text-sm); font-weight: 700; color: var(--pine); }
 .price-tag.free { color: var(--pine); }
+
+/* ---------- Card compacto (lista da Agenda) ----------
+   A Agenda é uma ferramenta de consulta rápida: aqui a imagem vira uma
+   miniatura pequena e a informação textual é o que domina o espaço, para
+   caber mais eventos por tela e permitir comparar rapidamente, principalmente
+   no celular. A imagem grande fica reservada à página do evento. */
+.event-grid.is-compact { gap: var(--sp-3); }
+
+.event-card--compact {
+  flex-direction: row;
+  align-items: stretch;
+}
+.event-card--compact .thumb {
+  width: 92px;
+  min-width: 92px;
+  aspect-ratio: 1 / 1;
+}
+.event-card--compact .thumb .badge-type {
+  font-size: 9px;
+  padding: 2px 6px;
+  top: var(--sp-2);
+  left: var(--sp-2);
+}
+.event-card--compact .thumb .pulse-today {
+  font-size: 9px;
+  padding: 2px 6px;
+  top: var(--sp-2);
+  right: var(--sp-2);
+  gap: 3px;
+}
+.event-card--compact .pulse-bars { height: 7px; }
+.event-card--compact .body {
+  padding: var(--sp-3);
+  gap: 2px;
+}
+.event-card--compact .card-eyebrow { font-size: 10px; }
+.event-card--compact h3 { font-size: var(--text-sm); line-height: 1.3; }
+.event-card--compact .meta { font-size: 11px; gap: 2px var(--sp-2); }
+.event-card--compact .badges-row { gap: 4px; margin-top: 2px; }
+.event-card--compact .badge { font-size: 10px; padding: 2px 8px; }
+.event-card--compact .footer-row { padding-top: 4px; }
+.event-card--compact .price-tag { font-size: var(--text-xs); }
+.event-card--compact .btn-sm { padding: 5px 10px; font-size: 11px; }
+
+.skeleton-card--compact { height: 108px; }
 
 /* ---------- Botões ---------- */
 .btn {

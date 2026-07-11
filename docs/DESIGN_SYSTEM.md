@@ -51,14 +51,16 @@ Grid de 8px: `--sp-1` (4px) até `--sp-9` (96px). Qualquer margem/padding novo d
 - `.pulse-today` — marcador "Hoje" com animação de pulso (`--clay`). Só aparece quando `ehHoje(evento)` é verdadeiro.
 - `.chip` — marcador neutro dentro da página de evento (ex. "Música ao vivo").
 - `.price-tag` — preço ou "Gratuito" no rodapé do card.
-- **`.badge` + modificador** — sistema padronizado de badges informativas, usado no corpo do card e na página de evento (`.badges-row`). Modificadores: `.badge--free`, `.badge--ticket`, `.badge--couvert`, `.badge--local`, `.badge--list` (forma de acesso — mapeados em `js/access.js → badgeAcesso()`) e `.badge--live`, `.badge--dj` (tipo de música). Nenhum modificador usa `--clay`: essa cor continua reservada só ao marcador "Hoje".
+- **`.badge` + modificador** — sistema padronizado de badges informativas, usado no corpo do card e na página de evento (`.badges-row`). Modificadores: `.badge--type` (tipo do evento, usado na página de evento), `.badge--free`, `.badge--ticket`, `.badge--couvert`, `.badge--local`, `.badge--list` (forma de acesso — mapeados em `js/access.js → badgeAcesso()`) e `.badge--live`, `.badge--dj` (tipo de música). Nenhum modificador usa `--clay`: essa cor continua reservada só ao marcador "Hoje".
 
 ### Banner "Hoje tem forró?"
 - `.today-banner` — bloco de destaque na Home, logo abaixo do H1. Borda esquerda em `--clay` (mesma associação de "hoje" usada no resto do site). Três variações de conteúdo: data + contagem + cidades (há eventos), ou data + mensagem convidando para ver amanhã (não há eventos). Ver `criarBannerHoje()` em `js/components.js`.
 
 ### Cards
-- `.event-card` — componente único de card de evento, usado na Home, na Agenda e nos "Eventos relacionados". Ver `js/components.js → criarEventCard()`. Miniatura usa `<img loading="lazy">` quando `evento.imagem` existe; cai para a textura SVG ilustrativa quando não.
-- `.skeleton-card` — estado de carregamento, mesma altura/proporção do card real para evitar salto de layout.
+- `.event-card` — componente único de card de evento, usado na Home, na Agenda e nos "Eventos relacionados". Ver `js/components.js → criarEventCard(evento, contexto)`. Recebe `contexto.local` e `contexto.marca` para exibir endereço e identidade do baile — nunca busca esses dados sozinho.
+- `.card-eyebrow` — nome da Marca (identidade do baile) em destaque acima do título do evento. É a informação que gera reconhecimento repetido ("ah, é o Deck 16") mesmo quando o título do evento muda a cada edição.
+- **`.event-card--compact`** — variante em linha (imagem vira miniatura 92×92, informação ocupa o espaço restante), usada exclusivamente na visualização em lista da Agenda (`contexto.compacto: true`). A Agenda é uma ferramenta de consulta rápida — o card grande com imagem de destaque fica reservado à Home e à página do evento.
+- `.skeleton-card` / `.skeleton-card--compact` — estado de carregamento, mesma altura/proporção do card real (evita salto de layout).
 - `.empty-state` / `.empty-state-actions` — estado vazio, **nunca sem uma saída**: `criarEstadoVazio(titulo, mensagem, acoes)` aceita uma lista de ações (links ou botões com `onClick`, ex. "Limpar filtros", "Ver o mês inteiro").
 
 ### Formulários / filtros
@@ -85,6 +87,7 @@ Grid de 8px: `--sp-1` (4px) até `--sp-9` (96px). Qualquer margem/padding novo d
 
 ## O que ainda não existe (e onde vai entrar)
 
+- **Página da Marca** — dados e serviço já existem (`data/marcas.json`, `js/services/marcasService.js`, `eventosService.listarPorMarca()`); falta só o layout da página em si (próxima etapa do roadmap).
 - **Estados de acesso ao evento** (gratuito/couvert/pagamento local/lista) — arquitetura pronta em `js/access.js`, visual a definir quando forem implementados.
-- **Componentes de formulário completos** (input de texto, textarea, upload de imagem) — vêm com o painel administrativo (Etapa 4).
+- **Componentes de formulário completos** (input de texto, textarea, upload de imagem) — vêm com o painel administrativo.
 - **Mapa interativo** — vai precisar de um token de altura padrão e um card de resultado próprio.

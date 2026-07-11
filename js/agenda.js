@@ -1,5 +1,6 @@
 import { eventosService } from "./services/eventosService.js";
 import { locaisService } from "./services/locaisService.js";
+import { marcasService } from "./services/marcasService.js";
 import { criarEventCard, criarEsqueletos, criarEstadoVazio, ligarMenuMobile } from "./components.js";
 import { chaveDia, formatarDataLonga, formatarHorario, hojeLocal } from "./utils.js";
 
@@ -19,6 +20,7 @@ function lerEstadoDaURL() {
     entrada: p.get("entrada") || "",
     periodo: p.get("periodo") || "",
     musica: p.get("musica") || "",
+    marca: p.get("marca") || "",
     busca: p.get("busca") || "",
   };
 }
@@ -45,17 +47,29 @@ async function init() {
   const filtroEntrada = document.querySelector("#filtro-entrada");
   const filtroPeriodo = document.querySelector("#filtro-periodo");
   const filtroMusica = document.querySelector("#filtro-musica");
+  const filtroMarca = document.querySelector("#filtro-marca");
   const campoBusca = document.querySelector("#campo-busca");
 
-  container.replaceChildren(criarEsqueletos(4));
+  container.replaceChildren(criarEsqueletos(4, { compacto: true }));
 
-  let locaisPorSlug;
+  let locaisPorSlug, marcasPorSlug;
   try {
-    locaisPorSlug = await locaisService.mapaPorSlug();
+    [locaisPorSlug, marcasPorSlug] = await Promise.all([locaisService.mapaPorSlug(), marcasService.mapaPorSlug()]);
   } catch (erro) {
     container.replaceChildren(criarEstadoVazio("Não deu pra carregar a agenda agora", "Verifique sua conexão e tente novamente."));
     return;
   }
+
+  // Popula o filtro de marca dinamicamente — a lista de marcas cresce com o tempo,
+  // então não faz sentido hardcodar <option> no HTML como fizemos com cidade/tipo.
+  [...marcasPorSlug.values()]
+    .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"))
+    .forEach((marca) => {
+      const opt = document.createElement("option");
+      opt.value = marca.slug;
+      opt.textContent = marca.nome;
+      filtroMarca.appendChild(opt);
+    });
 
   const estado = lerEstadoDaURL();
 
@@ -64,6 +78,7 @@ async function init() {
   filtroEntrada.value = estado.entrada;
   filtroPeriodo.value = estado.periodo;
   filtroMusica.value = estado.musica;
+  filtroMarca.value = estado.marca;
   campoBusca.value = estado.busca;
   tabs.forEach((b) => b.setAttribute("aria-selected", String(b.dataset.janela === estado.janela)));
   viewButtons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === estado.view)));
@@ -76,6 +91,7 @@ async function init() {
       entrada: filtroEntrada.value,
       periodo: filtroPeriodo.value,
       musica: filtroMusica.value,
+      marca: filtroMarca.value,
       busca: campoBusca.value,
     };
   }
@@ -90,6 +106,7 @@ async function init() {
     filtroEntrada.value = "";
     filtroPeriodo.value = "";
     filtroMusica.value = "";
+    filtroMarca.value = "";
     campoBusca.value = "";
     render();
   }
@@ -105,6 +122,10 @@ async function init() {
 
   function viewAtual() {
     return [...viewButtons].find((b) => b.getAttribute("aria-pressed") === "true")?.dataset.view || "semana";
+  }
+
+  function contextoDoEvento(evento) {
+    return { local: locaisPorSlug.get(evento.localSlug), marca: marcasPorSlug.get(evento.marcaSlug), compacto: true };
   }
 
   async function renderLista() {
@@ -145,9 +166,12 @@ async function init() {
       titulo.textContent = formatarDataLonga(grupo.inicio);
       secao.appendChild(titulo);
 
+      // Cards compactos: a Agenda é uma ferramenta de consulta rápida, não
+      // uma vitrine — a imagem vira miniatura e a informação fica em primeiro
+      // plano, para caber mais eventos por tela.
       const grid = document.createElement("div");
-      grid.className = "event-grid is-list";
-      grupo.eventos.forEach((evento) => grid.appendChild(criarEventCard(evento, locaisPorSlug.get(evento.localSlug))));
+      grid.className = "event-grid is-list is-compact";
+      grupo.eventos.forEach((evento) => grid.appendChild(criarEventCard(evento, contextoDoEvento(evento))));
       secao.appendChild(grid);
 
       frag.appendChild(secao);
@@ -239,7 +263,7 @@ async function init() {
     });
   });
 
-  [filtroCidade, filtroTipo, filtroEntrada, filtroPeriodo, filtroMusica].forEach((select) =>
+  [filtroCidade, filtroTipo, filtroEntrada, filtroPeriodo, filtroMusica, filtroMarca].forEach((select) =>
     select.addEventListener("change", render)
   );
 

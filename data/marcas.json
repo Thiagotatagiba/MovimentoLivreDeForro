@@ -1,0 +1,62 @@
+[
+  {
+    "id": "marca-forro-do-nicinha",
+    "slug": "forro-do-nicinha",
+    "nome": "Forró da Nicinha",
+    "descricao": "Baile semanal tradicional que reúne a comunidade de Vitória toda quinta-feira, com trio ao vivo e roda de dança aberta a iniciantes.",
+    "cidade": "Vitória",
+    "localPrincipalSlug": "espaco-triangulo",
+    "instagram": "https://instagram.com/forrodanicinha",
+    "whatsapp": "https://wa.me/5527999990001",
+    "logo": null,
+    "banner": null,
+    "origem": "manual",
+    "status": "publicado",
+    "atualizadoEm": "2026-07-01T10:00:00-03:00"
+  },
+  {
+    "id": "marca-quintal-do-pe-de-serra",
+    "slug": "quintal-do-pe-de-serra",
+    "nome": "Quintal Pé de Serra",
+    "descricao": "Projeto de aulas e bailes voltado para quem está começando a dançar forró em Vila Velha, com turmas fixas e prática livre.",
+    "cidade": "Vila Velha",
+    "localPrincipalSlug": "clube-praia-da-costa",
+    "instagram": "https://instagram.com/quintalpedeserra",
+    "whatsapp": "https://wa.me/5527999990002",
+    "logo": null,
+    "banner": null,
+    "origem": "manual",
+    "status": "publicado",
+    "atualizadoEm": "2026-07-01T10:00:00-03:00"
+  },
+  {
+    "id": "marca-casa-do-forro-serra",
+    "slug": "casa-do-forro-serra",
+    "nome": "Casa do Forró Serra",
+    "descricao": "Ponto de encontro fixo da Serra, com bailes de sexta e festivais especiais reunindo bandas de toda a Grande Vitória.",
+    "cidade": "Serra",
+    "localPrincipalSlug": "galpao-laranjeiras",
+    "instagram": "https://instagram.com/casadoforroserra",
+    "whatsapp": "https://wa.me/5527999990003",
+    "logo": null,
+    "banner": null,
+    "origem": "manual",
+    "status": "publicado",
+    "atualizadoEm": "2026-07-01T10:00:00-03:00"
+  },
+  {
+    "id": "marca-galpao-cultural-cariacica",
+    "slug": "galpao-cultural-cariacica",
+    "nome": "Galpão Cultural Cariacica",
+    "descricao": "Coletivo cultural de Cariacica responsável pelos bailes e workshops que movimentam o forró na Sede Campo Grande.",
+    "cidade": "Cariacica",
+    "localPrincipalSlug": "sede-campo-grande",
+    "instagram": "https://instagram.com/galpaoculturalcariacica",
+    "whatsapp": "https://wa.me/5527999990004",
+    "logo": null,
+    "banner": null,
+    "origem": "manual",
+    "status": "publicado",
+    "atualizadoEm": "2026-07-01T10:00:00-03:00"
+  }
+]

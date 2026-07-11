@@ -1,42 +1,38 @@
 [
   {
-    "id": "loc-forro-do-nicinha",
-    "slug": "forro-do-nicinha",
-    "nome": "Forró da Nicinha",
+    "id": "loc-espaco-triangulo",
+    "slug": "espaco-triangulo",
+    "nome": "Espaço Triângulo das Bicicletas",
     "cidade": "Vitória",
     "endereco": "Rua Chapot Prevost, 100 — Centro, Vitória/ES",
     "latitude": -20.3181,
-    "longitude": -40.3378,
-    "instagram": "https://instagram.com/forrodanicinha"
+    "longitude": -40.3378
   },
   {
-    "id": "loc-quintal-do-pe-de-serra",
-    "slug": "quintal-do-pe-de-serra",
-    "nome": "Quintal Pé de Serra",
+    "id": "loc-clube-praia-da-costa",
+    "slug": "clube-praia-da-costa",
+    "nome": "Clube Recreativo Praia da Costa",
     "cidade": "Vila Velha",
     "endereco": "Av. Champagnat, 450 — Praia da Costa, Vila Velha/ES",
     "latitude": -20.3395,
-    "longitude": -40.2916,
-    "instagram": "https://instagram.com/quintalpedeserra"
+    "longitude": -40.2916
   },
   {
-    "id": "loc-casa-do-forro-serra",
-    "slug": "casa-do-forro-serra",
-    "nome": "Casa do Forró Serra",
+    "id": "loc-galpao-laranjeiras",
+    "slug": "galpao-laranjeiras",
+    "nome": "Galpão Laranjeiras",
     "cidade": "Serra",
     "endereco": "Av. Central, 220 — Laranjeiras, Serra/ES",
     "latitude": -20.1219,
-    "longitude": -40.2983,
-    "instagram": "https://instagram.com/casadoforroserra"
+    "longitude": -40.2983
   },
   {
-    "id": "loc-galpao-cultural-cariacica",
-    "slug": "galpao-cultural-cariacica",
-    "nome": "Galpão Cultural Cariacica",
+    "id": "loc-sede-campo-grande",
+    "slug": "sede-campo-grande",
+    "nome": "Sede Cultural Campo Grande",
     "cidade": "Cariacica",
     "endereco": "Rua das Palmeiras, 88 — Campo Grande, Cariacica/ES",
     "latitude": -20.2634,
-    "longitude": -40.4165,
-    "instagram": "https://instagram.com/galpaoculturalcariacica"
+    "longitude": -40.4165
   }
 ]

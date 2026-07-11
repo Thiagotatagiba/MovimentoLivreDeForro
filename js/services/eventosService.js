@@ -1,10 +1,15 @@
 import { eventosRepository } from "../repositories/eventosRepository.js";
+import { marcasService } from "./marcasService.js";
 import { dentroDaJanela, periodoDoDia } from "../utils.js";
 
 // Camada de serviço: é isso que home.js, agenda.js e evento.js importam —
 // nunca o repositório diretamente. Aqui vivem as regras de negócio
 // (o que conta como "publicado", janelas de tempo, relacionados, resumos).
 // Páginas não sabem, e não precisam saber, de onde os dados vêm.
+//
+// Depende de marcasService (não o contrário) só para enriquecer a busca por
+// texto com o nome da marca — composição de serviços é esperada aqui, o que
+// não pode existir é um repositório dependendo de outro repositório.
 
 export const eventosService = {
   /** Todos os eventos visíveis ao público (exclui rascunhos e cancelados). */
@@ -19,19 +24,22 @@ export const eventosService = {
     return eventos.filter((e) => dentroDaJanela(e, dias));
   },
 
-  /** Eventos que batem com filtros de cidade / tipo / entrada / período / música / busca, dentro de uma janela. */
-  async listarComFiltros({ dias, cidade, tipo, entrada, periodo, musica, busca } = {}) {
+  /** Eventos que batem com filtros de cidade / tipo / entrada / período / música / marca / busca, dentro de uma janela. */
+  async listarComFiltros({ dias, cidade, tipo, entrada, periodo, musica, marca, busca } = {}) {
     let eventos = dias != null ? await this.listarPorJanela(dias) : await this.listarTodos();
     if (cidade) eventos = eventos.filter((e) => e.cidade === cidade);
     if (tipo) eventos = eventos.filter((e) => e.tipo === tipo);
     if (entrada) eventos = eventos.filter((e) => e.entrada === entrada);
     if (periodo) eventos = eventos.filter((e) => periodoDoDia(e) === periodo);
     if (musica) eventos = eventos.filter((e) => e.musica === musica);
+    if (marca) eventos = eventos.filter((e) => e.marcaSlug === marca);
     if (busca) {
       const termo = busca.trim().toLowerCase();
-      eventos = eventos.filter((e) =>
-        [e.titulo, e.cidade, e.tipo, e.descricao].some((campo) => campo?.toLowerCase().includes(termo))
-      );
+      const marcasPorSlug = await marcasService.mapaPorSlug();
+      eventos = eventos.filter((e) => {
+        const nomeMarca = marcasPorSlug.get(e.marcaSlug)?.nome ?? "";
+        return [e.titulo, e.cidade, e.tipo, e.descricao, nomeMarca].some((campo) => campo?.toLowerCase().includes(termo));
+      });
     }
     return eventos;
   },
@@ -41,6 +49,11 @@ export const eventosService = {
     return this.listarComFiltros({ ...filtros, dias: 6 });
   },
 
+  /** Próximos eventos de uma marca — usado hoje nos cards, e é o que vai alimentar a futura página da Marca. */
+  async listarPorMarca(marcaSlug, filtrosExtras = {}) {
+    return this.listarComFiltros({ ...filtrosExtras, marca: marcaSlug });
+  },
+
   async buscarPorSlug(slug) {
     return eventosRepository.buscarPorSlug(slug);
   },
@@ -48,7 +61,7 @@ export const eventosService = {
   async listarRelacionados(evento, limite = 3) {
     const eventos = await this.listarTodos();
     return eventos
-      .filter((e) => e.slug !== evento.slug && (e.cidade === evento.cidade || e.tipo === evento.tipo))
+      .filter((e) => e.slug !== evento.slug && (e.marcaSlug === evento.marcaSlug || e.cidade === evento.cidade || e.tipo === evento.tipo))
       .slice(0, limite);
   },
 
