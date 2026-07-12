@@ -24,9 +24,9 @@ sempre mantendo a Agenda como o coração do projeto.
 
 ## Prioridade das próximas etapas
 
-1. **Finalizar a Agenda** (UX refinada) — concluída nesta rodada
-2. **Marcas** — modelo de dados pronto nesta rodada; página ainda por construir
-3. Locais
+1. **Finalizar a Agenda** (UX refinada) — concluída
+2. **Marcas** — modelo de dados e página de perfil concluídos
+3. **Locais** — próxima
 4. Professores
 5. Bandas
 6. Notícias
@@ -86,6 +86,11 @@ descobre eventos comparando-os lado a lado, não consultando dias vazios.
 - [x] Visualização "Semana" (calendário) preservada como opção secundária, um clique de distância
 - [x] Card único: a mudança vale para Home, Agenda e "Eventos relacionados" ao mesmo tempo — não existem dois designs de card divergentes no projeto
 - [x] Removida a variante `.event-card--compact` (linha compacta), que ficou sem uso com a Grade substituindo a lista — não deixamos CSS morto no projeto
+- [x] **Hierarquia do card invertida: Marca em destaque, evento em segundo plano.** A lógica: em dois anos a comunidade vai perguntar "hoje tem Deck?", não o nome de cada edição — é a Marca que fideliza, não o evento pontual. `.card-marca` (grande) → `.card-evento-titulo` (pequeno) substituiu o antigo eyebrow pequeno + título grande.
+- [x] Modelo da Marca enriquecido: `frequencia` (semanal/quinzenal/mensal/eventual) e `desde` (ano de fundação) — nenhum dos dois aparece na interface ainda, mas já estão nos dados para quando a página da Marca existir
+- [x] `ativo` na Marca — permite tirar um baile que parou de listagens futuras sem apagar seu histórico
+- [x] `eventosService.listarHistoricoPorMarca()` — fecha o gap que a Etapa 3 já tinha sinalizado como pendente. "Próximo evento", "últimos eventos" e "eventos realizados" são sempre consultas sobre `eventos.json`, nunca campos armazenados na Marca — assim a Marca nunca fica "desatualizada" na tela
+- [x] Campos futuros de avaliação (`mediaAvaliacoes`, `totalAvaliacoes`) documentados em `docs/MODELO_DE_DADOS.md`, mas **não adicionados ao JSON ainda** — dependem de login e de uma entidade `Avaliacao` que não existe; adicionar o campo antes da funcionalidade só criaria dado morto
 
 ## Etapa 2.5 — Entidade Marca (modelo de dados concluído)
 
@@ -102,12 +107,16 @@ de vida diferentes. Detalhes do relacionamento em `docs/MODELO_DE_DADOS.md`.
 - [x] Página de evento mostra a Marca no lugar do tipo como eyebrow principal (texto simples, não um link — a página da Marca ainda não existe, e não colocamos links mortos no ar)
 - [ ] Página da própria Marca (listagem + perfil individual) — próxima etapa
 
-## Etapa 3 — Marcas (página)
+## Etapa 3 — Marcas (página) — concluída
 
-- Listagem de marcas + página de perfil individual (`marca.html?slug=...`)
-- Conteúdo da página: nome, descrição, logo/banner, Instagram, WhatsApp, cidade, local principal, próximos eventos (`eventosService.listarPorMarca`), histórico de eventos passados (**novo**: vai exigir um método de histórico, já que hoje o serviço só lista eventos futuros), galeria de fotos, estatísticas
-- Reaproveitar `.event-card` e `criarEventCard` para "próximos eventos desta marca"
-- Entrada no menu principal só acontece quando a página existir (nunca link morto)
+- [x] `marca.html?slug=...` — perfil individual, sem listagem "todas as marcas" ainda (não foi pedida; a página é alcançável via `.card-marca` nos cards e o eyebrow na página de evento, ambos agora links reais)
+- [x] Cabeçalho: banner, logo (com fallback de iniciais quando não há imagem), nome, cidade, frequência, "desde", Instagram, WhatsApp
+- [x] Próximos eventos — `eventosService.listarPorMarca(slug, { dias: 365 })`, sempre consultado ao vivo, nunca cacheado
+- [x] Últimos eventos — `eventosService.listarHistoricoPorMarca(slug)`, lista leve (não cards) no espírito "✔ Julho ✔ Junho"
+- [x] Vazio em "próximos eventos" não é tela morta: CTA "Ver na Agenda" já filtrado por essa marca (`agenda.html?marca=slug`)
+- [x] Espaços reservados para Avaliações, Seguidores e Estatísticas — componente `criarFuturoRecurso()`, reutilizável nas futuras páginas de Professor e Banda, **sem nenhum número ou dado inventado**
+- [x] Nenhuma mudança em `data/`, `repositories/` ou `services/` foi necessária — a preparação da Etapa 2.5 foi suficiente
+- [x] Corrigido um bug latente do eyebrow da página de evento: `class="section-head eyebrow"` nunca aplicava estilo (o CSS esperava elementos aninhados, não a mesma classe combinada) e usava `--clay`, cor reservada ao marcador "Hoje". Virou `.eyebrow` standalone, em `--pine`.
 
 ## Etapa 4 — Locais
 

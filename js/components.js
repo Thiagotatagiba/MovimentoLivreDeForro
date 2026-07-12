@@ -28,10 +28,12 @@ function miniaturaHtml(evento) {
  * verdade do card de evento — usado na Home, na Agenda e nos relacionados.
  *
  * Hierarquia visual (inspirada em Sympla/Shotgun/Fever, adaptada à
- * identidade do projeto): Marca → Nome do evento → Data/Horário →
+ * identidade do projeto): **Marca → Nome do evento** → Data/Horário →
  * Cidade/Local → Valor → Botão de Ingressos (só quando o evento tem link
- * de compra — ver js/access.js). Sem ingresso, o card continua navegável
- * normalmente pela imagem e pelo título; só o botão extra some.
+ * de compra — ver js/access.js). A Marca vem primeiro de propósito: é ela
+ * que fideliza — em dois anos a comunidade vai perguntar "hoje tem Deck?",
+ * não o nome de cada edição. Sem ingresso, o card continua navegável
+ * normalmente pela imagem e pelos títulos; só o botão extra some.
  *
  * @param {object} evento
  * @param {object} contexto
@@ -50,6 +52,7 @@ export function criarEventCard(evento, contexto = {}) {
 
   const acesso = botaoAcesso(evento);
   const badgeInfo = badgeAcesso(evento);
+  const marcaHref = marca ? `marca.html?slug=${encodeURIComponent(marca.slug)}` : null;
   // "Ingresso" e "Gratuito" já ficam claros só pelo valor; só vale anotar
   // o tipo de acesso quando ele não é óbvio a partir do preço sozinho.
   const notaAcesso = badgeInfo && !["ingresso", "gratuito"].includes(evento.acesso?.tipo) ? ` · ${badgeInfo.rotulo}` : "";
@@ -61,8 +64,8 @@ export function criarEventCard(evento, contexto = {}) {
       ${hoje ? `<span class="pulse-today"><span class="pulse-bars"><span></span><span></span><span></span></span>Hoje</span>` : ""}
     </a>
     <div class="body">
-      <p class="card-eyebrow">${nomeIdentidade}</p>
-      <h3><a href="${href}">${evento.titulo}</a></h3>
+      <h3 class="card-marca">${marcaHref ? `<a href="${marcaHref}">${nomeIdentidade}</a>` : nomeIdentidade}</h3>
+      <p class="card-evento-titulo"><a href="${href}">${evento.titulo}</a></p>
       <p class="card-line">${formatarDataCurta(evento.inicio)} · ${formatarHorario(evento.inicio)}</p>
       <p class="card-line card-line--muted">📍 ${evento.cidade} · ${nomeLocal}</p>
       <div class="card-footer">
@@ -165,6 +168,23 @@ export function criarBannerHoje(eventosHoje, hojeIso) {
       🎉 ${contagem}
     </p>
     <p class="today-banner-cities">📍 ${cidades.join(" • ")}</p>
+  `;
+  return div;
+}
+
+/**
+ * Espaço reservado para uma funcionalidade futura (avaliações, seguidores,
+ * estatísticas...) — nunca mostra números ou dados inventados, só comunica
+ * com clareza que o recurso existe no roadmap. Reutilizável em qualquer
+ * página de perfil (Marca hoje; Professor e Banda no futuro).
+ */
+export function criarFuturoRecurso(titulo, descricao) {
+  const div = document.createElement("div");
+  div.className = "future-feature";
+  div.innerHTML = `
+    <span class="future-feature-tag">Em breve</span>
+    <h3>${titulo}</h3>
+    <p>${descricao}</p>
   `;
   return div;
 }

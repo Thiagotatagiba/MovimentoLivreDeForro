@@ -60,7 +60,7 @@ async function init() {
 
       <div class="event-detail-grid">
         <div>
-          <p class="section-head eyebrow" style="margin-top:1.5rem">${marca ? marca.nome : evento.tipo}</p>
+          <p class="eyebrow" style="margin-top:1.5rem">${marca ? `<a href="marca.html?slug=${encodeURIComponent(marca.slug)}">${marca.nome}</a>` : evento.tipo}</p>
           <h1 style="font-family:var(--font-display); font-size:var(--text-2xl); font-weight:600;">${evento.titulo}</h1>
           <p style="margin-top:0.75rem; color:var(--ink-soft); max-width:60ch;">${evento.descricao}</p>
 

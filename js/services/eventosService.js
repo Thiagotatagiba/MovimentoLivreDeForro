@@ -1,6 +1,6 @@
 import { eventosRepository } from "../repositories/eventosRepository.js";
 import { marcasService } from "./marcasService.js";
-import { dentroDaJanela, periodoDoDia } from "../utils.js";
+import { dentroDaJanela, periodoDoDia, noPassado } from "../utils.js";
 
 // Camada de serviço: é isso que home.js, agenda.js e evento.js importam —
 // nunca o repositório diretamente. Aqui vivem as regras de negócio
@@ -52,6 +52,15 @@ export const eventosService = {
   /** Próximos eventos de uma marca — usado hoje nos cards, e é o que vai alimentar a futura página da Marca. */
   async listarPorMarca(marcaSlug, filtrosExtras = {}) {
     return this.listarComFiltros({ ...filtrosExtras, marca: marcaSlug });
+  },
+
+  /** Eventos passados de uma marca, mais recentes primeiro — base do futuro "Últimos eventos" na página da Marca. */
+  async listarHistoricoPorMarca(marcaSlug, limite = 12) {
+    const eventos = await this.listarTodos();
+    return eventos
+      .filter((e) => e.marcaSlug === marcaSlug && noPassado(e))
+      .sort((a, b) => b.inicio.localeCompare(a.inicio))
+      .slice(0, limite);
   },
 
   async buscarPorSlug(slug) {

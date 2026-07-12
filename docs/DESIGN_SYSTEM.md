@@ -58,7 +58,7 @@ Grid de 8px: `--sp-1` (4px) até `--sp-9` (96px). Qualquer margem/padding novo d
 
 ### Cards
 - `.event-card` — componente único de card de evento, usado na Home, na Agenda e nos "Eventos relacionados". Ver `js/components.js → criarEventCard(evento, contexto)`. Recebe `contexto.local` e `contexto.marca` para exibir endereço e identidade do baile — nunca busca esses dados sozinho.
-- **Hierarquia visual do card** (inspirada em Sympla/Shotgun/Fever, adaptada à identidade do projeto): `.card-eyebrow` (Marca) → título (Nome do evento) → `.card-line` (Data/Horário) → `.card-line--muted` (Cidade/Local) → `.card-price` (Valor) → botão "Ingressos" — este último só aparece quando o evento tem link de compra (`js/access.js → botaoAcesso()`). Sem ingresso, o card continua navegável pela imagem e pelo título; só o botão extra some, sem deixar espaço vazio.
+- **Hierarquia visual do card** (inspirada em Sympla/Shotgun/Fever, adaptada à identidade do projeto): `.card-marca` (**Marca**, em destaque — texto grande, é o que fideliza) → `.card-evento-titulo` (Nome do evento, secundário) → `.card-line` (Data/Horário) → `.card-line--muted` (Cidade/Local) → `.card-price` (Valor) → botão "Ingressos" — este último só aparece quando o evento tem link de compra (`js/access.js → botaoAcesso()`). Sem ingresso, o card continua navegável pela imagem e pelos títulos; só o botão extra some, sem deixar espaço vazio.
 - A miniatura ocupa `aspect-ratio: 4/3` — proporcionalmente maior que o padrão anterior, para que a imagem tenha peso visual sem competir com a informação, que é o que decide se a pessoa vai ao evento.
 - `.skeleton-card` — estado de carregamento, mesma altura/proporção do card real (evita salto de layout).
 - `.empty-state` / `.empty-state-actions` — estado vazio, **nunca sem uma saída**: `criarEstadoVazio(titulo, mensagem, acoes)` aceita uma lista de ações (links ou botões com `onClick`, ex. "Limpar filtros", "Ver o mês inteiro").
@@ -81,6 +81,12 @@ Grid de 8px: `--sp-1` (4px) até `--sp-9` (96px). Qualquer margem/padding novo d
 - `.section` / `.section-head` — bloco de seção genérico com título e eyebrow opcional.
 - `.info-card` — card de informações práticas na página de evento (data, local, endereço, ações).
 
+### Página de perfil (Marca — modelo para Professor/Banda no futuro)
+- `.marca-banner` / `.marca-header` / `.marca-logo` — cabeçalho com banner largo e logo sobreposta (fallback: iniciais sobre gradiente verde-pinha, mesma linguagem visual do resto do site).
+- `.history-list` / `.history-item` — lista leve de eventos passados ("Últimos eventos"), deliberadamente mais simples que `.event-card`: o objetivo aqui é transmitir "isso existe há anos", não vender o próximo evento.
+- **`.future-feature` / `criarFuturoRecurso()`** — espaço reservado para funcionalidades futuras (avaliações, seguidores, estatísticas). Nunca mostra número ou dado inventado — só um rótulo "Em breve" e uma frase explicando o que vai aparecer ali. Reutilizável em qualquer página de perfil.
+- `.eyebrow` (standalone, fora de `.section-head`) — rótulo de Marca acima de título, em `--pine`. Corrigido nesta rodada: a versão anterior (`.section-head .eyebrow` aplicado como classe combinada no mesmo elemento) nunca surtia efeito e usava `--clay` incorretamente.
+
 ## Acessibilidade
 
 - Todos os componentes interativos usam `:focus-visible` com contorno de 3px.
@@ -91,7 +97,8 @@ Grid de 8px: `--sp-1` (4px) até `--sp-9` (96px). Qualquer margem/padding novo d
 
 ## O que ainda não existe (e onde vai entrar)
 
-- **Página da Marca** — dados e serviço já existem (`data/marcas.json`, `js/services/marcasService.js`, `eventosService.listarPorMarca()`); falta só o layout da página em si (próxima etapa do roadmap).
+- **Listagem "todas as marcas"** — a página de perfil individual existe; falta uma página de navegação/descoberta entre marcas, quando fizer sentido priorizar.
+- **Avaliações, seguidores, estatísticas** — espaços já reservados na página da Marca (`.future-feature`); dependem de login e de novas entidades que ainda não existem.
 - **Estados de acesso ao evento** (gratuito/couvert/pagamento local/lista) — arquitetura pronta em `js/access.js`, visual a definir quando forem implementados.
 - **Componentes de formulário completos** (input de texto, textarea, upload de imagem) — vêm com o painel administrativo.
 - **Mapa interativo** — vai precisar de um token de altura padrão e um card de resultado próprio.

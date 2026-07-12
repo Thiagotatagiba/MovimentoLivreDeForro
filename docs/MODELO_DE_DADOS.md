@@ -49,16 +49,31 @@ semana sem nenhum evento agendado.
   "nome": "Forró da Nicinha",
   "descricao": "...",
   "cidade": "Vitória",
+  "frequencia": "semanal",               // semanal | quinzenal | mensal | eventual — muda a expectativa de quem visita a página
+  "desde": 2016,                         // ano de fundação do baile — é o que constrói história ("esse forró existe há anos")
   "localPrincipalSlug": "espaco-triangulo", // onde o baile costuma acontecer — cada evento pode ter um localSlug diferente se precisar
   "instagram": "https://instagram.com/...",
   "whatsapp": "https://wa.me/...",
-  "logo": null,                          // preparado para a futura página da marca
-  "banner": null,
+  "logo": null,                          // marca pequena/quadrada, para uso em contextos compactos
+  "banner": null,                        // imagem larga, para o cabeçalho da futura página da marca
+  "ativo": true,                         // false quando o baile para de acontecer — permite tirar de listagens sem apagar o histórico
   "origem": "manual",
   "status": "publicado",                 // publicado | rascunho
   "atualizadoEm": "2026-07-01T10:00:00-03:00"
 }
 ```
+
+**Por que a Marca vem antes do Evento na hierarquia visual dos cards:** um evento específico ("Forró Julino de Agosto") é uma edição; a Marca ("Deck 16") é o que a comunidade reconhece e volta a procurar. Em dois anos, a pergunta será "hoje tem Deck?", não o nome de cada edição — então o card já mostra a Marca em destaque, com o nome do evento como texto secundário. Ver `js/components.js → criarEventCard()`.
+
+### Campos futuros previstos (não implementados ainda)
+
+Estes campos não existem no JSON hoje — ficam registrados aqui para quando
+a página da Marca for construída (Etapa 3), evitando decisões improvisadas
+naquele momento:
+
+- `mediaAvaliacoes` / `totalAvaliacoes` — dependem de login e de uma entidade `Avaliacao` que ainda não existe. Cada avaliação referenciaria `marcaSlug` (ou `eventoSlug`, a decidir) e um `usuarioId`.
+- **"Próximo evento" e "últimos eventos"** não precisam de campo novo — já são consultas: `eventosService.listarPorMarca(slug, { dias: N })` e `eventosService.listarHistoricoPorMarca(slug)` (este último adicionado nesta rodada). A Marca nunca fica "morta" na tela porque essa informação é sempre calculada a partir dos eventos reais, nunca cacheada num campo que poderia ficar desatualizado.
+- **Contagem de "eventos realizados"** é `listarHistoricoPorMarca(slug).length` (ou uma versão sem `limite`) — também uma consulta, não um campo armazenado, pelo mesmo motivo.
 
 ### Local (`data/locais.json`)
 
@@ -124,6 +139,11 @@ semana sem nenhum evento agendado.
 | `imagem` | — | O Calendar não tem campo de imagem nativo; viria de `extendedProperties.private` ou de um campo próprio definido por nós na hora de cadastrar o evento no Calendar. |
 | `marcaSlug` | — | Sem equivalente na API. Um evento importado sem marca reconhecida cai num estado "sem marca" a ser tratado na hora da importação (fora de escopo agora). |
 | `tipo`, `cidade`, `entrada`, `preco`, `acesso`, `instagram`, `whatsapp` | — | Sem equivalente direto na API. Viriam de `extendedProperties.private`, que aceita pares chave/valor arbitrários — é o mecanismo natural do Calendar para "esticar" o schema com dados nossos. |
+
+Campos da Marca (`frequencia`, `desde`, `ativo`) não têm equivalente no
+Calendar de forma alguma — a Marca é uma entidade nossa, sem paralelo na
+API. Isso reforça por que ela precisa do próprio par
+repositório/serviço, independente da sincronização de eventos.
 
 ## Decisão de arquitetura
 

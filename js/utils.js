@@ -70,6 +70,11 @@ export function dentroDaJanela(evento, dias) {
   return diff >= 0 && diff <= dias;
 }
 
+/** O inverso de dentroDaJanela: evento já aconteceu. Base do futuro histórico de eventos por Marca. */
+export function noPassado(evento) {
+  return diffEmDias(meiaNoite(paraDataHora(evento.inicio)), hojeLocal()) < 0;
+}
+
 export function ehHoje(evento) {
   return diffEmDias(meiaNoite(paraDataHora(evento.inicio)), hojeLocal()) === 0;
 }
@@ -91,4 +96,11 @@ export const ROTULO_PERIODO = {
 export const ROTULO_ENTRADA = {
   gratuito: "Gratuito",
   pago: "Pago",
+};
+
+export const ROTULO_FREQUENCIA = {
+  semanal: "Toda semana",
+  quinzenal: "A cada duas semanas",
+  mensal: "Uma vez por mês",
+  eventual: "Eventual",
 };
