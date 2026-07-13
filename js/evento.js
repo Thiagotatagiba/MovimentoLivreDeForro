@@ -91,11 +91,6 @@ async function init() {
           </div>
 
           ${lineupHtml(evento)}
-
-          <section id="relacionados" style="margin-top:2.5rem;">
-            <h2 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:600; margin-bottom:1rem;">Eventos relacionados</h2>
-            <div class="event-grid" id="grid-relacionados"></div>
-          </section>
         </div>
 
         <aside class="info-card" aria-label="Informações práticas">
@@ -114,6 +109,11 @@ async function init() {
           </div>
         </aside>
       </div>
+
+      <section id="relacionados" style="margin-top:2.5rem;">
+        <h2 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:600; margin-bottom:1rem;">Eventos relacionados</h2>
+        <div class="event-grid" id="grid-relacionados"></div>
+      </section>
     </div>
   `;
 

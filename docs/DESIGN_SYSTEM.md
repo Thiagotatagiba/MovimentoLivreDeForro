@@ -82,10 +82,15 @@ Grid de 8px: `--sp-1` (4px) até `--sp-9` (96px). Qualquer margem/padding novo d
 - `.info-card` — card de informações práticas na página de evento (data, local, endereço, ações).
 
 ### Página de perfil (Marca — modelo para Professor/Banda no futuro)
-- `.marca-banner` / `.marca-header` / `.marca-logo` — cabeçalho com banner largo e logo sobreposta (fallback: iniciais sobre gradiente verde-pinha, mesma linguagem visual do resto do site).
+- `.marca-banner` / `.marca-banner-overlay` / `.marca-banner-content` — título e logo vivem **dentro** do banner, sobre um gradiente escuro (`rgba(0,0,0,.7) → transparent`) que garante legibilidade independente de quão clara a foto de capa seja. Nunca mais depende de "sorte" com a cor da imagem.
+- `.marca-logo` — fallback de iniciais sobre gradiente verde-pinha quando não há imagem.
+- `.marca-subheader` — cidade, frequência, "desde" e links, no fundo normal da página, abaixo do banner. **O local físico não faz parte da identidade da Marca** — uma marca pode trocar de casa e continuar sendo a mesma marca; o local mora no evento (`local`/`localSlug`), nunca no cabeçalho da Marca.
 - `.history-list` / `.history-item` — lista leve de eventos passados ("Últimos eventos"), deliberadamente mais simples que `.event-card`: o objetivo aqui é transmitir "isso existe há anos", não vender o próximo evento.
 - **`.future-feature` / `criarFuturoRecurso()`** — espaço reservado para funcionalidades futuras (avaliações, seguidores, estatísticas). Nunca mostra número ou dado inventado — só um rótulo "Em breve" e uma frase explicando o que vai aparecer ali. Reutilizável em qualquer página de perfil.
-- `.eyebrow` (standalone, fora de `.section-head`) — rótulo de Marca acima de título, em `--pine`. Corrigido nesta rodada: a versão anterior (`.section-head .eyebrow` aplicado como classe combinada no mesmo elemento) nunca surtia efeito e usava `--clay` incorretamente.
+- `.eyebrow` (standalone, fora de `.section-head`) — rótulo de Marca acima de título, em `--pine`.
+
+### Página de evento — ordem das seções
+Descrição → informações práticas + ações (ingresso, mapa, contato, compartilhar) → **Eventos relacionados por último**, sempre, em qualquer largura de tela. "Relacionados" fica fora do grid de duas colunas (`.event-detail-grid`) de propósito: dentro dele, a ordem no DOM vira a ordem visual no mobile quando as colunas empilham, e sugerir outro evento antes da pessoa terminar de decidir sobre o atual atrapalha a conversão — mesmo padrão de Sympla/Ticketmaster/Eventbrite.
 
 ## Acessibilidade
 

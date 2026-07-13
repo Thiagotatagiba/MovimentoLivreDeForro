@@ -99,10 +99,10 @@ export const ROTULO_ENTRADA = {
 };
 
 export const ROTULO_FREQUENCIA = {
-  semanal: "Toda semana",
-  quinzenal: "A cada duas semanas",
-  mensal: "Uma vez por mês",
-  eventual: "Eventual",
+  semanal: "Eventos semanais",
+  quinzenal: "Eventos quinzenais",
+  mensal: "Eventos mensais",
+  eventual: "Datas avulsas",
 };
 
 export function formatarMoeda(valor) {

@@ -84,8 +84,7 @@ async function init() {
 
   // Busca próximos eventos antes de montar o cabeçalho: se a marca ainda não
   // tem banner próprio, usamos a imagem do evento mais próximo automaticamente.
-  const [localPrincipal, proximos, locaisPorSlug] = await Promise.all([
-    marca.localPrincipalSlug ? locaisService.buscarPorSlug(marca.localPrincipalSlug) : Promise.resolve(null),
+  const [proximos, locaisPorSlug] = await Promise.all([
     eventosService.listarPorMarca(marca.slug, { dias: 365 }),
     locaisService.mapaPorSlug(),
   ]);
@@ -93,22 +92,28 @@ async function init() {
   const rotuloFrequencia = ROTULO_FREQUENCIA[marca.frequencia] ?? marca.frequencia;
   const imagemFallback = proximos.find((e) => e.imagem)?.imagem ?? null;
 
+  // O local NÃO entra na identidade da Marca de propósito: uma marca pode
+  // trocar de casa (ex. Deck 16 sair do Espaço Praia pro Matrix) e continuar
+  // sendo a mesma marca. O local mora no evento, não aqui.
   const metaPartes = [marca.cidade, rotuloFrequencia];
   if (marca.desde) metaPartes.push(`Desde ${marca.desde}`);
-  if (localPrincipal) metaPartes.push(localPrincipal.nome);
 
   main.innerHTML = `
-    <div class="marca-banner">${bannerHtml(marca, imagemFallback)}</div>
-    <div class="wrap">
-      <div class="marca-header">
-        <div class="marca-logo">${logoHtml(marca)}</div>
-        <div class="marca-header-info">
+    <div class="marca-banner">
+      ${bannerHtml(marca, imagemFallback)}
+      <div class="marca-banner-overlay">
+        <div class="marca-banner-content">
+          <div class="marca-logo">${logoHtml(marca)}</div>
           <h1>${marca.nome}</h1>
-          <p class="marca-meta">${metaPartes.join(" · ")}</p>
-          <div class="marca-links">
-            ${marca.instagram ? `<a class="btn btn-ghost btn-sm" href="${marca.instagram}" target="_blank" rel="noopener">Instagram</a>` : ""}
-            ${marca.whatsapp ? `<a class="btn btn-ghost btn-sm" href="${marca.whatsapp}" target="_blank" rel="noopener">WhatsApp</a>` : ""}
-          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="marca-subheader">
+        <p class="marca-meta">${metaPartes.join(" · ")}</p>
+        <div class="marca-links">
+          ${marca.instagram ? `<a class="btn btn-ghost btn-sm" href="${marca.instagram}" target="_blank" rel="noopener">Instagram</a>` : ""}
+          ${marca.whatsapp ? `<a class="btn btn-ghost btn-sm" href="${marca.whatsapp}" target="_blank" rel="noopener">WhatsApp</a>` : ""}
         </div>
       </div>
 

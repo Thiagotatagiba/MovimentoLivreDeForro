@@ -611,32 +611,53 @@
 
 /* ---------- Página da Marca ---------- */
 .marca-banner {
+  position: relative;
   aspect-ratio: 3 / 1;
+  min-height: 200px;
   background: linear-gradient(135deg, var(--pine) 0%, var(--pine-strong) 100%);
   overflow: hidden;
-  position: relative;
 }
-.marca-banner img { width: 100%; height: 100%; object-fit: cover; }
-.marca-banner svg { width: 100%; height: 100%; opacity: 0.35; }
+.marca-banner > img { width: 100%; height: 100%; object-fit: cover; }
+.marca-banner > svg { width: 100%; height: 100%; opacity: 0.35; }
 
-.marca-header {
-  position: relative;
-  z-index: 1;
+/* Gradiente escurecendo a base do banner — título e logo sempre legíveis,
+   independente de quão clara ou escura a foto de capa for. */
+.marca-banner-overlay {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: flex-end;
-  flex-wrap: wrap;
-  gap: var(--sp-4);
-  margin-top: calc(-1 * var(--sp-7));
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.32) 45%, rgba(0, 0, 0, 0) 90%);
 }
+.marca-banner-content {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding: var(--sp-5) var(--sp-4);
+}
+@media (min-width: 768px) { .marca-banner-content { padding-inline: var(--sp-6); } }
+
+.marca-banner-content h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+@media (min-width: 640px) { .marca-banner-content h1 { font-size: var(--text-3xl); } }
+
 .marca-logo {
-  width: 96px;
-  height: 96px;
+  width: 72px;
+  height: 72px;
   flex: none;
   border-radius: var(--radius-lg);
   overflow: hidden;
   background: var(--surface);
-  border: 4px solid var(--paper);
-  box-shadow: var(--shadow-card);
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow-pop);
 }
 .marca-logo img { width: 100%; height: 100%; object-fit: cover; }
 .marca-logo-fallback {
@@ -646,19 +667,24 @@
   align-items: center;
   justify-content: center;
   font-family: var(--font-display);
-  font-size: var(--text-2xl);
+  font-size: var(--text-lg);
   font-weight: 700;
   color: #fff;
   background: linear-gradient(135deg, var(--pine) 0%, var(--pine-strong) 100%);
 }
-.marca-header-info { flex: 1; min-width: 220px; padding-bottom: var(--sp-2); }
-.marca-header-info h1 {
-  font-family: var(--font-display);
-  font-size: var(--text-3xl);
-  font-weight: 600;
+
+/* Meta e links vivem abaixo do banner, no fundo normal da página — nunca
+   mais precisam competir com uma foto por trás. */
+.marca-subheader {
+  margin-top: var(--sp-5);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
 }
-.marca-meta { margin-top: var(--sp-1); color: var(--ink-soft); font-size: var(--text-base); }
-.marca-links { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-3); }
+.marca-meta { color: var(--ink-soft); font-size: var(--text-base); }
+.marca-links { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
 
 .marca-descricao {
   margin-top: var(--sp-6);

@@ -135,6 +135,13 @@ corrigir três duplicações de dado que já existiam:
 - [x] Coordenadas do novo Local (Cerimonial Espaço Praia) vieram de busca real (base OpenStreetMap), não inventadas
 - ⚠️ **Logo da marca e imagem do evento ficaram `null`** — nenhum arquivo de imagem foi anexado à conversa nesta rodada. Assim que os arquivos existirem, basta preencher `marcas.json → logo` e `eventos.json → imagem`; nenhuma outra mudança é necessária (cards, Home, Agenda, página da Marca e relacionados já sabem exibir a imagem automaticamente).
 
+## Etapa 3.6 — Refinamento de UX (Marca e página de evento)
+
+- [x] Título e logo da Marca passaram a viver dentro do banner, sobre um gradiente escuro — antes o texto podia ficar ilegível dependendo da cor da foto de capa
+- [x] Local físico removido da identidade da Marca (`.marca-subheader` mostra só cidade, frequência e "desde"). Uma marca pode trocar de casa e continuar sendo a mesma marca — o local mora no evento
+- [x] "Eventos relacionados" movido pra fora do grid de duas colunas da página de evento — agora é sempre o último bloco, inclusive no mobile, onde antes aparecia empilhado antes dos botões de ação (ingresso, mapa, contato)
+- [x] Rótulos de frequência reformulados para soar como identidade ("Eventos mensais") em vez de descrição de formulário ("Uma vez por mês")
+
 ## Etapa 4 — Locais
 
 - Página de listagem + perfil individual de cada local físico
