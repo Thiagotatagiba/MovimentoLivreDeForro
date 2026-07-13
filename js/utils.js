@@ -104,3 +104,31 @@ export const ROTULO_FREQUENCIA = {
   mensal: "Uma vez por mês",
   eventual: "Eventual",
 };
+
+export function formatarMoeda(valor) {
+  return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(valor);
+}
+
+/**
+ * Formato musical do evento — deriva de evento.lineup (bandas/DJs nomeados)
+ * quando existe, e cai para o campo legado evento.musica em eventos antigos
+ * que não têm lineup cadastrado. Um evento pode ter banda E DJ ao mesmo
+ * tempo (ex. banda na primeira parte, DJ depois) — por isso não é mais um
+ * enum de valor único.
+ */
+export function formatoMusical(evento) {
+  const bandas = evento.lineup?.bandas ?? [];
+  const djs = evento.lineup?.djs ?? [];
+  if (bandas.length > 0 && djs.length > 0) return "misto";
+  if (bandas.length > 0) return "ao_vivo";
+  if (djs.length > 0) return "dj";
+  if (evento.musica === "DJ") return "dj";
+  if (evento.musica === "Música ao vivo") return "ao_vivo";
+  return null;
+}
+
+export const ROTULO_FORMATO_MUSICAL = {
+  ao_vivo: { rotulo: "Ao vivo", emoji: "🎵", modificador: "badge--live" },
+  dj: { rotulo: "DJ", emoji: "🎧", modificador: "badge--dj" },
+  misto: { rotulo: "Bandas e DJ", emoji: "🎶", modificador: "badge--live" },
+};

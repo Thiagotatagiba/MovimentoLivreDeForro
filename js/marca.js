@@ -4,9 +4,11 @@ import { locaisService } from "./services/locaisService.js";
 import { criarEventCard, criarEstadoVazio, criarFuturoRecurso, ligarMenuMobile } from "./components.js";
 import { formatarDataCurta, ROTULO_FREQUENCIA } from "./utils.js";
 
-function bannerHtml(marca) {
-  if (marca.banner) {
-    return `<img src="${marca.banner}" alt="" decoding="async" />`;
+/** Banner: imagem própria da marca > imagem do próximo evento > textura ilustrativa. */
+function bannerHtml(marca, imagemFallback) {
+  const src = marca.banner ?? imagemFallback;
+  if (src) {
+    return `<img src="${src}" alt="" decoding="async" />`;
   }
   return `
     <svg viewBox="0 0 200 90" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -80,17 +82,29 @@ async function init() {
 
   document.title = `${marca.nome} — Movimento Livre de Forró`;
 
-  const localPrincipal = marca.localPrincipalSlug ? await locaisService.buscarPorSlug(marca.localPrincipalSlug) : null;
+  // Busca próximos eventos antes de montar o cabeçalho: se a marca ainda não
+  // tem banner próprio, usamos a imagem do evento mais próximo automaticamente.
+  const [localPrincipal, proximos, locaisPorSlug] = await Promise.all([
+    marca.localPrincipalSlug ? locaisService.buscarPorSlug(marca.localPrincipalSlug) : Promise.resolve(null),
+    eventosService.listarPorMarca(marca.slug, { dias: 365 }),
+    locaisService.mapaPorSlug(),
+  ]);
+
   const rotuloFrequencia = ROTULO_FREQUENCIA[marca.frequencia] ?? marca.frequencia;
+  const imagemFallback = proximos.find((e) => e.imagem)?.imagem ?? null;
+
+  const metaPartes = [marca.cidade, rotuloFrequencia];
+  if (marca.desde) metaPartes.push(`Desde ${marca.desde}`);
+  if (localPrincipal) metaPartes.push(localPrincipal.nome);
 
   main.innerHTML = `
-    <div class="marca-banner">${bannerHtml(marca)}</div>
+    <div class="marca-banner">${bannerHtml(marca, imagemFallback)}</div>
     <div class="wrap">
       <div class="marca-header">
         <div class="marca-logo">${logoHtml(marca)}</div>
         <div class="marca-header-info">
           <h1>${marca.nome}</h1>
-          <p class="marca-meta">${marca.cidade} · ${rotuloFrequencia} · Desde ${marca.desde}</p>
+          <p class="marca-meta">${metaPartes.join(" · ")}</p>
           <div class="marca-links">
             ${marca.instagram ? `<a class="btn btn-ghost btn-sm" href="${marca.instagram}" target="_blank" rel="noopener">Instagram</a>` : ""}
             ${marca.whatsapp ? `<a class="btn btn-ghost btn-sm" href="${marca.whatsapp}" target="_blank" rel="noopener">WhatsApp</a>` : ""}
@@ -119,7 +133,6 @@ async function init() {
 
   // Próximos eventos — sempre consultado ao vivo em eventos.json, nunca cacheado na marca.
   const gridProximos = document.querySelector("#grid-proximos");
-  const proximos = await eventosService.listarPorMarca(marca.slug, { dias: 365 });
   if (proximos.length === 0) {
     gridProximos.replaceChildren(
       criarEstadoVazio(
@@ -129,7 +142,6 @@ async function init() {
       )
     );
   } else {
-    const locaisPorSlug = await locaisService.mapaPorSlug();
     proximos.forEach((evento) => {
       gridProximos.appendChild(criarEventCard(evento, { local: locaisPorSlug.get(evento.localSlug), marca }));
     });

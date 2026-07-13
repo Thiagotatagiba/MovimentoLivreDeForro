@@ -70,5 +70,23 @@
     "origem": "manual",
     "status": "publicado",
     "atualizadoEm": "2026-07-01T10:00:00-03:00"
+  },
+  {
+    "id": "marca-forro-deck-16",
+    "slug": "forro-deck-16",
+    "nome": "Forró Deck 16",
+    "descricao": "Uma das marcas de forró mais tradicionais da Grande Vitória, realizando bailes mensais com bandas de forró pé de serra e DJs convidados.",
+    "cidade": "Serra",
+    "frequencia": "mensal",
+    "desde": null,
+    "localPrincipalSlug": "cerimonial-espaco-praia",
+    "instagram": "https://www.instagram.com/forrodeck16",
+    "whatsapp": null,
+    "logo": "assets/marcas/forro-deck-16-logo.jpg",
+    "banner": null,
+    "ativo": true,
+    "origem": "manual",
+    "status": "publicado",
+    "atualizadoEm": "2026-07-12T00:00:00-03:00"
   }
 ]

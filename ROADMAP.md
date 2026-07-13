@@ -118,6 +118,23 @@ de vida diferentes. Detalhes do relacionamento em `docs/MODELO_DE_DADOS.md`.
 - [x] Nenhuma mudança em `data/`, `repositories/` ou `services/` foi necessária — a preparação da Etapa 2.5 foi suficiente
 - [x] Corrigido um bug latente do eyebrow da página de evento: `class="section-head eyebrow"` nunca aplicava estilo (o CSS esperava elementos aninhados, não a mesma classe combinada) e usava `--clay`, cor reservada ao marcador "Hoje". Virou `.eyebrow` standalone, em `--pine`.
 
+## Etapa 3.5 — Evento de referência (Forró Deck 16) e ajustes de modelo
+
+Cadastramos um evento real para validar a arquitetura ponta a ponta — Marca,
+Local, Evento, ingresso, line-up e imagens — e usamos o que ele revelou para
+corrigir três duplicações de dado que já existiam:
+
+- [x] **`ingresso` estruturado** substitui `preco` (texto livre) + `entrada` + `acesso`: `{ tipo, precoAPartirDe, link, plataforma }`. `precoAPartirDe` é número, nunca texto fixo — ingresso antecipado sobe de lote, e um preço fixo digitado ficaria errado assim que o lote mudasse. `js/ingresso.js` (renomeado de `access.js`) é a única fonte de verdade para o texto de valor exibido (`formatarValorIngresso()`), o botão de ação (`botaoIngresso()`) e a badge informativa (`badgeIngresso()`).
+- [x] Novo tipo de ingresso **`esgotado`** — funciona sem nenhum código especial: como todo estado inativo, `ativo: false` já suprime o botão mesmo com link presente.
+- [x] **`lineup.bandas` / `lineup.djs`** (opcional) substitui o enum fixo `musica` para representar quem toca — um evento pode ter banda **e** DJ ao mesmo tempo (caso real do Deck 16), o que um enum de valor único não conseguia expressar. `formatoMusical()` deriva "Ao vivo" / "DJ" / "Bandas e DJ" a partir do line-up, com fallback pro campo legado nos eventos antigos (nenhuma migração retroativa foi necessária).
+- [x] **Removidos `instagram`/`whatsapp` do Evento** — eram sempre uma cópia do Instagram/WhatsApp da Marca. A página do evento passou a ler `marca.instagram`/`marca.whatsapp` diretamente.
+- [x] Filtro de entrada e de música na Agenda atualizados para derivar de `ingresso.tipo` e `formatoMusical()` — nenhuma duplicação de estado entre filtro e dado.
+- [x] Banner da Marca cai automaticamente para a imagem do próximo evento quando a marca ainda não tem banner próprio (`marca.js`), sem inventar imagem nenhuma quando nem um nem outro existe.
+- [x] Página do evento ganhou seção "Atrações" (bandas/DJs), reaproveitando `.chip`
+- [x] `desde` e `whatsapp` da Marca agora são explicitamente opcionais (`null`) quando não informados — a UI omite o trecho correspondente em vez de inventar um valor
+- [x] Coordenadas do novo Local (Cerimonial Espaço Praia) vieram de busca real (base OpenStreetMap), não inventadas
+- ⚠️ **Logo da marca e imagem do evento ficaram `null`** — nenhum arquivo de imagem foi anexado à conversa nesta rodada. Assim que os arquivos existirem, basta preencher `marcas.json → logo` e `eventos.json → imagem`; nenhuma outra mudança é necessária (cards, Home, Agenda, página da Marca e relacionados já sabem exibir a imagem automaticamente).
+
 ## Etapa 4 — Locais
 
 - Página de listagem + perfil individual de cada local físico

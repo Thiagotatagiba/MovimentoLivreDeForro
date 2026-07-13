@@ -50,10 +50,10 @@ semana sem nenhum evento agendado.
   "descricao": "...",
   "cidade": "Vitória",
   "frequencia": "semanal",               // semanal | quinzenal | mensal | eventual — muda a expectativa de quem visita a página
-  "desde": 2016,                         // ano de fundação do baile — é o que constrói história ("esse forró existe há anos")
+  "desde": 2016,                         // ano de fundação do baile, ou null quando não informado — nunca inventado; a UI omite esse trecho quando ausente
   "localPrincipalSlug": "espaco-triangulo", // onde o baile costuma acontecer — cada evento pode ter um localSlug diferente se precisar
   "instagram": "https://instagram.com/...",
-  "whatsapp": "https://wa.me/...",
+  "whatsapp": "https://wa.me/...",       // ou null quando a marca não informou — botão correspondente some da UI
   "logo": null,                          // marca pequena/quadrada, para uso em contextos compactos
   "banner": null,                        // imagem larga, para o cabeçalho da futura página da marca
   "ativo": true,                         // false quando o baile para de acontecer — permite tirar de listagens sem apagar o histórico
@@ -98,19 +98,23 @@ naquele momento:
   "titulo": "Forró de Quinta na Nicinha",
   "descricao": "...",
   "inicio": "2026-07-09T20:00:00-03:00", // ISO 8601 com offset
-  "fim": "2026-07-09T23:30:00-03:00",
+  "fim": "2026-07-09T23:30:00-03:00",    // null quando o horário de encerramento não é conhecido
   "fusoHorario": "America/Sao_Paulo",
   "cidade": "Vitória",
   "marcaSlug": "forro-do-nicinha",       // referência a data/marcas.json — a identidade do baile
   "localSlug": "espaco-triangulo",       // referência a data/locais.json — o endereço físico desta ocorrência
   "enderecoTexto": null,                 // fallback quando não há localSlug (ex. evento importado sem local cadastrado)
   "tipo": "Baile",                       // Baile | Aula | Festival | Workshop
-  "entrada": "pago",                     // pago | gratuito — informativo, não decide o botão
-  "preco": "R$ 20",
-  "musica": "Música ao vivo",            // Música ao vivo | DJ
-  "acesso": { "tipo": "ingresso", "url": "https://..." }, // decide o botão de ação — ver js/access.js
-  "instagram": "https://instagram.com/...",
-  "whatsapp": "https://wa.me/...",
+  "ingresso": {                          // decide o botão de ação e o valor exibido — ver js/ingresso.js
+    "tipo": "antecipado",                // antecipado | gratuito | couvert | local | lista | esgotado
+    "precoAPartirDe": 20,                // número (reais), ou null quando não há preço conhecido
+    "link": "https://...",               // URL de compra, só relevante para "antecipado"
+    "plataforma": "Sympla"               // nome da plataforma de venda, ou null
+  },
+  "lineup": {                            // opcional — omitido em eventos sem line-up nomeado
+    "bandas": ["Os Bocadas", "Luarada Brasileira"],
+    "djs": ["Baile dos Ratos"]
+  },
   "imagem": null,                        // URL de imagem; card e hero já sabem renderizar quando existir
   "origem": "manual",                    // manual | google_calendar (futuro)
   "idExterno": null,                     // id do evento na fonte externa, quando origem !== "manual"
@@ -121,7 +125,13 @@ naquele momento:
 }
 ```
 
-## Mapeamento para a API do Google Calendar (`events` resource)
+**Por que não existe mais `preco` (string), `entrada`, `acesso` nem `musica` como campos próprios do evento:**
+
+- `preco` (texto livre tipo `"R$ 20"`) virou `ingresso.precoAPartirDe` (número). Ingressos com venda antecipada sobem de lote — um preço fixo no texto ficaria errado assim que o lote mudasse. O rótulo "A partir de R$ 20,00" é sempre calculado, nunca digitado.
+- `entrada` (`"pago"`/`"gratuito"`) era só um resumo de `acesso.tipo` — duas fontes de verdade para a mesma informação. Removido; `eventosService` deriva isso de `ingresso.tipo` diretamente ao filtrar a Agenda.
+- `acesso` virou `ingresso`, com dois campos novos (`precoAPartirDe`, `plataforma`) e um novo tipo (`esgotado`).
+- `musica` (`"Música ao vivo"`/`"DJ"`) não dá conta de um evento com banda **e** DJ ao mesmo tempo (caso real: Deck 16). Substituído por `lineup.bandas`/`lineup.djs` — `js/utils.js → formatoMusical()` deriva "Ao vivo", "DJ" ou "Bandas e DJ" a partir de quem está escalado. Eventos antigos sem `lineup` continuam funcionando: a função cai para um campo legado internamente, sem exigir migração de dados retroativa.
+- `instagram`/`whatsapp` por evento eram sempre uma cópia do Instagram/WhatsApp da própria Marca — outra duplicação. A página do evento agora lê `marca.instagram`/`marca.whatsapp` diretamente. Um evento pontual que precisasse de um Instagram próprio (ex. festival com conta dedicada) ainda pode receber esses campos de volta no futuro, mas como exceção, não como padrão.
 
 | Campo nosso | Campo do Google Calendar | Observação |
 |---|---|---|
@@ -138,7 +148,7 @@ naquele momento:
 | `origem` | — | Setado como `"google_calendar"` pelo importador, não vem da API. |
 | `imagem` | — | O Calendar não tem campo de imagem nativo; viria de `extendedProperties.private` ou de um campo próprio definido por nós na hora de cadastrar o evento no Calendar. |
 | `marcaSlug` | — | Sem equivalente na API. Um evento importado sem marca reconhecida cai num estado "sem marca" a ser tratado na hora da importação (fora de escopo agora). |
-| `tipo`, `cidade`, `entrada`, `preco`, `acesso`, `instagram`, `whatsapp` | — | Sem equivalente direto na API. Viriam de `extendedProperties.private`, que aceita pares chave/valor arbitrários — é o mecanismo natural do Calendar para "esticar" o schema com dados nossos. |
+| `tipo`, `cidade`, `ingresso`, `lineup` | — | Sem equivalente direto na API. Viriam de `extendedProperties.private`, que aceita pares chave/valor arbitrários — é o mecanismo natural do Calendar para "esticar" o schema com dados nossos. |
 
 Campos da Marca (`frequencia`, `desde`, `ativo`) não têm equivalente no
 Calendar de forma alguma — a Marca é uma entidade nossa, sem paralelo na

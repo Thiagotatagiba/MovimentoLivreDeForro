@@ -1,6 +1,6 @@
 import { eventosRepository } from "../repositories/eventosRepository.js";
 import { marcasService } from "./marcasService.js";
-import { dentroDaJanela, periodoDoDia, noPassado } from "../utils.js";
+import { dentroDaJanela, periodoDoDia, noPassado, formatoMusical, ROTULO_FORMATO_MUSICAL } from "../utils.js";
 
 // Camada de serviço: é isso que home.js, agenda.js e evento.js importam —
 // nunca o repositório diretamente. Aqui vivem as regras de negócio
@@ -29,9 +29,15 @@ export const eventosService = {
     let eventos = dias != null ? await this.listarPorJanela(dias) : await this.listarTodos();
     if (cidade) eventos = eventos.filter((e) => e.cidade === cidade);
     if (tipo) eventos = eventos.filter((e) => e.tipo === tipo);
-    if (entrada) eventos = eventos.filter((e) => e.entrada === entrada);
+    if (entrada === "gratuito") eventos = eventos.filter((e) => e.ingresso?.tipo === "gratuito");
+    if (entrada === "pago") eventos = eventos.filter((e) => e.ingresso?.tipo && e.ingresso.tipo !== "gratuito");
     if (periodo) eventos = eventos.filter((e) => periodoDoDia(e) === periodo);
-    if (musica) eventos = eventos.filter((e) => e.musica === musica);
+    if (musica) {
+      eventos = eventos.filter((e) => {
+        const formato = formatoMusical(e);
+        return formato && ROTULO_FORMATO_MUSICAL[formato].rotulo === musica;
+      });
+    }
     if (marca) eventos = eventos.filter((e) => e.marcaSlug === marca);
     if (busca) {
       const termo = busca.trim().toLowerCase();

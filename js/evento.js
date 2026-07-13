@@ -2,8 +2,8 @@ import { eventosService } from "./services/eventosService.js";
 import { locaisService } from "./services/locaisService.js";
 import { marcasService } from "./services/marcasService.js";
 import { criarEventCard, ligarMenuMobile } from "./components.js";
-import { formatarDataLonga, formatarHorario } from "./utils.js";
-import { botaoAcesso, badgeAcesso } from "./access.js";
+import { formatarDataLonga, formatarHorario, formatoMusical, ROTULO_FORMATO_MUSICAL } from "./utils.js";
+import { botaoIngresso, badgeIngresso, formatarValorIngresso } from "./ingresso.js";
 import { linkGoogleMaps } from "./maps.js";
 
 function heroHtml(evento) {
@@ -20,6 +20,25 @@ function heroHtml(evento) {
       </defs>
       <rect width="200" height="90" fill="url(#passos-hero)" />
     </svg>`;
+}
+
+function lineupHtml(evento) {
+  const bandas = evento.lineup?.bandas ?? [];
+  const djs = evento.lineup?.djs ?? [];
+  if (bandas.length === 0 && djs.length === 0) return "";
+
+  const linha = (rotulo, nomes) =>
+    nomes.length > 0
+      ? `<p class="lineup-row"><strong>${rotulo}</strong> ${nomes.map((n) => `<span class="chip">${n}</span>`).join(" ")}</p>`
+      : "";
+
+  return `
+    <section style="margin-top:2rem;">
+      <h2 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:600; margin-bottom:0.75rem;">Atrações</h2>
+      ${linha("Bandas", bandas)}
+      ${linha("DJs", djs)}
+    </section>
+  `;
 }
 
 async function init() {
@@ -44,9 +63,10 @@ async function init() {
   const marca = await marcasService.buscarPorSlug(evento.marcaSlug);
   document.title = `${evento.titulo} — Movimento Livre de Forró`;
 
-  const gratuito = evento.entrada === "gratuito";
-  const acesso = botaoAcesso(evento);
-  const badgeInfoAcesso = badgeAcesso(evento);
+  const ingresso = botaoIngresso(evento);
+  const badgeInfoIngresso = badgeIngresso(evento);
+  const formato = formatoMusical(evento);
+  const infoFormato = formato ? ROTULO_FORMATO_MUSICAL[formato] : null;
   const mapaHref = linkGoogleMaps(evento, local);
 
   main.innerHTML = `
@@ -62,13 +82,15 @@ async function init() {
         <div>
           <p class="eyebrow" style="margin-top:1.5rem">${marca ? `<a href="marca.html?slug=${encodeURIComponent(marca.slug)}">${marca.nome}</a>` : evento.tipo}</p>
           <h1 style="font-family:var(--font-display); font-size:var(--text-2xl); font-weight:600;">${evento.titulo}</h1>
-          <p style="margin-top:0.75rem; color:var(--ink-soft); max-width:60ch;">${evento.descricao}</p>
+          <p style="margin-top:0.75rem; color:var(--ink-soft); max-width:60ch; white-space:pre-line;">${evento.descricao}</p>
 
           <div class="badges-row" style="margin-top:1.5rem;">
             <span class="badge badge--type">${evento.tipo}</span>
-            ${badgeInfoAcesso ? `<span class="badge ${badgeInfoAcesso.modificador}">${badgeInfoAcesso.rotulo}</span>` : ""}
-            <span class="badge ${evento.musica === "Música ao vivo" ? "badge--live" : "badge--dj"}">${evento.musica === "Música ao vivo" ? "🎵 Ao vivo" : "🎧 DJ"}</span>
+            ${badgeInfoIngresso ? `<span class="badge ${badgeInfoIngresso.modificador}">${badgeInfoIngresso.rotulo}</span>` : ""}
+            ${infoFormato ? `<span class="badge ${infoFormato.modificador}">${infoFormato.emoji} ${infoFormato.rotulo}</span>` : ""}
           </div>
+
+          ${lineupHtml(evento)}
 
           <section id="relacionados" style="margin-top:2.5rem;">
             <h2 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:600; margin-bottom:1rem;">Eventos relacionados</h2>
@@ -81,12 +103,13 @@ async function init() {
           <div class="info-row"><span class="label">Horário</span><span class="value">${formatarHorario(evento.inicio)}</span></div>
           <div class="info-row"><span class="label">Local</span><span class="value">${local ? local.nome : (evento.enderecoTexto ?? evento.cidade)}</span></div>
           <div class="info-row"><span class="label">Endereço</span><span class="value">${local ? local.endereco : (evento.enderecoTexto ?? evento.cidade)}</span></div>
-          <div class="info-row"><span class="label">Entrada</span><span class="value">${gratuito ? "Gratuito" : evento.preco}</span></div>
+          <div class="info-row"><span class="label">Valor</span><span class="value">${formatarValorIngresso(evento)}</span></div>
           <div class="cta-stack" style="display:flex; flex-direction:column; gap:0.75rem; margin-top:0.5rem;">
-            ${acesso ? `<a class="btn ${acesso.variante}" href="${acesso.url}" target="_blank" rel="noopener">${acesso.rotulo}</a>` : ""}
+            ${ingresso ? `<a class="btn ${ingresso.variante}" href="${ingresso.url}" target="_blank" rel="noopener">${ingresso.rotulo}</a>` : ""}
+            ${ingresso && evento.ingresso.plataforma ? `<p style="font-size:var(--text-xs); color:var(--muted); text-align:center; margin-top:-0.5rem;">via ${evento.ingresso.plataforma}</p>` : ""}
             <a class="btn btn-ghost" href="${mapaHref}" target="_blank" rel="noopener">Abrir no Google Maps</a>
-            <a class="btn btn-ghost" href="${evento.whatsapp}" target="_blank" rel="noopener">Falar no WhatsApp</a>
-            <a class="btn btn-ghost" href="${evento.instagram}" target="_blank" rel="noopener">Ver no Instagram</a>
+            ${marca?.whatsapp ? `<a class="btn btn-ghost" href="${marca.whatsapp}" target="_blank" rel="noopener">Falar no WhatsApp</a>` : ""}
+            ${marca?.instagram ? `<a class="btn btn-ghost" href="${marca.instagram}" target="_blank" rel="noopener">Ver no Instagram</a>` : ""}
             <button class="btn btn-ghost" id="btn-compartilhar" type="button">Compartilhar</button>
           </div>
         </aside>

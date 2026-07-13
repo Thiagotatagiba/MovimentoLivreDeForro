@@ -1,5 +1,5 @@
 import { formatarDataCurta, formatarDataCompleta, formatarHorario, ehHoje } from "./utils.js";
-import { badgeAcesso, botaoAcesso } from "./access.js";
+import { botaoIngresso, formatarValorIngresso } from "./ingresso.js";
 
 /** Padrão de "passos de dança" abstrato usado como textura nas miniaturas — sem clichês figurativos. */
 function svgTextura() {
@@ -30,7 +30,7 @@ function miniaturaHtml(evento) {
  * Hierarquia visual (inspirada em Sympla/Shotgun/Fever, adaptada à
  * identidade do projeto): **Marca → Nome do evento** → Data/Horário →
  * Cidade/Local → Valor → Botão de Ingressos (só quando o evento tem link
- * de compra — ver js/access.js). A Marca vem primeiro de propósito: é ela
+ * de compra — ver js/ingresso.js). A Marca vem primeiro de propósito: é ela
  * que fideliza — em dois anos a comunidade vai perguntar "hoje tem Deck?",
  * não o nome de cada edição. Sem ingresso, o card continua navegável
  * normalmente pela imagem e pelos títulos; só o botão extra some.
@@ -50,12 +50,8 @@ export function criarEventCard(evento, contexto = {}) {
   const nomeIdentidade = marca ? marca.nome : evento.cidade;
   const nomeLocal = local ? local.nome : evento.cidade;
 
-  const acesso = botaoAcesso(evento);
-  const badgeInfo = badgeAcesso(evento);
+  const acesso = botaoIngresso(evento);
   const marcaHref = marca ? `marca.html?slug=${encodeURIComponent(marca.slug)}` : null;
-  // "Ingresso" e "Gratuito" já ficam claros só pelo valor; só vale anotar
-  // o tipo de acesso quando ele não é óbvio a partir do preço sozinho.
-  const notaAcesso = badgeInfo && !["ingresso", "gratuito"].includes(evento.acesso?.tipo) ? ` · ${badgeInfo.rotulo}` : "";
 
   art.innerHTML = `
     <a href="${href}" class="thumb" aria-hidden="true" tabindex="-1">
@@ -69,7 +65,7 @@ export function criarEventCard(evento, contexto = {}) {
       <p class="card-line">${formatarDataCurta(evento.inicio)} · ${formatarHorario(evento.inicio)}</p>
       <p class="card-line card-line--muted">📍 ${evento.cidade} · ${nomeLocal}</p>
       <div class="card-footer">
-        <p class="card-price">${evento.preco}${notaAcesso}</p>
+        <p class="card-price">${formatarValorIngresso(evento)}</p>
         ${acesso ? `<a class="btn ${acesso.variante} btn-block" href="${acesso.url}" target="_blank" rel="noopener">${acesso.rotulo}</a>` : ""}
       </div>
     </div>

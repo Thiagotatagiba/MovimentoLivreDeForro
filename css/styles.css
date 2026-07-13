@@ -270,6 +270,21 @@
 .badge--live { background: var(--pine-tint); color: var(--pine); }
 .badge--dj { background: var(--sand-line); color: var(--ink-soft); }
 .badge--type { background: var(--sand-line); color: var(--ink-soft); }
+.badge--esgotado { background: var(--ink); color: #fff; }
+
+.lineup-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-2);
+}
+.lineup-row strong {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-right: var(--sp-1);
+}
 
 /* ---------- Miniaturas com imagem real ---------- */
 .thumb img,

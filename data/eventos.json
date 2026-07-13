@@ -10,17 +10,15 @@
     "cidade": "Vitória",
     "marcaSlug": "forro-do-nicinha",
     "localSlug": "espaco-triangulo",
+    "ingresso": {
+      "tipo": "antecipado",
+      "precoAPartirDe": 20,
+      "link": "https://www.sympla.com.br/forro-de-quinta-nicinha",
+      "plataforma": "Sympla"
+    },
     "enderecoTexto": null,
     "tipo": "Baile",
-    "entrada": "pago",
-    "preco": "R$ 20",
     "musica": "Música ao vivo",
-    "acesso": {
-      "tipo": "ingresso",
-      "url": "https://www.sympla.com.br/forro-de-quinta-nicinha"
-    },
-    "instagram": "https://instagram.com/forrodanicinha",
-    "whatsapp": "https://wa.me/5527999990001",
     "imagem": null,
     "origem": "manual",
     "idExterno": null,
@@ -43,17 +41,15 @@
     "cidade": "Vila Velha",
     "marcaSlug": "quintal-do-pe-de-serra",
     "localSlug": "clube-praia-da-costa",
+    "ingresso": {
+      "tipo": "gratuito",
+      "precoAPartirDe": null,
+      "link": null,
+      "plataforma": null
+    },
     "enderecoTexto": null,
     "tipo": "Aula",
-    "entrada": "gratuito",
-    "preco": "Gratuito",
     "musica": "DJ",
-    "acesso": {
-      "tipo": "gratuito",
-      "url": null
-    },
-    "instagram": "https://instagram.com/quintalpedeserra",
-    "whatsapp": "https://wa.me/5527999990002",
     "imagem": null,
     "origem": "manual",
     "idExterno": null,
@@ -76,17 +72,15 @@
     "cidade": "Serra",
     "marcaSlug": "casa-do-forro-serra",
     "localSlug": "galpao-laranjeiras",
+    "ingresso": {
+      "tipo": "antecipado",
+      "precoAPartirDe": 25,
+      "link": "https://www.sympla.com.br/baile-sexta-serra",
+      "plataforma": "Sympla"
+    },
     "enderecoTexto": null,
     "tipo": "Baile",
-    "entrada": "pago",
-    "preco": "R$ 25",
     "musica": "Música ao vivo",
-    "acesso": {
-      "tipo": "ingresso",
-      "url": "https://www.sympla.com.br/baile-sexta-serra"
-    },
-    "instagram": "https://instagram.com/casadoforroserra",
-    "whatsapp": "https://wa.me/5527999990003",
     "imagem": null,
     "origem": "manual",
     "idExterno": null,
@@ -109,17 +103,15 @@
     "cidade": "Cariacica",
     "marcaSlug": "galpao-cultural-cariacica",
     "localSlug": "sede-campo-grande",
+    "ingresso": {
+      "tipo": "antecipado",
+      "precoAPartirDe": 40,
+      "link": "https://www.sympla.com.br/workshop-forro-cariacica",
+      "plataforma": "Sympla"
+    },
     "enderecoTexto": null,
     "tipo": "Workshop",
-    "entrada": "pago",
-    "preco": "R$ 40",
     "musica": "DJ",
-    "acesso": {
-      "tipo": "ingresso",
-      "url": "https://www.sympla.com.br/workshop-forro-cariacica"
-    },
-    "instagram": "https://instagram.com/galpaoculturalcariacica",
-    "whatsapp": "https://wa.me/5527999990004",
     "imagem": null,
     "origem": "manual",
     "idExterno": null,
@@ -142,17 +134,15 @@
     "cidade": "Vitória",
     "marcaSlug": "forro-do-nicinha",
     "localSlug": "espaco-triangulo",
+    "ingresso": {
+      "tipo": "gratuito",
+      "precoAPartirDe": null,
+      "link": null,
+      "plataforma": null
+    },
     "enderecoTexto": null,
     "tipo": "Baile",
-    "entrada": "gratuito",
-    "preco": "Gratuito",
     "musica": "Música ao vivo",
-    "acesso": {
-      "tipo": "gratuito",
-      "url": null
-    },
-    "instagram": "https://instagram.com/forrodanicinha",
-    "whatsapp": "https://wa.me/5527999990005",
     "imagem": null,
     "origem": "manual",
     "idExterno": null,
@@ -175,17 +165,15 @@
     "cidade": "Vila Velha",
     "marcaSlug": "quintal-do-pe-de-serra",
     "localSlug": "clube-praia-da-costa",
+    "ingresso": {
+      "tipo": "local",
+      "precoAPartirDe": 15,
+      "link": null,
+      "plataforma": null
+    },
     "enderecoTexto": null,
     "tipo": "Aula",
-    "entrada": "pago",
-    "preco": "R$ 15",
     "musica": "DJ",
-    "acesso": {
-      "tipo": "local",
-      "url": null
-    },
-    "instagram": "https://instagram.com/quintalpedeserra",
-    "whatsapp": "https://wa.me/5527999990006",
     "imagem": null,
     "origem": "manual",
     "idExterno": null,
@@ -208,17 +196,15 @@
     "cidade": "Serra",
     "marcaSlug": "casa-do-forro-serra",
     "localSlug": "galpao-laranjeiras",
+    "ingresso": {
+      "tipo": "antecipado",
+      "precoAPartirDe": 35,
+      "link": "https://www.sympla.com.br/festival-pe-de-serra",
+      "plataforma": "Sympla"
+    },
     "enderecoTexto": null,
     "tipo": "Festival",
-    "entrada": "pago",
-    "preco": "R$ 35",
     "musica": "Música ao vivo",
-    "acesso": {
-      "tipo": "ingresso",
-      "url": "https://www.sympla.com.br/festival-pe-de-serra"
-    },
-    "instagram": "https://instagram.com/casadoforroserra",
-    "whatsapp": "https://wa.me/5527999990007",
     "imagem": null,
     "origem": "manual",
     "idExterno": null,
@@ -241,17 +227,15 @@
     "cidade": "Cariacica",
     "marcaSlug": "galpao-cultural-cariacica",
     "localSlug": "sede-campo-grande",
+    "ingresso": {
+      "tipo": "couvert",
+      "precoAPartirDe": 20,
+      "link": null,
+      "plataforma": null
+    },
     "enderecoTexto": null,
     "tipo": "Baile",
-    "entrada": "pago",
-    "preco": "R$ 20",
     "musica": "Música ao vivo",
-    "acesso": {
-      "tipo": "couvert",
-      "url": null
-    },
-    "instagram": "https://instagram.com/galpaoculturalcariacica",
-    "whatsapp": "https://wa.me/5527999990008",
     "imagem": null,
     "origem": "manual",
     "idExterno": null,
@@ -262,5 +246,44 @@
       "latitude": null,
       "longitude": null
     }
+  },
+  {
+    "id": "evt-deck-16-agosto-2026",
+    "slug": "deck-16-agosto-2026",
+    "titulo": "Forró do Deck 16 — Edição de Agosto (Baile dos Bocadas)",
+    "descricao": "O BAILE DOS BOCADAS é a união de músicos gigantes do forró tradicional.\n\nVenham dançar e se divertir na casa de forró mais amada do Brasil.",
+    "inicio": "2026-08-08T22:00:00-03:00",
+    "fim": null,
+    "fusoHorario": "America/Sao_Paulo",
+    "cidade": "Serra",
+    "marcaSlug": "forro-deck-16",
+    "localSlug": "cerimonial-espaco-praia",
+    "enderecoTexto": null,
+    "tipo": "Baile",
+    "ingresso": {
+      "tipo": "antecipado",
+      "precoAPartirDe": 20,
+      "link": "https://onticket.com.br/eventos/8211-forro-deck-16-serra-2026",
+      "plataforma": "OnTicket"
+    },
+    "lineup": {
+      "bandas": [
+        "Os Bocadas",
+        "Luarada Brasileira"
+      ],
+      "djs": [
+        "Baile dos Ratos"
+      ]
+    },
+    "imagem": "assets/eventos/deck-16-agosto-2026.jpg",
+    "origem": "manual",
+    "idExterno": null,
+    "linkExterno": null,
+    "coordenadas": {
+      "latitude": null,
+      "longitude": null
+    },
+    "status": "publicado",
+    "atualizadoEm": "2026-07-12T00:00:00-03:00"
   }
 ]
