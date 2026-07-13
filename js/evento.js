@@ -22,6 +22,30 @@ function heroHtml(evento) {
     </svg>`;
 }
 
+/**
+ * Seção de aniversariantes — campo opcional (evento.aniversariantes). Não é
+ * uma entidade genérica de "promoções", só esse recurso específico mesmo,
+ * como pedido. Sem o campo, a função devolve string vazia e a seção não
+ * aparece — nunca inventa conteúdo.
+ */
+function aniversariantesHtml(evento) {
+  const a = evento.aniversariantes;
+  if (!a) return "";
+
+  const regras = a.regras?.length
+    ? `<ul class="birthday-rules">${a.regras.map((r) => `<li>✓ ${r}</li>`).join("")}</ul>`
+    : "";
+
+  return `
+    <div class="birthday-box">
+      <p class="birthday-eyebrow">🎂 Aniversariantes</p>
+      <h3>${a.titulo}</h3>
+      <p>${a.descricao}</p>
+      ${regras}
+    </div>
+  `;
+}
+
 function lineupHtml(evento) {
   const bandas = evento.lineup?.bandas ?? [];
   const djs = evento.lineup?.djs ?? [];
@@ -37,6 +61,29 @@ function lineupHtml(evento) {
       <h2 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:600; margin-bottom:0.75rem;">Atrações</h2>
       ${linha("Bandas", bandas)}
       ${linha("DJs", djs)}
+    </section>
+  `;
+}
+
+/**
+ * Bloco de destaque pra Marca — vai no fim da página, antes do rodapé.
+ * Sem link morto: só existe quando o evento tem marca reconhecida.
+ */
+function marcaCtaHtml(marca) {
+  if (!marca) return "";
+  return `
+    <section class="section">
+      <div class="about-band">
+        <h2>Gostou deste evento?</h2>
+        <p>Conheça mais sobre <strong>${marca.nome}</strong>. Lá você pode ver:</p>
+        <ul class="marca-cta-list">
+          <li>Próximos eventos</li>
+          <li>Eventos anteriores</li>
+          <li>Informações da marca</li>
+          <li>Instagram</li>
+        </ul>
+        <a class="btn btn-primary" href="marca.html?slug=${encodeURIComponent(marca.slug)}" style="margin-top: var(--sp-2);">Conhecer a Marca</a>
+      </div>
     </section>
   `;
 }
@@ -83,6 +130,7 @@ async function init() {
           <p class="eyebrow" style="margin-top:1.5rem">${marca ? `<a href="marca.html?slug=${encodeURIComponent(marca.slug)}">${marca.nome}</a>` : evento.tipo}</p>
           <h1 style="font-family:var(--font-display); font-size:var(--text-2xl); font-weight:600;">${evento.titulo}</h1>
           <p style="margin-top:0.75rem; color:var(--ink-soft); max-width:60ch; white-space:pre-line;">${evento.descricao}</p>
+          ${aniversariantesHtml(evento)}
 
           <div class="badges-row" style="margin-top:1.5rem;">
             <span class="badge badge--type">${evento.tipo}</span>
@@ -114,6 +162,8 @@ async function init() {
         <h2 style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:600; margin-bottom:1rem;">Eventos relacionados</h2>
         <div class="event-grid" id="grid-relacionados"></div>
       </section>
+
+      ${marcaCtaHtml(marca)}
     </div>
   `;
 

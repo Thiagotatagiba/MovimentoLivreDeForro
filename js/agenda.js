@@ -50,6 +50,9 @@ async function init() {
   const filtroMusica = document.querySelector("#filtro-musica");
   const filtroMarca = document.querySelector("#filtro-marca");
   const campoBusca = document.querySelector("#campo-busca");
+  const filtrosToggle = document.querySelector("#filtros-toggle");
+  const filtrosPanelWrap = document.querySelector("#filters-panel-wrap");
+  const filtrosCount = document.querySelector("#filtros-count");
 
   container.replaceChildren(criarEsqueletos(8));
 
@@ -100,6 +103,39 @@ async function init() {
   function temFiltrosAtivos() {
     return Object.values(filtrosAtuais()).some(Boolean);
   }
+
+  // Só os filtros que moram dentro do painel recolhível contam pro badge —
+  // a busca fica sempre visível, então não faz parte dessa contagem.
+  function contarFiltrosAtivos() {
+    const f = filtrosAtuais();
+    return ["cidade", "tipo", "entrada", "periodo", "musica", "marca"].filter((chave) => f[chave]).length;
+  }
+
+  function atualizarContadorFiltros() {
+    const n = contarFiltrosAtivos();
+    filtrosCount.hidden = n === 0;
+    filtrosCount.textContent = String(n);
+  }
+
+  const filtrosPanelInner = document.querySelector(".filters-panel-inner");
+
+  function abrirPainelFiltros(aberto) {
+    filtrosPanelWrap.classList.toggle("is-open", aberto);
+    filtrosToggle.setAttribute("aria-expanded", String(aberto));
+    // Painel fechado tem altura zero, mas sem isso os <select> continuariam
+    // alcançáveis por Tab e por leitor de tela mesmo invisíveis.
+    filtrosPanelInner.inert = !aberto;
+  }
+
+  filtrosToggle.addEventListener("click", () => {
+    abrirPainelFiltros(!filtrosPanelWrap.classList.contains("is-open"));
+  });
+
+  // Se a URL já chega com algum filtro avançado (link compartilhado, por
+  // exemplo), abre o painel de cara — nunca deixa um filtro ativo escondido
+  // sem o usuário saber que ele está lá.
+  abrirPainelFiltros(contarFiltrosAtivos() > 0);
+  atualizarContadorFiltros();
 
   function limparFiltros() {
     filtroCidade.value = "";
@@ -223,6 +259,7 @@ async function init() {
   }
 
   async function render() {
+    atualizarContadorFiltros();
     escreverEstadoNaURL({ janela: janelaAtual(), view: viewAtual(), ...filtrosAtuais() });
     if (viewAtual() === "semana") {
       await renderSemana();

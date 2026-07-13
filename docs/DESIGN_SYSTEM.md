@@ -70,8 +70,9 @@ Grid de 8px: `--sp-1` (4px) até `--sp-9` (96px). Qualquer margem/padding novo d
 ### Formulários / filtros
 - `.filter-select` — `<select>` estilizado, usado nos filtros da Agenda. Base para futuros campos de formulário (ex. formulário de organizador na Etapa 4).
 - `.search-input` — campo de busca de texto livre. Mesma linguagem visual do `.filter-select`, largura total.
+- **`.filters-panel-wrap`** — painel recolhível dos filtros avançados (cidade, tipo, entrada, horário, marca, formato). Fechado por padrão; abre com animação via `grid-template-rows: 0fr → 1fr` (não precisa medir altura em JS, e herda `prefers-reduced-motion` de graça, porque a regra global `*` em `tokens.css` já cobre qualquer `transition`). `.filtros-toggle` mostra a contagem de filtros ativos (`.filtros-count`) e usa `inert` no conteúdo enquanto fechado, pra não deixar `<select>` alcançável por Tab escondido. Abre sozinho se a URL já chega com filtro ativo.
 - `.date-tabs` — tabs de período (Hoje/Amanhã/Semana/Mês), com `role="tablist"`/`aria-selected` para acessibilidade. Fica oculta (`hidden`) quando a visualização "Semana" está ativa, já que ela cobre sempre os próximos 7 dias.
-- `.view-toggle` — par de botões "Lista"/"Semana" (`role="group"`, `aria-pressed`), controla o modo de exibição da Agenda.
+- `.view-toggle` — par de botões "Grade"/"Semana" (`role="group"`, `aria-pressed`), controla o modo de exibição da Agenda.
 
 ### Grade semanal
 - `.week-grid` / `.week-day` / `.week-event` — visualização em 7 colunas (uma por dia, a partir de hoje). Rolagem horizontal com snap no mobile, grade fixa a partir de 900px. `.week-day.is-today` destaca o dia atual com a cor `--clay` — mesma lógica do marcador "Hoje" nos cards, mantendo o terracota reservado a esse único significado em todo o site.

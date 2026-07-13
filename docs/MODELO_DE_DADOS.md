@@ -121,9 +121,16 @@ naquele momento:
   "linkExterno": null,                   // link para a página/evento original na fonte externa
   "coordenadas": { "latitude": null, "longitude": null }, // usado quando não há localSlug com coordenadas próprias
   "status": "publicado",                 // publicado | rascunho | cancelado
-  "atualizadoEm": "2026-07-01T10:00:00-03:00"
+  "atualizadoEm": "2026-07-01T10:00:00-03:00",
+  "aniversariantes": {                   // opcional — omitido na maioria dos eventos
+    "titulo": "Aniversariantes de Maio e Junho",
+    "descricao": "Os aniversariantes de Maio e Junho terão gratuidade em nossa edição especial de aniversário ❤️",
+    "regras": ["Apresentar documento oficial com foto", "Chegar até 22:30"]
+  }
 }
 ```
+
+**Sobre `aniversariantes`:** é um recurso específico, não uma entidade genérica de "promoções". Quando o campo existe, a página do evento mostra uma seção logo após a descrição; quando não existe (a grande maioria dos eventos), a seção simplesmente não é renderizada — `js/evento.js → aniversariantesHtml()` devolve string vazia. Nenhum evento de exemplo do projeto tem esse campo preenchido; é só a estrutura, pronta pra quando um produtor real quiser usar.
 
 **Por que não existe mais `preco` (string), `entrada`, `acesso` nem `musica` como campos próprios do evento:**
 

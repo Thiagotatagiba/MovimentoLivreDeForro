@@ -53,54 +53,67 @@
           </div>
         </div>
 
-        <div class="filters" role="group" aria-label="Filtros de eventos">
-          <label class="sr-only" for="filtro-cidade">Cidade</label>
-          <select id="filtro-cidade" class="filter-select">
-            <option value="">Todas as cidades</option>
-            <option value="Vitória">Vitória</option>
-            <option value="Vila Velha">Vila Velha</option>
-            <option value="Serra">Serra</option>
-            <option value="Cariacica">Cariacica</option>
-            <option value="Viana">Viana</option>
-            <option value="Guarapari">Guarapari</option>
-          </select>
+        <div class="filters-trigger-row">
+          <button type="button" id="filtros-toggle" class="btn btn-ghost filtros-toggle" aria-expanded="false" aria-controls="filters-panel-wrap">
+            <span aria-hidden="true">⚙️</span>
+            <span id="filtros-toggle-label">Filtros</span>
+            <span class="filtros-count" id="filtros-count" hidden>0</span>
+            <svg class="filtros-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+        </div>
 
-          <label class="sr-only" for="filtro-tipo">Tipo</label>
-          <select id="filtro-tipo" class="filter-select">
-            <option value="">Todos os tipos</option>
-            <option value="Baile">Baile</option>
-            <option value="Aula">Aula</option>
-            <option value="Festival">Festival</option>
-            <option value="Workshop">Workshop</option>
-          </select>
+        <div class="filters-panel-wrap" id="filters-panel-wrap">
+          <div class="filters-panel-inner">
+            <div class="filters" role="group" aria-label="Filtros de eventos">
+              <label class="sr-only" for="filtro-cidade">Cidade</label>
+              <select id="filtro-cidade" class="filter-select">
+                <option value="">Todas as cidades</option>
+                <option value="Vitória">Vitória</option>
+                <option value="Vila Velha">Vila Velha</option>
+                <option value="Serra">Serra</option>
+                <option value="Cariacica">Cariacica</option>
+                <option value="Viana">Viana</option>
+                <option value="Guarapari">Guarapari</option>
+              </select>
 
-          <label class="sr-only" for="filtro-entrada">Entrada</label>
-          <select id="filtro-entrada" class="filter-select">
-            <option value="">Gratuito e pago</option>
-            <option value="gratuito">Gratuito</option>
-            <option value="pago">Pago</option>
-          </select>
+              <label class="sr-only" for="filtro-tipo">Tipo</label>
+              <select id="filtro-tipo" class="filter-select">
+                <option value="">Todos os tipos</option>
+                <option value="Baile">Baile</option>
+                <option value="Aula">Aula</option>
+                <option value="Festival">Festival</option>
+                <option value="Workshop">Workshop</option>
+              </select>
 
-          <label class="sr-only" for="filtro-periodo">Horário</label>
-          <select id="filtro-periodo" class="filter-select">
-            <option value="">Qualquer horário</option>
-            <option value="manha">Manhã</option>
-            <option value="tarde">Tarde</option>
-            <option value="noite">Noite</option>
-          </select>
+              <label class="sr-only" for="filtro-entrada">Entrada</label>
+              <select id="filtro-entrada" class="filter-select">
+                <option value="">Gratuito e pago</option>
+                <option value="gratuito">Gratuito</option>
+                <option value="pago">Pago</option>
+              </select>
 
-          <label class="sr-only" for="filtro-marca">Marca / Baile</label>
-          <select id="filtro-marca" class="filter-select">
-            <option value="">Todas as marcas</option>
-          </select>
+              <label class="sr-only" for="filtro-periodo">Horário</label>
+              <select id="filtro-periodo" class="filter-select">
+                <option value="">Qualquer horário</option>
+                <option value="manha">Manhã</option>
+                <option value="tarde">Tarde</option>
+                <option value="noite">Noite</option>
+              </select>
 
-          <label class="sr-only" for="filtro-musica">Música</label>
-          <select id="filtro-musica" class="filter-select">
-            <option value="">Qualquer formato</option>
-            <option value="Ao vivo">Ao vivo</option>
-            <option value="DJ">DJ</option>
-            <option value="Bandas e DJ">Bandas e DJ</option>
-          </select>
+              <label class="sr-only" for="filtro-marca">Marca / Baile</label>
+              <select id="filtro-marca" class="filter-select">
+                <option value="">Todas as marcas</option>
+              </select>
+
+              <label class="sr-only" for="filtro-musica">Música</label>
+              <select id="filtro-musica" class="filter-select">
+                <option value="">Qualquer formato</option>
+                <option value="Ao vivo">Ao vivo</option>
+                <option value="DJ">DJ</option>
+                <option value="Bandas e DJ">Bandas e DJ</option>
+              </select>
+            </div>
+          </div>
         </div>
       </section>
 

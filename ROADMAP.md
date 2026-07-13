@@ -142,6 +142,12 @@ corrigir três duplicações de dado que já existiam:
 - [x] "Eventos relacionados" movido pra fora do grid de duas colunas da página de evento — agora é sempre o último bloco, inclusive no mobile, onde antes aparecia empilhado antes dos botões de ação (ingresso, mapa, contato)
 - [x] Rótulos de frequência reformulados para soar como identidade ("Eventos mensais") em vez de descrição de formulário ("Uma vez por mês")
 
+## Etapa 3.7 — Filtros recolhíveis, aniversariantes e acesso à Marca
+
+- [x] Filtros avançados da Agenda (cidade/tipo/entrada/horário/marca/formato) viraram um painel recolhível, fechado por padrão — busca, tabs de período e o seletor Grade/Semana continuam sempre visíveis. Botão "⚙️ Filtros" mostra a contagem de filtros ativos e abre sozinho quando a URL já chega com algum filtro.
+- [x] Campo opcional `evento.aniversariantes` — não é uma entidade genérica de promoções, só esse recurso específico. Quando presente, a página do evento mostra uma seção logo após a descrição; sem o campo, nada aparece. Nenhum evento de exemplo do projeto usa esse campo (não inventamos conteúdo pra demonstrar).
+- [x] Bloco de destaque pra Marca no fim da página de evento ("Gostou deste evento? Conheça mais sobre {marca}"), reaproveitando `.about-band` (o mesmo bloco da Home) em vez de criar um componente novo. Sem marca reconhecida, o bloco não aparece — mesma regra de sempre contra link morto.
+
 ## Etapa 4 — Locais
 
 - Página de listagem + perfil individual de cada local físico
