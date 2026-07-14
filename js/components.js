@@ -122,26 +122,11 @@ export function criarEstadoVazio(titulo, mensagem, acoes = []) {
   return div;
 }
 
-/** Bloco de resumo da semana usado na Home (contagem de eventos, cidades e aulas). */
-export function criarResumoSemana(resumo) {
-  const div = document.createElement("p");
-  div.className = "week-summary";
-  if (resumo.totalEventos === 0) {
-    div.textContent = "Nenhum evento cadastrado para esta semana ainda.";
-    return div;
-  }
-  const evTxt = resumo.totalEventos === 1 ? "1 evento" : `${resumo.totalEventos} eventos`;
-  const cidTxt = resumo.totalCidades === 1 ? "1 cidade" : `${resumo.totalCidades} cidades`;
-  const aulaTxt = resumo.totalAulas === 1 ? "1 aula" : `${resumo.totalAulas} aulas`;
-  div.innerHTML = `<strong>${evTxt}</strong> nesta semana, em <strong>${cidTxt}</strong> da Grande Vitória — incluindo <strong>${aulaTxt}</strong>.`;
-  return div;
-}
-
 /**
  * Banner "Hoje tem forró?" — a resposta mais direta possível à pergunta
  * central do projeto, logo abaixo do título da Home.
  */
-export function criarBannerHoje(eventosHoje, hojeIso) {
+export function criarBannerHoje(eventosHoje, hojeIso, marcasPorSlug = new Map()) {
   const div = document.createElement("div");
   div.className = "today-banner";
   const dataTxt = formatarDataCompleta(hojeIso);
@@ -154,16 +139,21 @@ export function criarBannerHoje(eventosHoje, hojeIso) {
     return div;
   }
 
-  const cidades = [...new Set(eventosHoje.map((e) => e.cidade))];
+  const nomesMarcas = [...new Set(eventosHoje.map((e) => marcasPorSlug.get(e.marcaSlug)?.nome).filter(Boolean))];
   const contagem = eventosHoje.length === 1 ? "1 evento acontecendo hoje" : `${eventosHoje.length} eventos acontecendo hoje`;
+  const destaqueMarcas =
+    nomesMarcas.length > 0
+      ? `<p class="today-banner-highlights">${nomesMarcas.slice(0, 3).join(" • ")}${nomesMarcas.length > 3 ? ` e mais ${nomesMarcas.length - 3}` : ""}</p>`
+      : "";
 
   div.innerHTML = `
     <p class="today-banner-date">Hoje · ${dataTxt}</p>
     <p class="today-banner-count">
       <span class="pulse-bars" aria-hidden="true"><span></span><span></span><span></span></span>
-      🎉 ${contagem}
+      🔥 ${contagem}
     </p>
-    <p class="today-banner-cities">📍 ${cidades.join(" • ")}</p>
+    ${destaqueMarcas}
+    <a class="btn btn-primary btn-sm today-banner-cta" href="agenda.html?janela=hoje">Ver todos</a>
   `;
   return div;
 }

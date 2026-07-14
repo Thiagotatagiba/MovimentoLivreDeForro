@@ -148,6 +148,24 @@ corrigir três duplicações de dado que já existiam:
 - [x] Campo opcional `evento.aniversariantes` — não é uma entidade genérica de promoções, só esse recurso específico. Quando presente, a página do evento mostra uma seção logo após a descrição; sem o campo, nada aparece. Nenhum evento de exemplo do projeto usa esse campo (não inventamos conteúdo pra demonstrar).
 - [x] Bloco de destaque pra Marca no fim da página de evento ("Gostou deste evento? Conheça mais sobre {marca}"), reaproveitando `.about-band` (o mesmo bloco da Home) em vez de criar um componente novo. Sem marca reconhecida, o bloco não aparece — mesma regra de sempre contra link morto.
 
+## Etapa 3.8 — Home vira feed de descoberta
+
+Percebemos que o Movimento Livre de Forró não é um "calendário" — é um lugar
+pra descobrir o que está acontecendo no mundo do forró. A Home passou a
+refletir isso: de uma lista com tabs Hoje/Amanhã/Semana pra um feed de
+blocos independentes, cada um com uma personalidade própria.
+
+- [x] H1 mudou de "Onde tem forró **hoje**?" pra "Onde tem forró?" — o site responde por qualquer horizonte de tempo, não só hoje
+- [x] `js/home.js` virou um orquestrador de blocos (lista ordenada de funções, cada uma podendo devolver `null`) em vez de uma página monolítica — arquitetura já pensada pra quando existir personalização (login troca um bloco genérico por um personalizado sem tocar no resto)
+- [x] **Hero em carrossel** dos próximos eventos com imagem — autoplay que nunca tira o controle do usuário (pausa em interação, sempre retomável)
+- [x] **Mini calendário semanal** — intensidade da programação dia a dia, de relance, sem precisar abrir a Agenda
+- [x] **"Hoje tem forró?"** evoluiu: mostra marcas do dia, não só cidades, com CTA "Ver todos"
+- [x] **Próximos eventos** viraram carrossel horizontal — reaproveitando o `EventCard`, sem nenhum componente novo
+- [x] **Descubra uma Marca** — uma marca em destaque por vez (sorteada entre as ativas), fundindo o que seriam duas seções parecidas ("marcas em destaque" + "conheça uma marca") numa só, pra não cair na armadilha dos "15 blocos iguais"
+- [x] "Sobre o Movimento" desceu pra perto do rodapé — quem entrou já sabe que quer forró, não precisa de texto institucional logo na primeira dobra
+- [x] Limpeza: removidos `.hero-rule`, `.cta-row`, `.week-summary`/`criarResumoSemana()` e `eventosService.resumoDaSemana()` — todos sem uso depois da reformulação
+- **Deliberadamente fora desta rodada** (dependem de página/curadoria que ainda não existe): Novas Marcas, Festivais em destaque, Descubra um Lugar, Bandas/Professores em destaque. A arquitetura de blocos já deixa isso pronto pra entrar depois — é só adicionar mais uma função na lista.
+
 ## Etapa 4 — Locais
 
 - Página de listagem + perfil individual de cada local físico

@@ -93,6 +93,15 @@ Grid de 8px: `--sp-1` (4px) até `--sp-9` (96px). Qualquer margem/padding novo d
 ### Página de evento — ordem das seções
 Descrição → informações práticas + ações (ingresso, mapa, contato, compartilhar) → **Eventos relacionados por último**, sempre, em qualquer largura de tela. "Relacionados" fica fora do grid de duas colunas (`.event-detail-grid`) de propósito: dentro dele, a ordem no DOM vira a ordem visual no mobile quando as colunas empilham, e sugerir outro evento antes da pessoa terminar de decidir sobre o atual atrapalha a conversão — mesmo padrão de Sympla/Ticketmaster/Eventbrite.
 
+### Home — arquitetura de blocos
+A Home não é mais uma página monolítica: `js/home.js` mantém uma lista ordenada de funções (`criarBlocoHero`, `criarBlocoMiniCalendario`, `criarBlocoHojeTemForro`, `criarBlocoProximosEventos`, `criarBlocoDescubraMarca`, `criarBlocoSobre`), cada uma devolvendo um `<section>` pronto ou `null` quando não há o que mostrar. Adicionar, remover, reordenar ou trocar um bloco por uma versão personalizada (quando existir login) é editar essa lista — nunca reescrever a página. Um bloco que falha (`try/catch` no orquestrador) não derruba os demais. Todos os blocos vivem em `home.js` por enquanto; se a lista crescer bastante, o próximo passo natural é migrar cada função pra um arquivo em `js/home/` — refactor mecânico, não mudança de arquitetura.
+
+- **Hero (carrossel)** — `.hero-carousel`, layout próprio (banner cheio, texto sobre gradiente), não é `.event-card`: mesma lógica de `.event-hero` já ter seu próprio tratamento visual na página de evento. Autoplay a cada 6s, pausa em hover/toque, retoma após interação manual (seta ou bolinha) — o controle nunca sai da mão do usuário.
+- **Mini calendário semanal** — `.mini-week`, 7 dias com bolinha de intensidade (`.mini-week-dot.nivel-1/2/3`, por contagem de eventos). Cada dia é um link pra `agenda.html?view=semana` — reaproveita a visualização Semana que já existe, sem precisar de rota nova por dia específico.
+- **Próximos eventos (carrossel horizontal)** — `.event-row`, scroll com snap, reaproveita `criarEventCard()` sem nenhuma variação nova.
+- **Descubra uma Marca** — reaproveita `.about-band` (mesmo bloco de "Sobre o Movimento") e `.marca-logo` (mesmo componente da página de perfil). Marca sorteada entre as `ativo: true` a cada carregamento — sensação de descoberta sem precisar de um campo de curadoria manual.
+- **"Hoje tem forró?"** — evoluiu pra mostrar nomes de marcas (não só cidades) e ganhou um CTA "Ver todos" pra `agenda.html?janela=hoje`.
+
 ## Acessibilidade
 
 - Todos os componentes interativos usam `:focus-visible` com contorno de 3px.

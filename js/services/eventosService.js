@@ -79,12 +79,4 @@ export const eventosService = {
       .filter((e) => e.slug !== evento.slug && (e.marcaSlug === evento.marcaSlug || e.cidade === evento.cidade || e.tipo === evento.tipo))
       .slice(0, limite);
   },
-
-  /** Números-resumo da semana, usados no bloco de destaque da Home. */
-  async resumoDaSemana() {
-    const eventos = await this.listarPorJanela(6);
-    const cidades = new Set(eventos.map((e) => e.cidade));
-    const aulas = eventos.filter((e) => e.tipo === "Aula").length;
-    return { totalEventos: eventos.length, totalCidades: cidades.size, totalAulas: aulas };
-  },
 };

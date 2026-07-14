@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Movimento Livre de Forró — Onde tem forró hoje?</title>
-  <meta name="description" content="Descubra onde tem forró pé de serra hoje na Grande Vitória. Agenda de bailes, aulas, festivais e workshops em Vitória, Vila Velha, Serra, Cariacica, Viana e Guarapari." />
+  <title>Movimento Livre de Forró — Onde tem forró?</title>
+  <meta name="description" content="Descubra o que está acontecendo no mundo do forró pé de serra na Grande Vitória: bailes, marcas, festivais e aulas em Vitória, Vila Velha, Serra, Cariacica, Viana e Guarapari." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -32,37 +32,13 @@
 
   <main id="conteudo">
     <div class="wrap">
-      <section class="hero">
-        <div class="hero-rule" aria-hidden="true"></div>
-        <h1>Onde tem forró hoje?</h1>
-        <p class="lede">A agenda do Forró Pé de Serra da Grande Vitória — bailes, aulas, festivais e workshops, atualizados toda semana.</p>
-
-        <div id="today-banner" aria-live="polite"></div>
-
-        <div class="date-tabs" id="date-tabs" role="tablist" aria-label="Filtrar por período">
-          <button role="tab" aria-selected="true" data-janela="hoje">Hoje</button>
-          <button role="tab" aria-selected="false" data-janela="amanha">Amanhã</button>
-          <button role="tab" aria-selected="false" data-janela="semana">Esta semana</button>
-        </div>
-
-        <div class="event-grid" id="home-event-grid" aria-live="polite"></div>
-
-        <div id="week-summary" aria-live="polite"></div>
-
-        <div class="cta-row">
-          <a class="btn btn-primary" href="agenda.html">Ver agenda completa</a>
-        </div>
-      </section>
+      <div class="hero" style="padding-block: var(--sp-7) var(--sp-5);">
+        <h1>Onde tem forró?</h1>
+        <p class="lede">A rede de descoberta do Forró Pé de Serra da Grande Vitória — sempre tem alguma coisa acontecendo.</p>
+      </div>
     </div>
 
-    <div class="wrap">
-      <section class="section">
-        <div class="about-band">
-          <h2>Sobre o Movimento</h2>
-          <p>O Movimento Livre de Forró é uma iniciativa independente para fortalecer, divulgar e fomentar o forró pé de serra na Grande Vitória — conectando dançarinos, professores, bandas, organizadores e casas de eventos em um só lugar.</p>
-        </div>
-      </section>
-    </div>
+    <div id="home-blocos" aria-live="polite"></div>
   </main>
 
   <footer class="site-footer">
