@@ -163,6 +163,30 @@
 .filters-panel-wrap.is-open { grid-template-rows: 1fr; }
 .filters-panel-inner { overflow: hidden; }
 
+/* ---------- Busca no header ---------- */
+.header-actions { display: flex; align-items: center; gap: var(--sp-1); }
+.header-search-toggle {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+}
+.header-search-toggle:hover { background: var(--sand); }
+
+/* Mesma técnica de altura animável dos filtros da Agenda (grid 0fr -> 1fr). */
+.header-search-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.2s ease;
+  border-top: 1px solid transparent;
+}
+.header-search-panel.is-open { grid-template-rows: 1fr; border-top-color: var(--sand-line); }
+.header-search-panel-inner { overflow: hidden; }
+.header-search-panel form { padding: var(--sp-3) 0; }
+
 /* ---------- Busca ---------- */
 .search-input {
   width: 100%;
@@ -536,7 +560,19 @@
   background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.25) 55%, rgba(0, 0, 0, 0) 100%);
   padding: var(--sp-6) var(--sp-5);
 }
-.hero-slide-content { color: #fff; max-width: 60ch; }
+.hero-slide-content {
+  color: #fff;
+  max-width: 60ch;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+.home-tagline {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  text-align: center;
+  color: var(--ink);
+}
 .hero-slide-content .eyebrow { color: #fff; opacity: 0.85; }
 .hero-slide-content h2 {
   font-family: var(--font-display);
@@ -666,6 +702,10 @@
 
 /* ---------- Seção genérica ---------- */
 .section { padding-block: var(--sp-7); }
+/* Seções adjacentes não devem somar padding-bottom + padding-top — o espaço
+   fica exagerado. A primeira seção de uma sequência mantém o respiro total;
+   as seguintes contam só com o padding-bottom da anterior. */
+.section + .section { padding-top: 0; }
 .section-head {
   display: flex;
   align-items: baseline;

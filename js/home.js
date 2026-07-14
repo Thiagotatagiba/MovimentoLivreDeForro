@@ -1,7 +1,7 @@
 import { eventosService } from "./services/eventosService.js";
 import { locaisService } from "./services/locaisService.js";
 import { marcasService } from "./services/marcasService.js";
-import { criarEventCard, criarBannerHoje, ligarMenuMobile } from "./components.js";
+import { criarEventCard, criarBannerHoje, ligarMenuMobile, ligarBuscaHeader } from "./components.js";
 import { botaoIngresso } from "./ingresso.js";
 import { hojeLocal, chaveDia, formatarDataCompleta } from "./utils.js";
 
@@ -47,7 +47,7 @@ async function criarBlocoHero(contexto) {
                   <div class="hero-slide-content">
                     <p class="eyebrow">${marca ? marca.nome : evento.tipo}</p>
                     <h2>${evento.titulo}</h2>
-                    <p class="hero-slide-meta">📅 ${formatarDataCompleta(evento.inicio)} · 📍 ${evento.cidade}</p>
+                    <p class="hero-slide-meta">${formatarDataCompleta(evento.inicio)} · 📍 ${evento.cidade}</p>
                     <div class="hero-slide-actions">
                       <a class="btn btn-ghost-light" href="evento.html?slug=${encodeURIComponent(evento.slug)}">Ver evento</a>
                       ${ingresso ? `<a class="btn btn-primary" href="${ingresso.url}" target="_blank" rel="noopener">${ingresso.rotulo}</a>` : ""}
@@ -238,8 +238,21 @@ function criarBlocoSobre() {
   return secao;
 }
 
+/**
+ * Bloco 7 — Tagline de fechamento. O H1 do site mora aqui, no final, não no
+ * topo: quem entrou já sabe que quer forró — a primeira coisa que a pessoa
+ * vê é o Hero com eventos de verdade, não uma frase institucional.
+ */
+function criarBlocoTagline() {
+  const secao = document.createElement("section");
+  secao.className = "section";
+  secao.innerHTML = `<div class="wrap"><h1 class="home-tagline">Onde tem forró?</h1></div>`;
+  return secao;
+}
+
 async function init() {
   ligarMenuMobile();
+  ligarBuscaHeader();
 
   const container = document.querySelector("#home-blocos");
   const contexto = {
@@ -249,11 +262,12 @@ async function init() {
 
   const blocos = [
     () => criarBlocoHero(contexto),
-    () => criarBlocoMiniCalendario(),
     () => criarBlocoHojeTemForro(contexto),
+    () => criarBlocoMiniCalendario(),
     () => criarBlocoProximosEventos(contexto),
     () => criarBlocoDescubraMarca(),
     () => criarBlocoSobre(),
+    () => criarBlocoTagline(),
   ];
 
   for (const criarBloco of blocos) {

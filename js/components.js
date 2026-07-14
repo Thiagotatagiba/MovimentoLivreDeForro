@@ -185,3 +185,43 @@ export function ligarMenuMobile() {
     toggle.setAttribute("aria-expanded", String(aberto));
   });
 }
+
+/**
+ * Liga a lupa do header em todas as páginas.
+ * Na própria Agenda, ela já tem um campo de busca sempre visível — clicar
+ * na lupa só rola a página até ele e foca, em vez de abrir um painel
+ * duplicado. Nas demais páginas, abre um mini-painel com um campo que leva
+ * pra `agenda.html?busca=...` — mesma busca de sempre (evento e marca),
+ * sem nenhuma lógica nova.
+ */
+export function ligarBuscaHeader() {
+  const toggle = document.querySelector(".header-search-toggle");
+  if (!toggle) return;
+
+  const campoAgenda = document.querySelector("#campo-busca");
+  if (campoAgenda) {
+    toggle.addEventListener("click", () => {
+      campoAgenda.scrollIntoView({ behavior: "smooth", block: "center" });
+      campoAgenda.focus();
+    });
+    return;
+  }
+
+  const painel = document.querySelector("#header-search-panel");
+  const form = document.querySelector("#header-search-form");
+  const input = document.querySelector("#header-search-input");
+  if (!painel || !form || !input) return;
+
+  toggle.addEventListener("click", () => {
+    const vaiAbrir = !painel.classList.contains("is-open");
+    painel.classList.toggle("is-open", vaiAbrir);
+    toggle.setAttribute("aria-expanded", String(vaiAbrir));
+    if (vaiAbrir) input.focus();
+  });
+
+  form.addEventListener("submit", (evento) => {
+    evento.preventDefault();
+    const termo = input.value.trim();
+    window.location.href = termo ? `agenda.html?busca=${encodeURIComponent(termo)}` : "agenda.html";
+  });
+}

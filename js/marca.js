@@ -1,7 +1,7 @@
 import { marcasService } from "./services/marcasService.js";
 import { eventosService } from "./services/eventosService.js";
 import { locaisService } from "./services/locaisService.js";
-import { criarEventCard, criarEstadoVazio, criarFuturoRecurso, ligarMenuMobile } from "./components.js";
+import { criarEventCard, criarEstadoVazio, criarFuturoRecurso, ligarMenuMobile, ligarBuscaHeader } from "./components.js";
 import { formatarDataCurta, ROTULO_FREQUENCIA } from "./utils.js";
 
 /** Banner: imagem própria da marca > imagem do próximo evento > textura ilustrativa. */
@@ -64,6 +64,7 @@ function renderHistorico(eventosPassados) {
 
 async function init() {
   ligarMenuMobile();
+  ligarBuscaHeader();
 
   const params = new URLSearchParams(window.location.search);
   const slug = params.get("slug");

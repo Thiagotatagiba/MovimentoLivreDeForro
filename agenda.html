@@ -20,9 +20,14 @@
       <nav class="nav-primary" aria-label="Navegação principal">
         <a href="agenda.html" aria-current="page">Agenda</a>
       </nav>
-      <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-mobile">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-      </button>
+      <div class="header-actions">
+        <button type="button" class="header-search-toggle" aria-label="Ir para a busca">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </button>
+        <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-mobile">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
     </div>
     <nav class="nav-mobile" id="menu-mobile" aria-label="Navegação mobile">
       <a href="index.html">Início</a>

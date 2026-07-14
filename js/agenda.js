@@ -1,7 +1,7 @@
 import { eventosService } from "./services/eventosService.js";
 import { locaisService } from "./services/locaisService.js";
 import { marcasService } from "./services/marcasService.js";
-import { criarEventCard, criarEsqueletos, criarEstadoVazio, ligarMenuMobile } from "./components.js";
+import { criarEventCard, criarEsqueletos, criarEstadoVazio, ligarMenuMobile, ligarBuscaHeader } from "./components.js";
 import { chaveDia, formatarHorario, hojeLocal } from "./utils.js";
 
 const JANELAS = { hoje: 0, amanha: 1, semana: 6, mes: 31 };
@@ -38,6 +38,7 @@ function escreverEstadoNaURL(estado) {
 
 async function init() {
   ligarMenuMobile();
+  ligarBuscaHeader();
 
   const container = document.querySelector("#agenda-lista");
   const tabsWrap = document.querySelector("#date-tabs");

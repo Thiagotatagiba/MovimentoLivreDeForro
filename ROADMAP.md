@@ -166,6 +166,18 @@ blocos independentes, cada um com uma personalidade própria.
 - [x] Limpeza: removidos `.hero-rule`, `.cta-row`, `.week-summary`/`criarResumoSemana()` e `eventosService.resumoDaSemana()` — todos sem uso depois da reformulação
 - **Deliberadamente fora desta rodada** (dependem de página/curadoria que ainda não existe): Novas Marcas, Festivais em destaque, Descubra um Lugar, Bandas/Professores em destaque. A arquitetura de blocos já deixa isso pronto pra entrar depois — é só adicionar mais uma função na lista.
 
+## Etapa 3.9 — Correções pós-lançamento da Home + busca no header
+
+Testado em celular de verdade (Android/Chrome), apareceram três problemas
+reais que só se veem fora do ambiente de desenvolvimento:
+
+- [x] **Overflow de texto no Hero em telas estreitas** — bug clássico de flexbox: item flex não encolhe abaixo da largura do próprio conteúdo sem `min-width: 0`. Título comprido vazava pra fora do card em vez de quebrar linha.
+- [x] **Espaço exagerado entre blocos** — seções adjacentes somavam padding-bottom de uma com padding-top da próxima. Corrigido de forma geral (`.section + .section { padding-top: 0; }`), não só onde apareceu primeiro.
+- [x] **H1 movido pro final da página**, sem o subtítulo — "Onde tem forró?" agora é o último bloco (fechamento), não mais o primeiro texto que a pessoa vê. O Hero com eventos reais é a primeira coisa visível.
+- [x] **"Hoje tem forró?" reordenado pra antes do mini calendário** — é a resposta mais direta, faz mais sentido vir primeiro.
+- [x] Trocado o emoji de calendário (📅) por texto simples na meta do Hero — em alguns Androids esse emoji renderiza com um número de dia fixo embutido pela fonte do sistema, o que parecia (incorretamente) uma data errada ao lado da data real do evento.
+- [x] **Lupa de busca no header, em todas as páginas** — na própria Agenda, leva até o campo de busca que já existe ali (sem duplicar). Nas demais páginas, abre um mini-painel que leva pra `agenda.html?busca=...` — a mesma busca de sempre (evento e marca), zero lógica nova.
+
 ## Etapa 4 — Locais
 
 - Página de listagem + perfil individual de cada local físico

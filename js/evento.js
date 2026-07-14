@@ -1,7 +1,7 @@
 import { eventosService } from "./services/eventosService.js";
 import { locaisService } from "./services/locaisService.js";
 import { marcasService } from "./services/marcasService.js";
-import { criarEventCard, ligarMenuMobile } from "./components.js";
+import { criarEventCard, ligarMenuMobile, ligarBuscaHeader } from "./components.js";
 import { formatarDataLonga, formatarHorario, formatoMusical, ROTULO_FORMATO_MUSICAL } from "./utils.js";
 import { botaoIngresso, badgeIngresso, formatarValorIngresso } from "./ingresso.js";
 import { linkGoogleMaps } from "./maps.js";
@@ -90,6 +90,7 @@ function marcaCtaHtml(marca) {
 
 async function init() {
   ligarMenuMobile();
+  ligarBuscaHeader();
 
   const params = new URLSearchParams(window.location.search);
   const slug = params.get("slug");
