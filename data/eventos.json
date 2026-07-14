@@ -284,6 +284,14 @@
       "longitude": null
     },
     "status": "publicado",
-    "atualizadoEm": "2026-07-12T00:00:00-03:00"
+    "atualizadoEm": "2026-07-12T00:00:00-03:00",
+    "aniversariantes": {
+      "titulo": "Aniversariantes de Agosto",
+      "descricao": "Os aniversariantes de Agosto terão gratuidade em nossa edição especial de aniversário ❤️",
+      "regras": [
+        "Apresentar o documento com foto",
+        "Chegar até as 22:30"
+      ]
+    }
   }
 ]
