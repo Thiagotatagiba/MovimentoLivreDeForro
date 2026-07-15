@@ -171,7 +171,7 @@ blocos independentes, cada um com uma personalidade própria.
 Testado em celular de verdade (Android/Chrome), apareceram três problemas
 reais que só se veem fora do ambiente de desenvolvimento:
 
-- [x] **Overflow de texto no Hero em telas estreitas** — bug clássico de flexbox: item flex não encolhe abaixo da largura do próprio conteúdo sem `min-width: 0`. Título comprido vazava pra fora do card em vez de quebrar linha.
+- [x] **Overflow no Hero em telas estreitas** — causa raiz real: `min-height: 280px` fixo brigando com `aspect-ratio: 16/8` (numa tela estreita, o aspect-ratio pedia ~170px de altura, o min-height forçava 280px, e esse conflito quebrava o cálculo de layout). Removido o `min-height`; `aspect-ratio` agora é responsivo por breakpoint (4/3 no mobile, 16/9 no tablet, 21/9 no desktop) — sem número mágico fixo. `min-width: 0` no texto e `overflow-x: hidden` no body continuam como reforço de segurança.
 - [x] **Espaço exagerado entre blocos** — seções adjacentes somavam padding-bottom de uma com padding-top da próxima. Corrigido de forma geral (`.section + .section { padding-top: 0; }`), não só onde apareceu primeiro.
 - [x] **H1 movido pro final da página**, sem o subtítulo — "Onde tem forró?" agora é o último bloco (fechamento), não mais o primeiro texto que a pessoa vê. O Hero com eventos reais é a primeira coisa visível.
 - [x] **"Hoje tem forró?" reordenado pra antes do mini calendário** — é a resposta mais direta, faz mais sentido vir primeiro.

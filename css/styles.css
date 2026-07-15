@@ -536,11 +536,16 @@
 /* ---------- Hero da Home (carrossel) ---------- */
 .hero-carousel {
   position: relative;
-  aspect-ratio: 16 / 8;
+  /* Mobile: proporção mais alta, dá espaço confortável pro texto sem precisar
+     de min-height fixo (que era o que conflitava com aspect-ratio e causava
+     o overflow). Vai alargando conforme a tela cresce. */
+  aspect-ratio: 4 / 3;
   border-radius: var(--radius-lg);
   overflow: hidden;
   background: linear-gradient(135deg, var(--pine) 0%, var(--pine-strong) 100%);
 }
+@media (min-width: 640px) { .hero-carousel { aspect-ratio: 16 / 9; } }
+@media (min-width: 1024px) { .hero-carousel { aspect-ratio: 21 / 9; } }
 .hero-slide {
   position: absolute;
   inset: 0;
