@@ -88,5 +88,23 @@
     "origem": "manual",
     "status": "publicado",
     "atualizadoEm": "2026-07-12T00:00:00-03:00"
+  },
+  {
+    "id": "marca-forrozada-boa",
+    "slug": "forrozada-boa",
+    "nome": "Forrozada Boa",
+    "descricao": "Marca de forró da Forrozada Boa, reunindo grandes atrações do forró pé de serra na Grande Vitória para matar a saudade de quem vive Itaúnas.",
+    "cidade": "Vitória",
+    "frequencia": null,
+    "desde": null,
+    "localPrincipalSlug": "recreio-dos-olhos",
+    "instagram": null,
+    "whatsapp": "https://wa.me/5527999625136",
+    "logo": null,
+    "banner": null,
+    "ativo": true,
+    "origem": "manual",
+    "status": "publicado",
+    "atualizadoEm": "2026-07-15T16:35:31.808Z"
   }
 ]
