@@ -43,5 +43,14 @@
     "endereco": "Rua B, 1001 — Praia da Baleia, Serra/ES, CEP 29172-684",
     "latitude": -20.1692876,
     "longitude": -40.1856325
+  },
+  {
+    "id": "loc-recreio-dos-olhos",
+    "slug": "recreio-dos-olhos",
+    "nome": "Recreio dos Olhos",
+    "cidade": "Vitória",
+    "endereco": "Avenida Coronel José Martins de Figueiredo, 575 — Recreio dos Olhos, Tabuazeiro, Vitória/ES",
+    "latitude": -20.2963281,
+    "longitude": -40.3223218
   }
 ]
