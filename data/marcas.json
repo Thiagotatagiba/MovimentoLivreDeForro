@@ -88,5 +88,23 @@
     "origem": "manual",
     "status": "publicado",
     "atualizadoEm": "2026-07-12T00:00:00-03:00"
+  },
+  {
+    "id": "marca-forro-na-marina",
+    "slug": "forro-na-marina",
+    "nome": "Forró na Marina",
+    "descricao": "Forró Matinê na Marina Bay Vix todo domingo das 16h as 22h",
+    "cidade": "Vitória",
+    "frequencia": "semanal",
+    "desde": null,
+    "localPrincipalSlug": null,
+    "instagram": "https://www.instagram.com/forronamarinavix/",
+    "whatsapp": "https://wa.me/5527996457828",
+    "logo": null,
+    "banner": null,
+    "ativo": true,
+    "origem": "manual",
+    "status": "publicado",
+    "atualizadoEm": "2026-07-15T00:00:00-03:00"
   }
 ]
