@@ -1,36 +1,5 @@
 [
   {
-    "id": "evt-forro-de-quinta-nicinha",
-    "slug": "forro-de-quinta-nicinha",
-    "titulo": "Forró de Quinta na Nicinha",
-    "descricao": "Baile semanal de forró pé de serra com trio ao vivo, roda de dança aberta a iniciantes a partir das 20h.",
-    "inicio": "2026-07-09T20:00:00-03:00",
-    "fim": "2026-07-09T23:30:00-03:00",
-    "fusoHorario": "America/Sao_Paulo",
-    "cidade": "Vitória",
-    "marcaSlug": "forro-do-nicinha",
-    "localSlug": "espaco-triangulo",
-    "ingresso": {
-      "tipo": "antecipado",
-      "precoAPartirDe": 20,
-      "link": "https://www.sympla.com.br/forro-de-quinta-nicinha",
-      "plataforma": "Sympla"
-    },
-    "enderecoTexto": null,
-    "tipo": "Baile",
-    "musica": "Música ao vivo",
-    "imagem": null,
-    "origem": "manual",
-    "idExterno": null,
-    "status": "publicado",
-    "atualizadoEm": "2026-07-01T10:00:00-03:00",
-    "linkExterno": null,
-    "coordenadas": {
-      "latitude": null,
-      "longitude": null
-    }
-  },
-  {
     "id": "evt-aula-aberta-forro-vila-velha",
     "slug": "aula-aberta-forro-vila-velha",
     "titulo": "Aula Aberta de Forró",
@@ -50,6 +19,37 @@
     "enderecoTexto": null,
     "tipo": "Aula",
     "musica": "DJ",
+    "imagem": null,
+    "origem": "manual",
+    "idExterno": null,
+    "status": "publicado",
+    "atualizadoEm": "2026-07-01T10:00:00-03:00",
+    "linkExterno": null,
+    "coordenadas": {
+      "latitude": null,
+      "longitude": null
+    }
+  },
+  {
+    "id": "evt-forro-de-quinta-nicinha",
+    "slug": "forro-de-quinta-nicinha",
+    "titulo": "Forró de Quinta na Nicinha",
+    "descricao": "Baile semanal de forró pé de serra com trio ao vivo, roda de dança aberta a iniciantes a partir das 20h.",
+    "inicio": "2026-07-09T20:00:00-03:00",
+    "fim": "2026-07-09T23:30:00-03:00",
+    "fusoHorario": "America/Sao_Paulo",
+    "cidade": "Vitória",
+    "marcaSlug": "forro-do-nicinha",
+    "localSlug": "espaco-triangulo",
+    "ingresso": {
+      "tipo": "antecipado",
+      "precoAPartirDe": 20,
+      "link": "https://www.sympla.com.br/forro-de-quinta-nicinha",
+      "plataforma": "Sympla"
+    },
+    "enderecoTexto": null,
+    "tipo": "Baile",
+    "musica": "Música ao vivo",
     "imagem": null,
     "origem": "manual",
     "idExterno": null,
@@ -186,37 +186,6 @@
     }
   },
   {
-    "id": "evt-festival-pe-de-serra-serra",
-    "slug": "festival-pe-de-serra-serra",
-    "titulo": "Festival Pé de Serra",
-    "descricao": "Edição especial com três bandas da Grande Vitória, praça de alimentação e área kids.",
-    "inicio": "2026-07-18T19:00:00-03:00",
-    "fim": "2026-07-19T00:00:00-03:00",
-    "fusoHorario": "America/Sao_Paulo",
-    "cidade": "Serra",
-    "marcaSlug": "casa-do-forro-serra",
-    "localSlug": "galpao-laranjeiras",
-    "ingresso": {
-      "tipo": "antecipado",
-      "precoAPartirDe": 35,
-      "link": "https://www.sympla.com.br/festival-pe-de-serra",
-      "plataforma": "Sympla"
-    },
-    "enderecoTexto": null,
-    "tipo": "Festival",
-    "musica": "Música ao vivo",
-    "imagem": null,
-    "origem": "manual",
-    "idExterno": null,
-    "status": "publicado",
-    "atualizadoEm": "2026-07-01T10:00:00-03:00",
-    "linkExterno": null,
-    "coordenadas": {
-      "latitude": null,
-      "longitude": null
-    }
-  },
-  {
     "id": "evt-baile-quinta-cariacica",
     "slug": "baile-quinta-cariacica",
     "titulo": "Baile de Quinta",
@@ -235,6 +204,37 @@
     },
     "enderecoTexto": null,
     "tipo": "Baile",
+    "musica": "Música ao vivo",
+    "imagem": null,
+    "origem": "manual",
+    "idExterno": null,
+    "status": "publicado",
+    "atualizadoEm": "2026-07-01T10:00:00-03:00",
+    "linkExterno": null,
+    "coordenadas": {
+      "latitude": null,
+      "longitude": null
+    }
+  },
+  {
+    "id": "evt-festival-pe-de-serra-serra",
+    "slug": "festival-pe-de-serra-serra",
+    "titulo": "Festival Pé de Serra",
+    "descricao": "Edição especial com três bandas da Grande Vitória, praça de alimentação e área kids.",
+    "inicio": "2026-07-18T19:00:00-03:00",
+    "fim": "2026-07-19T00:00:00-03:00",
+    "fusoHorario": "America/Sao_Paulo",
+    "cidade": "Serra",
+    "marcaSlug": "casa-do-forro-serra",
+    "localSlug": "galpao-laranjeiras",
+    "ingresso": {
+      "tipo": "antecipado",
+      "precoAPartirDe": 35,
+      "link": "https://www.sympla.com.br/festival-pe-de-serra",
+      "plataforma": "Sympla"
+    },
+    "enderecoTexto": null,
+    "tipo": "Festival",
     "musica": "Música ao vivo",
     "imagem": null,
     "origem": "manual",
@@ -292,6 +292,37 @@
         "Apresentar o documento com foto",
         "Chegar até as 22:30"
       ]
+    }
+  },
+  {
+    "id": "evt-forro-teste-n8n-pode-recusar",
+    "slug": "forro-teste-n8n-pode-recusar",
+    "titulo": "Forró Teste n8n (pode recusar)",
+    "descricao": "Evento de teste criado pela automação para validar o commit no eventos.json. Pode recusar sem problema.",
+    "inicio": "2026-08-20T20:00:00-03:00",
+    "fim": "2026-08-20T23:00:00-03:00",
+    "fusoHorario": "America/Sao_Paulo",
+    "cidade": "Vitória",
+    "marcaSlug": "teste-movimento-livre",
+    "localSlug": "espaco-de-testes",
+    "ingresso": {
+      "tipo": "gratuito",
+      "precoAPartirDe": null,
+      "link": null,
+      "plataforma": null
+    },
+    "enderecoTexto": "Espaço de Testes",
+    "tipo": "Baile",
+    "musica": "DJ",
+    "imagem": null,
+    "origem": "manual",
+    "idExterno": null,
+    "status": "publicado",
+    "atualizadoEm": "2026-07-15T03:09:49.848Z",
+    "linkExterno": null,
+    "coordenadas": {
+      "latitude": null,
+      "longitude": null
     }
   }
 ]
