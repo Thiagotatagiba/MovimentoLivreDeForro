@@ -339,5 +339,44 @@
         "Chegar até as 22:30"
       ]
     }
+  },
+  {
+    "id": "evt-forro-na-marina-19-07-2026",
+    "slug": "forro-na-marina-19-07-2026",
+    "titulo": "Forró da Marina - 19 de Julho",
+    "descricao": "Abertura do evento às 16h com discotecagem DJ Edu ao vivo!\n\nShow ao com @pauladara.oficial e @joaovictordoacordeon 🔥😊\n\nListas e informações no perfil oficial ou WhatsApp 27996457828\n\nVem ser feliz na Marina Bay 🌻🥳❤️\n\nATRações:\nPaula Dara\nJoão Victor do Acordeon\nDJ Edu",
+    "inicio": "2026-07-19T16:00:00-03:00",
+    "fim": "2026-07-19T22:00:00-03:00",
+    "fusoHorario": "America/Sao_Paulo",
+    "cidade": "Vitória",
+    "marcaSlug": "forro-na-marina",
+    "localSlug": "marina-bay-vix",
+    "enderecoTexto": null,
+    "tipo": "Baile",
+    "ingresso": {
+      "tipo": "antecipado",
+      "precoAPartirDe": 25,
+      "link": "https://www.clubedoingresso.com/evento/forronamarina-19-07",
+      "plataforma": "Clube do Ingresso"
+    },
+    "lineup": {
+      "bandas": [
+        "Paula Dara",
+        "João Victor do Acordeon"
+      ],
+      "djs": [
+        "DJ Edu"
+      ]
+    },
+    "imagem": "https://d4wlxs7f09dde.cloudfront.net/4c07f6818273de0eae57f6d72baeb5b1.jpg",
+    "origem": "manual",
+    "idExterno": null,
+    "linkExterno": null,
+    "coordenadas": {
+      "latitude": null,
+      "longitude": null
+    },
+    "status": "publicado",
+    "atualizadoEm": "2026-07-15T00:00:00-03:00"
   }
 ]

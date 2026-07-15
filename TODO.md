@@ -5,4 +5,5 @@
 - [x] Definir slug único e coerente com o padrão atual.
 - [x] Validar se status/ativo/publicado seguem o padrão.
 - [x] Ajustar whatsapp/instagram conforme formato do projeto.
-- [ ] Testar rapidamente no navegador (marca.html?slug=... e cards na agenda) para confirmar que aparece.
+- [x] Testar rapidamente no navegador (marca.html?slug=... e cards na agenda) para confirmar que aparece.
+

@@ -52,5 +52,16 @@
     "endereco": "Avenida Coronel José Martins de Figueiredo, 575 — Recreio dos Olhos, Tabuazeiro, Vitória/ES",
     "latitude": -20.2963281,
     "longitude": -40.3223218
+  },
+  {
+
+    "id": "loc-marina-bay-vix",
+    "slug": "marina-bay-vix",
+    "nome": "Marina Bay Vix",
+    "cidade": "Vitória",
+    "endereco": "R. Vitalino dos Santos Valadares, 115 – Santa Luiza - Vitória-ES",
+    "latitude": null,
+    "longitude": null
   }
 ]
+
