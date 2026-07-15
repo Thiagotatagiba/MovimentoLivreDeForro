@@ -293,36 +293,5 @@
         "Chegar até as 22:30"
       ]
     }
-  },
-  {
-    "id": "evt-forro-teste-n8n-pode-recusar",
-    "slug": "forro-teste-n8n-pode-recusar",
-    "titulo": "Forró Teste n8n (pode recusar)",
-    "descricao": "Evento de teste criado pela automação para validar o commit no eventos.json. Pode recusar sem problema.",
-    "inicio": "2026-08-20T20:00:00-03:00",
-    "fim": "2026-08-20T23:00:00-03:00",
-    "fusoHorario": "America/Sao_Paulo",
-    "cidade": "Vitória",
-    "marcaSlug": "teste-movimento-livre",
-    "localSlug": "espaco-de-testes",
-    "ingresso": {
-      "tipo": "gratuito",
-      "precoAPartirDe": null,
-      "link": null,
-      "plataforma": null
-    },
-    "enderecoTexto": "Espaço de Testes",
-    "tipo": "Baile",
-    "musica": "DJ",
-    "imagem": null,
-    "origem": "manual",
-    "idExterno": null,
-    "status": "publicado",
-    "atualizadoEm": "2026-07-15T03:09:49.848Z",
-    "linkExterno": null,
-    "coordenadas": {
-      "latitude": null,
-      "longitude": null
-    }
   }
 ]
