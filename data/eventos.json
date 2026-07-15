@@ -260,7 +260,7 @@
     "localSlug": "recreio-dos-olhos",
     "ingresso": {
       "tipo": "antecipado",
-      "precoAPartirDe": null,
+      "precoAPartirDe": 30,
       "link": "https://www.sympla.com.br/evento/forrozada-boa---quero--itaunas/3499505",
       "plataforma": "Sympla"
     },
@@ -279,11 +279,11 @@
     "origem": "manual",
     "idExterno": "3499505",
     "status": "publicado",
-    "atualizadoEm": "2026-07-15T16:35:31.808Z",
+    "atualizadoEm": "2026-07-15T16:39:14.836Z",
     "linkExterno": null,
     "coordenadas": {
-      "latitude": null,
-      "longitude": null
+      "latitude": -20.2963281,
+      "longitude": -40.3223218
     },
     "aniversariantes": {
       "titulo": "Aniversariantes de Agosto",
