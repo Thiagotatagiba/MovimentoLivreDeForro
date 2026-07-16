@@ -183,7 +183,8 @@ No futuro terá página própria contendo:
 - Instagram;
 - Spotify;
 - agenda;
-- eventos realizados.
+- eventos realizados;
+- Próximos eventos.
 
 ---
 
