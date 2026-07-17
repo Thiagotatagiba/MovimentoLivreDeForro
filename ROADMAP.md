@@ -26,14 +26,16 @@ sempre mantendo a Agenda como o coração do projeto.
 
 1. **Finalizar a Agenda** (UX refinada) — concluída
 2. **Marcas** — modelo de dados e página de perfil concluídos
-3. **Locais** — próxima
-4. Professores
-5. Bandas
-6. Notícias
-7. Mapa interativo
-8. Sincronização com Google Calendar
-9. Painel Administrativo
-10. Comunidade (perfis, favoritos, avaliações, notificações, check-ins)
+3. **Cadastro de Eventos** (formulário administrativo) — próxima. Resolve o gargalo real: hoje cadastrar um evento significa editar `data/eventos.json` manualmente numa conversa.
+4. **Festivais** — nova entidade (Festival → Eventos), pra não fazer o Evento carregar o peso de representar dias de festival sozinho
+5. **Bandas e DJs no line-up** — fortalecer o que já existe (`evento.lineup`) antes de criar perfis completos
+6. **Google Calendar** — só depois do formulário existir, sem ele não há o que sincronizar
+7. Locais
+8. Mapa interativo e busca global
+9. Professores
+10. Notícias
+11. Painel Administrativo completo (CRUD de marcas/locais/festivais/bandas)
+12. Comunidade (perfis, favoritos, avaliações, notificações, check-ins)
 
 ## Etapa 1 — MVP (concluída)
 
@@ -178,42 +180,122 @@ reais que só se veem fora do ambiente de desenvolvimento:
 - [x] Trocado o emoji de calendário (📅) por texto simples na meta do Hero — em alguns Androids esse emoji renderiza com um número de dia fixo embutido pela fonte do sistema, o que parecia (incorretamente) uma data errada ao lado da data real do evento.
 - [x] **Lupa de busca no header, em todas as páginas** — na própria Agenda, leva até o campo de busca que já existe ali (sem duplicar). Nas demais páginas, abre um mini-painel que leva pra `agenda.html?busca=...` — a mesma busca de sempre (evento e marca), zero lógica nova.
 
-## Etapa 4 — Locais
+## Etapa 4 — Cadastro de Eventos (formulário administrativo)
+
+Antes de pensar em sincronizar com fontes externas, resolver o problema mais
+urgente: hoje, cadastrar um evento significa eu editar `data/eventos.json`
+manualmente numa conversa. Isso não escala pra nenhum produtor real.
+
+- Formulário simples (sem login ainda — é um único administrador abrindo uma página) com os campos que já existem no modelo: título, marca, festival (opcional, ver Etapa 5), data, horário, cidade, local, imagem, descrição, ingresso (tipo/preço/link/plataforma), bandas, DJs, aniversariantes
+- Validação dos dados antes de salvar (datas válidas, campos obrigatórios, slugs únicos)
+- Gera o JSON no formato que `eventosRepository` já espera — nenhuma mudança na camada de serviço ou nas páginas
+- Preparar a estrutura pra múltiplos administradores no futuro (ex. campo `criadoPor`), mesmo que hoje só uma pessoa use
+- Sem banco de dados ainda — continua sendo arquivo estático, só para de ser editado à mão
+
+## Etapa 5 — Festivais (nova entidade)
+
+Festival não é um "tipo de Evento" — é uma entidade acima dele, que agrupa
+vários eventos ao longo de um ou mais dias (ex. FENFIT, com workshops,
+shows e bailes espalhados por 3 dias). Modelar isso como um Evento comum
+com um campo "múltiplos dias" quebraria a mesma hora que um festival de
+verdade fosse cadastrado.
+
+```
+Festival
+ └── Eventos (cada um com seu próprio dia/horário, referenciando o festival)
+```
+
+- `data/festivais.json`: `id`, `slug`, `nome`, `cidade`, `dataInicio`, `dataFim`, `banner`, `descricao`, `instagram`, `site`
+- `evento.festivalSlug` (opcional) — um evento pode ou não pertencer a um festival; a grande maioria continua sem
+- `js/repositories/festivaisRepository.js` + `js/services/festivaisService.js`, mesmo contrato dos demais
+- O formulário de cadastro de eventos (Etapa 4) ganha o campo opcional "Festival"
+
+## Etapa 6 — Página do Festival
+
+- Mesmo molde da página da Marca (banner com gradiente, identidade, descrição)
+- Diferencial: programação agrupada por dia, não uma lista plana — cada dia mostra os eventos daquele festival nele
+- "Comprar passaporte" só faz sentido quando existir um ingresso do próprio festival (separado do ingresso de cada evento individual) — decisão de arquitetura pra tomar quando chegar a hora, não um campo especulativo agora
+
+## Etapa 7 — Bandas e DJs no line-up
+
+Hoje `evento.lineup.bandas`/`djs` são só nomes soltos (string). Antes de
+criar páginas de perfil completas, fortalecer o que já existe:
+
+- Revisar se o formulário da Etapa 4 cobre bem múltiplas bandas/DJs por evento
+- Decidir se `bandas`/`djs` devem virar referências (`bandaSlug`) em vez de texto livre — decisão a tomar **antes** de cadastrar muitos eventos novos com line-up, pra não repetir a migração retroativa que já foi necessária com Local/Marca
+- Perfis completos de Banda e DJ (foto, Instagram, histórico) ficam para depois — só valem a pena quando esse volume de dado já existir
+
+## Etapa 8 — Google Calendar como fonte de eventos
+
+- Só depois do formulário (Etapa 4) existir — sem ele, não há o que sincronizar nem comparar
+- Novo repositório `googleCalendarEventosRepository.js`, mesmo contrato do atual — mapeamento completo já documentado em `docs/MODELO_DE_DADOS.md`
+- Decisão em aberto a resolver no início desta etapa (não no código): o Calendar vira a fonte principal e o site só lê, ou é uma fonte adicional que o formulário também alimenta?
+
+## Etapa 9 — Locais
 
 - Página de listagem + perfil individual de cada local físico
 - Mostrar todas as marcas que já promoveram eventos ali (`local` 1:N `marca`, via eventos)
+- Deliberadamente depois de Festivais e Bandas/DJs: quem chega ao site raramente procura "quero conhecer esse salão" — chega pelo evento, e a página do local é consequência, não porta de entrada
 
-## Etapa 5 — Professores
+## Etapa 10 — Mapa interativo e busca global
 
-## Etapa 6 — Bandas
+- Mapa com todos os eventos (usa `latitude`/`longitude` já preparados desde a Etapa 2)
+- Busca global unificada (eventos + marcas + festivais + locais + bandas)
 
-## Etapa 7 — Notícias, Mapa, Busca global
+## Etapa 11 — Professores
+
+- Adiada de propósito: hoje não existe volume de aulas suficiente pra justificar um módulo completo. Faz sentido quando houver agenda de aulas, workshops e festivais o bastante pra alimentar perfis de verdade.
+
+## Etapa 12 — Notícias
 
 - Blog simples (notícias, entrevistas, cobertura de eventos)
-- Mapa interativo com todos os eventos (usa `latitude`/`longitude` já preparados)
-- Busca global unificada (eventos + marcas + locais + professores + bandas)
 
-## Etapa 8 — Sincronização com Google Calendar
+## Etapa 13 — Painel Administrativo completo
 
-- Novo repositório `googleCalendarEventosRepository.js`, mesmo contrato do atual — mapeamento completo já documentado em `docs/MODELO_DE_DADOS.md`
-
-## Etapa 9 — Painel Administrativo
-
-- CRUD de eventos, marcas, locais, professores, bandas, notícias
+- CRUD de marcas, locais, festivais, bandas, notícias (eventos já tem o próprio desde a Etapa 4)
 - Estados de evento: rascunho / publicado / cancelado (campo `status` já existe no modelo)
 - É o momento natural para migrar `js/repositories/*` de JSON estático para uma API real
 
-## Etapa 10 — Comunidade
+## Etapa 14 — Comunidade
 
 - Login, favoritos, agenda personalizada, notificações
 - Organizadores autocadastrando eventos (com moderação)
 - Perfis com seguidores, avaliações, comentários, check-ins, fotos enviadas pela comunidade
 - **Migração para Supabase (ou similar)**: troca-se a implementação de `js/repositories/*`; `js/services/*` e todas as páginas continuam iguais
 
+## Próximas grandes entidades (visão de modelagem)
+
+```
+Movimento Livre de Forró
+
+Festival
+ └── Eventos (via evento.festivalSlug)
+
+Marca
+ └── Eventos (via evento.marcaSlug)
+
+Evento
+ ├── Local
+ ├── Bandas / DJs (line-up)
+ ├── Ingresso
+ └── Festival (opcional)
+
+Local
+Banda
+DJ
+Professor
+Usuário (futuro — login)
+```
+
+Festival não é um tipo de Evento — é uma entidade própria que agrupa vários
+eventos ao longo de um ou mais dias. Registrar essa distinção aqui evita
+decisão de modelagem improvisada quando chegar a hora de cadastrar um
+festival de verdade.
+
 ## Decisões de arquitetura que não devem ser revertidas sem motivo forte
 
 - **Camada de serviço obrigatória**: nenhuma página faz `fetch` direto de JSON. Sempre `eventosService` / `locaisService` / `marcasService`.
 - **`.event-card` é único**: variações de conteúdo (CTA, badge, compacto) são parâmetros do componente (`criarEventCard(evento, contexto)`), nunca uma cópia dele.
-- **`js/access.js` centraliza a lógica do botão de acesso**: novos estados (gratuito, couvert, pagamento local, lista de convidados) se ativam trocando `ativo: false → true`, sem tocar em `evento.js`.
+- **`js/ingresso.js` centraliza a lógica do botão de ação**: novos estados (gratuito, couvert, pagamento local, lista de convidados, esgotado) se ativam trocando `ativo: false → true`, sem tocar em `evento.js`.
 - **Local, Marca e Evento são entidades distintas**: um Local é o endereço; uma Marca é a identidade permanente de um baile; um Evento é uma ocorrência temporária. Evento referencia Marca e Local diretamente — nunca por herança.
 - **Sem links mortos no menu ou no conteúdo**: uma seção só vira link (no menu ou dentro de uma página) quando a página de destino existir de fato. Até lá, mostra-se como texto simples.
