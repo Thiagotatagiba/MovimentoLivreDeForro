@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cadastro de Locais — Movimento Livre de Forró</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #211a13; --ink-soft: #4a3f33; --muted: #7a6f5d;
+    --paper: #f4eee1; --surface: #ffffff; --sand: #ddd0b4; --sand-line: #e7ddc7;
+    --pine: #26392b; --pine-strong: #1a2820; --pine-tint: #e7ede4;
+    --clay: #b54a2c; --clay-tint: #f7e6dd;
+    --font-display: "Fraunces", Georgia, serif;
+    --font-body: "Work Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px;
+    --shadow-card: 0 1px 2px rgba(33,26,19,.06), 0 8px 24px -12px rgba(33,26,19,.18);
+    --shadow-pop: 0 12px 32px -8px rgba(33,26,19,.28);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font-body); color: var(--ink); background: var(--paper); line-height: 1.5; }
+  .wrap { max-width: 1040px; margin-inline: auto; padding: 32px 20px 80px; }
+  h1 { font-family: var(--font-display); font-size: 1.75rem; font-weight: 600; margin: 0 0 4px; }
+  .subtitle { color: var(--ink-soft); margin: 0 0 28px; max-width: 60ch; }
+  .toolbar {
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    padding: 16px; background: var(--surface); border: 1px solid var(--sand-line);
+    border-radius: var(--radius-md); box-shadow: var(--shadow-card); margin-bottom: 24px;
+  }
+  .contador { margin-left: auto; font-size: .85rem; color: var(--muted); font-weight: 600; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    padding: 10px 18px; border-radius: var(--radius-sm); font-weight: 600; font-size: .9rem;
+    border: 1px solid transparent; transition: background .15s ease, opacity .15s ease;
+  }
+  .btn-primary { background: var(--pine); color: #fff; }
+  .btn-primary:hover { background: var(--pine-strong); }
+  .btn-primary:disabled { opacity: .45; cursor: not-allowed; }
+  .btn-ghost { background: transparent; border-color: var(--sand-line); color: var(--ink); }
+  .btn-ghost:hover { border-color: var(--pine); color: var(--pine); }
+  .btn-sm { padding: 6px 12px; font-size: .78rem; }
+  .btn-danger-ghost { background: transparent; border: 1px solid var(--sand-line); color: var(--clay); }
+  .btn-danger-ghost:hover { border-color: var(--clay); }
+
+  .empty-state {
+    text-align: center; padding: 56px 20px; color: var(--muted);
+    background: var(--surface); border: 1px dashed var(--sand-line); border-radius: var(--radius-md);
+  }
+  .empty-state h3 { font-family: var(--font-display); color: var(--ink); font-size: 1.25rem; margin: 0 0 8px; }
+
+  .mensagem {
+    padding: 12px 16px; border-radius: var(--radius-sm); font-size: .88rem; font-weight: 600; margin-bottom: 16px;
+  }
+  .mensagem-erro { background: var(--clay-tint); color: var(--clay); }
+  .mensagem-ok { background: var(--pine-tint); color: var(--pine); }
+
+  table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-card); }
+  thead th {
+    text-align: left; font-size: .72rem; text-transform: uppercase; letter-spacing: .05em;
+    color: var(--muted); padding: 12px 14px; border-bottom: 1px solid var(--sand-line); background: var(--pine-tint);
+  }
+  tbody td { padding: 12px 14px; border-bottom: 1px solid var(--sand-line); font-size: .9rem; vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: #faf7f0; }
+  .nome-local { font-weight: 700; }
+  .tag-incompleto {
+    display: inline-block; margin-top: 3px; font-size: .68rem; font-weight: 700;
+    color: var(--clay); background: var(--clay-tint); padding: 2px 8px; border-radius: 999px;
+  }
+  .pill { display: inline-flex; align-items: center; gap: 5px; font-size: .78rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; cursor: pointer; border: none; }
+  .pill-ativo { background: var(--pine-tint); color: var(--pine); }
+  .pill-inativo { background: var(--sand); color: var(--ink-soft); }
+  .linha-acoes { display: flex; gap: 8px; }
+
+  /* Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(33,26,19,.5);
+    align-items: flex-start;
+    justify-content: center;
+    padding: 32px 16px;
+    overflow-y: auto;
+    z-index: 50;
+}
+
+.modal-overlay[hidden] {
+    display: none !important;
+}
+
+.modal-overlay:not([hidden]) {
+    display: flex;
+}
+  .modal {
+    background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-pop);
+    max-width: 640px; width: 100%; padding: 28px; margin-bottom: 32px;
+  }
+  .modal h2 { font-family: var(--font-display); font-size: 1.4rem; margin: 0 0 4px; }
+  .modal .modal-sub { color: var(--muted); font-size: .85rem; margin: 0 0 20px; }
+  fieldset { border: 1px solid var(--sand-line); border-radius: var(--radius-md); padding: 16px; margin: 0 0 16px; }
+  legend { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--pine); padding: 0 6px; }
+  .campo { margin-bottom: 12px; }
+  .campo:last-child { margin-bottom: 0; }
+  .campo label { display: block; font-size: .82rem; font-weight: 600; margin-bottom: 4px; color: var(--ink-soft); }
+  .campo .obrigatorio { color: var(--clay); }
+  .campo input[type=text], .campo input[type=url], .campo input[type=tel], .campo select, .campo textarea {
+    width: 100%; padding: 9px 12px; border-radius: var(--radius-sm); border: 1px solid var(--sand-line);
+    font: inherit; font-size: .9rem; background: var(--paper); color: var(--ink);
+  }
+  .campo input:focus, .campo select:focus, .campo textarea:focus { outline: 2px solid var(--pine); border-color: var(--pine); }
+  .campo textarea { resize: vertical; min-height: 70px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  @media (max-width: 560px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  .campo-erro { border-color: var(--clay) !important; }
+  .erro-texto { color: var(--clay); font-size: .76rem; margin-top: 3px; display: none; }
+  .campo.invalido .erro-texto { display: block; }
+
+  .checkbox-linha { display: flex; align-items: center; gap: 8px; }
+  .checkbox-linha input { width: 16px; height: 16px; }
+  .checkbox-linha label { margin: 0; }
+
+  .internos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; font-size: .82rem; color: var(--muted); }
+  .internos-grid strong { color: var(--ink-soft); }
+
+  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+
+  details.avancado { border: 1px dashed var(--sand-line); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 16px; }
+  details.avancado summary { cursor: pointer; font-weight: 700; font-size: .82rem; color: var(--ink-soft); }
+  details.avancado[open] summary { margin-bottom: 12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>📍 Cadastro de Locais</h1>
+  <p class="subtitle">Ferramenta interna do Movimento Livre de Forró. Carregue o <code>locais.json</code> atual, edite ou adicione locais, e baixe o arquivo atualizado para substituir em <code>data/locais.json</code>.</p>
+
+  <div class="toolbar">
+    <label class="btn btn-ghost">
+      📂 Carregar locais.json
+      <input type="file" id="input-arquivo" accept="application/json" hidden />
+    </label>
+    <button type="button" class="btn btn-primary" id="btn-novo">➕ Adicionar novo local</button>
+    <button type="button" class="btn btn-primary" id="btn-baixar" disabled>💾 Baixar JSON editado</button>
+    <span class="contador" id="contador"></span>
+  </div>
+
+  <div id="area-mensagem"></div>
+
+  <div id="lista-vazia" class="empty-state">
+    <h3>Nenhum local carregado ainda</h3>
+    <p>Carregue o <code>data/locais.json</code> existente para editar, ou comece um cadastro novo do zero.</p>
+  </div>
+
+  <div id="lista-wrap" hidden>
+    <table>
+      <thead>
+        <tr>
+          <th>Local</th>
+          <th>Tipo</th>
+          <th>Cidade / UF</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tabela-corpo"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-overlay" hidden>
+  <div class="modal">
+    <h2 id="modal-titulo">Novo local</h2>
+    <p class="modal-sub">Campos marcados com <span class="obrigatorio">*</span> são obrigatórios.</p>
+    <form id="form-local" novalidate>
+
+      <fieldset>
+        <legend>Informações básicas</legend>
+        <div class="campo" id="campo-nome">
+          <label for="f-nome">Nome <span class="obrigatorio">*</span></label>
+          <input type="text" id="f-nome" placeholder="Ex.: Marina Bay Vix" />
+          <p class="erro-texto">Informe o nome do local.</p>
+        </div>
+        <div class="grid-2">
+          <div class="campo" id="campo-tipo">
+            <label for="f-tipo">Tipo de local <span class="obrigatorio">*</span></label>
+            <select id="f-tipo">
+              <option value="">Selecione…</option>
+              <option>Bar</option>
+              <option>Casa de Shows</option>
+              <option>Cerimonial</option>
+              <option>Clube</option>
+              <option>Praça</option>
+              <option>Centro Cultural</option>
+              <option>Espaço de Eventos</option>
+              <option>Salão de Festas</option>
+              <option value="Outro">Outro…</option>
+            </select>
+            <p class="erro-texto">Selecione o tipo de local.</p>
+          </div>
+          <div class="campo" id="campo-tipo-outro" hidden>
+            <label for="f-tipo-outro">Qual tipo?</label>
+            <input type="text" id="f-tipo-outro" placeholder="Ex.: Sítio, Galpão…" />
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Endereço <span class="obrigatorio">*</span></legend>
+        <div class="grid-2">
+          <div class="campo" id="campo-cep">
+            <label for="f-cep">CEP</label>
+            <input type="text" id="f-cep" placeholder="29100-000" />
+            <p class="erro-texto">Informe o CEP.</p>
+          </div>
+          <div class="campo" id="campo-numero">
+            <label for="f-numero">Número</label>
+            <input type="text" id="f-numero" placeholder="115" />
+            <p class="erro-texto">Informe o número (ou "S/N").</p>
+          </div>
+        </div>
+        <div class="campo" id="campo-logradouro">
+          <label for="f-logradouro">Logradouro</label>
+          <input type="text" id="f-logradouro" placeholder="Rua, avenida…" />
+          <p class="erro-texto">Informe o logradouro.</p>
+        </div>
+        <div class="campo">
+          <label for="f-complemento">Complemento</label>
+          <input type="text" id="f-complemento" placeholder="Bloco, sala… (opcional)" />
+        </div>
+        <div class="grid-3">
+          <div class="campo" id="campo-bairro">
+            <label for="f-bairro">Bairro</label>
+            <input type="text" id="f-bairro" />
+            <p class="erro-texto">Informe o bairro.</p>
+          </div>
+          <div class="campo" id="campo-cidade">
+            <label for="f-cidade">Cidade</label>
+            <input type="text" id="f-cidade" list="lista-cidades" />
+            <datalist id="lista-cidades">
+              <option value="Vitória"></option>
+              <option value="Vila Velha"></option>
+              <option value="Serra"></option>
+              <option value="Cariacica"></option>
+              <option value="Viana"></option>
+              <option value="Guarapari"></option>
+            </datalist>
+            <p class="erro-texto">Informe a cidade.</p>
+          </div>
+          <div class="campo" id="campo-estado">
+            <label for="f-estado">Estado</label>
+            <input type="text" id="f-estado" value="ES" maxlength="2" style="text-transform:uppercase" />
+            <p class="erro-texto">Informe a UF.</p>
+          </div>
+        </div>
+      </fieldset>
+
+      <details class="avancado">
+        <summary>Coordenadas (opcional — usadas no futuro mapa interativo)</summary>
+        <div class="grid-2">
+          <div class="campo">
+            <label for="f-lat">Latitude</label>
+            <input type="text" id="f-lat" placeholder="-20.3181" />
+          </div>
+          <div class="campo">
+            <label for="f-lng">Longitude</label>
+            <input type="text" id="f-lng" placeholder="-40.3378" />
+          </div>
+        </div>
+      </details>
+
+      <fieldset>
+        <legend>Opcionais</legend>
+        <div class="grid-2">
+          <div class="campo">
+            <label for="f-foto-capa">📷 Foto de capa (link)</label>
+            <input type="url" id="f-foto-capa" placeholder="https://…" />
+          </div>
+          <div class="campo">
+            <label for="f-foto-perfil">📷 Foto de perfil (link)</label>
+            <input type="url" id="f-foto-perfil" placeholder="https://…" />
+          </div>
+        </div>
+        <div class="campo">
+          <label for="f-maps">📍 Link do Google Maps</label>
+          <input type="url" id="f-maps" placeholder="https://maps.app.goo.gl/…" />
+        </div>
+        <div class="grid-2">
+          <div class="campo">
+            <label for="f-instagram">📱 Instagram</label>
+            <input type="url" id="f-instagram" placeholder="https://instagram.com/…" />
+          </div>
+          <div class="campo">
+            <label for="f-site">🌐 Site</label>
+            <input type="url" id="f-site" placeholder="https://…" />
+          </div>
+        </div>
+        <div class="campo">
+          <label for="f-telefone">📞 Telefone / WhatsApp</label>
+          <input type="tel" id="f-telefone" placeholder="(27) 99999-0000" />
+        </div>
+        <div class="campo">
+          <label for="f-descricao">📝 Descrição</label>
+          <textarea id="f-descricao" placeholder="Uma breve descrição do local…"></textarea>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Interno</legend>
+        <div class="checkbox-linha" style="margin-bottom:12px;">
+          <input type="checkbox" id="f-ativo" checked />
+          <label for="f-ativo">Local ativo (aparece nas listagens)</label>
+        </div>
+        <div class="internos-grid">
+          <div><strong>ID:</strong> <span id="info-id">—</span></div>
+          <div><strong>Slug:</strong> <span id="info-slug">—</span></div>
+          <div><strong>Criado em:</strong> <span id="info-criado">—</span></div>
+          <div><strong>Atualizado em:</strong> <span id="info-atualizado">—</span></div>
+        </div>
+      </fieldset>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="btn-cancelar">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Salvar local</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  let locais = [];
+  let editandoIndex = null; // null = novo
+
+  const $ = (sel) => document.querySelector(sel);
+  const inputArquivo = $('#input-arquivo');
+  const btnNovo = $('#btn-novo');
+  const btnBaixar = $('#btn-baixar');
+  const contador = $('#contador');
+  const listaVazia = $('#lista-vazia');
+  const listaWrap = $('#lista-wrap');
+  const tabelaCorpo = $('#tabela-corpo');
+  const areaMensagem = $('#area-mensagem');
+  const overlay = $('#modal-overlay');
+  const form = $('#form-local');
+  const modalTitulo = $('#modal-titulo');
+
+  function mostrarMensagem(texto, tipo) {
+    areaMensagem.innerHTML = `<div class="mensagem mensagem-${tipo}">${texto}</div>`;
+    setTimeout(() => { areaMensagem.innerHTML = ''; }, 5000);
+  }
+
+  function slugify(str) {
+    return (str || '')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase().trim()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  }
+
+  function slugUnico(base, ignorarIndex) {
+    let slug = base || 'local';
+    let i = 2;
+    while (locais.some((l, idx) => l.slug === slug && idx !== ignorarIndex)) {
+      slug = `${base}-${i++}`;
+    }
+    return slug;
+  }
+
+  function enderecoIncompleto(local) {
+    const e = local.endereco || {};
+    return !e.logradouro || !e.numero || !e.bairro || !e.cidade || !e.estado;
+  }
+
+  function normalizarLocalAntigo(bruto) {
+    // Migra o formato antigo (endereco: string, sem tipo/ativo) para o novo schema estruturado,
+    // sem inventar dado: o que não dá pra separar automaticamente vai para "logradouro" como está.
+    if (bruto.endereco && typeof bruto.endereco === 'object') return bruto; // já no formato novo
+    return {
+      id: bruto.id || `loc-${bruto.slug || slugify(bruto.nome)}`,
+      slug: bruto.slug || slugify(bruto.nome),
+      nome: bruto.nome || '',
+      tipo: bruto.tipo || '',
+      endereco: {
+        cep: '',
+        logradouro: bruto.endereco || '',
+        numero: '',
+        complemento: '',
+        bairro: '',
+        cidade: bruto.cidade || '',
+        estado: bruto.estado || 'ES',
+      },
+      latitude: bruto.latitude ?? null,
+      longitude: bruto.longitude ?? null,
+      mapsLink: bruto.mapsLink ?? null,
+      fotoCapa: bruto.fotoCapa ?? null,
+      fotoPerfil: bruto.fotoPerfil ?? null,
+      instagram: bruto.instagram ?? null,
+      site: bruto.site ?? null,
+      telefone: bruto.telefone ?? null,
+      descricao: bruto.descricao ?? null,
+      ativo: bruto.ativo ?? true,
+      origem: bruto.origem || 'manual',
+      criadoEm: bruto.criadoEm || null,
+      atualizadoEm: bruto.atualizadoEm || null,
+    };
+  }
+
+  function renderLista() {
+    contador.textContent = locais.length ? `${locais.length} local(is) carregado(s)` : '';
+    btnBaixar.disabled = locais.length === 0;
+
+    if (locais.length === 0) {
+      listaVazia.hidden = false;
+      listaWrap.hidden = true;
+      return;
+    }
+    listaVazia.hidden = true;
+    listaWrap.hidden = false;
+
+    tabelaCorpo.innerHTML = locais.map((local, idx) => {
+      const incompleto = enderecoIncompleto(local);
+      const cidadeUf = [local.endereco?.cidade, local.endereco?.estado].filter(Boolean).join(' / ') || '—';
+      return `
+        <tr>
+          <td>
+            <div class="nome-local">${local.nome || '(sem nome)'}</div>
+            ${incompleto ? '<span class="tag-incompleto">Endereço incompleto</span>' : ''}
+          </td>
+          <td>${local.tipo || '<span style="color:var(--clay)">não definido</span>'}</td>
+          <td>${cidadeUf}</td>
+          <td>
+            <button type="button" class="pill ${local.ativo ? 'pill-ativo' : 'pill-inativo'}" data-toggle="${idx}">
+              ${local.ativo ? '● Ativo' : '○ Inativo'}
+            </button>
+          </td>
+          <td>
+            <div class="linha-acoes">
+              <button type="button" class="btn btn-ghost btn-sm" data-editar="${idx}">✏️ Editar</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    tabelaCorpo.querySelectorAll('[data-editar]').forEach((btn) => {
+      btn.addEventListener('click', () => abrirModal(Number(btn.dataset.editar)));
+    });
+    tabelaCorpo.querySelectorAll('[data-toggle]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.dataset.toggle);
+        locais[idx].ativo = !locais[idx].ativo;
+        locais[idx].atualizadoEm = new Date().toISOString();
+        renderLista();
+      });
+    });
+  }
+
+  function limparErros() {
+    form.querySelectorAll('.campo.invalido').forEach((c) => c.classList.remove('invalido'));
+  }
+
+  function marcarErro(campoId) {
+    $(`#${campoId}`).classList.add('invalido');
+  }
+
+  function abrirModal(index) {
+    editandoIndex = index;
+    limparErros();
+    form.reset();
+    $('#f-estado').value = 'ES';
+    $('#f-ativo').checked = true;
+    $('#campo-tipo-outro').hidden = true;
+
+    if (index === null) {
+      modalTitulo.textContent = 'Novo local';
+      $('#info-id').textContent = '(gerado ao salvar)';
+      $('#info-slug').textContent = '(gerado ao salvar)';
+      $('#info-criado').textContent = '(agora)';
+      $('#info-atualizado').textContent = '(agora)';
+    } else {
+      const l = locais[index];
+      modalTitulo.textContent = `Editar: ${l.nome}`;
+      $('#f-nome').value = l.nome || '';
+      const tiposPadrao = ['Bar','Casa de Shows','Cerimonial','Clube','Praça','Centro Cultural','Espaço de Eventos','Salão de Festas'];
+      if (l.tipo && !tiposPadrao.includes(l.tipo)) {
+        $('#f-tipo').value = 'Outro';
+        $('#campo-tipo-outro').hidden = false;
+        $('#f-tipo-outro').value = l.tipo;
+      } else {
+        $('#f-tipo').value = l.tipo || '';
+      }
+      const e = l.endereco || {};
+      $('#f-cep').value = e.cep || '';
+      $('#f-logradouro').value = e.logradouro || '';
+      $('#f-numero').value = e.numero || '';
+      $('#f-complemento').value = e.complemento || '';
+      $('#f-bairro').value = e.bairro || '';
+      $('#f-cidade').value = e.cidade || '';
+      $('#f-estado').value = e.estado || 'ES';
+      $('#f-lat').value = l.latitude ?? '';
+      $('#f-lng').value = l.longitude ?? '';
+      $('#f-foto-capa').value = l.fotoCapa || '';
+      $('#f-foto-perfil').value = l.fotoPerfil || '';
+      $('#f-maps').value = l.mapsLink || '';
+      $('#f-instagram').value = l.instagram || '';
+      $('#f-site').value = l.site || '';
+      $('#f-telefone').value = l.telefone || '';
+      $('#f-descricao').value = l.descricao || '';
+      $('#f-ativo').checked = l.ativo !== false;
+      $('#info-id').textContent = l.id || '—';
+      $('#info-slug').textContent = l.slug || '—';
+      $('#info-criado').textContent = l.criadoEm ? new Date(l.criadoEm).toLocaleString('pt-BR') : 'não informado';
+      $('#info-atualizado').textContent = l.atualizadoEm ? new Date(l.atualizadoEm).toLocaleString('pt-BR') : 'não informado';
+    }
+    overlay.hidden = false;
+    $('#f-nome').focus();
+  }
+
+  function fecharModal() {
+    overlay.hidden = true;
+    editandoIndex = null;
+  }
+
+  $('#f-tipo').addEventListener('change', (e) => {
+    $('#campo-tipo-outro').hidden = e.target.value !== 'Outro';
+  });
+
+  btnNovo.addEventListener('click', () => abrirModal(null));
+  $('#btn-cancelar').addEventListener('click', fecharModal);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) fecharModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !overlay.hidden) fecharModal(); });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    limparErros();
+
+    const nome = $('#f-nome').value.trim();
+    const tipoSelecionado = $('#f-tipo').value;
+    const tipo = tipoSelecionado === 'Outro' ? $('#f-tipo-outro').value.trim() : tipoSelecionado;
+    const cep = $('#f-cep').value.trim();
+    const logradouro = $('#f-logradouro').value.trim();
+    const numero = $('#f-numero').value.trim();
+    const bairro = $('#f-bairro').value.trim();
+    const cidade = $('#f-cidade').value.trim();
+    const estado = $('#f-estado').value.trim().toUpperCase();
+
+    let valido = true;
+    if (!nome) { marcarErro('campo-nome'); valido = false; }
+    if (!tipo) { marcarErro('campo-tipo'); valido = false; }
+    if (!cep) { marcarErro('campo-cep'); valido = false; }
+    if (!logradouro) { marcarErro('campo-logradouro'); valido = false; }
+    if (!numero) { marcarErro('campo-numero'); valido = false; }
+    if (!bairro) { marcarErro('campo-bairro'); valido = false; }
+    if (!cidade) { marcarErro('campo-cidade'); valido = false; }
+    if (!estado) { marcarErro('campo-estado'); valido = false; }
+
+    if (!valido) {
+      mostrarMensagem('Preencha os campos obrigatórios destacados.', 'erro');
+      return;
+    }
+
+    const agora = new Date().toISOString();
+    const slugBase = slugify(nome);
+
+    if (editandoIndex === null) {
+      const slug = slugUnico(slugBase, null);
+      locais.push({
+        id: `loc-${slug}`,
+        slug,
+        nome, tipo,
+        endereco: { cep, logradouro, numero, complemento: $('#f-complemento').value.trim() || null, bairro, cidade, estado },
+        latitude: $('#f-lat').value.trim() ? Number($('#f-lat').value.trim()) : null,
+        longitude: $('#f-lng').value.trim() ? Number($('#f-lng').value.trim()) : null,
+        mapsLink: $('#f-maps').value.trim() || null,
+        fotoCapa: $('#f-foto-capa').value.trim() || null,
+        fotoPerfil: $('#f-foto-perfil').value.trim() || null,
+        instagram: $('#f-instagram').value.trim() || null,
+        site: $('#f-site').value.trim() || null,
+        telefone: $('#f-telefone').value.trim() || null,
+        descricao: $('#f-descricao').value.trim() || null,
+        ativo: $('#f-ativo').checked,
+        origem: 'manual',
+        criadoEm: agora,
+        atualizadoEm: agora,
+      });
+      mostrarMensagem(`"${nome}" adicionado.`, 'ok');
+    } else {
+      const l = locais[editandoIndex];
+      const slug = slugBase === slugify(l.nome) ? l.slug : slugUnico(slugBase, editandoIndex);
+      Object.assign(l, {
+        slug, nome, tipo,
+        endereco: { cep, logradouro, numero, complemento: $('#f-complemento').value.trim() || null, bairro, cidade, estado },
+        latitude: $('#f-lat').value.trim() ? Number($('#f-lat').value.trim()) : null,
+        longitude: $('#f-lng').value.trim() ? Number($('#f-lng').value.trim()) : null,
+        mapsLink: $('#f-maps').value.trim() || null,
+        fotoCapa: $('#f-foto-capa').value.trim() || null,
+        fotoPerfil: $('#f-foto-perfil').value.trim() || null,
+        instagram: $('#f-instagram').value.trim() || null,
+        site: $('#f-site').value.trim() || null,
+        telefone: $('#f-telefone').value.trim() || null,
+        descricao: $('#f-descricao').value.trim() || null,
+        ativo: $('#f-ativo').checked,
+        criadoEm: l.criadoEm || agora,
+        atualizadoEm: agora,
+      });
+      mostrarMensagem(`"${nome}" atualizado.`, 'ok');
+    }
+
+    fecharModal();
+    renderLista();
+  });
+
+  inputArquivo.addEventListener('change', (e) => {
+    const arquivo = e.target.files[0];
+    if (!arquivo) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const dados = JSON.parse(reader.result);
+        if (!Array.isArray(dados)) throw new Error('O arquivo precisa ser uma lista de locais.');
+        locais = dados.map(normalizarLocalAntigo);
+        renderLista();
+        mostrarMensagem(`${locais.length} local(is) carregado(s) de "${arquivo.name}".`, 'ok');
+      } catch (err) {
+        mostrarMensagem(`Não foi possível carregar o arquivo: ${err.message}`, 'erro');
+      }
+    };
+    reader.readAsText(arquivo);
+    inputArquivo.value = '';
+  });
+
+  btnBaixar.addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(locais, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'locais.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  renderLista();
+</script>
+</body>
+</html>
