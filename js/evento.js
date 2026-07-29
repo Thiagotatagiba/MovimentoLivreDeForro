@@ -2,7 +2,7 @@ import { eventosService } from "./services/eventosService.js";
 import { locaisService } from "./services/locaisService.js";
 import { marcasService } from "./services/marcasService.js";
 import { criarEventCard, ligarMenuMobile, ligarBuscaHeader } from "./components.js";
-import { formatarDataLonga, formatarHorario, formatoMusical, ROTULO_FORMATO_MUSICAL } from "./utils.js";
+import { formatarDataLonga, formatarHorario, formatoMusical, ROTULO_FORMATO_MUSICAL, formatarEndereco } from "./utils.js";
 import { botaoIngresso, badgeIngresso, formatarValorIngresso } from "./ingresso.js";
 import { linkGoogleMaps } from "./maps.js";
 
@@ -146,7 +146,7 @@ async function init() {
           <div class="info-row"><span class="label">Data</span><span class="value">${formatarDataLonga(evento.inicio)}</span></div>
           <div class="info-row"><span class="label">Horário</span><span class="value">${formatarHorario(evento.inicio)}</span></div>
           <div class="info-row"><span class="label">Local</span><span class="value">${local ? local.nome : (evento.enderecoTexto ?? evento.cidade)}</span></div>
-          <div class="info-row"><span class="label">Endereço</span><span class="value">${local ? local.endereco : (evento.enderecoTexto ?? evento.cidade)}</span></div>
+          <div class="info-row"><span class="label">Endereço</span><span class="value">${local ? formatarEndereco(local.endereco) : (evento.enderecoTexto ?? evento.cidade)}</span></div>
           <div class="info-row"><span class="label">Valor</span><span class="value">${formatarValorIngresso(evento)}</span></div>
           <div class="cta-stack" style="display:flex; flex-direction:column; gap:0.75rem; margin-top:0.5rem;">
             ${ingresso ? `<a class="btn ${ingresso.variante}" href="${ingresso.url}" target="_blank" rel="noopener">${ingresso.rotulo}</a>` : ""}

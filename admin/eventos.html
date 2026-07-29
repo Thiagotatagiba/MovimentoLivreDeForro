@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin · Eventos — Movimento Livre de Forró</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/tokens.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+  <div class="admin-shell">
+    <header class="admin-topbar">
+      <div class="admin-topbar-title">Admin · Eventos</div>
+      <nav class="admin-nav-links">
+        <a href="eventos.html" aria-current="page">Eventos</a>
+        <a href="locais.html">Locais</a>
+      </nav>
+      <div class="admin-topbar-actions">
+        <input type="file" id="admin-input-arquivo" accept="application/json" class="sr-only" />
+        <button type="button" class="btn btn-ghost btn-sm" id="btn-carregar">Carregar eventos.json</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="btn-novo" disabled>Novo evento</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="btn-duplicar" disabled>Duplicar</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="btn-excluir" disabled>Excluir</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btn-baixar" disabled>Baixar eventos.json</button>
+        <span class="admin-status" id="admin-status" hidden></span>
+      </div>
+    </header>
+
+    <p class="admin-message" id="admin-mensagem" hidden></p>
+
+    <div class="admin-body">
+      <aside class="admin-sidebar">
+        <div class="admin-sidebar-search">
+          <input type="search" id="admin-busca" class="search-input" style="margin-top:0;" placeholder="Buscar por título…" disabled />
+        </div>
+        <ul class="admin-event-list" id="admin-lista-eventos"></ul>
+      </aside>
+
+      <main class="admin-form-area" id="admin-form-area">
+        <div class="admin-empty">
+          <p>Carregue o arquivo <code>data/eventos.json</code> pra começar a editar.</p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="../js/admin/eventos.js"></script>
+</body>
+</html>

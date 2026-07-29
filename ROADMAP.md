@@ -26,7 +26,7 @@ sempre mantendo a Agenda como o coração do projeto.
 
 1. **Finalizar a Agenda** (UX refinada) — concluída
 2. **Marcas** — modelo de dados e página de perfil concluídos
-3. **Cadastro de Eventos** (formulário administrativo) — próxima. Resolve o gargalo real: hoje cadastrar um evento significa editar `data/eventos.json` manualmente numa conversa.
+3. **Cadastro de Eventos** (formulário administrativo) — concluída. Resolveu o gargalo real: antes, cadastrar um evento significava editar `data/eventos.json` manualmente numa conversa.
 4. **Festivais** — nova entidade (Festival → Eventos), pra não fazer o Evento carregar o peso de representar dias de festival sozinho
 5. **Bandas e DJs no line-up** — fortalecer o que já existe (`evento.lineup`) antes de criar perfis completos
 6. **Google Calendar** — só depois do formulário existir, sem ele não há o que sincronizar
@@ -180,17 +180,36 @@ reais que só se veem fora do ambiente de desenvolvimento:
 - [x] Trocado o emoji de calendário (📅) por texto simples na meta do Hero — em alguns Androids esse emoji renderiza com um número de dia fixo embutido pela fonte do sistema, o que parecia (incorretamente) uma data errada ao lado da data real do evento.
 - [x] **Lupa de busca no header, em todas as páginas** — na própria Agenda, leva até o campo de busca que já existe ali (sem duplicar). Nas demais páginas, abre um mini-painel que leva pra `agenda.html?busca=...` — a mesma busca de sempre (evento e marca), zero lógica nova.
 
-## Etapa 4 — Cadastro de Eventos (formulário administrativo)
+## Etapa 4 — Cadastro de Eventos (formulário administrativo) — concluída
 
-Antes de pensar em sincronizar com fontes externas, resolver o problema mais
-urgente: hoje, cadastrar um evento significa eu editar `data/eventos.json`
-manualmente numa conversa. Isso não escala pra nenhum produtor real.
+Resolve o problema mais urgente: cadastrar um evento não significa mais
+editar `data/eventos.json` manualmente numa conversa.
 
-- Formulário simples (sem login ainda — é um único administrador abrindo uma página) com os campos que já existem no modelo: título, marca, festival (opcional, ver Etapa 5), data, horário, cidade, local, imagem, descrição, ingresso (tipo/preço/link/plataforma), bandas, DJs, aniversariantes
-- Validação dos dados antes de salvar (datas válidas, campos obrigatórios, slugs únicos)
-- Gera o JSON no formato que `eventosRepository` já espera — nenhuma mudança na camada de serviço ou nas páginas
-- Preparar a estrutura pra múltiplos administradores no futuro (ex. campo `criadoPor`), mesmo que hoje só uma pessoa use
-- Sem banco de dados ainda — continua sendo arquivo estático, só para de ser editado à mão
+- [x] `admin/eventos.html` — painel offline, sem login, sem backend. Fluxo: carregar `eventos.json` → editar em memória → baixar o arquivo atualizado. Nada é salvo automaticamente.
+- [x] Novo evento, editar, duplicar (com slug/id únicos gerados automaticamente) e excluir — tudo em memória até o download
+- [x] Formulário cobre 100% dos campos do modelo atual, incluindo `ingresso`, `lineup.bandas`/`djs` e `aniversariantes` — testado com round-trip completo no evento do Deck 16 (o mais completo que existe)
+- [x] Validação (`js/admin/eventValidator.js`) roda nos 9 eventos reais do projeto sem falso positivo, e detecta corretamente um evento propositalmente quebrado nos 8 tipos de erro possíveis
+- [x] **Camada de persistência trocável**: `js/admin/eventosAdminStorage.js` isola "carregar/exportar arquivo" — no dia da migração pra API/banco, troca-se só esse arquivo, nada mais no painel muda
+- [x] **Motor de formulário genérico** (`js/admin/formularioGenerico.js`) dirigido por schema (`js/admin/eventoCampos.js`) — quando Marca, Local ou Festival ganharem cadastro no painel, é escrever um novo schema e reaproveitar o motor inteiro, sem duplicar código
+- [x] Slug sugerido automaticamente a partir do título (até o usuário editar manualmente); cidade preenchida automaticamente ao escolher um Local
+- [x] Indicador de alterações não salvas + aviso do navegador (`beforeunload`) se tentar sair da página com edições pendentes
+- [x] Mensagens de erro/sucesso sempre inline — nenhum `alert()` usado
+
+## Etapa 4.1 — Painel de Locais + endereço estruturado
+
+Adiantamos parte da Etapa 9 (Locais) porque o cadastro em si já estava
+pronto: `admin/locais.html` segue o mesmo espírito do painel de Eventos
+(offline, sem login, carregar/editar/baixar), mas com uma interface de
+tabela + modal em vez de lista + formulário — mais adequada pra um cadastro
+com menos campos por registro.
+
+- [x] `endereco` do Local deixou de ser uma string única e virou objeto estruturado (`cep`, `logradouro`, `numero`, `complemento`, `bairro`, `cidade`, `estado`) — abre caminho pra busca por região, geocodificação e validação de CEP no futuro
+- [x] Novos campos no Local: `tipo`, `mapsLink`, `fotoCapa`, `fotoPerfil`, `instagram`, `site`, `telefone`, `descricao`, `ativo`, `origem`, `criadoEm` — preparação pra futura página pública do Local (Etapa 9)
+- [x] Migração automática do formato antigo (`normalizarLocalAntigo()`) — o texto antigo inteiro vira `logradouro`, nunca é quebrado por adivinhação; tag "Endereço incompleto" na tabela sinaliza visualmente quem ainda precisa ser completado
+- [x] `js/utils.js → formatarEndereco()` é a única fonte de verdade pra exibir o endereço em qualquer lugar do site — evento.js e maps.js atualizados
+- [x] `linkGoogleMaps()` passou a priorizar `local.mapsLink` (quando cadastrado) antes de cair pra coordenadas ou busca por texto
+- [x] **Camada de arquivo generalizada**: `js/admin/arquivoStorage.js` extraído de `eventosAdminStorage.js` — agora Eventos e Locais compartilham a mesma lógica de carregar/exportar, exatamente a reutilização que a Etapa 4 já tinha deixado pronta
+- [x] Navegação entre painéis (`admin/eventos.html` ↔ `admin/locais.html`)
 
 ## Etapa 5 — Festivais (nova entidade)
 

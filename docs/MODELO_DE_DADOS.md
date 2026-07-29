@@ -82,12 +82,33 @@ naquele momento:
   "id": "loc-espaco-triangulo",
   "slug": "espaco-triangulo",
   "nome": "Espaço Triângulo das Bicicletas",
-  "cidade": "Vitória",
-  "endereco": "...",
+  "tipo": "Espaço de Eventos",      // Bar | Casa de Shows | Cerimonial | Clube | Praça | Centro Cultural | Espaço de Eventos | Salão de Festas | Outro
+  "endereco": {                     // estruturado — ver formatarEndereco() em js/utils.js pra exibição
+    "cep": "29000-000",
+    "logradouro": "Rua Chapot Prevost",
+    "numero": "100",
+    "complemento": null,
+    "bairro": "Centro",
+    "cidade": "Vitória",
+    "estado": "ES"
+  },
   "latitude": -20.3181,
-  "longitude": -40.3378
+  "longitude": -40.3378,
+  "mapsLink": null,                 // link direto pro Google Maps, quando existir — tem prioridade sobre lat/lng em linkGoogleMaps()
+  "fotoCapa": null,
+  "fotoPerfil": null,
+  "instagram": null,
+  "site": null,
+  "telefone": null,
+  "descricao": null,
+  "ativo": true,                    // false quando o local para de receber eventos — permite tirar de listagens sem apagar o histórico
+  "origem": "manual",
+  "criadoEm": "2026-07-01T10:00:00-03:00",
+  "atualizadoEm": "2026-07-01T10:00:00-03:00"
 }
 ```
+
+**Migração do formato antigo:** até a Etapa 4.1, `endereco` era uma única string (`"Rua X, 100 — Bairro, Cidade/ES"`) e `cidade` vivia direto na raiz do objeto. `admin/locais.js → normalizarLocalAntigo()` migra automaticamente ao carregar um `locais.json` no formato antigo: o texto inteiro vira `endereco.logradouro` (nunca é quebrado por adivinhação em número/bairro — isso ficaria errado com frequência), e os campos novos ficam vazios até alguém completar pela interface. `js/utils.js → formatarEndereco()` sabe exibir os dois formatos (objeto completo ou string legada) sem duplicar informação.
 
 ### Evento (`data/eventos.json`)
 

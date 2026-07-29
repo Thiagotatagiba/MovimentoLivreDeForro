@@ -1,14 +1,18 @@
 // Módulo de geolocalização — hoje só monta o link "Abrir no Google Maps".
-// Quando entrarmos na Etapa 4 (mapa interativo), este arquivo cresce para
+// Quando entrarmos na Etapa 10 (mapa interativo), este arquivo cresce para
 // incluir o cálculo usado pelos marcadores do mapa; a página de evento não
 // precisa mudar.
 
+import { formatarEndereco } from "./utils.js";
+
 /**
- * Prioridade: coordenadas do local cadastrado > coordenadas do próprio
- * evento (útil para eventos futuros importados sem local cadastrado,
- * ex. via Google Calendar) > busca por texto do endereço/cidade.
+ * Prioridade: link de mapa já cadastrado no Local > coordenadas do local >
+ * coordenadas do próprio evento (útil para eventos futuros importados sem
+ * local cadastrado, ex. via Google Calendar) > busca por texto do endereço.
  */
 export function linkGoogleMaps(evento, local) {
+  if (local?.mapsLink) return local.mapsLink;
+
   const lat = local?.latitude ?? evento?.coordenadas?.latitude;
   const lng = local?.longitude ?? evento?.coordenadas?.longitude;
 
@@ -16,6 +20,6 @@ export function linkGoogleMaps(evento, local) {
     return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
   }
 
-  const endereco = local?.endereco || evento?.enderecoTexto || evento?.cidade || "";
+  const endereco = formatarEndereco(local?.endereco) || evento?.enderecoTexto || evento?.cidade || "";
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(endereco)}`;
 }

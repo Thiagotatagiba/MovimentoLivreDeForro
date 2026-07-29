@@ -110,6 +110,35 @@ export function formatarMoeda(valor) {
 }
 
 /**
+ * Formata o endereço estruturado do Local (cep/logradouro/numero/complemento/
+ * bairro/cidade/estado) num texto exibível único. Aceita string por
+ * segurança (dado ainda não migrado), mas o formato atual do modelo é
+ * sempre objeto — ver docs/MODELO_DE_DADOS.md.
+ */
+export function formatarEndereco(endereco) {
+  if (!endereco) return "";
+  if (typeof endereco === "string") return endereco;
+
+  // Endereço ainda não detalhado (ex. migrado do formato antigo, onde o
+  // texto inteiro foi preservado em `logradouro` sem quebrar em partes) —
+  // sem número nem bairro pra compor, só devolve o texto como está.
+  if (!endereco.numero && !endereco.bairro) {
+    let texto = endereco.logradouro || "";
+    if (endereco.cep) texto += texto ? `, CEP ${endereco.cep}` : `CEP ${endereco.cep}`;
+    return texto;
+  }
+
+  const rua = [endereco.logradouro, endereco.numero].filter(Boolean).join(", ");
+  const cidadeUf = [endereco.cidade, endereco.estado].filter(Boolean).join("/");
+  const bairroCidade = [endereco.bairro, cidadeUf].filter(Boolean).join(", ");
+
+  let texto = [rua, bairroCidade].filter(Boolean).join(" — ");
+  if (endereco.complemento) texto += ` (${endereco.complemento})`;
+  if (endereco.cep) texto += texto ? `, CEP ${endereco.cep}` : `CEP ${endereco.cep}`;
+  return texto;
+}
+
+/**
  * Formato musical do evento — deriva de evento.lineup (bandas/DJs nomeados)
  * quando existe, e cai para o campo legado evento.musica em eventos antigos
  * que não têm lineup cadastrado. Um evento pode ter banda E DJ ao mesmo
