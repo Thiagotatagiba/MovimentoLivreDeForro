@@ -1,5 +1,13 @@
 # Roadmap — Movimento Livre de Forró
 
+> **Nota de rebranding:** a partir desta entrada, a marca pública do site
+> passou a ser **Vai Ter Forró!**. O Movimento Livre de Forró continua
+> existindo — agora como a iniciativa/instituição responsável pelo projeto,
+> não mais como o nome exibido ao usuário. Este documento mantém o nome
+> "Movimento Livre de Forró" no restante do texto porque é um registro
+> histórico das decisões tomadas sob o nome antigo do site; não foi reescrito
+> retroativamente para não distorcer o que de fato existia em cada etapa.
+
 Este documento existe para que qualquer pessoa (inclusive eu, em uma sessão
 futura) entenda em que pé o projeto está e o que vem a seguir, sem precisar
 reconstruir o histórico de decisões a partir do zero.
@@ -210,6 +218,24 @@ com menos campos por registro.
 - [x] `linkGoogleMaps()` passou a priorizar `local.mapsLink` (quando cadastrado) antes de cair pra coordenadas ou busca por texto
 - [x] **Camada de arquivo generalizada**: `js/admin/arquivoStorage.js` extraído de `eventosAdminStorage.js` — agora Eventos e Locais compartilham a mesma lógica de carregar/exportar, exatamente a reutilização que a Etapa 4 já tinha deixado pronta
 - [x] Navegação entre painéis (`admin/eventos.html` ↔ `admin/locais.html`)
+
+## Etapa 4.2 — Cadastro Geral (Evento + Marca + Local num só painel)
+
+`admin/index.html` — importa a pasta `data/` inteira (eventos.json +
+marcas.json + locais.json) de uma vez, em vez de um arquivo por vez.
+Resolve a limitação real dos painéis separados: hoje o formulário de
+Evento populava os selects de Marca/Local lendo direto do servidor
+(`fetch`), então só funcionava com dados "reais" publicados. Agora os
+três vêm da mesma importação — o painel fica autossuficiente, sem
+depender de nada rodando por trás.
+
+- [x] Um botão de importação só (`webkitdirectory`), reconhece os 3 arquivos pelo nome dentro da pasta selecionada
+- [x] Três abas — Eventos e Marcas reaproveitam o motor genérico de formulário (`formularioGenerico.js`) já construído na Etapa 4; Locais reaproveita o padrão tabela + modal da Etapa 4.1
+- [x] **Schema de Marca criado** (`marcaCampos.js` + `marcaValidator.js`) — é a prova de que a arquitetura de formulário genérico escala: reaproveitar pra uma segunda entidade não exigiu nenhuma mudança no motor
+- [x] Excluir uma Marca ou Local usado por algum Evento importado mostra aviso antes de confirmar (referência ficaria quebrada) — não impede a exclusão, só avisa
+- [x] "Baixar tudo" dispara os 3 downloads em sequência — navegador ainda baixa 3 arquivos separados (não temos biblioteca de zip no projeto, de propósito, pra não adicionar dependência externa)
+- [x] Bug real encontrado e corrigido durante o teste: os três validadores do painel (Evento, Marca, Local) rejeitavam campos de imagem com caminho relativo (`assets/...`) — só aceitavam URL completa. Corrigido nos três ao mesmo tempo.
+- [x] Painéis de arquivo único (`eventos.html`, `locais.html`) continuam existindo, pra quem só quer editar um arquivo rápido sem importar a pasta toda
 
 ## Etapa 5 — Festivais (nova entidade)
 

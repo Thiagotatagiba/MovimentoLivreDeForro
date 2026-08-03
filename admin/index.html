@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Admin · Locais — Vai Ter Forró!</title>
+  <title>Admin · Cadastro Geral — Vai Ter Forró!</title>
   <meta name="robots" content="noindex, nofollow" />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/tokens.css" />
@@ -13,46 +13,87 @@
 <body>
   <div class="admin-shell">
     <header class="admin-topbar">
-      <div class="admin-topbar-title">Admin · Locais</div>
+      <div class="admin-topbar-title">Admin · Cadastro Geral</div>
       <nav class="admin-nav-links">
-        <a href="index.html">Cadastro Geral</a>
-        <a href="eventos.html">Eventos</a>
-        <a href="locais.html" aria-current="page">Locais</a>
+        <a href="index.html" aria-current="page">Cadastro Geral</a>
+        <a href="eventos.html">Só Eventos</a>
+        <a href="locais.html">Só Locais</a>
       </nav>
       <div class="admin-topbar-actions">
-        <input type="file" id="admin-input-arquivo" accept="application/json" class="sr-only" />
-        <button type="button" class="btn btn-ghost btn-sm" id="btn-carregar">Carregar locais.json</button>
-        <button type="button" class="btn btn-ghost btn-sm" id="btn-novo">Novo local</button>
-        <button type="button" class="btn btn-primary btn-sm" id="btn-baixar" disabled>Baixar locais.json</button>
+        <input type="file" id="admin-input-pasta" webkitdirectory multiple class="sr-only" />
+        <button type="button" class="btn btn-ghost btn-sm" id="btn-importar">Importar pasta data/</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btn-baixar-tudo" disabled>Baixar tudo</button>
         <span class="admin-status" id="admin-status" hidden></span>
       </div>
     </header>
 
     <p class="admin-message" id="admin-mensagem" hidden></p>
 
-    <main class="admin-locais-area">
+    <div class="admin-tabs" id="admin-tabs" hidden>
+      <button type="button" class="admin-tab is-active" data-aba="eventos">Eventos <span class="admin-tab-count" id="contagem-eventos"></span></button>
+      <button type="button" class="admin-tab" data-aba="marcas">Marcas <span class="admin-tab-count" id="contagem-marcas"></span></button>
+      <button type="button" class="admin-tab" data-aba="locais">Locais <span class="admin-tab-count" id="contagem-locais"></span></button>
+    </div>
+
+    <main class="admin-geral-area">
       <div class="admin-empty-state" id="admin-empty-state">
-        <h3>Nenhum local carregado ainda</h3>
-        <p>Carregue o <code>data/locais.json</code> existente pra editar, ou clique em "Novo local" pra começar um cadastro do zero.</p>
+        <h3>Nenhum dado importado ainda</h3>
+        <p>Clique em "Importar pasta data/" e selecione a pasta <code>data</code> do projeto — ela precisa conter <code>eventos.json</code>, <code>marcas.json</code> e <code>locais.json</code> dentro.</p>
       </div>
 
-      <div class="admin-table-wrap" id="admin-table-wrap" hidden>
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>Local</th>
-              <th>Tipo</th>
-              <th>Cidade / UF</th>
-              <th>Status</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="admin-tabela-corpo"></tbody>
-        </table>
-      </div>
+      <!-- Aba Eventos -->
+      <section class="admin-painel-aba" id="painel-eventos" hidden>
+        <div class="admin-body-interno">
+          <aside class="admin-sidebar">
+            <div class="admin-sidebar-search"><input type="search" id="busca-eventos" class="search-input" style="margin-top:0;" placeholder="Buscar evento…" /></div>
+            <ul class="admin-event-list" id="lista-eventos"></ul>
+          </aside>
+          <div class="admin-form-area" id="form-area-eventos">
+            <div class="admin-empty"><p>Selecione um evento, ou crie um novo.</p></div>
+          </div>
+        </div>
+        <div class="admin-panel-actions">
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-novo-evento">Novo evento</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-duplicar-evento" disabled>Duplicar</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-excluir-evento" disabled>Excluir</button>
+        </div>
+      </section>
+
+      <!-- Aba Marcas -->
+      <section class="admin-painel-aba" id="painel-marcas" hidden>
+        <div class="admin-body-interno">
+          <aside class="admin-sidebar">
+            <div class="admin-sidebar-search"><input type="search" id="busca-marcas" class="search-input" style="margin-top:0;" placeholder="Buscar marca…" /></div>
+            <ul class="admin-event-list" id="lista-marcas"></ul>
+          </aside>
+          <div class="admin-form-area" id="form-area-marcas">
+            <div class="admin-empty"><p>Selecione uma marca, ou crie uma nova.</p></div>
+          </div>
+        </div>
+        <div class="admin-panel-actions">
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-nova-marca">Nova marca</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-excluir-marca" disabled>Excluir</button>
+        </div>
+      </section>
+
+      <!-- Aba Locais -->
+      <section class="admin-painel-aba" id="painel-locais" hidden>
+        <div class="admin-table-wrap" style="margin-top: var(--sp-5);">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Local</th><th>Tipo</th><th>Cidade / UF</th><th>Status</th><th></th></tr>
+            </thead>
+            <tbody id="tabela-locais"></tbody>
+          </table>
+        </div>
+        <div class="admin-panel-actions">
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-novo-local">Novo local</button>
+        </div>
+      </section>
     </main>
   </div>
 
+  <!-- Modal de edição de Local (mesmo formulário de admin/locais.html) -->
   <div class="admin-modal-overlay" id="admin-modal-overlay" hidden>
     <div class="admin-modal">
       <h2 id="admin-modal-titulo">Novo local</h2>
@@ -204,6 +245,6 @@
     </div>
   </div>
 
-  <script type="module" src="../js/admin/locais.js"></script>
+  <script type="module" src="../js/admin/cadastroGeral.js"></script>
 </body>
 </html>

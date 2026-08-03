@@ -151,6 +151,47 @@
 .admin-nav-links a:hover { color: var(--pine); }
 .admin-nav-links a[aria-current="page"] { color: var(--pine); }
 
+/* ---------- Abas do Cadastro Geral ---------- */
+.admin-tabs {
+  display: flex;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4) 0;
+  border-bottom: 1px solid var(--sand-line);
+  background: var(--surface);
+}
+.admin-tab {
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  font-weight: 700;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  border-bottom: 2px solid transparent;
+}
+.admin-tab:hover { color: var(--pine); }
+.admin-tab.is-active { color: var(--pine); border-bottom-color: var(--pine); background: var(--pine-tint); }
+.admin-tab-count {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.admin-geral-area { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+.admin-painel-aba { flex: 1; display: flex; flex-direction: column; padding: var(--sp-5); gap: var(--sp-4); }
+.admin-body-interno {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-4);
+  min-height: 320px;
+}
+@media (min-width: 900px) { .admin-body-interno { grid-template-columns: 300px 1fr; } }
+.admin-body-interno .admin-sidebar { border: 1px solid var(--sand-line); border-radius: var(--radius-md); max-height: 50vh; }
+@media (min-width: 900px) { .admin-body-interno .admin-sidebar { max-height: none; } }
+.admin-body-interno .admin-form-area { border: 1px solid var(--sand-line); border-radius: var(--radius-md); padding: var(--sp-4); }
+.admin-panel-actions { display: flex; gap: var(--sp-2); }
+
 /* ---------- Grade de 3 colunas (ex.: bairro / cidade / estado) ---------- */
 .admin-field-grid.cols-3 { grid-template-columns: 1fr; }
 @media (min-width: 640px) { .admin-field-grid.cols-3 { grid-template-columns: 2fr 2fr 1fr; } }

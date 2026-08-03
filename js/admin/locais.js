@@ -29,7 +29,8 @@ function slugify(texto) {
 }
 
 function urlValida(valor) {
-  return !valor || /^https?:\/\//.test(valor);
+  if (!valor) return true;
+  return /^https?:\/\//.test(valor) || valor.startsWith("assets/");
 }
 
 function enderecoIncompleto(endereco) {
