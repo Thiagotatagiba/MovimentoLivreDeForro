@@ -223,15 +223,15 @@ async function criarBlocoDescubraMarca() {
   return secao;
 }
 
-/** Bloco 6 — Sobre o Movimento: institucional, por isso fica perto do rodapé, não no topo. */
+/** Bloco 6 — Sobre: institucional, por isso fica perto do rodapé, não no topo. */
 function criarBlocoSobre() {
   const secao = document.createElement("section");
   secao.className = "section";
   secao.innerHTML = `
     <div class="wrap">
       <div class="about-band">
-        <h2>Sobre o Movimento</h2>
-        <p>O Movimento Livre de Forró é uma iniciativa independente para fortalecer, divulgar e fomentar o forró pé de serra na Grande Vitória — conectando dançarinos, professores, bandas, organizadores e casas de eventos em um só lugar.</p>
+        <h2>Sobre o Vai Ter Forró!</h2>
+        <p>O Vai Ter Forró! é uma iniciativa do Movimento Livre de Forró para fortalecer, divulgar e fomentar o forró pé de serra na Grande Vitória — conectando dançarinos, professores, bandas, organizadores e casas de eventos em um só lugar.</p>
       </div>
     </div>
   `;

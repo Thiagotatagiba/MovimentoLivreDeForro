@@ -109,7 +109,16 @@ async function init() {
 
   const local = await locaisService.buscarPorSlug(evento.localSlug);
   const marca = await marcasService.buscarPorSlug(evento.marcaSlug);
-  document.title = `${evento.titulo} — Movimento Livre de Forró`;
+  document.title = `${evento.titulo} — Vai Ter Forró!`;
+  const resumoMeta = (evento.descricao || `Confira os detalhes de ${evento.titulo} na Grande Vitória.`)
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 155);
+  document.querySelector("#meta-description")?.setAttribute("content", resumoMeta);
+  document.querySelector("#meta-og-title")?.setAttribute("content", document.title);
+  document.querySelector("#meta-og-description")?.setAttribute("content", resumoMeta);
+  document.querySelector("#meta-twitter-title")?.setAttribute("content", document.title);
+  document.querySelector("#meta-twitter-description")?.setAttribute("content", resumoMeta);
 
   const ingresso = botaoIngresso(evento);
   const badgeInfoIngresso = badgeIngresso(evento);

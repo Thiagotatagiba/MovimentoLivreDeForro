@@ -1,4 +1,7 @@
-# Design System — Movimento Livre de Forró
+# Design System — Vai Ter Forró!
+
+_Vai Ter Forró! é a marca pública do site; o Movimento Livre de Forró é a
+iniciativa que o mantém — ver nota em ROADMAP.md._
 
 Este documento descreve os tokens e componentes já implementados em
 `css/tokens.css` e `css/styles.css`. Não é um sistema à parte — é a leitura
