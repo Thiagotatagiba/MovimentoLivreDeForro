@@ -97,7 +97,7 @@
     "cidade": "Vitória",
     "frequencia": "semanal",
     "desde": null,
-    "localPrincipalSlug": null,
+    "localPrincipalSlug": "marina-bay-vix",
     "instagram": "https://www.instagram.com/forronamarinavix/",
     "whatsapp": "https://wa.me/5527996457828",
     "logo": null,
@@ -105,8 +105,24 @@
     "ativo": true,
     "origem": "manual",
     "status": "publicado",
-    "atualizadoEm": "2026-07-15T00:00:00-03:00"
+    "atualizadoEm": "2026-08-03T00:00:00-03:00"
+  },
+  {
+    "id": "marca-forrozada-boa",
+    "slug": "forrozada-boa",
+    "nome": "Forrozada Boa",
+    "descricao": "Point de forró pé de serra de Vitória, com edições recorrentes no Recreio dos Olhos reunindo bandas e DJs de fora do estado.",
+    "cidade": "Vitória",
+    "frequencia": "semanal",
+    "desde": 2022,
+    "localPrincipalSlug": "recreio-dos-olhos",
+    "instagram": "https://www.instagram.com/forrozadaboa",
+    "whatsapp": "https://wa.me/5527999625136",
+    "logo": null,
+    "banner": null,
+    "ativo": true,
+    "origem": "manual",
+    "status": "publicado",
+    "atualizadoEm": "2026-08-03T00:00:00-03:00"
   }
-  
-
 ]

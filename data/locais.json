@@ -138,5 +138,61 @@
     "origem": "manual",
     "criadoEm": "2026-07-12T00:00:00-03:00",
     "atualizadoEm": "2026-07-12T00:00:00-03:00"
+  },
+  {
+    "id": "loc-recreio-dos-olhos",
+    "slug": "recreio-dos-olhos",
+    "nome": "Recreio dos Olhos",
+    "tipo": "Salão de Festas",
+    "endereco": {
+      "cep": "29043-405",
+      "logradouro": "Av. Cel. José Martins de Figueiredo",
+      "numero": "575",
+      "complemento": null,
+      "bairro": "Tabuazeiro",
+      "cidade": "Vitória",
+      "estado": "ES"
+    },
+    "latitude": -20.2966159,
+    "longitude": -40.3222508,
+    "mapsLink": null,
+    "fotoCapa": null,
+    "fotoPerfil": null,
+    "instagram": null,
+    "site": null,
+    "telefone": null,
+    "descricao": null,
+    "ativo": true,
+    "origem": "manual",
+    "criadoEm": "2026-08-03T00:00:00-03:00",
+    "atualizadoEm": "2026-08-03T00:00:00-03:00"
+  },
+  {
+    "id": "loc-marina-bay-vix",
+    "slug": "marina-bay-vix",
+    "nome": "Marina Bay Vix",
+    "tipo": "Bar",
+    "endereco": {
+      "cep": "29045-360",
+      "logradouro": "Rua Vitalino dos Santos Valadares",
+      "numero": "175",
+      "complemento": "Lado B",
+      "bairro": "Santa Luíza",
+      "cidade": "Vitória",
+      "estado": "ES"
+    },
+    "latitude": null,
+    "longitude": null,
+    "mapsLink": null,
+    "fotoCapa": null,
+    "fotoPerfil": null,
+    "instagram": "https://www.instagram.com/marinabay.vix",
+    "site": null,
+    "telefone": null,
+    "descricao": null,
+    "ativo": true,
+    "origem": "manual",
+    "criadoEm": "2026-08-03T00:00:00-03:00",
+    "atualizadoEm": "2026-08-03T00:00:00-03:00"
   }
 ]

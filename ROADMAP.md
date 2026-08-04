@@ -237,6 +237,20 @@ depender de nada rodando por trás.
 - [x] Bug real encontrado e corrigido durante o teste: os três validadores do painel (Evento, Marca, Local) rejeitavam campos de imagem com caminho relativo (`assets/...`) — só aceitavam URL completa. Corrigido nos três ao mesmo tempo.
 - [x] Painéis de arquivo único (`eventos.html`, `locais.html`) continuam existindo, pra quem só quer editar um arquivo rápido sem importar a pasta toda
 
+## Etapa 4.3 — Correção: `hidden` perdendo pra `display` customizado
+
+Bug real, achado em teste de usuário: o modal de Local abria sozinho ao
+carregar `admin/index.html`, sem clique nenhum. Causa: `.admin-modal-overlay`
+define `display: flex` pra centralizar o conteúdo — e uma classe com
+`display` explícito **vence** o atributo `hidden` do elemento, que depende
+de uma regra `[hidden] { display: none }` de baixa especificidade que o
+próprio navegador aplica por padrão. Resultado: o elemento aparecia mesmo
+com `hidden` presente.
+
+- [x] Regra global `[hidden] { display: none !important; }` adicionada em `css/tokens.css` — corrige de uma vez qualquer elemento `hidden` no projeto, atual ou futuro, independente do que a classe dele definir de `display`
+- [x] Auditoria encontrou o mesmo bug em mais 3 lugares, todos corrigidos pela mesma regra: `.admin-tabs` e `.admin-painel-aba` (as 3 abas do Cadastro Geral apareciam sobrepostas antes de importar qualquer dado — era isso que se via atrás do modal no print do bug) e `.filtros-count` (badge de contagem de filtros da Agenda, que ficava sempre visível mostrando "0" em vez de sumir)
+- [x] Os campos do modal em si nunca tiveram bug — só pareciam errados (ex. "Bar" selecionado em Tipo) porque o modal aparecia sem o JS ter rodado `abrirModalLocal()`, que é quem preenche o formulário. Corrigido o CSS, o modal só abre via clique real e os campos vêm certos.
+
 ## Etapa 5 — Festivais (nova entidade)
 
 Festival não é um "tipo de Evento" — é uma entidade acima dele, que agrupa
