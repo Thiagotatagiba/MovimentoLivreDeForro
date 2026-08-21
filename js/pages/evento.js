@@ -1,6 +1,6 @@
 // evento.js
 import { obterEventoCompleto } from '../services/eventoService.js';
-import { formatarDataCompleta, formatarPreco, enderecoResumido, enderecoCompleto } from '../utils/format.js';
+import { formatarDataCompleta, formatarPreco, enderecoResumido, enderecoCompleto, estiloMidia } from '../utils/format.js';
 
 const raiz = document.getElementById('conteudo-evento');
 const params = new URLSearchParams(window.location.search);
@@ -28,7 +28,7 @@ function montarHtml(evento) {
   const lineup = [...(evento.lineup?.bandas ?? []), ...(evento.lineup?.djs ?? [])];
 
   return `
-    <div class="midia" style="height: 220px; border-radius: 0;">
+    <div class="midia" style="height: 220px; border-radius: 0; ${estiloMidia(evento.imagemUrl)}">
       <span class="marca-nome" style="font-size: var(--tam-titulo-lg);">${marca?.nome ?? 'Marca em breve'}</span>
     </div>
 

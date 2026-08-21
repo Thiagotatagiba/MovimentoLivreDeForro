@@ -57,3 +57,15 @@ export function enderecoCompleto(endereco) {
   const linha2 = [endereco.bairro, endereco.cidade, endereco.estado].filter(Boolean).join(' — ');
   return [linha1, linha2].filter(Boolean).join(' · ');
 }
+
+// Estilo inline de background pra card/hero de evento. Se não houver imagem
+// (ou o campo estiver "em breve"), retorna string vazia e o CSS de .midia
+// assume o fundo sólido padrão (var(--cor-clay)) — nunca fica sem visual.
+// Se a imagem existir mas o arquivo não carregar, o background-color por
+// trás continua garantindo o fallback (camadas de background não quebram
+// umas às outras quando uma falha).
+export function estiloMidia(imagemUrl) {
+  const semImagem = !imagemUrl || imagemUrl === 'em breve';
+  if (semImagem) return '';
+  return `background-image: linear-gradient(180deg, rgba(20,47,38,0) 40%, rgba(20,47,38,0.7) 100%), url('${imagemUrl}'); background-size: cover; background-position: center;`;
+}

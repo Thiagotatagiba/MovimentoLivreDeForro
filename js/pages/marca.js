@@ -1,6 +1,6 @@
 // marca.js
 import { obterPerfilMarca } from '../services/marcaService.js';
-import { formatarDataCurta, formatarDiaSemana } from '../utils/format.js';
+import { formatarDataCurta, formatarDiaSemana, estiloMidia } from '../utils/format.js';
 
 const raiz = document.getElementById('conteudo-marca');
 const params = new URLSearchParams(window.location.search);
@@ -61,7 +61,7 @@ function montarHtml({ marca, proximos, historico }) {
 function cardEventoHtml(evento) {
   return `
     <a class="card-evento" href="evento.html?slug=${encodeURIComponent(evento.slug)}">
-      <div class="midia">
+      <div class="midia" style="${estiloMidia(evento.imagemUrl)}">
         <span class="badge">${formatarDataCurta(evento.data)}</span>
       </div>
       <div class="corpo">

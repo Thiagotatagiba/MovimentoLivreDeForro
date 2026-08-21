@@ -1,6 +1,6 @@
 // home.js — página inicial: responde "onde tem forró hoje?"
 import { listarEventosDeHoje, listarAgendaOrdenada } from '../services/eventoService.js';
-import { formatarDataCurta } from '../utils/format.js';
+import { formatarDataCurta, estiloMidia } from '../utils/format.js';
 
 const respostaEl = document.getElementById('resposta-hoje');
 const gradeEl = document.getElementById('grade-proximos');
@@ -48,7 +48,7 @@ function cardEventoHtml(evento) {
   const nomeLocal = evento.local?.nome ?? 'Local em breve';
   return `
     <a class="card-evento" href="evento.html?slug=${encodeURIComponent(evento.slug)}">
-      <div class="midia">
+      <div class="midia" style="${estiloMidia(evento.imagemUrl)}">
         <span class="badge">${formatarDataCurta(evento.data)}</span>
         <span class="marca-nome">${nomeMarca}</span>
       </div>

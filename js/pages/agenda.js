@@ -1,6 +1,6 @@
 // agenda.js
 import { listarAgendaOrdenada } from '../services/eventoService.js';
-import { formatarDataCurta, formatarDiaSemana, ehHoje } from '../utils/format.js';
+import { formatarDataCurta, formatarDiaSemana, ehHoje, estiloMidia } from '../utils/format.js';
 
 const gradeEl = document.getElementById('grade-agenda');
 const pillsEl = document.getElementById('pills-categoria');
@@ -63,7 +63,7 @@ function cardEventoHtml(evento) {
 
   return `
     <a class="card-evento" href="evento.html?slug=${encodeURIComponent(evento.slug)}">
-      <div class="midia">
+      <div class="midia" style="${estiloMidia(evento.imagemUrl)}">
         ${badge}
         <span class="marca-nome">${nomeMarca}</span>
       </div>

@@ -1,6 +1,6 @@
 // local.js
 import { obterPerfilLocal } from '../services/localService.js';
-import { formatarDataCurta, formatarDiaSemana, enderecoCompleto } from '../utils/format.js';
+import { formatarDataCurta, formatarDiaSemana, enderecoCompleto, estiloMidia } from '../utils/format.js';
 
 const raiz = document.getElementById('conteudo-local');
 const params = new URLSearchParams(window.location.search);
@@ -64,7 +64,7 @@ function montarHtml({ local, proximos, marcas }) {
 function cardEventoHtml(evento) {
   return `
     <a class="card-evento" href="evento.html?slug=${encodeURIComponent(evento.slug)}">
-      <div class="midia">
+      <div class="midia" style="${estiloMidia(evento.imagemUrl)}">
         <span class="badge">${formatarDataCurta(evento.data)}</span>
         <span class="marca-nome">${evento.marca?.nome ?? ''}</span>
       </div>
