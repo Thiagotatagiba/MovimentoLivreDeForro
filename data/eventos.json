@@ -1,382 +1,107 @@
 [
   {
-    "id": "evt-aula-aberta-forro-vila-velha",
-    "slug": "aula-aberta-forro-vila-velha",
-    "titulo": "Aula Aberta de Forró",
-    "descricao": "Aula aberta e gratuita para quem quer dar os primeiros passos no forró pé de serra, sem necessidade de par.",
-    "inicio": "2026-07-09T19:00:00-03:00",
-    "fim": "2026-07-09T20:30:00-03:00",
-    "fusoHorario": "America/Sao_Paulo",
-    "cidade": "Vila Velha",
-    "marcaSlug": "quintal-do-pe-de-serra",
-    "localSlug": "clube-praia-da-costa",
+    "id": "evt-001",
+    "slug": "baile-dos-bocadas-2026-08-21",
+    "marcaId": "mrc-001",
+    "localId": "loc-001",
+    "titulo": "Baile dos Bocadas",
+    "data": "2026-08-21",
+    "horario": "22:00",
+    "descricao": "O Deck 16 recebe o Baile dos Bocadas, uma noite dedicada aos clássicos do forró contemporâneo e às melhores bandas da cena capixaba.",
     "ingresso": {
-      "tipo": "gratuito",
-      "precoAPartirDe": null,
-      "link": null,
-      "plataforma": null
-    },
-    "enderecoTexto": null,
-    "tipo": "Aula",
-    "musica": "DJ",
-    "imagem": null,
-    "origem": "manual",
-    "idExterno": null,
-    "status": "publicado",
-    "atualizadoEm": "2026-07-01T10:00:00-03:00",
-    "linkExterno": null,
-    "coordenadas": {
-      "latitude": null,
-      "longitude": null
-    }
-  },
-  {
-    "id": "evt-forro-de-quinta-nicinha",
-    "slug": "forro-de-quinta-nicinha",
-    "titulo": "Forró de Quinta na Nicinha",
-    "descricao": "Baile semanal de forró pé de serra com trio ao vivo, roda de dança aberta a iniciantes a partir das 20h.",
-    "inicio": "2026-07-09T20:00:00-03:00",
-    "fim": "2026-07-09T23:30:00-03:00",
-    "fusoHorario": "America/Sao_Paulo",
-    "cidade": "Vitória",
-    "marcaSlug": "forro-do-nicinha",
-    "localSlug": "espaco-triangulo",
-    "ingresso": {
-      "tipo": "antecipado",
       "precoAPartirDe": 20,
-      "link": "https://www.sympla.com.br/forro-de-quinta-nicinha",
+      "link": "https://sympla.com.br/em-breve",
       "plataforma": "Sympla"
     },
-    "enderecoTexto": null,
-    "tipo": "Baile",
-    "musica": "Música ao vivo",
-    "imagem": null,
-    "origem": "manual",
-    "idExterno": null,
-    "status": "publicado",
-    "atualizadoEm": "2026-07-01T10:00:00-03:00",
-    "linkExterno": null,
-    "coordenadas": {
-      "latitude": null,
-      "longitude": null
-    }
-  },
-  {
-    "id": "evt-baile-sexta-serra",
-    "slug": "baile-sexta-serra",
-    "titulo": "Baile de Sexta na Serra",
-    "descricao": "Noite de forró com banda convidada e pista dividida para quem já dança e quem está aprendendo.",
-    "inicio": "2026-07-10T21:00:00-03:00",
-    "fim": "2026-07-11T01:00:00-03:00",
-    "fusoHorario": "America/Sao_Paulo",
-    "cidade": "Serra",
-    "marcaSlug": "casa-do-forro-serra",
-    "localSlug": "galpao-laranjeiras",
-    "ingresso": {
-      "tipo": "antecipado",
-      "precoAPartirDe": 25,
-      "link": "https://www.sympla.com.br/baile-sexta-serra",
-      "plataforma": "Sympla"
+    "lineup": {
+      "bandas": ["Aviões da Serra"],
+      "djs": ["DJ Cabra da Peste"]
     },
-    "enderecoTexto": null,
-    "tipo": "Baile",
-    "musica": "Música ao vivo",
-    "imagem": null,
-    "origem": "manual",
-    "idExterno": null,
-    "status": "publicado",
-    "atualizadoEm": "2026-07-01T10:00:00-03:00",
-    "linkExterno": null,
-    "coordenadas": {
-      "latitude": null,
-      "longitude": null
-    }
+    "imagemUrl": "em breve",
+    "ativo": true
   },
   {
-    "id": "evt-workshop-forro-cariacica",
-    "slug": "workshop-forro-cariacica",
-    "titulo": "Workshop de Forró de Casal",
-    "descricao": "Workshop intensivo de 3 horas com foco em condução e musicalidade, para dançarinos com experiência prévia.",
-    "inicio": "2026-07-11T17:00:00-03:00",
-    "fim": "2026-07-11T20:00:00-03:00",
-    "fusoHorario": "America/Sao_Paulo",
-    "cidade": "Cariacica",
-    "marcaSlug": "galpao-cultural-cariacica",
-    "localSlug": "sede-campo-grande",
+    "id": "evt-002",
+    "slug": "forrozada-boa-agosto-2026",
+    "marcaId": "mrc-002",
+    "localId": "loc-002",
+    "titulo": "Forrozada Boa de Agosto",
+    "data": "2026-08-22",
+    "horario": "21:00",
+    "descricao": "Edição mensal do baile mais tradicional de Vila Velha, com sanfona, zabumba e triângulo ao vivo desde a primeira hora.",
     "ingresso": {
-      "tipo": "antecipado",
-      "precoAPartirDe": 40,
-      "link": "https://www.sympla.com.br/workshop-forro-cariacica",
-      "plataforma": "Sympla"
-    },
-    "enderecoTexto": null,
-    "tipo": "Workshop",
-    "musica": "DJ",
-    "imagem": null,
-    "origem": "manual",
-    "idExterno": null,
-    "status": "publicado",
-    "atualizadoEm": "2026-07-01T10:00:00-03:00",
-    "linkExterno": null,
-    "coordenadas": {
-      "latitude": null,
-      "longitude": null
-    }
-  },
-  {
-    "id": "evt-domingo-forro-vitoria",
-    "slug": "domingo-forro-vitoria",
-    "titulo": "Domingo de Forró",
-    "descricao": "Encontro dominical ao ar livre, com trio local e clima leve para famílias e iniciantes.",
-    "inicio": "2026-07-12T18:00:00-03:00",
-    "fim": "2026-07-12T22:00:00-03:00",
-    "fusoHorario": "America/Sao_Paulo",
-    "cidade": "Vitória",
-    "marcaSlug": "forro-do-nicinha",
-    "localSlug": "espaco-triangulo",
-    "ingresso": {
-      "tipo": "gratuito",
-      "precoAPartirDe": null,
-      "link": null,
-      "plataforma": null
-    },
-    "enderecoTexto": null,
-    "tipo": "Baile",
-    "musica": "Música ao vivo",
-    "imagem": null,
-    "origem": "manual",
-    "idExterno": null,
-    "status": "publicado",
-    "atualizadoEm": "2026-07-01T10:00:00-03:00",
-    "linkExterno": null,
-    "coordenadas": {
-      "latitude": null,
-      "longitude": null
-    }
-  },
-  {
-    "id": "evt-aula-terca-vila-velha",
-    "slug": "aula-terca-vila-velha",
-    "titulo": "Aula de Forró — Turma Terça",
-    "descricao": "Turma fixa de terça-feira, nível básico, com prática livre nos últimos 30 minutos.",
-    "inicio": "2026-07-14T19:30:00-03:00",
-    "fim": "2026-07-14T21:00:00-03:00",
-    "fusoHorario": "America/Sao_Paulo",
-    "cidade": "Vila Velha",
-    "marcaSlug": "quintal-do-pe-de-serra",
-    "localSlug": "clube-praia-da-costa",
-    "ingresso": {
-      "tipo": "local",
       "precoAPartirDe": 15,
-      "link": null,
-      "plataforma": null
+      "link": "em breve",
+      "plataforma": "Na porta"
     },
-    "enderecoTexto": null,
-    "tipo": "Aula",
-    "musica": "DJ",
-    "imagem": null,
-    "origem": "manual",
-    "idExterno": null,
-    "status": "publicado",
-    "atualizadoEm": "2026-07-01T10:00:00-03:00",
-    "linkExterno": null,
-    "coordenadas": {
-      "latitude": null,
-      "longitude": null
-    }
+    "lineup": {
+      "bandas": ["Trio Pé na Estrada"],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
   },
   {
-    "id": "evt-baile-quinta-cariacica",
-    "slug": "baile-quinta-cariacica",
-    "titulo": "Baile de Quinta",
-    "descricao": "Baile tradicional de quinta-feira, ponto de encontro fixo da comunidade de Cariacica.",
-    "inicio": "2026-07-16T20:30:00-03:00",
-    "fim": "2026-07-17T00:00:00-03:00",
-    "fusoHorario": "America/Sao_Paulo",
-    "cidade": "Cariacica",
-    "marcaSlug": "galpao-cultural-cariacica",
-    "localSlug": "sede-campo-grande",
+    "id": "evt-003",
+    "slug": "forro-da-nicinha-ultima-sexta",
+    "marcaId": "mrc-003",
+    "localId": "loc-003",
+    "titulo": "Forró da Nicinha — Última Sexta",
+    "data": "2026-08-28",
+    "horario": "20:30",
+    "descricao": "Baile de bairro tradicional em Laranjeiras, com entrada gratuita até as 21h e forró raiz até o último passo.",
     "ingresso": {
-      "tipo": "couvert",
-      "precoAPartirDe": 20,
-      "link": null,
-      "plataforma": null
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
     },
-    "enderecoTexto": null,
-    "tipo": "Baile",
-    "musica": "Música ao vivo",
-    "imagem": null,
-    "origem": "manual",
-    "idExterno": null,
-    "status": "publicado",
-    "atualizadoEm": "2026-07-01T10:00:00-03:00",
-    "linkExterno": null,
-    "coordenadas": {
-      "latitude": null,
-      "longitude": null
-    }
+    "lineup": {
+      "bandas": ["Forró da Nicinha e Convidados"],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
   },
   {
-    "id": "evt-festival-pe-de-serra-serra",
-    "slug": "festival-pe-de-serra-serra",
-    "titulo": "Festival Pé de Serra",
-    "descricao": "Edição especial com três bandas da Grande Vitória, praça de alimentação e área kids.",
-    "inicio": "2026-07-18T19:00:00-03:00",
-    "fim": "2026-07-19T00:00:00-03:00",
-    "fusoHorario": "America/Sao_Paulo",
-    "cidade": "Serra",
-    "marcaSlug": "casa-do-forro-serra",
-    "localSlug": "galpao-laranjeiras",
+    "id": "evt-004",
+    "slug": "sanfona-eletrica-summer-set",
+    "marcaId": "mrc-004",
+    "localId": "loc-001",
+    "titulo": "Sanfona Elétrica — Summer Set",
+    "data": "2026-08-21",
+    "horario": "23:00",
+    "descricao": "Forró e eletrônica ao vivo em uma pista só, com set autoral misturando sanfona, sintetizadores e muita batida.",
     "ingresso": {
-      "tipo": "antecipado",
-      "precoAPartirDe": 35,
-      "link": "https://www.sympla.com.br/festival-pe-de-serra",
-      "plataforma": "Sympla"
-    },
-    "enderecoTexto": null,
-    "tipo": "Festival",
-    "musica": "Música ao vivo",
-    "imagem": null,
-    "origem": "manual",
-    "idExterno": null,
-    "status": "publicado",
-    "atualizadoEm": "2026-07-01T10:00:00-03:00",
-    "linkExterno": null,
-    "coordenadas": {
-      "latitude": null,
-      "longitude": null
-    }
-  },
-  {
-    "id": "evt-forrozada-boa-quero-itaunas",
-    "slug": "forrozada-boa-quero-itaunas",
-    "titulo": "Forrozada Boa — Quero Itaúnas",
-    "descricao": "Uma noite para matar a saudade, reviver a energia e reencontrar a galera que faz de Itaúnas um lugar tão especial. Porque quem vive Itaúnas sempre quer mais!\n\nATRAÇÕES:\n🎤 TRIO CRISTALINO (SP): mais de 30 anos de estrada e turnês pela Europa.\n🎤 FABIANO SANTANA (MG): acordeonista, compositor e multi-instrumentista, premiado em importantes festivais de forró.\n🎧 DJ FERNANDINHO GRAVIDADE (MG): referência na cena forrozeira de BH.",
-    "inicio": "2026-08-07T22:00:00-03:00",
-    "fim": null,
-    "fusoHorario": "America/Sao_Paulo",
-    "cidade": "Vitória",
-    "marcaSlug": "forrozada-boa",
-    "localSlug": "recreio-dos-olhos",
-    "ingresso": {
-      "tipo": "antecipado",
       "precoAPartirDe": 30,
-      "link": "https://www.sympla.com.br/evento/forrozada-boa---quero--itaunas/3499505",
+      "link": "https://sympla.com.br/em-breve",
       "plataforma": "Sympla"
     },
     "lineup": {
-      "bandas": [
-        "Trio Cristalino",
-        "Fabiano Santana"
-      ],
-      "djs": [
-        "DJ Fernandinho Gravidade"
-      ]
+      "bandas": [],
+      "djs": ["Sanfona Elétrica Live"]
     },
-    "enderecoTexto": null,
-    "tipo": "Baile",
-    "imagem": "https://images.sympla.com.br/6a539684e333c-lg.jpg",
-    "origem": "manual",
-    "idExterno": "3499505",
-    "status": "publicado",
-    "atualizadoEm": "2026-07-15T16:39:14.836Z",
-    "linkExterno": null,
-    "coordenadas": {
-      "latitude": -20.2963281,
-      "longitude": -40.3223218
-    },
-    "aniversariantes": {
-      "titulo": "Aniversariantes de Agosto",
-      "descricao": "Faz aniversário entre 01 e 31 de Agosto? O ingresso é por nossa conta! 🎉",
-      "regras": [
-        "Cadastro até 01/08 pelo WhatsApp (27) 99962-5136"
-      ]
-    }
+    "imagemUrl": "em breve",
+    "ativo": true
   },
   {
-    "id": "evt-deck-16-agosto-2026",
-    "slug": "deck-16-agosto-2026",
-    "titulo": "Forró do Deck 16 — Edição de Agosto (Baile dos Bocadas)",
-    "descricao": "O BAILE DOS BOCADAS é a união de músicos gigantes do forró tradicional.\n\nVenham dançar e se divertir na casa de forró mais amada do Brasil.",
-    "inicio": "2026-08-08T22:00:00-03:00",
-    "fim": null,
-    "fusoHorario": "America/Sao_Paulo",
-    "cidade": "Serra",
-    "marcaSlug": "forro-deck-16",
-    "localSlug": "cerimonial-espaco-praia",
-    "enderecoTexto": null,
-    "tipo": "Baile",
+    "id": "evt-005",
+    "slug": "deck-16-arena-carapina",
+    "marcaId": "mrc-001",
+    "localId": "loc-004",
+    "titulo": "Deck 16 na Arena",
+    "data": "2026-09-05",
+    "horario": "22:00",
+    "descricao": "O Deck 16 sai da Praia do Canto e leva a festa para a Arena Carapina, na Serra, em uma edição especial de aniversário.",
     "ingresso": {
-      "tipo": "antecipado",
-      "precoAPartirDe": 20,
-      "link": "https://onticket.com.br/eventos/8211-forro-deck-16-serra-2026",
-      "plataforma": "OnTicket"
-    },
-    "lineup": {
-      "bandas": [
-        "Os Bocadas",
-        "Luarada Brasileira"
-      ],
-      "djs": [
-        "Baile dos Ratos"
-      ]
-    },
-    "imagem": "assets/eventos/deck-16-agosto-2026.jpg",
-    "origem": "manual",
-    "idExterno": null,
-    "linkExterno": null,
-    "coordenadas": {
-      "latitude": null,
-      "longitude": null
-    },
-    "status": "publicado",
-    "atualizadoEm": "2026-07-12T00:00:00-03:00",
-    "aniversariantes": {
-      "titulo": "Aniversariantes de Agosto",
-      "descricao": "Os aniversariantes de Agosto terão gratuidade em nossa edição especial de aniversário ❤️",
-      "regras": [
-        "Apresentar o documento com foto",
-        "Chegar até as 22:30"
-      ]
-    }
-  },
-  {
-    "id": "evt-forro-na-marina-19-07-2026",
-    "slug": "forro-na-marina-19-07-2026",
-    "titulo": "Forró da Marina - 19 de Julho",
-    "descricao": "Abertura do evento às 16h com discotecagem DJ Edu ao vivo!\n\nShow ao com @pauladara.oficial e @joaovictordoacordeon 🔥😊\n\nListas e informações no perfil oficial ou WhatsApp 27996457828\n\nVem ser feliz na Marina Bay 🌻🥳❤️\n\nAtrações:\nPaula Dara\nJoão Victor do Acordeon\nDJ Edu",
-    "inicio": "2026-07-19T16:00:00-03:00",
-    "fim": "2026-07-19T22:00:00-03:00",
-    "fusoHorario": "America/Sao_Paulo",
-    "cidade": "Vitória",
-    "marcaSlug": "forro-na-marina",
-    "localSlug": "marina-bay-vix",
-    "enderecoTexto": null,
-    "tipo": "Baile",
-    "ingresso": {
-      "tipo": "antecipado",
       "precoAPartirDe": 25,
-      "link": "https://www.clubedoingresso.com/evento/forronamarina-19-07",
-      "plataforma": "Clube do Ingresso"
+      "link": "https://sympla.com.br/em-breve",
+      "plataforma": "Sympla"
     },
     "lineup": {
-      "bandas": [
-        "Paula Dara",
-        "João Victor do Acordeon"
-      ],
-      "djs": [
-        "DJ Edu"
-      ]
+      "bandas": ["Aviões da Serra", "Trio Pé na Estrada"],
+      "djs": ["DJ Cabra da Peste"]
     },
-    "imagem": "https://d4wlxs7f09dde.cloudfront.net/4c07f6818273de0eae57f6d72baeb5b1.jpg",
-    "origem": "manual",
-    "idExterno": null,
-    "linkExterno": null,
-    "coordenadas": {
-      "latitude": null,
-      "longitude": null
-    },
-    "status": "publicado",
-    "atualizadoEm": "2026-07-15T00:00:00-03:00"
+    "imagemUrl": "em breve",
+    "ativo": true
   }
 ]

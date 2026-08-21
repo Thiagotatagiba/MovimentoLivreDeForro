@@ -1,0 +1,253 @@
+/* components.css */
+
+/* ===== Cabeçalho ===== */
+.cabecalho {
+  padding: var(--esp-lg) 0 var(--esp-md);
+}
+
+.cabecalho .saudacao {
+  font-size: var(--tam-caption);
+  color: var(--cor-texto-suave);
+  margin-bottom: 2px;
+}
+
+.busca {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-sm);
+  background: var(--bg-card);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-pilula);
+  padding: 10px 16px;
+  margin-top: var(--esp-md);
+}
+
+.busca input {
+  border: none;
+  background: none;
+  font-size: var(--tam-corpo);
+  font-family: var(--fonte-corpo);
+  color: var(--cor-texto);
+  width: 100%;
+}
+
+.busca input:focus { outline: none; }
+.busca input::placeholder { color: var(--cor-texto-fraco); }
+
+/* ===== Resposta rápida "onde tem forró hoje" ===== */
+.resposta-hoje {
+  background: var(--bg-destaque);
+  color: var(--texto-sobre-destaque);
+  border-radius: var(--raio-card);
+  padding: var(--esp-lg) var(--esp-md);
+  margin-top: var(--esp-md);
+}
+
+.resposta-hoje h2 {
+  font-size: var(--tam-titulo-md);
+  margin-bottom: var(--esp-xs);
+}
+
+.resposta-hoje p {
+  opacity: 0.85;
+  font-size: var(--tam-corpo);
+}
+
+/* ===== Pills de filtro ===== */
+.pills {
+  display: flex;
+  gap: var(--esp-sm);
+  overflow-x: auto;
+  padding: var(--esp-xs) 0 var(--esp-sm);
+  scrollbar-width: none;
+}
+.pills::-webkit-scrollbar { display: none; }
+
+.pill {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  border-radius: var(--raio-pilula);
+  border: 1px solid var(--borda);
+  background: var(--bg-card);
+  color: var(--cor-texto-suave);
+  font-size: var(--tam-caption);
+  font-weight: 500;
+}
+
+.pill[aria-pressed="true"] {
+  background: var(--cor-pine);
+  color: var(--cor-paper);
+  border-color: var(--cor-pine);
+}
+
+/* ===== Card de evento ===== */
+.grade-eventos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--esp-md);
+}
+
+@media (min-width: 560px) {
+  .grade-eventos { grid-template-columns: 1fr 1fr; }
+}
+
+.card-evento {
+  display: block;
+  background: var(--bg-card);
+  border-radius: var(--raio-card);
+  overflow: hidden;
+  box-shadow: var(--sombra-card);
+}
+
+.card-evento .midia {
+  height: 140px;
+  background: linear-gradient(180deg, rgba(20, 47, 38, 0) 40%, rgba(20, 47, 38, 0.7) 100%), var(--cor-clay);
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--esp-sm) var(--esp-md);
+}
+
+.card-evento .marca-nome {
+  font-family: var(--fonte-display);
+  font-size: var(--tam-titulo-sm);
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.badge {
+  position: absolute;
+  top: var(--esp-sm);
+  left: var(--esp-sm);
+  background: var(--cor-gold);
+  color: var(--cor-gold-escuro);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--raio-pilula);
+}
+
+.badge.badge-hoje {
+  background: var(--cor-clay);
+  color: #fff;
+}
+
+.card-evento .corpo {
+  padding: var(--esp-sm) var(--esp-md) var(--esp-md);
+}
+
+.card-evento .titulo-evento {
+  font-weight: 500;
+  font-size: var(--tam-corpo);
+  margin-bottom: 4px;
+}
+
+.card-evento .meta {
+  font-size: var(--tam-caption);
+  color: var(--cor-texto-suave);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ===== Mini card de localização (usado na página de evento) ===== */
+.local-mini {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-sm);
+  background: var(--cor-pine-claro);
+  color: var(--cor-pine-escuro);
+  border-radius: var(--raio-campo);
+  padding: 12px 14px;
+}
+
+.local-mini a {
+  font-size: var(--tam-caption);
+  font-weight: 600;
+  color: var(--cor-pine);
+  white-space: nowrap;
+}
+
+/* ===== Botões ===== */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--raio-pilula);
+  padding: 13px 24px;
+  font-size: var(--tam-corpo);
+  font-weight: 600;
+  border: none;
+  width: 100%;
+}
+
+.botao-primario {
+  background: var(--cor-pine);
+  color: var(--cor-paper);
+}
+
+.botao-secundario {
+  background: transparent;
+  color: var(--cor-pine);
+  border: 1px solid var(--cor-pine);
+}
+
+/* ===== Navegação inferior ===== */
+.nav-inferior {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--bg-card);
+  border-top: 1px solid var(--borda);
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+  z-index: 10;
+}
+
+.nav-inferior a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 11px;
+  color: var(--cor-texto-fraco);
+  padding: 4px 12px;
+}
+
+.nav-inferior a[aria-current="page"] {
+  color: var(--cor-clay);
+}
+
+.nav-inferior svg { width: 22px; height: 22px; }
+
+/* ===== Cabeçalho de perfil (Marca / Local) ===== */
+.perfil-header {
+  background: var(--bg-destaque);
+  color: var(--texto-sobre-destaque);
+  padding: var(--esp-xl) var(--esp-md) var(--esp-lg);
+  border-radius: 0 0 var(--raio-card) var(--raio-card);
+}
+
+.perfil-header .rotulo-eyebrow { color: var(--cor-gold); }
+
+.perfil-header h1 { margin-top: var(--esp-xs); }
+
+.tag-categoria {
+  display: inline-block;
+  background: rgba(245, 239, 225, 0.15);
+  padding: 4px 12px;
+  border-radius: var(--raio-pilula);
+  font-size: 12px;
+  margin-top: var(--esp-sm);
+  margin-right: 6px;
+}
+
+/* ===== Estado vazio ===== */
+.estado-vazio {
+  text-align: center;
+  padding: var(--esp-xl) var(--esp-md);
+  color: var(--cor-texto-suave);
+}

@@ -1,122 +1,60 @@
-/* ==========================================================================
-   DESIGN TOKENS — Movimento Livre de Forró
-   Paleta: verde-mata como cor primária (ação/crescimento), terracota
-   reservado exclusivamente para o marcador "acontecendo hoje" — nunca
-   usado como cor de botão genérica. Parchment quebrado (não o bege-rosado
-   padrão) + tinta quase-preta para leitura confortável.
-   ========================================================================== */
+/* tokens.css
+   Paleta "Terra Acesa" — evolução direta do pine/clay/paper original,
+   mais rica e contrastada. Ver DECISOES_DE_ARQUITETURA.md (2026-08-20). */
 
 :root {
-  /* Cor */
-  --ink: #211a13;
-  --ink-soft: #4a3f33;
-  --muted: #7a6f5d;
-  --paper: #f4eee1;
-  --surface: #ffffff;
-  --sand: #ddd0b4;
-  --sand-line: #e7ddc7;
-  --pine: #26392b;
-  --pine-strong: #1a2820;
-  --pine-tint: #e7ede4;
-  --clay: #b54a2c;
-  --clay-tint: #f7e6dd;
-  --focus-ring: #1a2820;
+  /* cor — base */
+  --cor-paper: #F5EFE1;
+  --cor-paper-alta: #FFFFFF;
+  --cor-paper-linha: #E7DEC8;
 
-  /* Tipografia */
-  --font-display: "Fraunces", Georgia, serif;
-  --font-body: "Work Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --cor-pine: #1E4638;
+  --cor-pine-escuro: #142F26;
+  --cor-pine-claro: #E7F0EC;
 
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.375rem;
-  --text-2xl: 1.75rem;
-  --text-3xl: 2.25rem;
-  --text-4xl: 3rem;
+  --cor-clay: #BD5A34;
+  --cor-clay-escuro: #7A3A20;
+  --cor-clay-claro: #F7E3D8;
 
-  /* Espaçamento (grid 8px) */
-  --sp-1: 0.25rem;
-  --sp-2: 0.5rem;
-  --sp-3: 0.75rem;
-  --sp-4: 1rem;
-  --sp-5: 1.5rem;
-  --sp-6: 2rem;
-  --sp-7: 3rem;
-  --sp-8: 4rem;
-  --sp-9: 6rem;
+  --cor-gold: #D89A3E;
+  --cor-gold-escuro: #7A5518;
+  --cor-gold-claro: #FBEFDA;
 
-  /* Formas */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --shadow-card: 0 1px 2px rgba(33, 26, 19, 0.06), 0 8px 24px -12px rgba(33, 26, 19, 0.18);
-  --shadow-pop: 0 12px 32px -8px rgba(33, 26, 19, 0.28);
+  --cor-texto: #241F19;
+  --cor-texto-suave: #6B5D48;
+  --cor-texto-fraco: #9C8E76;
 
-  --container-max: 1120px;
+  /* papéis semânticos */
+  --bg-pagina: var(--cor-paper);
+  --bg-card: var(--cor-paper-alta);
+  --bg-destaque: var(--cor-pine);
+  --texto-sobre-destaque: var(--cor-paper);
+  --borda: var(--cor-paper-linha);
+
+  /* tipografia */
+  --fonte-display: 'Fraunces', Georgia, serif;
+  --fonte-corpo: 'Work Sans', -apple-system, sans-serif;
+
+  --tam-caption: 0.8125rem;
+  --tam-corpo: 0.9375rem;
+  --tam-titulo-sm: 1.125rem;
+  --tam-titulo-md: 1.375rem;
+  --tam-titulo-lg: 1.875rem;
+  --tam-titulo-xl: 2.5rem;
+
+  /* espaçamento */
+  --esp-xs: 4px;
+  --esp-sm: 8px;
+  --esp-md: 16px;
+  --esp-lg: 24px;
+  --esp-xl: 40px;
+
+  /* forma */
+  --raio-card: 16px;
+  --raio-pilula: 999px;
+  --raio-campo: 12px;
+
+  /* sombra — usada com moderação, só em elementos flutuantes */
+  --sombra-card: 0 2px 12px rgba(36, 31, 25, 0.08);
+  --sombra-flutuante: 0 8px 24px rgba(36, 31, 25, 0.16);
 }
-
-/* Reset enxuto */
-*, *::before, *::after { box-sizing: border-box; }
-* { margin: 0; }
-
-/* O atributo `hidden` precisa vencer SEMPRE, mesmo quando uma classe no
-   mesmo elemento define `display` explicitamente (ex. `display: flex` pra
-   centralizar um modal). Sem essa regra, qualquer elemento hidden que
-   também tenha display customizado aparece na tela mesmo escondido — foi
-   exatamente isso que quebrou o modal de Local e as abas do Cadastro
-   Geral. Uma regra global aqui evita esse bug se repetir em qualquer
-   elemento novo no futuro. */
-[hidden] { display: none !important; }
-
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-body {
-  font-family: var(--font-body);
-  color: var(--ink);
-  background: var(--paper);
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-img, svg { display: block; max-width: 100%; }
-a { color: inherit; text-decoration: none; }
-button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
-ul { list-style: none; padding: 0; }
-input, select { font: inherit; }
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-:focus-visible {
-  outline: 3px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
-  overflow: hidden;
-  clip: rect(0,0,0,0);
-  white-space: nowrap;
-  border: 0;
-}
-
-.skip-link {
-  position: absolute;
-  left: var(--sp-4);
-  top: -100px;
-  background: var(--ink);
-  color: var(--surface);
-  padding: var(--sp-2) var(--sp-4);
-  border-radius: var(--radius-sm);
-  z-index: 100;
-  transition: top 0.15s ease;
-}
-.skip-link:focus { top: var(--sp-4); }
