@@ -5,10 +5,63 @@
   padding: var(--esp-lg) 0 var(--esp-md);
 }
 
-.cabecalho .saudacao {
+.cabecalho-topo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--esp-md);
+}
+
+.saudacao-pequena {
   font-size: var(--tam-caption);
   color: var(--cor-texto-suave);
   margin-bottom: 2px;
+}
+
+.saudacao-nome {
+  margin-top: 0;
+}
+
+.localizacao {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--tam-caption);
+  font-weight: 600;
+  color: var(--cor-clay-escuro);
+  margin-top: var(--esp-xs);
+}
+
+.localizacao svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.botao-icone {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--raio-pilula);
+  background: var(--bg-card);
+  border: 1px solid var(--borda);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cor-pine);
+}
+
+.botao-icone svg {
+  width: 20px;
+  height: 20px;
+}
+
+.busca-container {
+  margin-top: var(--esp-md);
+}
+
+.busca-container[hidden] {
+  display: none;
 }
 
 .busca {

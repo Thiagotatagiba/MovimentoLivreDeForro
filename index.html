@@ -15,12 +15,27 @@
 
 <main class="container">
   <header class="cabecalho">
-    <p class="saudacao">Grande Vitória, ES</p>
-    <h1>Vai Ter Forró!</h1>
-    <div class="busca">
-      <label for="campo-busca" class="somente-leitor">Pesquisar Marcas, Locais ou eventos</label>
-      <input id="campo-busca" type="search" placeholder="Buscar Marca, Local ou evento...">
+    <div class="cabecalho-topo">
+      <div>
+        <p class="saudacao-pequena">Bem vindo,</p>
+        <h1 class="saudacao-nome">Forrozeiro</h1>
+        <p class="localizacao">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          Grande Vitória
+        </p>
+      </div>
+      <button type="button" class="botao-icone" id="botao-busca" aria-expanded="false" aria-controls="busca-container" aria-label="Buscar Marca, Local ou evento">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      </button>
     </div>
+
+    <div id="busca-container" class="busca-container" hidden>
+      <div class="busca">
+        <label for="campo-busca" class="somente-leitor">Pesquisar Marcas, Locais ou eventos</label>
+        <input id="campo-busca" type="search" placeholder="Buscar Marca, Local ou evento...">
+      </div>
+    </div>
+
     <div id="resposta-hoje" class="resposta-hoje" aria-live="polite">
       <h2>Carregando agenda...</h2>
     </div>

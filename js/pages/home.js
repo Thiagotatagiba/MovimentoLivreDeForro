@@ -4,6 +4,28 @@ import { formatarDataCurta, estiloMidia } from '../utils/format.js';
 
 const respostaEl = document.getElementById('resposta-hoje');
 const gradeEl = document.getElementById('grade-proximos');
+const botaoBusca = document.getElementById('botao-busca');
+const buscaContainer = document.getElementById('busca-container');
+
+configurarToggleBusca();
+
+function configurarToggleBusca() {
+  if (!botaoBusca || !buscaContainer) return;
+
+  botaoBusca.addEventListener('click', () => {
+    const estaAberta = !buscaContainer.hidden;
+
+    if (estaAberta) {
+      buscaContainer.hidden = true;
+      botaoBusca.setAttribute('aria-expanded', 'false');
+      return;
+    }
+
+    buscaContainer.hidden = false;
+    botaoBusca.setAttribute('aria-expanded', 'true');
+    buscaContainer.querySelector('input')?.focus();
+  });
+}
 
 async function iniciar() {
   const [hoje, proximos] = await Promise.all([
