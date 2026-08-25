@@ -204,6 +204,126 @@
   gap: 6px;
 }
 
+/* ===== Tira de Dias (fileira de destaque com os próximos 7 dias) ===== */
+.tira-dias {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-sm);
+}
+
+.cards-semana {
+  display: flex;
+  gap: var(--esp-md);
+  overflow-x: auto;
+  padding: var(--esp-sm) 2px var(--esp-md);
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  flex: 1;
+  min-width: 0;
+}
+.cards-semana::-webkit-scrollbar { display: none; }
+
+.seta-tira {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--borda);
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cor-pine);
+}
+.seta-tira svg { width: 16px; height: 16px; }
+
+.seta-tira[hidden] {
+  display: none;
+}
+
+.controle-direita {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 32px;
+  min-width: 32px;
+  padding: 0;
+  border-radius: var(--raio-pilula);
+  border: 1px solid var(--borda);
+  background: var(--bg-card);
+  color: var(--cor-pine);
+  font-size: 12px;
+  font-weight: 600;
+  transition: padding 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.controle-direita svg { width: 16px; height: 16px; flex-shrink: 0; }
+.controle-direita .controle-direita-texto { white-space: nowrap; }
+
+.controle-direita--fim {
+  min-width: auto;
+  padding: 0 12px 0 14px;
+  background: var(--cor-pine);
+  color: var(--cor-paper);
+  border-color: var(--cor-pine);
+}
+
+.card-dia {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 60px;
+}
+
+.card-dia .cartao-borda {
+  width: 56px;
+  height: 84px;
+  border-radius: 18px;
+  padding: 3px;
+  background: linear-gradient(135deg, var(--cor-clay), var(--cor-gold));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-dia .cartao-conteudo {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fonte-display);
+  font-weight: 600;
+  font-size: var(--tam-titulo-sm);
+  color: var(--cor-texto);
+}
+
+.card-dia .rotulo-dia {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--cor-texto-suave);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.card-dia.ativo .cartao-borda {
+  background: var(--cor-pine);
+}
+
+.card-dia.ativo .cartao-conteudo {
+  color: var(--cor-pine);
+}
+
+.card-dia.ativo .rotulo-dia {
+  color: var(--cor-pine);
+  font-weight: 700;
+}
+
 /* ===== Mini card de localização (usado na página de evento) ===== */
 .local-mini {
   display: flex;

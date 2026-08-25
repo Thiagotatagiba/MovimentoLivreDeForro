@@ -39,6 +39,41 @@ export function ehHoje(isoString) {
   return hoje.toDateString() === data.toDateString();
 }
 
+const NOMES_DIAS_CURTOS = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+
+function paraISOLocal(data) {
+  const ano = data.getFullYear();
+  const mes = String(data.getMonth() + 1).padStart(2, '0');
+  const dia = String(data.getDate()).padStart(2, '0');
+  return `${ano}-${mes}-${dia}`;
+}
+
+// Gera os 7 cards de dia pra fileira de destaques da Home.
+// Posição 0 = "Hoje", posição 1 = "Amanhã", posições 2-6 = nome do dia da semana.
+export function gerarCardsSemana() {
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+
+  const cards = [];
+  for (let i = 0; i < 7; i++) {
+    const data = new Date(hoje);
+    data.setDate(hoje.getDate() + i);
+
+    let rotulo;
+    if (i === 0) rotulo = 'Hoje';
+    else if (i === 1) rotulo = 'Amanhã';
+    else rotulo = NOMES_DIAS_CURTOS[data.getDay()];
+
+    cards.push({
+      rotulo,
+      diaDoMes: data.getDate(),
+      data: paraISOLocal(data),
+      ehHoje: i === 0,
+    });
+  }
+  return cards;
+}
+
 export function formatarPreco(precoAPartirDe) {
   if (precoAPartirDe === 0) return 'Entrada gratuita';
   if (precoAPartirDe == null) return 'Valor em breve';

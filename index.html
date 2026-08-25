@@ -35,11 +35,21 @@
         <input id="campo-busca" type="search" placeholder="Buscar Marca, Local ou evento...">
       </div>
     </div>
-
-    <div id="resposta-hoje" class="resposta-hoje" aria-live="polite">
-      <h2>Carregando agenda...</h2>
-    </div>
   </header>
+
+  <section class="secao">
+    <h2>Forró na Semana</h2>
+    <div class="tira-dias">
+      <button type="button" class="seta-tira" id="seta-esquerda" hidden aria-label="Ver dias anteriores">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div id="cards-semana" class="cards-semana" role="list" aria-label="Dias da semana"></div>
+      <button type="button" class="controle-direita" id="controle-direita" aria-label="Ver próximos dias">
+        <span class="controle-direita-texto" hidden>Ver mais</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+  </section>
 
   <section class="secao">
     <h2>Próximos bailes</h2>
