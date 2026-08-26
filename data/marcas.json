@@ -1,46 +1,75 @@
 [
   {
     "id": "mrc-001",
-    "slug": "deck-16",
-    "nome": "Deck 16",
-    "descricao": "Baile contemporâneo que mistura forró raiz com pop e forró eletrônico. Referência entre o público universitário da Grande Vitória.",
-    "categorias": ["baile", "ao vivo"],
-    "cidadeBase": "Vitória",
-    "instagram": "https://instagram.com/deck16oficial",
-    "whatsapp": "https://wa.me/5527999990001",
-    "ativo": true
-  },
-  {
-    "id": "mrc-002",
-    "slug": "forrozada-boa",
-    "nome": "Forrozada Boa",
-    "descricao": "Baile de forró pé de serra tradicional, com sanfona, zabumba e triângulo. Um dos bailes mais antigos em atividade na região.",
-    "categorias": ["baile", "ao vivo"],
-    "cidadeBase": "Vila Velha",
-    "instagram": "https://instagram.com/forrozadaboa",
-    "whatsapp": "https://wa.me/5527999990002",
-    "ativo": true
-  },
-  {
-    "id": "mrc-003",
-    "slug": "forro-da-nicinha",
-    "nome": "Forró da Nicinha",
-    "descricao": "Baile de bairro, acolhedor e familiar, com forró raiz tocado ao vivo toda última sexta-feira do mês.",
-    "categorias": ["forró raiz"],
+    "slug": "forro-deck-16",
+    "nome": "Forró Deck 16",
+    "descricao": "Baile tradicional de forró pé-de-serra realizado na Serra, com música ao vivo, DJs e programação que atravessa a madrugada.",
+    "frequencia": "mensal",
+    "categorias": [
+      "Baile",
+      "Pé-de-serra"
+    ],
     "cidadeBase": "Serra",
-    "instagram": "https://instagram.com/forrodanicinha",
-    "whatsapp": "em breve",
+    "localPadraoId": "loc-001",
+    "instagram": "https://www.instagram.com/forrodeck16/",
+    "whatsapp": "https://wa.me/5527998708404",
+    "site": null,
+    "logo": null,
     "ativo": true
   },
+  {
+  "id": "mrc-002",
+  "slug": "forrozada-boa",
+  "nome": "Forrozada Boa",
+  "descricao": "Baile de forró pé de serra tradicional, com sanfona, zabumba e triângulo. Um dos bailes mais antigos em atividade na região.",
+  "frequencia": "mensal",
+  "categorias": [
+    "Baile",
+    "Pé-de-serra",
+    "Tradicional"
+  ],
+  "cidadeBase": "Vitória",
+  "localPadraoId": "loc-003",
+  "instagram": "https://instagram.com/forrozadaboa",
+  "whatsapp": "https://wa.me/552799625136",
+  "site": null,
+  "logo": null,
+  "ativo": true
+},
+  {
+  "id": "mrc-003",
+  "slug": "forro-do-bombar-carioca",
+  "nome": "Forró do Bombar Carioca",
+  "descricao": "Forró em bar com programação semanal, trazendo o melhor do forró raiz em um ambiente descontraído e acolhedor.",
+  "frequencia": "semanal",
+  "categorias": [
+    "Forró em Bar"
+  ],
+  "cidadeBase": "Vila Velha",
+  "localPadraoId": "loc-006",
+  "instagram": "https://www.instagram.com/bombarcarioca",
+  "whatsapp": null,
+  "site": null,
+  "logo": null,
+  "ativo": true
+},
   {
     "id": "mrc-004",
     "slug": "sanfona-eletrica",
     "nome": "Sanfona Elétrica",
     "descricao": "Baile autoral que junta forró tradicional com produção eletrônica ao vivo. Público jovem, pista cheia.",
-    "categorias": ["universitário", "eletrônico"],
+    "frequencia": "mensal",
+    "categorias": [
+      "Universitário",
+      "Eletrônico",
+      "Autoral"
+    ],
     "cidadeBase": "Vitória",
+    "localPadraoId": null,
     "instagram": "https://instagram.com/sanfonaeletrica",
-    "whatsapp": "em breve",
+    "whatsapp": null,
+    "site": null,
+    "logo": null,
     "ativo": true
   }
 ]

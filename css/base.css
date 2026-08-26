@@ -43,6 +43,14 @@ button { font-family: inherit; cursor: pointer; }
   padding: var(--esp-lg) 0;
 }
 
+.secao-dias {
+  padding-bottom: var(--esp-xs);
+}
+
+.secao-proximos {
+  padding-top: var(--esp-xs);
+}
+
 .secao > h2 {
   margin-bottom: var(--esp-md);
 }

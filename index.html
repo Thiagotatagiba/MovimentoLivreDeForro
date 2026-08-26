@@ -6,27 +6,31 @@
 <title>Vai Ter Forró! — Onde tem forró hoje</title>
 <meta name="description" content="Descubra bailes de forró pé de serra na Grande Vitória: Marcas, Locais e a agenda completa.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
 
+<div class="barra-topo">
+  <a href="favoritos.html" class="barra-topo-icone" aria-label="Ver favoritos">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C0.3 8.4 2 5 5.5 5c2 0 3.5 1.2 4.5 2.8C11 6.2 12.5 5 14.5 5 18 5 19.7 8.4 22 11.7 19.5 16.3 12 21 12 21z"/></svg>
+  </a>
+  <span class="barra-topo-marca">Vai Ter Forró!</span>
+  <button type="button" class="barra-topo-icone" id="botao-busca" aria-expanded="false" aria-controls="busca-container" aria-label="Buscar Marca, Local ou evento">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+  </button>
+</div>
+
 <main class="container">
   <header class="cabecalho">
-    <div class="cabecalho-topo">
-      <div>
-        <p class="saudacao-pequena">Bem vindo,</p>
-        <h1 class="saudacao-nome">Forrozeiro</h1>
-        <p class="localizacao">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
-          Grande Vitória
-        </p>
-      </div>
-      <button type="button" class="botao-icone" id="botao-busca" aria-expanded="false" aria-controls="busca-container" aria-label="Buscar Marca, Local ou evento">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      </button>
+    <div>
+      <h1 class="somente-leitor">Vai Ter Forró! — Home</h1>
+      <p class="localizacao">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        Grande Vitória
+      </p>
     </div>
 
     <div id="busca-container" class="busca-container" hidden>
@@ -37,8 +41,7 @@
     </div>
   </header>
 
-  <section class="secao">
-    <h2>Forró na Semana</h2>
+  <section class="secao secao-dias">
     <div class="tira-dias">
       <button type="button" class="seta-tira" id="seta-esquerda" hidden aria-label="Ver dias anteriores">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
@@ -51,7 +54,7 @@
     </div>
   </section>
 
-  <section class="secao">
+  <section class="secao secao-proximos">
     <h2>Próximos bailes</h2>
     <div id="grade-proximos" class="grade-eventos"></div>
     <div style="margin-top: var(--esp-lg);">

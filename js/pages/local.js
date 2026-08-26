@@ -23,24 +23,29 @@ async function iniciar() {
 }
 
 function montarHtml({ local, proximos, marcas }) {
-  const temCoordenadas = local.latitude != null && local.longitude != null;
+  const linkMapa = local.mapsLink
+    || (local.latitude != null && local.longitude != null
+      ? `https://www.google.com/maps/search/?api=1&query=${local.latitude},${local.longitude}`
+      : null);
 
   return `
     <div class="perfil-header">
-      <p class="rotulo-eyebrow">Local</p>
+      <p class="rotulo-eyebrow">Local${local.tipo ? ` · ${local.tipo}` : ''}</p>
       <h1>${local.nome}</h1>
       <p style="margin-top: var(--esp-sm); opacity: 0.9;">${enderecoCompleto(local.endereco)}</p>
     </div>
 
     <div class="container">
-      ${temCoordenadas ? `
-        <div class="secao">
-          <a class="botao botao-secundario"
-             href="https://www.google.com/maps/search/?api=1&query=${local.latitude},${local.longitude}">
-            Ver rota no Maps
-          </a>
-        </div>
+      ${local.descricao ? `
+        <section class="secao">
+          <p class="texto-suave">${local.descricao}</p>
+        </section>
       ` : ''}
+
+      <div class="secao" style="display: flex; gap: var(--esp-sm); flex-wrap: wrap;">
+        ${linkMapa ? `<a class="botao botao-secundario" style="width: auto; flex: 1;" href="${linkMapa}">Ver rota no Maps</a>` : ''}
+        ${local.telefone ? `<a class="botao botao-secundario" style="width: auto; flex: 1;" href="tel:${local.telefone}">Ligar</a>` : ''}
+      </div>
 
       ${marcas.length ? `
         <section class="secao">

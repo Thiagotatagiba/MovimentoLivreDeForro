@@ -5,23 +5,6 @@
   padding: var(--esp-lg) 0 var(--esp-md);
 }
 
-.cabecalho-topo {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--esp-md);
-}
-
-.saudacao-pequena {
-  font-size: var(--tam-caption);
-  color: var(--cor-texto-suave);
-  margin-bottom: 2px;
-}
-
-.saudacao-nome {
-  margin-top: 0;
-}
-
 .localizacao {
   display: flex;
   align-items: center;
@@ -38,23 +21,36 @@
   flex-shrink: 0;
 }
 
-.botao-icone {
+/* ===== Faixa superior (marca + favoritos + busca) ===== */
+.barra-topo {
+  background: var(--cor-pine-escuro);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px var(--esp-md);
+}
+
+.barra-topo-marca {
+  font-family: var(--fonte-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.375rem;
+  color: var(--cor-paper);
+  letter-spacing: -0.01em;
+}
+
+.barra-topo-icone {
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--raio-pilula);
-  background: var(--bg-card);
-  border: 1px solid var(--borda);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--cor-pine);
+  color: var(--cor-paper);
+  background: none;
+  border: none;
 }
-
-.botao-icone svg {
-  width: 20px;
-  height: 20px;
-}
+.barra-topo-icone svg { width: 22px; height: 22px; }
 
 .busca-container {
   margin-top: var(--esp-md);

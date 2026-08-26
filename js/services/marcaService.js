@@ -12,7 +12,11 @@ export async function obterPerfilMarca(slug) {
   const marca = await buscarMarcaPorSlug(slug);
   if (!marca) return null;
 
-  const eventos = await listarEventosPorMarca(marca.id);
+  const [eventos, localPadrao] = await Promise.all([
+    listarEventosPorMarca(marca.id),
+    marca.localPadraoId ? buscarLocalPorId(marca.localPadraoId) : Promise.resolve(null),
+  ]);
+
   const eventosComLocal = await Promise.all(
     eventos.map(async (e) => ({ ...e, local: await buscarLocalPorId(e.localId) }))
   );
@@ -25,7 +29,7 @@ export async function obterPerfilMarca(slug) {
     .filter((e) => paraData(e.data) < hoje)
     .sort((a, b) => paraData(b.data) - paraData(a.data));
 
-  return { marca, proximos, historico };
+  return { marca, localPadrao, proximos, historico };
 }
 
 function inicioDeHoje() {

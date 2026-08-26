@@ -22,18 +22,32 @@ async function iniciar() {
   raiz.innerHTML = montarHtml(perfil);
 }
 
-function montarHtml({ marca, proximos, historico }) {
+function montarHtml({ marca, localPadrao, proximos, historico }) {
   return `
     <div class="perfil-header">
       <p class="rotulo-eyebrow">Marca</p>
       <h1>${marca.nome}</h1>
       <p style="margin-top: var(--esp-sm); opacity: 0.9;">${marca.descricao}</p>
       <div style="margin-top: var(--esp-sm);">
+        ${marca.frequencia ? `<span class="tag-categoria">Baile ${marca.frequencia}</span>` : ''}
         ${marca.categorias.map((c) => `<span class="tag-categoria">${c}</span>`).join('')}
       </div>
     </div>
 
     <div class="container">
+      ${localPadrao ? `
+        <section class="secao">
+          <h2 style="font-size: var(--tam-titulo-sm);">Local</h2>
+          <div class="local-mini" style="margin-top: var(--esp-sm);">
+            <div>
+              <p style="font-weight: 600;">${localPadrao.nome}</p>
+              <p style="font-size: var(--tam-caption);">${localPadrao.endereco?.bairro ?? ''} · ${localPadrao.endereco?.cidade ?? ''}</p>
+            </div>
+            <a href="local.html?slug=${localPadrao.slug}">Ver Local</a>
+          </div>
+        </section>
+      ` : ''}
+
       <section class="secao">
         <h2 style="font-size: var(--tam-titulo-sm);">Próximos eventos</h2>
         <div class="grade-eventos" style="margin-top: var(--esp-md);">
@@ -50,8 +64,9 @@ function montarHtml({ marca, proximos, historico }) {
         </section>
       ` : ''}
 
-      <div style="display: flex; gap: var(--esp-sm); padding: var(--esp-md) 0 var(--esp-xl);">
+      <div style="display: flex; gap: var(--esp-sm); padding: var(--esp-md) 0 var(--esp-xl); flex-wrap: wrap;">
         ${marca.instagram && marca.instagram !== 'em breve' ? `<a class="botao botao-secundario" href="${marca.instagram}">Instagram</a>` : ''}
+        ${marca.site ? `<a class="botao botao-secundario" href="${marca.site}">Site</a>` : ''}
         ${marca.whatsapp && marca.whatsapp !== 'em breve' ? `<a class="botao botao-primario" href="${marca.whatsapp}">WhatsApp</a>` : ''}
       </div>
     </div>

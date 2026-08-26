@@ -1,41 +1,41 @@
 [
   {
     "id": "evt-001",
-    "slug": "baile-dos-bocadas-2026-08-21",
+    "slug": "forro-deck-16-2026-08-28",
     "marcaId": "mrc-001",
     "localId": "loc-001",
-    "titulo": "Baile dos Bocadas",
-    "data": "2026-08-21",
+    "titulo": "Baile do Deck 16",
+    "data": "2026-08-28",
     "horario": "22:00",
-    "descricao": "O Deck 16 recebe o Baile dos Bocadas, uma noite dedicada aos clássicos do forró contemporâneo e às melhores bandas da cena capixaba.",
+    "descricao": "Edição mensal do Forró Deck 16 no Espaço Praia, com música ao vivo, DJs e programação que atravessa a madrugada.",
     "ingresso": {
       "precoAPartirDe": 20,
       "link": "https://sympla.com.br/em-breve",
       "plataforma": "Sympla"
     },
     "lineup": {
-      "bandas": ["Aviões da Serra"],
+      "bandas": ["Trio Pé na Estrada"],
       "djs": ["DJ Cabra da Peste"]
     },
-    "imagemUrl": "assets/eventos/deck-16-agosto-2026.jpg",
+    "imagemUrl": "em breve",
     "ativo": true
   },
   {
     "id": "evt-002",
-    "slug": "forrozada-boa-agosto-2026",
+    "slug": "forrozada-boa-2026-08-29",
     "marcaId": "mrc-002",
     "localId": "loc-003",
     "titulo": "Forrozada Boa de Agosto",
-    "data": "2026-08-22",
+    "data": "2026-08-29",
     "horario": "21:00",
-    "descricao": "Edição mensal do baile mais tradicional de Vila Velha, com sanfona, zabumba e triângulo ao vivo desde a primeira hora.",
+    "descricao": "Edição mensal do baile mais tradicional da região no Recreio dos Olhos, com sanfona, zabumba e triângulo ao vivo desde a primeira hora.",
     "ingresso": {
       "precoAPartirDe": 15,
       "link": "em breve",
       "plataforma": "Na porta"
     },
     "lineup": {
-      "bandas": ["Trio Pé na Estrada"],
+      "bandas": ["Forrozada Boa e Convidados"],
       "djs": []
     },
     "imagemUrl": "em breve",
@@ -43,34 +43,34 @@
   },
   {
     "id": "evt-003",
-    "slug": "forro-da-nicinha-ultima-sexta",
+    "slug": "forro-do-bombar-carioca-2026-08-27",
     "marcaId": "mrc-003",
-    "localId": "loc-004",
-    "titulo": "Forró da Nicinha — Última Sexta",
-    "data": "2026-08-28",
-    "horario": "20:30",
-    "descricao": "Baile de bairro tradicional em Laranjeiras, com entrada gratuita até as 21h e forró raiz até o último passo.",
+    "localId": "loc-006",
+    "titulo": "Forró do Bombar — Noite de Quinta",
+    "data": "2026-08-27",
+    "horario": "20:00",
+    "descricao": "Programação semanal de forró raiz no BomBar Carioca, em ambiente descontraído e acolhedor no Centro de Vila Velha.",
     "ingresso": {
       "precoAPartirDe": 0,
       "link": "em breve",
       "plataforma": "Na porta"
     },
     "lineup": {
-      "bandas": ["Forró da Nicinha e Convidados"],
-      "djs": []
+      "bandas": [],
+      "djs": ["DJ do Bombar"]
     },
     "imagemUrl": "em breve",
     "ativo": true
   },
   {
     "id": "evt-004",
-    "slug": "sanfona-eletrica-summer-set",
+    "slug": "sanfona-eletrica-2026-08-30",
     "marcaId": "mrc-004",
-    "localId": "loc-005",
+    "localId": "loc-002",
     "titulo": "Sanfona Elétrica — Summer Set",
-    "data": "2026-08-21",
+    "data": "2026-08-30",
     "horario": "23:00",
-    "descricao": "Forró e eletrônica ao vivo em uma pista só, com set autoral misturando sanfona, sintetizadores e muita batida.",
+    "descricao": "Forró e eletrônica ao vivo em uma pista só, no Brizz, com set autoral misturando sanfona, sintetizadores e muita batida.",
     "ingresso": {
       "precoAPartirDe": 30,
       "link": "https://sympla.com.br/em-breve",
@@ -85,21 +85,42 @@
   },
   {
     "id": "evt-005",
-    "slug": "deck-16-arena-carapina",
+    "slug": "forro-do-bombar-carioca-2026-09-03",
+    "marcaId": "mrc-003",
+    "localId": "loc-006",
+    "titulo": "Forró do Bombar — Noite de Quinta",
+    "data": "2026-09-03",
+    "horario": "20:00",
+    "descricao": "Mais uma edição semanal do forró raiz no BomBar Carioca.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": ["DJ do Bombar"]
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "evt-006",
+    "slug": "forro-deck-16-2026-09-25",
     "marcaId": "mrc-001",
     "localId": "loc-001",
-    "titulo": "Deck 16 na Arena",
-    "data": "2026-09-05",
+    "titulo": "Deck 16 — Edição de Setembro",
+    "data": "2026-09-25",
     "horario": "22:00",
-    "descricao": "O Deck 16 sai da Praia do Canto e leva a festa para a Arena Carapina, na Serra, em uma edição especial de aniversário.",
+    "descricao": "Edição mensal do Forró Deck 16, de volta ao Espaço Praia, na Serra.",
     "ingresso": {
-      "precoAPartirDe": 25,
+      "precoAPartirDe": 20,
       "link": "https://sympla.com.br/em-breve",
       "plataforma": "Sympla"
     },
     "lineup": {
-      "bandas": ["Aviões da Serra", "Trio Pé na Estrada"],
-      "djs": ["DJ Cabra da Peste"]
+      "bandas": ["Trio Pé na Estrada"],
+      "djs": []
     },
     "imagemUrl": "em breve",
     "ativo": true

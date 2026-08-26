@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Vai Ter Forró! — Home</title>
+    <style>
+      :root {
+        --green: #1e4638;
+        --clay: #bd5a34;
+        --gold: #d89a3e;
+        --paper: #f5efe1;
+        --paper2: #ede4ce;
+        --ink: #241f19;
+        --muted: #746957;
+        --white: #fffdf9;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: Inter, system-ui, sans-serif;
+        background: #d9d5cc;
+        color: var(--ink);
+      }
+      .phone {
+        width: min(100%, 430px);
+        min-height: 100vh;
+        margin: auto;
+        background: var(--paper);
+        padding-bottom: 90px;
+        overflow: hidden;
+      }
+      header {
+        padding: 23px 20px 12px;
+      }
+      .hello {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .brand {
+        font:
+          700 30px Georgia,
+          serif;
+        letter-spacing: -1px;
+        color: var(--green);
+      }
+      .avatar {
+        width: 43px;
+        height: 43px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: var(--paper2);
+        font-size: 20px;
+      }
+      .search {
+        height: 53px;
+        margin-top: 17px;
+        border: 1.5px solid #d8cebc;
+        border-radius: 28px;
+        background: #fffaf2;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 16px;
+        color: #9a8f7e;
+        font-size: 14px;
+      }
+      .loc {
+        margin-top: 14px;
+        color: var(--clay);
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .days {
+        display: flex;
+        gap: 8px;
+        padding: 7px 20px 18px;
+        overflow: hidden;
+      }
+      .day {
+        min-width: 68px;
+        padding: 9px 7px;
+        text-align: center;
+        border-radius: 16px;
+        background: var(--paper2);
+        color: var(--muted);
+      }
+      .day b {
+        display: block;
+        font-size: 13px;
+      }
+      .day small {
+        font-size: 10px;
+      }
+      .day.on {
+        background: var(--green);
+        color: white;
+      }
+      section {
+        padding: 0 20px;
+      }
+      .head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 11px;
+      }
+      .title {
+        font:
+          600 21px Georgia,
+          serif;
+      }
+      .see {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--clay);
+      }
+      .stories {
+        display: flex;
+        gap: 13px;
+        overflow: hidden;
+        margin-bottom: 22px;
+      }
+      .story {
+        width: 62px;
+        flex: none;
+        text-align: center;
+      }
+      .ring {
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        padding: 3px;
+        background: linear-gradient(
+          135deg,
+          var(--clay),
+          var(--gold),
+          var(--green)
+        );
+        margin: auto;
+      }
+      .face {
+        height: 100%;
+        border-radius: 50%;
+        border: 3px solid var(--paper);
+        background: #8c6548;
+        display: grid;
+        place-items: center;
+        font-size: 20px;
+      }
+      .story:nth-child(2) .face {
+        background: #496b58;
+      }
+      .story:nth-child(3) .face {
+        background: #b96543;
+      }
+      .story:nth-child(4) .face {
+        background: #6d526d;
+      }
+      .story:nth-child(5) .face {
+        background: #6c7b59;
+      }
+      .story span {
+        display: block;
+        font-size: 10px;
+        color: var(--muted);
+        margin-top: 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .heroTitle {
+        font:
+          700 27px Georgia,
+          serif;
+        line-height: 1.05;
+      }
+      .sub {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 5px;
+      }
+      .count {
+        background: #e1eadf;
+        color: var(--green);
+        padding: 7px 9px;
+        border-radius: 99px;
+        font-size: 10px;
+        font-weight: 800;
+      }
+      .card {
+        background: var(--white);
+        border-radius: 22px;
+        overflow: hidden;
+        margin-bottom: 15px;
+        box-shadow: 0 9px 24px #2f231510;
+      }
+      .art {
+        height: 188px;
+        position: relative;
+        padding: 15px;
+        display: flex;
+        align-items: flex-end;
+        background: linear-gradient(135deg, #673b2d, #bd5a34 52%, #dda04b);
+      }
+      .card:nth-child(3) .art {
+        background: linear-gradient(135deg, #315848, #1e4638 55%, #bd8a46);
+      }
+      .art:after {
+        content: "FORRÓ";
+        position: absolute;
+        right: -10px;
+        bottom: 15px;
+        font: 700 65px Georgia;
+        color: #ffffff18;
+        transform: rotate(-8deg);
+      }
+      .badge {
+        position: absolute;
+        left: 14px;
+        top: 14px;
+        background: var(--clay);
+        color: #fff;
+        padding: 7px 10px;
+        border-radius: 99px;
+        font-size: 10px;
+        font-weight: 800;
+      }
+      .heart {
+        position: absolute;
+        right: 13px;
+        top: 13px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #241f1940;
+        color: white;
+        font-size: 20px;
+      }
+      .artText {
+        position: relative;
+        z-index: 2;
+        color: white;
+      }
+      .label {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .artTitle {
+        font:
+          700 25px Georgia,
+          serif;
+        margin-top: 3px;
+        text-shadow: 0 2px 10px #0005;
+      }
+      .info {
+        padding: 13px 15px 15px;
+      }
+      .event {
+        font-size: 15px;
+        font-weight: 800;
+      }
+      .meta {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        color: var(--muted);
+        font-size: 11.5px;
+        margin-top: 7px;
+      }
+      .block {
+        margin-top: 25px;
+      }
+      .cards {
+        display: flex;
+        gap: 13px;
+        overflow: hidden;
+        margin-right: -20px;
+      }
+      .mini {
+        width: 205px;
+        flex: none;
+        background: white;
+        border-radius: 19px;
+        overflow: hidden;
+        box-shadow: 0 7px 18px #2f231510;
+      }
+      .miniArt {
+        height: 120px;
+        padding: 11px;
+        display: flex;
+        align-items: flex-end;
+        color: white;
+        position: relative;
+        background: linear-gradient(135deg, #244d3e, #6e987f);
+      }
+      .mini:nth-child(2) .miniArt {
+        background: linear-gradient(135deg, #713c30, #d36f43);
+      }
+      .mini:nth-child(3) .miniArt {
+        background: linear-gradient(135deg, #344d6b, #b67a47);
+      }
+      .miniArt b {
+        font:
+          700 19px Georgia,
+          serif;
+      }
+      .miniHeart {
+        position: absolute;
+        right: 9px;
+        top: 9px;
+        background: #0003;
+        border-radius: 50%;
+        padding: 6px;
+      }
+      .miniInfo {
+        padding: 10px 12px 12px;
+      }
+      .miniInfo b {
+        font-size: 12px;
+      }
+      .miniInfo p {
+        font-size: 10.5px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+      .tools {
+        margin-top: 25px;
+      }
+      .toolrow {
+        display: flex;
+        gap: 9px;
+        overflow: hidden;
+      }
+      .tool {
+        min-width: 91px;
+        text-align: center;
+        background: #e9e0cd;
+        border-radius: 17px;
+        padding: 12px 8px;
+        color: var(--green);
+      }
+      .icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+        background: #faf5eb;
+        margin: auto auto 7px;
+        display: grid;
+        place-items: center;
+      }
+      .tool span {
+        font-size: 10.5px;
+        font-weight: 800;
+      }
+      nav {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(100%, 430px);
+        height: 74px;
+        background: #fffdf9f5;
+        backdrop-filter: blur(14px);
+        border-top: 1px solid #ded5c5;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        align-items: center;
+        z-index: 5;
+      }
+      .nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        color: #9a9081;
+        font-size: 9px;
+        font-weight: 700;
+      }
+      .nav.on {
+        color: var(--clay);
+      }
+      .center {
+        width: 49px;
+        height: 49px;
+        border-radius: 50%;
+        background: var(--clay);
+        color: white;
+        display: grid;
+        place-items: center;
+        font-size: 19px;
+        margin-top: -18px;
+        border: 4px solid var(--paper);
+        box-shadow: 0 7px 18px #bd5a3448;
+      }
+      @media (min-width: 700px) {
+        body {
+          padding: 30px;
+        }
+        .phone {
+          border-radius: 28px;
+          box-shadow: 0 25px 70px #0003;
+        }
+        .bottom {
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="phone">
+      <header>
+        <div class="hello">Boa noite!</div>
+        <div class="row">
+          <div class="brand">Vai Ter Forró!</div>
+          <div class="avatar">♩</div>
+        </div>
+        <div class="search">
+          ⌕ <span>Pesquisar forró, eventos, marcas...</span>
+        </div>
+        <div class="loc">⌖ Vitória, ES　⌄</div>
+      </header>
+
+      <div class="days">
+        <div class="day on"><b>Hoje</b><small>24 ago</small></div>
+        <div class="day"><b>Amanhã</b><small>25 ago</small></div>
+        <div class="day"><b>Qua</b><small>26 ago</small></div>
+        <div class="day"><b>Qui</b><small>27 ago</small></div>
+        <div class="day"><b>Sex</b><small>28 ago</small></div>
+      </div>
+
+      <section>
+        <div class="head">
+          <div class="title">Agora no forró</div>
+          <div class="see">Ver todos</div>
+        </div>
+        <div class="stories">
+          <div class="story">
+            <div class="ring"><div class="face">🪗</div></div>
+            <span>Deck 16</span>
+          </div>
+          <div class="story">
+            <div class="ring"><div class="face">🎶</div></div>
+            <span>Bocadas</span>
+          </div>
+          <div class="story">
+            <div class="ring"><div class="face">💃</div></div>
+            <span>Forró da Vila</span>
+          </div>
+          <div class="story">
+            <div class="ring"><div class="face">🎪</div></div>
+            <span>FENFIT</span>
+          </div>
+          <div class="story">
+            <div class="ring"><div class="face">🎧</div></div>
+            <span>DJs</span>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="head">
+          <div>
+            <div class="heroTitle">🔥 Hoje tem forró!</div>
+            <div class="sub">Eventos acontecendo perto de você</div>
+          </div>
+          <div class="count">8 eventos</div>
+        </div>
+
+        <article class="card">
+          <div class="art">
+            <div class="badge">EM ALTA</div>
+            <button class="heart">♡</button>
+            <div class="artText">
+              <div class="label">Forró Deck 16 apresenta</div>
+              <div class="artTitle">Baile dos Bocadas</div>
+            </div>
+          </div>
+          <div class="info">
+            <div class="event">Baile dos Bocadas</div>
+            <div class="meta">
+              <span>◷ Hoje · 22h</span><span>⌖ Vitória · 1,2 km</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="art">
+            <div class="badge" style="background: #d89a3e; color: #3a2903">
+              GRATUITO
+            </div>
+            <button class="heart">♡</button>
+            <div class="artText">
+              <div class="label">Forró na Praça</div>
+              <div class="artTitle">Forró da Vila</div>
+            </div>
+          </div>
+          <div class="info">
+            <div class="event">Forró da Vila — Edição de Agosto</div>
+            <div class="meta">
+              <span>◷ Hoje · 20h</span><span>⌖ Vila Velha · 6,8 km</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="block">
+        <div class="head">
+          <div class="title">📍 Perto de você</div>
+          <div class="see">Ver mapa</div>
+        </div>
+        <div class="cards">
+          <article class="mini">
+            <div class="miniArt">
+              <div class="miniHeart">♡</div>
+              <b>Forró do Centro</b>
+            </div>
+            <div class="miniInfo">
+              <b>Hoje · 21h</b>
+              <p>Vitória · 1,8 km</p>
+            </div>
+          </article>
+          <article class="mini">
+            <div class="miniArt">
+              <div class="miniHeart">♡</div>
+              <b>Baile da Praia</b>
+            </div>
+            <div class="miniInfo">
+              <b>Hoje · 22h</b>
+              <p>Vila Velha · 4,2 km</p>
+            </div>
+          </article>
+          <article class="mini">
+            <div class="miniArt">
+              <div class="miniHeart">♡</div>
+              <b>Forró de Quinta</b>
+            </div>
+            <div class="miniInfo">
+              <b>Amanhã · 21h</b>
+              <p>Serra · 9,1 km</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="tools">
+        <div class="head"><div class="title">Descubra</div></div>
+        <div class="toolrow">
+          <div class="tool">
+            <div class="icon">🔥</div>
+            <span>Em alta</span>
+          </div>
+          <div class="tool">
+            <div class="icon">🗺</div>
+            <span>Mapa</span>
+          </div>
+          <div class="tool">
+            <div class="icon">✦</div>
+            <span>Explorar</span>
+          </div>
+          <div class="tool">
+            <div class="icon">♡</div>
+            <span>Favoritos</span>
+          </div>
+          <div class="tool">
+            <div class="icon">🎓</div>
+            <span>Aulas</span>
+          </div>
+        </div>
+      </section>
+
+      <nav>
+        <div class="nav on">⌂<span>Home</span></div>
+        <div class="nav">☰<span>Agenda</span></div>
+        <div class="nav"><div class="center">⌖</div></div>
+        <div class="nav">⌕<span>Explorar</span></div>
+        <div class="nav">♡<span>Favoritos</span></div>
+      </nav>
+    </div>
+  </body>
+</html>

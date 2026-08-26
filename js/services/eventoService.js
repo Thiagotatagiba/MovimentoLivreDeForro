@@ -5,12 +5,19 @@ import { listarEventos, buscarEventoPorSlug } from '../repositories/eventoReposi
 import { buscarMarcaPorId } from '../repositories/marcaRepository.js';
 import { buscarLocalPorId } from '../repositories/localRepository.js';
 import { paraData, ehHoje } from '../utils/format.js';
+import { validarLocalDoEvento } from './eventValidator.js';
 
 async function enriquecer(evento) {
   const [marca, local] = await Promise.all([
     buscarMarcaPorId(evento.marcaId),
     buscarLocalPorId(evento.localId),
   ]);
+
+  const validacao = validarLocalDoEvento(evento, marca);
+  if (!validacao.valido) {
+    console.warn('[integridade referencial]', validacao.motivo);
+  }
+
   return { ...evento, marca, local };
 }
 
