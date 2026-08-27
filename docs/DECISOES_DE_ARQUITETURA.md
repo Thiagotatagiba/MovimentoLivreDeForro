@@ -59,8 +59,69 @@ específicos pra Windows.
 **Pendente para a próxima sessão:**
 - Página/painel do Cadastro Geral (admin) ainda não reconstruída neste pacote — só o
   site público (Home, Agenda, Evento, Marca, Local, Sobre).
-- Dados são seed de exemplo (`data/*.json`) — substituir pelos dados reais das Marcas/
-  Locais/Eventos existentes.
 - Filtro de categoria na Agenda é derivado de `marca.categorias`; ainda não há entidade
   Categoria formal (ver MODELO_DE_DADOS.md — fica como próximo passo se o volume de
   categorias crescer).
+
+## 2026-08-26 — Marca ganha `localPadraoId` + checagem de integridade referencial
+
+**Contexto:** Thiago trouxe `marcas.json` e `locais.json` reais (curados à mão, com
+campos novos: `frequencia`, `localPadraoId`, `site`, `logo` na Marca; `tipo`,
+`mapsLink`, `fotoCapa`, `fotoPerfil`, `instagram`, `site`, `telefone`, `descricao`,
+`origem`, `criadoEm`, `atualizadoEm` no Local).
+
+**Decisão de modelo:** Marca agora tem `localPadraoId`, referenciando o Local onde ela
+normalmente acontece. Por enquanto uma Marca só pode ter **um** Local (`localPadraoId`
+único). O `Evento.localId` continua existindo como campo independente (não foi
+substituído por uma derivação automática do `localPadraoId`), porque:
+1. Preserva a integridade histórica — se uma Marca mudar de Local no futuro, eventos
+   passados continuam apontando pro Local onde realmente aconteceram.
+2. Prepara terreno pra quando uma Marca puder ter mais de um Local (dito explicitamente
+   por Thiago como próximo passo) — nesse momento a regra vira "evento.localId precisa
+   estar entre os locais da marca", não mais igualdade direta.
+
+**Checagem de integridade referencial implementada:** criado `js/services/eventValidator.js`
+com `validarLocalDoEvento(evento, marca)` — valida que `evento.localId` bate com
+`marca.localPadraoId` quando este existir. Ligado em `eventoService.js` (roda a cada
+evento resolvido, gera `console.warn` sem quebrar a renderização). Isso fecha o item que
+já estava pendente na documentação anterior sobre integridade referencial no
+`eventValidator.js`.
+
+**`data/eventos.json` reescrito** com os novos IDs reais de Marca/Local — os 6 eventos
+de exemplo agora respeitam a regra acima (testado programaticamente antes da entrega).
+
+**Campos novos exibidos na interface:**
+- Marca (`marca.html`): frequência do baile ("Baile mensal"/"Baile semanal"), Local
+  padrão (nome + bairro/cidade, linkando pra `local.html`), botão de Site quando existir.
+- Local (`local.html`): tipo (exibido no eyebrow, ex. "Local · Bar Aberto"), descrição
+  (campo que existia no schema mas nunca era exibido), botão "Ligar" quando há telefone,
+  e o `mapsLink` curado manualmente passa a ter prioridade sobre o link gerado a partir
+  de latitude/longitude (mais preciso).
+
+## 2026-08-27 — Projeto preparado como PWA + menu lateral
+
+**PWA:** adicionado `manifest.json` (nome, cores da paleta Terra Acesa, ícones) e
+`sw.js` (service worker). Estratégia do service worker: cache-first pra estático
+(HTML/CSS/JS/ícones), network-only pra `data/*.json` — agenda desatualizada em cache
+seria pior que não ter cache nenhum. Ícones em `assets/icons/` gerados como
+placeholder sólido (cor `--cor-paper`) nos 5 tamanhos padrão de PWA — ver README
+na própria pasta pra saber o que substituir depois.
+
+**Menu lateral (drawer):** o ícone de "Sobre" na navegação inferior virou um botão de
+Menu (☰). Ele abre um painel lateral com "Bem vindo, Forrozeiro" no topo (mesmo texto/
+estilo que a Home usava antes de virar a barra superior — reaproveitado aqui) e os
+links Sobre e Configurações embaixo. Lógica compartilhada em `js/pwa.js`, carregado
+como script comum (não módulo) em todas as páginas, pra funcionar de forma idêntica em
+qualquer uma sem duplicar código de página em página.
+
+**Nova página `configuracoes.html`:** tem o botão "Instalar aplicativo", que só aparece
+quando o navegador dispara o evento `beforeinstallprompt` (capturado globalmente em
+`js/pwa.js` e guardado em `window.deferredInstallPrompt`). Em navegadores/situações que
+não suportam esse evento (ex. Safari iOS), mostra instrução manual de "Adicionar à Tela
+de Início" em vez de esconder a funcionalidade sem explicação.
+
+**Nota de teste:** o jsdom usado nos testes automatizados deste projeto não dispara
+`DOMContentLoaded` do jeito que um navegador real dispara ao analisar uma string HTML
+estática — isso gerou um falso negativo ao testar o menu lateral. Comportamento real
+confirmado chamando a função de setup manualmente (equivalente ao que o navegador faz
+sozinho). Vale lembrar disso se um teste futuro do menu "falhar" de forma estranha.

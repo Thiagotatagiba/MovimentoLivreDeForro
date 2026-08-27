@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sobre — Vai Ter Forró!</title>
+<title>Configurações — Vai Ter Forró!</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/components.css">
@@ -16,26 +16,44 @@
 </head>
 <body>
 
+<div class="barra-topo">
+  <a href="favoritos.html" class="barra-topo-icone" aria-label="Ver favoritos">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C0.3 8.4 2 5 5.5 5c2 0 3.5 1.2 4.5 2.8C11 6.2 12.5 5 14.5 5 18 5 19.7 8.4 22 11.7 19.5 16.3 12 21 12 21z"/></svg>
+  </a>
+  <span class="barra-topo-marca">Vai Ter Forró!</span>
+  <a href="index.html" class="barra-topo-icone" aria-label="Voltar pra Home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+  </a>
+</div>
+
 <main class="container">
   <header class="cabecalho">
-    <p class="rotulo-eyebrow">Sobre</p>
-    <h1>Vai Ter Forró!</h1>
+    <p class="rotulo-eyebrow">Configurações</p>
+    <h1 style="font-size: var(--tam-titulo-lg);">Ajustes do app</h1>
   </header>
 
   <section class="secao">
-    <p>O Vai Ter Forró! é uma plataforma para responder rápido a uma pergunta simples: <strong>onde tem forró hoje?</strong></p>
-    <p class="texto-suave" style="margin-top: var(--esp-md);">
-      Nascido na Grande Vitória (ES), o projeto é mantido pelo Movimento Livre de Forró e tem como missão
-      fortalecer a cultura do Forró Pé de Serra através da tecnologia — conectando Marcas, Locais e,
-      no futuro, toda a comunidade que faz esse movimento acontecer.
-    </p>
-  </section>
-
-  <section class="secao">
-    <h2 style="font-size: var(--tam-titulo-sm);">Contato</h2>
+    <h2 style="font-size: var(--tam-titulo-sm);">Instalar aplicativo</h2>
     <p class="texto-suave" style="margin-top: var(--esp-sm);">
-      Quer cadastrar seu baile? Fale com a gente pelo Instagram do Movimento Livre de Forró.
+      Instale o Vai Ter Forró! na tela inicial do seu celular pra abrir como um app,
+      sem precisar do navegador.
     </p>
+
+    <div style="margin-top: var(--esp-md);">
+      <button type="button" class="botao botao-primario" id="botao-instalar" hidden>
+        Instalar aplicativo
+      </button>
+
+      <div id="status-instalado" class="local-mini" hidden>
+        <p>✓ Aplicativo já instalado</p>
+      </div>
+
+      <p id="status-indisponivel" class="texto-suave" style="font-size: var(--tam-caption);">
+        Seu navegador ainda não ofereceu a instalação automática. No Chrome ou Edge,
+        procure por "Instalar app" no menu (⋮). No iPhone, use "Compartilhar" →
+        "Adicionar à Tela de Início".
+      </p>
+    </div>
   </section>
 </main>
 
@@ -67,5 +85,6 @@
 </aside>
 
 <script src="js/pwa.js"></script>
+<script src="js/pages/configuracoes.js"></script>
 </body>
 </html>

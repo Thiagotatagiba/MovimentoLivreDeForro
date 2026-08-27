@@ -1,0 +1,17 @@
+{
+  "name": "Vai Ter Forró!",
+  "short_name": "Vai Ter Forró!",
+  "description": "Descubra bailes de forró pé de serra na Grande Vitória.",
+  "start_url": "index.html",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F5EFE1",
+  "theme_color": "#142F26",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
