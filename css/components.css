@@ -332,6 +332,10 @@
   padding: 12px 14px;
 }
 
+.local-mini[hidden] {
+  display: none;
+}
+
 .local-mini a {
   font-size: var(--tam-caption);
   font-weight: 600;

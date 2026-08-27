@@ -54,22 +54,37 @@
   "ativo": true
 },
   {
-    "id": "mrc-004",
-    "slug": "sanfona-eletrica",
-    "nome": "Sanfona Elétrica",
-    "descricao": "Baile autoral que junta forró tradicional com produção eletrônica ao vivo. Público jovem, pista cheia.",
-    "frequencia": "mensal",
-    "categorias": [
-      "Universitário",
-      "Eletrônico",
-      "Autoral"
-    ],
-    "cidadeBase": "Vitória",
-    "localPadraoId": null,
-    "instagram": "https://instagram.com/sanfonaeletrica",
-    "whatsapp": null,
-    "site": null,
-    "logo": null,
-    "ativo": true
-  }
+  "id": "mrc-004",
+  "slug": "forro-na-wine-jardim-da-penha",
+  "nome": "Forró na Wine | Jardim da Penha",
+  "descricao": "Forró ao vivo no WineBeer 27, em Jardim da Penha. Ambiente descontraído com música ao vivo e programação especial.",
+  "frequencia": null,
+  "categorias": [
+    "Forró em Bar"
+  ],
+  "cidadeBase": "Vitória",
+  "localPadraoId": "loc-004",
+  "instagram": "https://www.instagram.com/winebeerjp/",
+  "whatsapp": null,
+  "site": null,
+  "logo": null,
+  "ativo": true
+},
+{
+  "id": "mrc-005",
+  "slug": "forro-no-deck-da-wine-jardim-camburi",
+  "nome": "Forró no Deck da Wine | Jardim Camburi",
+  "descricao": "Forró ao vivo no WineBeer de Jardim Camburi, com área externa (deck) e programação especial de forró.",
+  "frequencia": null,
+  "categorias": [
+    "Forró em Bar"
+  ],
+  "cidadeBase": "Vitória",
+  "localPadraoId": "loc-008",
+  "instagram": "https://www.instagram.com/winebeerjc/",
+  "whatsapp": null,
+  "site": null,
+  "logo": null,
+  "ativo": true
+}
 ]

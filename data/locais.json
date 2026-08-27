@@ -84,33 +84,33 @@
     "atualizadoEm": null
   },
   {
-    "id": "loc-004",
-    "slug": "winebeer-27",
-    "nome": "WineBeer 27",
-    "tipo": "Bar Aberto",
-    "endereco": {
-      "cep": "29060-370",
-      "logradouro": "R. Arthur Czartoryski",
-      "numero": "510",
-      "complemento": null,
-      "bairro": "Jardim da Penha",
-      "cidade": "Vitória",
-      "estado": "ES"
-    },
-    "latitude": -20.28133,
-    "longitude": -40.300788,
-    "mapsLink": "https://maps.app.goo.gl/isfjeZ8i3Y6CvScU9",
-    "fotoCapa": null,
-    "fotoPerfil": null,
-    "instagram": "https://www.instagram.com/winebeerjp/",
-    "site": null,
-    "telefone": "27988923946",
-    "descricao": "Bar localizado em Jardim da Penha, Vitória, com programação de música e eventos.",
-    "ativo": true,
-    "origem": "manual",
-    "criadoEm": null,
-    "atualizadoEm": null
+  "id": "loc-004",
+  "slug": "winebeerjp",
+  "nome": "WineBeer | Jardim da Penha",
+  "tipo": "Bar Aberto",
+  "endereco": {
+    "cep": "29060-370",
+    "logradouro": "R. Arthur Czartoryski",
+    "numero": "510",
+    "complemento": null,
+    "bairro": "Jardim da Penha",
+    "cidade": "Vitória",
+    "estado": "ES"
   },
+  "latitude": -20.28133,
+  "longitude": -40.300788,
+  "mapsLink": "https://maps.app.goo.gl/isfjeZ8i3Y6CvScU9",
+  "fotoCapa": null,
+  "fotoPerfil": null,
+  "instagram": "https://www.instagram.com/winebeerjp/",
+  "site": null,
+  "telefone": "27988923946",
+  "descricao": "Bar localizado em Jardim da Penha, Vitória, com programação de música e eventos.",
+  "ativo": true,
+  "origem": "manual",
+  "criadoEm": null,
+  "atualizadoEm": null
+},
   {
     "id": "loc-005",
     "slug": "meu-querido",
@@ -194,5 +194,33 @@
     "origem": "manual",
     "criadoEm": null,
     "atualizadoEm": null
-  }
+  },
+  {
+  "id": "loc-008",
+  "slug": "winebeerjc",
+  "nome": "WineBeer | Jardim Camburi",
+  "tipo": "Bar Aberto",
+  "endereco": {
+    "cep": "29090-240",
+    "logradouro": "R. Welington de Freitas",
+    "numero": "375",
+    "complemento": null,
+    "bairro": "Jardim Camburi",
+    "cidade": "Vitória",
+    "estado": "ES"
+  },
+  "latitude": null,
+  "longitude": null,
+  "mapsLink": "https://maps.app.goo.gl/sWviNQfQeavF4fkP7",
+  "fotoCapa": null,
+  "fotoPerfil": null,
+  "instagram": "https://www.instagram.com/winebeerjc/",
+  "site": null,
+  "telefone": null,
+  "descricao": "Bar localizado em Jardim Camburi, Vitória, com programação de música e eventos.",
+  "ativo": true,
+  "origem": "manual",
+  "criadoEm": null,
+  "atualizadoEm": null
+}
 ]
