@@ -67,6 +67,7 @@ export function gerarCardsSemana() {
     cards.push({
       rotulo,
       diaDoMes: data.getDate(),
+      mesAbreviado: MESES[data.getMonth()].toUpperCase(),
       data: paraISOLocal(data),
       ehHoje: i === 0,
     });

@@ -97,3 +97,112 @@ de exemplo agora respeitam a regra acima (testado programaticamente antes da ent
   (campo que existia no schema mas nunca era exibido), botão "Ligar" quando há telefone,
   e o `mapsLink` curado manualmente passa a ter prioridade sobre o link gerado a partir
   de latitude/longitude (mais preciso).
+
+## 2026-08-27 — Projeto preparado como PWA + menu lateral
+
+**PWA:** adicionado `manifest.json` (nome, cores da paleta Terra Acesa, ícones) e
+`sw.js` (service worker). Estratégia do service worker: cache-first pra estático
+(HTML/CSS/JS/ícones), network-only pra `data/*.json` — agenda desatualizada em cache
+seria pior que não ter cache nenhum. Ícones em `assets/icons/` gerados como
+placeholder sólido (cor `--cor-paper`) nos 5 tamanhos padrão de PWA — ver README
+na própria pasta pra saber o que substituir depois.
+
+**Menu lateral (drawer):** o ícone de "Sobre" na navegação inferior virou um botão de
+Menu (☰). Ele abre um painel lateral com "Bem vindo, Forrozeiro" no topo (mesmo texto/
+estilo que a Home usava antes de virar a barra superior — reaproveitado aqui) e os
+links Sobre e Configurações embaixo. Lógica compartilhada em `js/pwa.js`, carregado
+como script comum (não módulo) em todas as páginas, pra funcionar de forma idêntica em
+qualquer uma sem duplicar código de página em página.
+
+**Nova página `configuracoes.html`:** tem o botão "Instalar aplicativo", que só aparece
+quando o navegador dispara o evento `beforeinstallprompt` (capturado globalmente em
+`js/pwa.js` e guardado em `window.deferredInstallPrompt`). Em navegadores/situações que
+não suportam esse evento (ex. Safari iOS), mostra instrução manual de "Adicionar à Tela
+de Início" em vez de esconder a funcionalidade sem explicação.
+
+**Nota de teste:** o jsdom usado nos testes automatizados deste projeto não dispara
+`DOMContentLoaded` do jeito que um navegador real dispara ao analisar uma string HTML
+estática — isso gerou um falso negativo ao testar o menu lateral. Comportamento real
+confirmado chamando a função de setup manualmente (equivalente ao que o navegador faz
+sozinho). Vale lembrar disso se um teste futuro do menu "falhar" de forma estranha.
+
+## 2026-08-28 — Tira de Dias vira filtro de verdade
+
+**Decisão de UX (discutida antes de implementar):** tocar num card da Tira de Dias
+filtra "Bailes de [dia]" **na própria Home**, não navega pra outra página — bate com a
+prioridade de "poucos cliques" do `CLAUDE.md`. Seleção é exclusiva (só um dia ativo por
+vez), "Hoje" vem selecionado por padrão — o que efetivamente traz de volta a resposta
+direta a "onde tem forró hoje?" (a missão declarada do produto), só que pelo mecanismo
+do card em vez de um banner fixo como era antes da Tira de Dias existir.
+
+**Decidido explicitamente que NÃO entra agora:** indicador visual de "esse dia tem
+evento" nos cards (custaria esperar os dados carregarem antes de desenhar a tira, ou
+atualizar os cards depois — mais código pro momento). Estado vazio é uma mensagem
+simples, sem atalho de volta pro "Hoje".
+
+**Acessibilidade:** os cards deixaram de ser `<div role="listitem">` decorativos e
+viraram `<button>` de verdade, com `aria-pressed` refletindo qual dia está selecionado.
+Antes disso não dava pra navegar a Tira de Dias por teclado.
+
+**Novo em `eventoService.js`:** `listarEventosPorData(isoData)` — compara a data como
+string ("YYYY-MM-DD"), sem reconstruir objetos `Date`, porque tanto `eventos.json`
+quanto `gerarCardsSemana()` já usam esse formato.
+
+**Ajuste no card de evento da Home:** o badge mostrava a data (`28 ago`), mas agora que
+a seção inteira já é sobre um dia específico isso virou redundante — trocado pra
+mostrar o horário do evento, informação nova que o usuário não tinha ali antes.
+
+## 2026-08-28 (correção) — Tira de Dias não filtra, abre um Story de verdade
+
+A implementação acima (filtro inline em "Bailes de [dia]") foi um entendimento errado
+do pedido original. O comportamento certo, esclarecido por Thiago: tocar num dia abre
+um **visualizador em tela cheia, estilo Stories do Instagram**, mostrando os eventos
+daquele dia um de cada vez — arte, dados (dia/local/marca) e botão "Ir para evento".
+Toque na tela avança pro próximo evento do dia; quando acabam, fecha sozinho e volta
+pra Home exatamente como estava.
+
+**Revertido:** "Próximos bailes" voltou a ser a lista genérica dos próximos eventos
+(não mais filtrada por dia selecionado) — o conceito de "dia selecionado" não existe
+mais, já que o clique agora abre um overlay temporário em vez de mudar o estado da
+página. Badge do card de evento voltou a mostrar a data.
+
+**Implementado:**
+- `#story-viewer`: overlay fixo em tela cheia (`position: fixed; inset: 0`), com barra
+  de progresso segmentada (1 segmento por evento do dia, preenchendo conforme avança) —
+  o mesmo padrão visual do Instagram, mas nas cores da Terra Acesa.
+- Clique na tela avança; clique no botão "Ir para evento" navega pro evento (não avança
+  o slide); clique no X ou tecla Esc fecha a qualquer momento.
+- Dia sem evento: o card simplesmente não abre nada — não existe story vazio.
+- `document.body.style.overflow = 'hidden'` enquanto o viewer está aberto, pra evitar
+  scroll da página por trás.
+- Reaproveita `listarEventosPorData()` (criada na tentativa anterior) sem mudança —
+  a função em si já estava certa, só o que eu fazia com o resultado dela mudou.
+
+**Testado especificamente:** como nenhum dos eventos de exemplo em `eventos.json`
+compartilha a mesma data, o avanço entre múltiplos eventos foi testado com dados
+fabricados no teste (2 eventos no mesmo dia) — confirmado abrir no 1º, avançar pro 2º,
+e fechar sozinho ao chegar no fim.
+
+## 2026-08-28 — Badge de contagem na Tira de Dias
+
+Cada card de dia ganhou um badge circular no canto superior esquerdo mostrando quantos
+eventos existem naquele dia (`9+` acima de 9). Só aparece quando há pelo menos 1 evento
+— um badge com "0" seria só ruído visual.
+
+**Ordem de execução importa aqui, de novo:** os cards renderizam de forma síncrona
+(sem esperar a contagem), exatamente como decidido antes quando esse mesmo tipo de
+problema apareceu na seta/controle direita. A contagem (`contarEventosPorData`, nova
+em `eventoService.js`) roda depois, de forma assíncrona, e só *preenche* os badges já
+existentes no DOM — nunca re-renderiza os cards. Isso evita repetir o bug de medir
+`scrollWidth` de um container vazio.
+
+`contarEventosPorData` não faz o join com Marca/Local (usa `listarEventos()` puro, não
+o `enriquecer()`) — pra só contar, esse join seria trabalho desperdiçado.
+
+**Testado:** confirmado com dados reais que o badge aparece certo nos dias com evento
+e fica escondido nos dias sem. Como nenhum dia da amostra real tem mais de 1 evento,
+usei dados fabricados no teste pra confirmar a contagem "3" e o truncamento "9+" (com
+12 eventos fictícios). Também confirmei — com um `fetch` propositalmente atrasado,
+simulando latência de rede de verdade — que o comportamento "cards aparecem primeiro,
+números chegam depois" funciona como esperado (um teste com fetch instantâneo demais
+dava falso positivo de bug por causa do timing de microtask do Node, não do app).

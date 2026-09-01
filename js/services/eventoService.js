@@ -41,6 +41,30 @@ export async function obterEventoCompleto(slug) {
   return enriquecer(evento);
 }
 
+// Usado pela Tira de Dias da Home: eventos.json guarda "data" como string
+// "YYYY-MM-DD", igual o que gerarCardsSemana() calcula pra cada card — então
+// dá pra comparar direto como texto, sem precisar reconstruir objetos Date.
+export async function listarEventosPorData(isoData) {
+  const eventos = await listarEventos();
+  const doDia = eventos.filter((e) => e.data === isoData);
+  return Promise.all(doDia.map(enriquecer));
+}
+
+// Usado pelo badge de contagem da Tira de Dias. Não enriquece com Marca/Local
+// de propósito — pra só contar, o join seria trabalho desperdiçado.
+export async function contarEventosPorData(isoDatas) {
+  const eventos = await listarEventos();
+  const contagem = Object.fromEntries(isoDatas.map((data) => [data, 0]));
+
+  eventos.forEach((evento) => {
+    if (contagem[evento.data] !== undefined) {
+      contagem[evento.data] += 1;
+    }
+  });
+
+  return contagem;
+}
+
 function inicioDeHoje() {
   const agora = new Date();
   agora.setHours(0, 0, 0, 0);

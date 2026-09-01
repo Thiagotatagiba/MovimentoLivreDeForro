@@ -272,6 +272,36 @@
   align-items: center;
   gap: 6px;
   width: 60px;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  position: relative;
+}
+
+.card-dia-badge {
+  position: absolute;
+  top: -4px;
+  left: 2px;
+  z-index: 1;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--cor-clay);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-pagina);
+}
+
+.card-dia-badge[hidden] {
+  display: none;
 }
 
 .card-dia .cartao-borda {
@@ -291,12 +321,26 @@
   border-radius: 15px;
   background: var(--bg-card);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  color: var(--cor-texto);
+}
+
+.cartao-dia-numero {
   font-family: var(--fonte-display);
   font-weight: 600;
   font-size: var(--tam-titulo-sm);
-  color: var(--cor-texto);
+  line-height: 1.1;
+}
+
+.cartao-dia-mes {
+  font-family: var(--fonte-corpo);
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  opacity: 0.65;
+  margin-top: 1px;
 }
 
 .card-dia .rotulo-dia {
@@ -458,6 +502,110 @@
 
 .nav-inferior a[aria-current="page"] {
   color: var(--cor-clay);
+}
+
+/* ===== Visualizador de Stories (eventos do dia, tela cheia) ===== */
+.story-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: var(--cor-pine-escuro);
+  display: flex;
+  flex-direction: column;
+}
+
+.story-viewer[hidden] {
+  display: none;
+}
+
+.story-progress {
+  display: flex;
+  gap: 4px;
+  padding: calc(env(safe-area-inset-top) + 10px) var(--esp-md) 0;
+}
+
+.story-progress-segmento {
+  flex: 1;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(245, 239, 225, 0.3);
+  overflow: hidden;
+}
+
+.story-progress-segmento.preenchido {
+  background: var(--cor-paper);
+}
+
+.story-fechar {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 8px);
+  right: var(--esp-md);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(20, 15, 10, 0.4);
+  color: var(--cor-paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  z-index: 2;
+}
+.story-fechar svg { width: 18px; height: 18px; }
+
+.story-conteudo {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.story-slide {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.story-arte {
+  flex: 1;
+  background: var(--cor-clay);
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--esp-lg) var(--esp-md);
+}
+
+.story-info {
+  color: var(--cor-paper);
+}
+
+.story-info .story-marca {
+  font-size: var(--tam-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.85;
+}
+
+.story-info .story-titulo {
+  font-family: var(--fonte-display);
+  font-size: var(--tam-titulo-lg);
+  margin: 4px 0 12px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.story-info .story-dado {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--tam-caption);
+  margin-top: 6px;
+  opacity: 0.9;
+}
+.story-info .story-dado svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+.story-cta {
+  width: auto;
+  margin: var(--esp-md);
 }
 
 /* ===== Cabeçalho de perfil (Marca / Local) ===== */

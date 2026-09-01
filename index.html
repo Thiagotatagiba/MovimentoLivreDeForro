@@ -59,13 +59,21 @@
   </section>
 
   <section class="secao secao-proximos">
-    <h2>Próximos bailes</h2>
+    <h2 id="titulo-secao-eventos">Próximos bailes</h2>
     <div id="grade-proximos" class="grade-eventos"></div>
     <div style="margin-top: var(--esp-lg);">
       <a class="botao botao-secundario" href="agenda.html">Ver agenda completa</a>
     </div>
   </section>
 </main>
+
+<div class="story-viewer" id="story-viewer" hidden role="dialog" aria-modal="true" aria-label="Eventos do dia">
+  <div class="story-progress" id="story-progress"></div>
+  <button type="button" class="story-fechar" id="story-fechar" aria-label="Fechar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <div class="story-conteudo" id="story-conteudo"></div>
+</div>
 
 <nav class="nav-inferior" aria-label="Navegação principal">
   <a href="index.html" aria-current="page">
