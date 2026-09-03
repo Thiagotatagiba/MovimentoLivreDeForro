@@ -206,3 +206,20 @@ usei dados fabricados no teste pra confirmar a contagem "3" e o truncamento "9+"
 simulando latência de rede de verdade — que o comportamento "cards aparecem primeiro,
 números chegam depois" funciona como esperado (um teste com fetch instantâneo demais
 dava falso positivo de bug por causa do timing de microtask do Node, não do app).
+
+## 2026-08-29 — Bug: hero de evento sem imagem ficava sem fundo
+
+`.midia` e `.marca-nome` só tinham estilo definido como seletor descendente
+(`.card-evento .midia`, `.card-evento .marca-nome`) — funcionava nos cards pequenos
+(Home, Agenda, Marca, Local, todos usam `<a class="card-evento">` como wrapper), mas o
+hero da página de evento (`evento.js`) usa esses elementos soltos, sem esse wrapper.
+Resultado: evento sem `imagemUrl` (comum, já que a maioria dos dados ainda usa "em
+breve") ficava sem o fundo clay de fallback, e o nome da marca aparecia sem estilo,
+empurrado pro topo da página em vez de alinhado embaixo do banner.
+
+**Correção:** movidas as propriedades que fazem sentido sempre (fundo clay, alinhamento
+flex, cor branca do texto, sombra) pra regras base `.midia`/`.marca-nome`; só o que é
+mesmo específico do card pequeno (altura de 140px, tamanho de fonte menor) ficou na
+versão `.card-evento .midia`/`.card-evento .marca-nome`, que continua vencendo por
+especificidade. Cards pequenos ficam idênticos a antes; o hero da página de evento
+passa a herdar o visual correto mesmo sem o wrapper.

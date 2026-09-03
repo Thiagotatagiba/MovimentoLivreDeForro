@@ -148,8 +148,7 @@
   box-shadow: var(--sombra-card);
 }
 
-.card-evento .midia {
-  height: 140px;
+.midia {
   background: linear-gradient(180deg, rgba(20, 47, 38, 0) 40%, rgba(20, 47, 38, 0.7) 100%), var(--cor-clay);
   position: relative;
   display: flex;
@@ -157,12 +156,19 @@
   padding: var(--esp-sm) var(--esp-md);
 }
 
-.card-evento .marca-nome {
+.card-evento .midia {
+  height: 140px;
+}
+
+.marca-nome {
   font-family: var(--fonte-display);
-  font-size: var(--tam-titulo-sm);
   font-weight: 600;
   color: #fff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.card-evento .marca-nome {
+  font-size: var(--tam-titulo-sm);
 }
 
 .badge {
