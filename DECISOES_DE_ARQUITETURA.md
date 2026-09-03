@@ -223,3 +223,15 @@ mesmo específico do card pequeno (altura de 140px, tamanho de fonte menor) fico
 versão `.card-evento .midia`/`.card-evento .marca-nome`, que continua vencendo por
 especificidade. Cards pequenos ficam idênticos a antes; o hero da página de evento
 passa a herdar o visual correto mesmo sem o wrapper.
+
+## 2026-09-02
+- Implementado Login de usuário final com Supabase Auth: Magic Link + Google OAuth.
+- Tabela `interacoes` criada (não só planejada) com RLS e constraint
+  de banco garantindo que `favorito` só se aplica a `evento` e
+  `seguindo` só se aplica a `marca` — regra de domínio protegida
+  no schema, não apenas na aplicação.
+- Ponto de entrada do login é o ícone de Favoritos (coração) no topo:
+  ao tocar sem sessão ativa, abre modal de login em vez de navegar
+  direto para uma página de Favoritos vazia.
+- Sessão gerenciada via `authService.js` (camada única de acesso ao
+  `supabase.auth` — páginas nunca chamam Supabase diretamente).

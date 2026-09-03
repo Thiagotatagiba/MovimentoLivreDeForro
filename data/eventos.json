@@ -124,5 +124,100 @@
     },
     "imagemUrl": "em breve",
     "ativo": true
-  }
+  },
+  {
+  "id": "evt-007",
+  "slug": "forro-deck-16-2026-09-12",
+  "marcaId": "mrc-001",
+  "localId": "loc-001",
+  "titulo": "Forró Deck 16 — Edição de Setembro",
+  "data": "2026-09-12",
+  "horario": "22:00",
+  "descricao": "É o melhor dia do mês no forró mais amado do Brasil! Nossa edição de setembro vai ser linda! Se preparem para danças inesquecíveis, contemplando um nascer do sol, na casa de Forró mais amada do Brasil. 🏝",
+  "classificacaoIndicativa": "18 anos",
+  "ingresso": {
+    "precoAPartirDe": 30,
+    "link": "https://www.onticket.com.br/eventos/8470-forro-deck-16-serra-2026",
+    "plataforma": "OnTicket"
+  },
+  "lineup": {
+    "bandas": [
+      {
+        "nome": "Sudestino",
+        "instagram": "https://instagram.com/sudestinoficial",
+        "origem": "SP",
+        "convidados": ["Paulla Zeferino (SP)"]
+      },
+      {
+        "nome": "Forró em Ti Vi",
+        "instagram": "https://instagram.com/forrobemtivi",
+        "origem": "ES",
+        "convidados": []
+      },
+      {
+        "nome": "Trio Rocha o Nó",
+        "instagram": "https://instagram.com/trio_rocha_o_no",
+        "origem": "ES",
+        "convidados": []
+      }
+    ],
+    "djs": [
+      {
+        "nome": "Eduardo Allvez",
+        "instagram": "https://instagram.com/eduardo.allvez",
+        "origem": "ES"
+      }
+    ]
+  },
+  "imagemUrl": "https://cdn.onticket.com.br/evento/8470/thumb",
+  "ativo": true
+},
+{
+  "id": "evt-008",
+  "slug": "forrozada-boa-2026-09-18",
+  "marcaId": "mrc-002",
+  "localId": "loc-003",
+  "titulo": "Forrozada Boa — Diego Oliveira, Forrofiá e Azul DJ",
+  "data": "2026-09-18",
+  "horario": "22:00",
+  "descricao": "Prepara porque esse baile tá PESADO! 🪗💥 Forrozada Boa traz Diego Oliveira, Forrofiá e Azul DJ para uma noite inesquecível de forró pé-de-serra.",
+  "classificacaoIndicativa": null,
+  "ingresso": {
+    "precoAPartirDe": null,
+    "link": "https://www.sympla.com.br/evento/forrozada-boa—diego-oliveira—forrofia—azul-dj/3537350",
+    "plataforma": "Sympla"
+  },
+  "lineup": {
+    "bandas": [
+      {
+        "nome": "Diego Oliveira",
+        "instagram": null,
+        "origem": "SP",
+        "convidados": []
+      },
+      {
+        "nome": "Forrofiá",
+        "instagram": null,
+        "origem": "ES",
+        "convidados": []
+      }
+    ],
+    "djs": [
+      {
+        "nome": "Azul DJ",
+        "instagram": null,
+        "origem": "RJ"
+      }
+    ]
+  },
+  "promocao": {
+    "tipo": "aniversariante",
+    "descricao": "Faz aniversário entre 01 e 30 de Setembro? O ingresso é por nossa conta!",
+    "validadeCadastro": "2026-09-12",
+    "contato": "https://wa.me/5527999625136"
+  },
+  "imagemUrl": "https://images.sympla.com.br/6a7b875064d7d-lg.jpg",
+  "ativo": true
+}
+  
 ]
