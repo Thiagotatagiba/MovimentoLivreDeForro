@@ -18,73 +18,90 @@
     "ativo": true
   },
   {
-  "id": "mrc-002",
-  "slug": "forrozada-boa",
-  "nome": "Forrozada Boa",
-  "descricao": "Baile de forró pé de serra tradicional, com sanfona, zabumba e triângulo. Um dos bailes mais antigos em atividade na região.",
-  "frequencia": "mensal",
-  "categorias": [
-    "Baile",
-    "Pé-de-serra",
-    "Tradicional"
-  ],
-  "cidadeBase": "Vitória",
-  "localPadraoId": "loc-003",
-  "instagram": "https://instagram.com/forrozadaboa",
-  "whatsapp": "https://wa.me/552799625136",
-  "site": null,
-  "logo": null,
-  "ativo": true
-},
+    "id": "mrc-002",
+    "slug": "forrozada-boa",
+    "nome": "Forrozada Boa",
+    "descricao": "Baile de forró pé de serra tradicional, com sanfona, zabumba e triângulo. Um dos bailes mais antigos em atividade na região.",
+    "frequencia": "mensal",
+    "categorias": [
+      "Baile",
+      "Pé-de-serra",
+      "Tradicional"
+    ],
+    "cidadeBase": "Vitória",
+    "localPadraoId": "loc-003",
+    "instagram": "https://instagram.com/forrozadaboa",
+    "whatsapp": "https://wa.me/552799625136",
+    "site": null,
+    "logo": null,
+    "ativo": true
+  },
   {
-  "id": "mrc-003",
-  "slug": "forro-do-bombar-carioca",
-  "nome": "Forró do Bombar Carioca",
-  "descricao": "Forró em bar com programação semanal, trazendo o melhor do forró raiz em um ambiente descontraído e acolhedor.",
-  "frequencia": "semanal",
-  "categorias": [
-    "Forró em Bar"
-  ],
-  "cidadeBase": "Vila Velha",
-  "localPadraoId": "loc-006",
-  "instagram": "https://www.instagram.com/bombarcarioca",
-  "whatsapp": null,
-  "site": null,
-  "logo": null,
-  "ativo": true
-},
+    "id": "mrc-003",
+    "slug": "forro-do-bombar-carioca",
+    "nome": "Forró do Bombar Carioca",
+    "descricao": "Forró em bar com programação semanal, trazendo o melhor do forró raiz em um ambiente descontraído e acolhedor.",
+    "frequencia": "semanal",
+    "categorias": [
+      "Forró em Bar"
+    ],
+    "cidadeBase": "Vila Velha",
+    "localPadraoId": "loc-006",
+    "instagram": "https://www.instagram.com/bombarcarioca",
+    "whatsapp": null,
+    "site": null,
+    "logo": null,
+    "ativo": true
+  },
   {
-  "id": "mrc-004",
-  "slug": "forro-na-wine-jardim-da-penha",
-  "nome": "Forró na Wine | Jardim da Penha",
-  "descricao": "Forró ao vivo no WineBeer 27, em Jardim da Penha. Ambiente descontraído com música ao vivo e programação especial.",
-  "frequencia": null,
-  "categorias": [
-    "Forró em Bar"
-  ],
-  "cidadeBase": "Vitória",
-  "localPadraoId": "loc-004",
-  "instagram": "https://www.instagram.com/winebeerjp/",
-  "whatsapp": null,
-  "site": null,
-  "logo": null,
-  "ativo": true
-},
-{
-  "id": "mrc-005",
-  "slug": "forro-na-wine-jardim-camburi",
-  "nome": "Forró na Wine | Jardim Camburi",
-  "descricao": "Forró ao vivo no WineBeer de Jardim Camburi, com área externa (deck) e programação especial de forró.",
-  "frequencia": null,
-  "categorias": [
-    "Forró em Bar"
-  ],
-  "cidadeBase": "Vitória",
-  "localPadraoId": "loc-008",
-  "instagram": "https://www.instagram.com/winebeerjc/",
-  "whatsapp": null,
-  "site": null,
-  "logo": null,
-  "ativo": true
-}
+    "id": "mrc-004",
+    "slug": "forro-na-wine-jardim-da-penha",
+    "nome": "Forró na Wine | Jardim da Penha",
+    "descricao": "Forró ao vivo no WineBeer 27, em Jardim da Penha. Ambiente descontraído com música ao vivo e programação especial.",
+    "frequencia": null,
+    "categorias": [
+      "Forró em Bar"
+    ],
+    "cidadeBase": "Vitória",
+    "localPadraoId": "loc-004",
+    "instagram": "https://www.instagram.com/winebeerjp/",
+    "whatsapp": null,
+    "site": null,
+    "logo": null,
+    "ativo": true
+  },
+  {
+    "id": "mrc-005",
+    "slug": "forro-na-wine-jardim-camburi",
+    "nome": "Forró na Wine | Jardim Camburi",
+    "descricao": "Forró ao vivo no WineBeer de Jardim Camburi, com área externa (deck) e programação especial de forró.",
+    "frequencia": null,
+    "categorias": [
+      "Forró em Bar"
+    ],
+    "cidadeBase": "Vitória",
+    "localPadraoId": "loc-008",
+    "instagram": "https://www.instagram.com/winebeerjc/",
+    "whatsapp": null,
+    "site": null,
+    "logo": null,
+    "ativo": true
+  },
+  {
+    "id": "mrc-006",
+    "slug": "forro-do-correria",
+    "nome": "Forró do Correria",
+    "descricao": "",
+    "frequencia": null,
+    "categorias": [
+      "Baile"
+    ],
+    "cidadeBase": null,
+    "localPadraoId": "loc-009",
+    "instagram": null,
+    "whatsapp": null,
+    "site": null,
+    "logo": null,
+    "ativo": true
+  }
 ]

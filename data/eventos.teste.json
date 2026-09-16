@@ -1,0 +1,427 @@
+[
+  {
+    "id": "tst-001",
+    "slug": "teste-hoje-sem-lineup",
+    "marcaId": "mrc-003",
+    "localId": "loc-006",
+    "titulo": "[TESTE] Evento de hoje, sem lineup",
+    "data": "2026-09-06",
+    "horario": "19:00",
+    "descricao": "Caso de teste: evento de hoje, gratuito, sem bandas nem DJs cadastrados — a seção Line-up não deve aparecer na página do evento.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-002",
+    "slug": "teste-amanha-lineup-misto",
+    "marcaId": "mrc-001",
+    "localId": "loc-001",
+    "titulo": "[TESTE] Amanhã, ingresso pago, lineup misto",
+    "data": "2026-09-07",
+    "horario": "22:00",
+    "descricao": "Caso de teste: ingresso pago (R$ 100) e lineup com bandas e DJs ao mesmo tempo.",
+    "ingresso": {
+      "precoAPartirDe": 100,
+      "link": "https://sympla.com.br/em-breve",
+      "plataforma": "Sympla"
+    },
+    "lineup": {
+      "bandas": [
+        "Banda Teste 1",
+        "Banda Teste 2"
+      ],
+      "djs": [
+        "DJ Teste"
+      ]
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-003",
+    "slug": "teste-integridade-quebrada",
+    "marcaId": "mrc-001",
+    "localId": "loc-002",
+    "titulo": "[TESTE] Local proposital errado (checar console)",
+    "data": "2026-09-08",
+    "horario": "21:00",
+    "descricao": "Caso de teste PROPOSITAL: mrc-001 (Forró Deck 16) tem localPadraoId=loc-001, mas esse evento usa loc-002. Deve aparecer aviso no console do navegador vindo do eventValidator.js.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-004",
+    "slug": "teste-tres-no-mesmo-dia-1",
+    "marcaId": "mrc-002",
+    "localId": "loc-003",
+    "titulo": "[TESTE] Evento 1 de 3 no mesmo dia",
+    "data": "2026-09-09",
+    "horario": "19:00",
+    "descricao": "Caso de teste: 1º de 3 eventos no mesmo dia, pra testar o story viewer avançando por 3 slides.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-005",
+    "slug": "teste-tres-no-mesmo-dia-2",
+    "marcaId": "mrc-004",
+    "localId": "loc-004",
+    "titulo": "[TESTE] Evento 2 de 3 no mesmo dia",
+    "data": "2026-09-09",
+    "horario": "20:00",
+    "descricao": "Caso de teste: 2º de 3 eventos no mesmo dia, pra testar o story viewer avançando por 3 slides.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-006",
+    "slug": "teste-tres-no-mesmo-dia-3",
+    "marcaId": "mrc-005",
+    "localId": "loc-008",
+    "titulo": "[TESTE] Evento 3 de 3 no mesmo dia",
+    "data": "2026-09-09",
+    "horario": "21:00",
+    "descricao": "Caso de teste: 3º de 3 eventos no mesmo dia, pra testar o story viewer avançando por 3 slides.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-100",
+    "slug": "teste-doze-no-mesmo-dia-1",
+    "marcaId": "mrc-001",
+    "localId": "loc-001",
+    "titulo": "[TESTE] Evento 1 de 12 no mesmo dia",
+    "data": "2026-09-11",
+    "horario": "20:00",
+    "descricao": "Caso de teste: um de 12 eventos no mesmo dia, pra testar o badge '9+' da Tira de Dias com dado real.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-101",
+    "slug": "teste-doze-no-mesmo-dia-2",
+    "marcaId": "mrc-002",
+    "localId": "loc-003",
+    "titulo": "[TESTE] Evento 2 de 12 no mesmo dia",
+    "data": "2026-09-11",
+    "horario": "20:00",
+    "descricao": "Caso de teste: um de 12 eventos no mesmo dia, pra testar o badge '9+' da Tira de Dias com dado real.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-102",
+    "slug": "teste-doze-no-mesmo-dia-3",
+    "marcaId": "mrc-003",
+    "localId": "loc-006",
+    "titulo": "[TESTE] Evento 3 de 12 no mesmo dia",
+    "data": "2026-09-11",
+    "horario": "20:00",
+    "descricao": "Caso de teste: um de 12 eventos no mesmo dia, pra testar o badge '9+' da Tira de Dias com dado real.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-103",
+    "slug": "teste-doze-no-mesmo-dia-4",
+    "marcaId": "mrc-004",
+    "localId": "loc-004",
+    "titulo": "[TESTE] Evento 4 de 12 no mesmo dia",
+    "data": "2026-09-11",
+    "horario": "20:00",
+    "descricao": "Caso de teste: um de 12 eventos no mesmo dia, pra testar o badge '9+' da Tira de Dias com dado real.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-104",
+    "slug": "teste-doze-no-mesmo-dia-5",
+    "marcaId": "mrc-005",
+    "localId": "loc-008",
+    "titulo": "[TESTE] Evento 5 de 12 no mesmo dia",
+    "data": "2026-09-11",
+    "horario": "20:00",
+    "descricao": "Caso de teste: um de 12 eventos no mesmo dia, pra testar o badge '9+' da Tira de Dias com dado real.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-105",
+    "slug": "teste-doze-no-mesmo-dia-6",
+    "marcaId": "mrc-001",
+    "localId": "loc-001",
+    "titulo": "[TESTE] Evento 6 de 12 no mesmo dia",
+    "data": "2026-09-11",
+    "horario": "20:00",
+    "descricao": "Caso de teste: um de 12 eventos no mesmo dia, pra testar o badge '9+' da Tira de Dias com dado real.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-106",
+    "slug": "teste-doze-no-mesmo-dia-7",
+    "marcaId": "mrc-002",
+    "localId": "loc-003",
+    "titulo": "[TESTE] Evento 7 de 12 no mesmo dia",
+    "data": "2026-09-11",
+    "horario": "20:00",
+    "descricao": "Caso de teste: um de 12 eventos no mesmo dia, pra testar o badge '9+' da Tira de Dias com dado real.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-107",
+    "slug": "teste-doze-no-mesmo-dia-8",
+    "marcaId": "mrc-003",
+    "localId": "loc-006",
+    "titulo": "[TESTE] Evento 8 de 12 no mesmo dia",
+    "data": "2026-09-11",
+    "horario": "20:00",
+    "descricao": "Caso de teste: um de 12 eventos no mesmo dia, pra testar o badge '9+' da Tira de Dias com dado real.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-108",
+    "slug": "teste-doze-no-mesmo-dia-9",
+    "marcaId": "mrc-004",
+    "localId": "loc-004",
+    "titulo": "[TESTE] Evento 9 de 12 no mesmo dia",
+    "data": "2026-09-11",
+    "horario": "20:00",
+    "descricao": "Caso de teste: um de 12 eventos no mesmo dia, pra testar o badge '9+' da Tira de Dias com dado real.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-109",
+    "slug": "teste-doze-no-mesmo-dia-10",
+    "marcaId": "mrc-005",
+    "localId": "loc-008",
+    "titulo": "[TESTE] Evento 10 de 12 no mesmo dia",
+    "data": "2026-09-11",
+    "horario": "20:00",
+    "descricao": "Caso de teste: um de 12 eventos no mesmo dia, pra testar o badge '9+' da Tira de Dias com dado real.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-110",
+    "slug": "teste-doze-no-mesmo-dia-11",
+    "marcaId": "mrc-001",
+    "localId": "loc-001",
+    "titulo": "[TESTE] Evento 11 de 12 no mesmo dia",
+    "data": "2026-09-11",
+    "horario": "20:00",
+    "descricao": "Caso de teste: um de 12 eventos no mesmo dia, pra testar o badge '9+' da Tira de Dias com dado real.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-111",
+    "slug": "teste-doze-no-mesmo-dia-12",
+    "marcaId": "mrc-002",
+    "localId": "loc-003",
+    "titulo": "[TESTE] Evento 12 de 12 no mesmo dia",
+    "data": "2026-09-11",
+    "horario": "20:00",
+    "descricao": "Caso de teste: um de 12 eventos no mesmo dia, pra testar o badge '9+' da Tira de Dias com dado real.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-200",
+    "slug": "teste-ultimo-dia-da-tira",
+    "marcaId": "mrc-002",
+    "localId": "loc-003",
+    "titulo": "[TESTE] Último dia visível na Tira (dia 7)",
+    "data": "2026-09-12",
+    "horario": "21:00",
+    "descricao": "Caso de teste: cai exatamente no 7º card da Tira de Dias, o último antes do controle virar 'Ver mais'.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  },
+  {
+    "id": "tst-201",
+    "slug": "teste-fora-da-tira-de-dias",
+    "marcaId": "mrc-001",
+    "localId": "loc-001",
+    "titulo": "[TESTE] Fora da Tira de Dias, só na Agenda",
+    "data": "2026-10-01",
+    "horario": "22:00",
+    "descricao": "Caso de teste: data fora da janela de 7 dias da Tira de Dias — só deve aparecer na Agenda completa, nunca na Home.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "plataforma": "Na porta"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "ativo": true
+  }
+]

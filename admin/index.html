@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cadastro Geral — Vai Ter Forró!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<header class="admin-topo">
+  <h1>Cadastro Geral</h1>
+  <div>
+    <span class="admin-status" id="status-projeto">Nenhum projeto aberto</span>
+    <button type="button" class="admin-botao primario" id="botao-abrir-pasta" style="margin-left: 12px;">Abrir pasta do projeto</button>
+  </div>
+</header>
+
+<main class="admin-layout">
+
+  <div id="aviso-navegador" class="admin-aviso erro" hidden>
+    Seu navegador não suporta a File System Access API, então esse painel não
+    funciona aqui. Use Chrome ou Edge.
+  </div>
+
+  <div id="aviso-erro" class="admin-aviso erro" hidden></div>
+
+  <div id="boas-vindas" class="admin-boas-vindas">
+    <p>Abra a pasta raiz do projeto (onde ficam <code>index.html</code> e a pasta
+    <code>data/</code>) pra editar Eventos, Marcas e Locais direto nos arquivos
+    JSON, sem precisar copiar e colar nada.</p>
+  </div>
+
+  <div id="painel-principal" hidden>
+    <div class="admin-tabs" role="tablist">
+      <button type="button" class="admin-tab" id="tab-eventos" role="tab" aria-selected="true">Eventos</button>
+      <button type="button" class="admin-tab" id="tab-marcas" role="tab" aria-selected="false">Marcas</button>
+      <button type="button" class="admin-tab" id="tab-locais" role="tab" aria-selected="false">Locais</button>
+    </div>
+
+    <section id="secao-eventos">
+      <div class="admin-lista-topo">
+        <h2>Eventos</h2>
+        <button type="button" class="admin-botao primario" id="botao-novo-evento">+ Novo evento</button>
+      </div>
+      <div class="admin-lista" id="lista-eventos"></div>
+    </section>
+
+    <section id="secao-marcas" hidden>
+      <div class="admin-lista-topo">
+        <h2>Marcas</h2>
+        <button type="button" class="admin-botao primario" id="botao-nova-marca">+ Nova marca</button>
+      </div>
+      <div class="admin-lista" id="lista-marcas"></div>
+    </section>
+
+    <section id="secao-locais" hidden>
+      <div class="admin-lista-topo">
+        <h2>Locais</h2>
+        <button type="button" class="admin-botao primario" id="botao-novo-local">+ Novo local</button>
+      </div>
+      <div class="admin-lista" id="lista-locais"></div>
+    </section>
+  </div>
+</main>
+
+<!-- ===== Modal: Evento ===== -->
+<div class="admin-modal-overlay" id="modal-evento" hidden>
+  <div class="admin-modal">
+    <h2 id="modal-evento-titulo">Novo evento</h2>
+    <div class="admin-erro-validacao" id="erro-evento" hidden></div>
+    <form id="form-evento">
+      <div class="admin-campo">
+        <label for="ev-titulo">Título</label>
+        <input type="text" id="ev-titulo" required>
+      </div>
+
+      <div class="admin-campo-linha">
+        <div class="admin-campo">
+          <label for="ev-data">Data</label>
+          <input type="date" id="ev-data" required>
+        </div>
+        <div class="admin-campo">
+          <label for="ev-horario">Horário</label>
+          <input type="time" id="ev-horario" required>
+        </div>
+      </div>
+
+      <div class="admin-campo">
+        <label for="ev-marca">Marca</label>
+        <select id="ev-marca" required></select>
+      </div>
+
+      <div class="admin-campo" id="grupo-local-fixo">
+        <label>Local (definido pela Marca)</label>
+        <input type="text" id="ev-local-fixo" disabled>
+        <p class="admin-campo-ajuda">Essa Marca tem local padrão — o evento usa ele automaticamente.</p>
+      </div>
+
+      <div class="admin-campo" id="grupo-local-livre" hidden>
+        <label for="ev-local-select">Local</label>
+        <select id="ev-local-select"></select>
+        <p class="admin-campo-ajuda">Essa Marca ainda não tem local padrão — escolha um Local pra esse evento.</p>
+      </div>
+
+      <div class="admin-campo">
+        <label for="ev-descricao">Descrição</label>
+        <textarea id="ev-descricao"></textarea>
+      </div>
+
+      <div class="admin-campo-linha">
+        <div class="admin-campo">
+          <label for="ev-preco">Preço (0 = gratuito)</label>
+          <input type="number" id="ev-preco" min="0" step="1" value="0">
+        </div>
+        <div class="admin-campo">
+          <label for="ev-plataforma">Plataforma</label>
+          <input type="text" id="ev-plataforma" placeholder="Na porta, Sympla...">
+        </div>
+      </div>
+
+      <div class="admin-campo">
+        <label for="ev-link">Link do ingresso</label>
+        <input type="text" id="ev-link" placeholder="em breve">
+      </div>
+
+      <div class="admin-campo-linha">
+        <div class="admin-campo">
+          <label for="ev-bandas">Bandas (separadas por vírgula)</label>
+          <input type="text" id="ev-bandas">
+        </div>
+        <div class="admin-campo">
+          <label for="ev-djs">DJs (separados por vírgula)</label>
+          <input type="text" id="ev-djs">
+        </div>
+      </div>
+
+      <div class="admin-campo">
+        <label for="ev-imagem">URL da imagem</label>
+        <input type="text" id="ev-imagem" placeholder="em breve">
+      </div>
+
+      <div class="admin-campo">
+        <label for="ev-slug">Slug</label>
+        <input type="text" id="ev-slug">
+        <p class="admin-campo-ajuda">Gerado automaticamente a partir da Marca + data. Só mexa se souber o motivo.</p>
+      </div>
+
+      <div class="admin-campo admin-campo-checkbox">
+        <input type="checkbox" id="ev-ativo" checked>
+        <label for="ev-ativo" style="margin: 0;">Ativo (aparece no site)</label>
+      </div>
+
+      <div class="admin-modal-acoes">
+        <button type="button" class="admin-botao" id="botao-cancelar-evento">Cancelar</button>
+        <div class="admin-modal-acoes-direita">
+          <button type="submit" class="admin-botao primario">Salvar evento</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== Modal: Marca ===== -->
+<div class="admin-modal-overlay" id="modal-marca" hidden>
+  <div class="admin-modal">
+    <h2 id="modal-marca-titulo">Nova marca</h2>
+    <div class="admin-erro-validacao" id="erro-marca" hidden></div>
+    <form id="form-marca">
+      <div class="admin-campo">
+        <label for="mr-nome">Nome</label>
+        <input type="text" id="mr-nome" required>
+      </div>
+
+      <div class="admin-campo">
+        <label for="mr-descricao">Descrição</label>
+        <textarea id="mr-descricao"></textarea>
+      </div>
+
+      <div class="admin-campo-linha">
+        <div class="admin-campo">
+          <label for="mr-frequencia">Frequência</label>
+          <select id="mr-frequencia">
+            <option value="">Não definida</option>
+            <option value="semanal">Semanal</option>
+            <option value="mensal">Mensal</option>
+          </select>
+        </div>
+        <div class="admin-campo">
+          <label for="mr-cidade">Cidade base</label>
+          <input type="text" id="mr-cidade">
+        </div>
+      </div>
+
+      <div class="admin-campo">
+        <label for="mr-categorias">Categorias (separadas por vírgula)</label>
+        <input type="text" id="mr-categorias" placeholder="Baile, Pé-de-serra...">
+      </div>
+
+      <div class="admin-campo">
+        <label for="mr-local-padrao">Local padrão</label>
+        <select id="mr-local-padrao">
+          <option value="">Nenhum ainda</option>
+        </select>
+        <p class="admin-campo-ajuda">Por enquanto uma Marca só pode ter 1 Local padrão.</p>
+      </div>
+
+      <div class="admin-campo-linha">
+        <div class="admin-campo">
+          <label for="mr-instagram">Instagram</label>
+          <input type="text" id="mr-instagram">
+        </div>
+        <div class="admin-campo">
+          <label for="mr-whatsapp">WhatsApp</label>
+          <input type="text" id="mr-whatsapp">
+        </div>
+      </div>
+
+      <div class="admin-campo">
+        <label for="mr-site">Site</label>
+        <input type="text" id="mr-site">
+      </div>
+
+      <div class="admin-campo admin-campo-checkbox">
+        <input type="checkbox" id="mr-ativo" checked>
+        <label for="mr-ativo" style="margin: 0;">Ativa (aparece no site)</label>
+      </div>
+
+      <div class="admin-modal-acoes">
+        <button type="button" class="admin-botao" id="botao-cancelar-marca">Cancelar</button>
+        <div class="admin-modal-acoes-direita">
+          <button type="submit" class="admin-botao primario">Salvar marca</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== Modal: Local ===== -->
+<div class="admin-modal-overlay" id="modal-local" hidden>
+  <div class="admin-modal">
+    <h2 id="modal-local-titulo">Novo local</h2>
+    <div class="admin-erro-validacao" id="erro-local" hidden></div>
+    <form id="form-local">
+      <div class="admin-campo-linha">
+        <div class="admin-campo">
+          <label for="lc-nome">Nome</label>
+          <input type="text" id="lc-nome" required>
+        </div>
+        <div class="admin-campo">
+          <label for="lc-tipo">Tipo</label>
+          <input type="text" id="lc-tipo" placeholder="Bar, Casa de Shows...">
+        </div>
+      </div>
+
+      <div class="admin-campo-linha">
+        <div class="admin-campo">
+          <label for="lc-logradouro">Logradouro</label>
+          <input type="text" id="lc-logradouro">
+        </div>
+        <div class="admin-campo">
+          <label for="lc-numero">Número</label>
+          <input type="text" id="lc-numero">
+        </div>
+      </div>
+
+      <div class="admin-campo-linha">
+        <div class="admin-campo">
+          <label for="lc-bairro">Bairro</label>
+          <input type="text" id="lc-bairro">
+        </div>
+        <div class="admin-campo">
+          <label for="lc-cidade">Cidade</label>
+          <input type="text" id="lc-cidade">
+        </div>
+        <div class="admin-campo">
+          <label for="lc-estado">Estado</label>
+          <input type="text" id="lc-estado" maxlength="2" style="text-transform: uppercase;">
+        </div>
+      </div>
+
+      <div class="admin-campo-linha">
+        <div class="admin-campo">
+          <label for="lc-cep">CEP</label>
+          <input type="text" id="lc-cep">
+        </div>
+        <div class="admin-campo">
+          <label for="lc-complemento">Complemento</label>
+          <input type="text" id="lc-complemento">
+        </div>
+      </div>
+
+      <div class="admin-campo-linha">
+        <div class="admin-campo">
+          <label for="lc-latitude">Latitude</label>
+          <input type="text" id="lc-latitude" placeholder="-20.2938">
+        </div>
+        <div class="admin-campo">
+          <label for="lc-longitude">Longitude</label>
+          <input type="text" id="lc-longitude" placeholder="-40.2925">
+        </div>
+      </div>
+
+      <div class="admin-campo">
+        <label for="lc-maps-link">Link do Google Maps</label>
+        <input type="text" id="lc-maps-link">
+      </div>
+
+      <div class="admin-campo">
+        <label for="lc-descricao">Descrição</label>
+        <textarea id="lc-descricao"></textarea>
+      </div>
+
+      <div class="admin-campo-linha">
+        <div class="admin-campo">
+          <label for="lc-instagram">Instagram</label>
+          <input type="text" id="lc-instagram">
+        </div>
+        <div class="admin-campo">
+          <label for="lc-telefone">Telefone</label>
+          <input type="text" id="lc-telefone">
+        </div>
+      </div>
+
+      <div class="admin-campo">
+        <label for="lc-site">Site</label>
+        <input type="text" id="lc-site">
+      </div>
+
+      <div class="admin-campo admin-campo-checkbox">
+        <input type="checkbox" id="lc-ativo" checked>
+        <label for="lc-ativo" style="margin: 0;">Ativo (aparece no site)</label>
+      </div>
+
+      <div class="admin-modal-acoes">
+        <button type="button" class="admin-botao" id="botao-cancelar-local">Cancelar</button>
+        <div class="admin-modal-acoes-direita">
+          <button type="submit" class="admin-botao primario">Salvar local</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
