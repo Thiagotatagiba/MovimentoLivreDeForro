@@ -303,3 +303,24 @@ editar Marca preservando os campos não tocados no formulário. Confirmei també
 Local salvo num Evento sempre vem do `localPadraoId` da Marca no estado em memória —
 nunca do campo de exibição (mesmo que alguém adultere esse campo via DevTools, não
 teria efeito no valor realmente gravado).
+
+## 2026-09-19 — Marca ganha `diasSemana`
+
+Campo novo em Marca: `diasSemana` (array de strings, ex: `["sábado"]`), separado de
+`frequencia` (que continua sendo "semanal"/"mensal"/null). Os dois se complementam —
+Forró Deck 16 é `frequencia: "mensal"` + `diasSemana: ["sábado"]`, ou seja, uma vez
+por mês, sempre num sábado.
+
+No admin (`admin/js/marcas.js`, `admin/index.html`), o campo é um grupo de 7
+checkboxes em formato de pílula (permite selecionar mais de um dia, ex: um baile que
+acontece toda quinta E domingo). Usa o seletor CSS `:has()` pra destacar visualmente
+o dia marcado — recurso só suportado em navegadores Chromium, o que não é problema
+aqui já que o admin inteiro já depende da File System Access API (Chrome/Edge only).
+
+`data/marcas.json` atualizado só onde havia informação confirmada: Forró Deck 16
+(`["sábado"]`, dito explicitamente por Thiago). As outras 4 Marcas ficaram com
+`diasSemana: []` — os eventos de exemplo já cadastrados sugerem um padrão (o Bombar
+Carioca sempre com título "Noite de Quinta"), mas isso é dado fabricado por mim como
+exemplo, não confirmado como fato real da Marca, então não foi usado pra preencher.
+
+Site público (`marca.html`) ainda não exibe esse campo — só o admin, por enquanto.

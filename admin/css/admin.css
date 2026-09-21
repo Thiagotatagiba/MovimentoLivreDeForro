@@ -244,6 +244,35 @@ body {
   flex: 1;
 }
 
+.admin-campo-com-botao {
+  display: flex;
+  gap: 8px;
+}
+.admin-campo-com-botao input {
+  flex: 1;
+}
+
+.admin-botao-icone {
+  flex-shrink: 0;
+  width: 40px;
+  border: 1px solid var(--cor-pine);
+  border-radius: var(--raio-campo);
+  background: none;
+  color: var(--cor-pine);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.admin-botao-icone svg {
+  width: 18px;
+  height: 18px;
+}
+.admin-botao-icone:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .admin-campo-checkbox {
   display: flex;
   align-items: center;
@@ -271,6 +300,36 @@ body {
 .admin-modal-acoes-direita {
   display: flex;
   gap: 8px;
+}
+
+.admin-dias-semana {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.admin-dia-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--tam-caption);
+  font-weight: 600;
+  padding: 6px 12px;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-pilula);
+  cursor: pointer;
+  background: var(--bg-card);
+}
+
+.admin-dia-checkbox input {
+  width: auto;
+  margin: 0;
+}
+
+.admin-dia-checkbox:has(input:checked) {
+  background: var(--cor-pine);
+  color: var(--cor-paper);
+  border-color: var(--cor-pine);
 }
 
 .admin-erro-validacao {

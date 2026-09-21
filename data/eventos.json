@@ -15,7 +15,9 @@
     },
     "lineup": {
       "bandas": [],
-      "djs": ["DJ do Bombar"]
+      "djs": [
+        "DJ do Bombar"
+      ]
     },
     "imagemUrl": "em breve",
     "ativo": true
@@ -35,7 +37,9 @@
       "plataforma": "Na porta"
     },
     "lineup": {
-      "bandas": ["Trio Pé na Estrada"],
+      "bandas": [
+        "Trio Pé na Estrada"
+      ],
       "djs": []
     },
     "imagemUrl": "em breve",
@@ -57,7 +61,9 @@
     },
     "lineup": {
       "bandas": [],
-      "djs": ["DJ Cabra da Peste"]
+      "djs": [
+        "DJ Cabra da Peste"
+      ]
     },
     "imagemUrl": "em breve",
     "ativo": true
@@ -78,7 +84,9 @@
     },
     "lineup": {
       "bandas": [],
-      "djs": ["DJ do Bombar"]
+      "djs": [
+        "DJ do Bombar"
+      ]
     },
     "imagemUrl": "em breve",
     "ativo": true
@@ -98,7 +106,9 @@
       "plataforma": "Na porta"
     },
     "lineup": {
-      "bandas": ["Forrozada Boa e Convidados"],
+      "bandas": [
+        "Forrozada Boa e Convidados"
+      ],
       "djs": []
     },
     "imagemUrl": "em breve",
@@ -119,8 +129,12 @@
       "plataforma": "Sympla"
     },
     "lineup": {
-      "bandas": ["Trio Pé na Estrada"],
-      "djs": ["DJ Cabra da Peste"]
+      "bandas": [
+        "Trio Pé na Estrada"
+      ],
+      "djs": [
+        "DJ Cabra da Peste"
+      ]
     },
     "imagemUrl": "em breve",
     "ativo": true

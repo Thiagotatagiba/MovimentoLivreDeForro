@@ -46,6 +46,17 @@ function popularSelectDeLocais(localPadraoIdAtual) {
   localPadraoSelectEl.innerHTML = `<option value="">Nenhum ainda</option>${opcoes}`;
 }
 
+function marcarDiasSemana(diasSemana) {
+  document.querySelectorAll('#mr-dias-semana input[type="checkbox"]').forEach((caixa) => {
+    caixa.checked = diasSemana.includes(caixa.value);
+  });
+}
+
+function diasSemanaMarcados() {
+  return [...document.querySelectorAll('#mr-dias-semana input[type="checkbox"]:checked')]
+    .map((caixa) => caixa.value);
+}
+
 export function abrirFormulario(id = null) {
   editandoId = id;
   erroEl.hidden = true;
@@ -60,6 +71,7 @@ export function abrirFormulario(id = null) {
   document.getElementById('mr-descricao').value = marca?.descricao ?? '';
   document.getElementById('mr-frequencia').value = marca?.frequencia ?? '';
   document.getElementById('mr-cidade').value = marca?.cidadeBase ?? '';
+  marcarDiasSemana(marca?.diasSemana ?? []);
   document.getElementById('mr-categorias').value = listaParaTexto(marca?.categorias);
   document.getElementById('mr-instagram').value = marca?.instagram ?? '';
   document.getElementById('mr-whatsapp').value = marca?.whatsapp ?? '';
@@ -94,6 +106,7 @@ async function salvar(evento) {
     nome,
     descricao: document.getElementById('mr-descricao').value.trim(),
     frequencia: textoOuNulo(document.getElementById('mr-frequencia').value),
+    diasSemana: diasSemanaMarcados(),
     categorias: textoParaLista(document.getElementById('mr-categorias').value),
     cidadeBase: textoOuNulo(document.getElementById('mr-cidade').value),
     localPadraoId: textoOuNulo(document.getElementById('mr-local-padrao').value),

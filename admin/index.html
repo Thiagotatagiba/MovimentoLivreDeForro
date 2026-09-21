@@ -196,6 +196,20 @@
       </div>
 
       <div class="admin-campo">
+        <label>Dia(s) da semana em que costuma acontecer</label>
+        <div class="admin-dias-semana" id="mr-dias-semana">
+          <label class="admin-dia-checkbox"><input type="checkbox" value="domingo"> Dom</label>
+          <label class="admin-dia-checkbox"><input type="checkbox" value="segunda"> Seg</label>
+          <label class="admin-dia-checkbox"><input type="checkbox" value="terça"> Ter</label>
+          <label class="admin-dia-checkbox"><input type="checkbox" value="quarta"> Qua</label>
+          <label class="admin-dia-checkbox"><input type="checkbox" value="quinta"> Qui</label>
+          <label class="admin-dia-checkbox"><input type="checkbox" value="sexta"> Sex</label>
+          <label class="admin-dia-checkbox"><input type="checkbox" value="sábado"> Sáb</label>
+        </div>
+        <p class="admin-campo-ajuda">Ex: Deck 16 é mensal, mas sempre aos sábados — marca só "Sáb".</p>
+      </div>
+
+      <div class="admin-campo">
         <label for="mr-categorias">Categorias (separadas por vírgula)</label>
         <input type="text" id="mr-categorias" placeholder="Baile, Pé-de-serra...">
       </div>
@@ -252,8 +266,30 @@
         </div>
         <div class="admin-campo">
           <label for="lc-tipo">Tipo</label>
-          <input type="text" id="lc-tipo" placeholder="Bar, Casa de Shows...">
+          <select id="lc-tipo">
+            <option value="">Não definido</option>
+            <option value="Bar">Bar</option>
+            <option value="Bar Aberto">Bar Aberto</option>
+            <option value="Bar Fechado">Bar Fechado</option>
+            <option value="Casa de Shows">Casa de Shows</option>
+            <option value="Cerimonial">Cerimonial</option>
+            <option value="Clube">Clube</option>
+            <option value="Salão de Festas">Salão de Festas</option>
+            <option value="Praça">Praça</option>
+            <option value="Outro">Outro</option>
+          </select>
         </div>
+      </div>
+
+      <div class="admin-campo">
+        <label for="lc-cep">CEP</label>
+        <div class="admin-campo-com-botao">
+          <input type="text" id="lc-cep" placeholder="29050-360" inputmode="numeric" maxlength="9">
+          <button type="button" class="admin-botao-icone" id="botao-buscar-cep" aria-label="Buscar endereço pelo CEP">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+        </div>
+        <p class="admin-campo-ajuda" id="status-busca-cep"></p>
       </div>
 
       <div class="admin-campo-linha">
@@ -282,15 +318,9 @@
         </div>
       </div>
 
-      <div class="admin-campo-linha">
-        <div class="admin-campo">
-          <label for="lc-cep">CEP</label>
-          <input type="text" id="lc-cep">
-        </div>
-        <div class="admin-campo">
-          <label for="lc-complemento">Complemento</label>
-          <input type="text" id="lc-complemento">
-        </div>
+      <div class="admin-campo">
+        <label for="lc-complemento">Complemento</label>
+        <input type="text" id="lc-complemento">
       </div>
 
       <div class="admin-campo-linha">

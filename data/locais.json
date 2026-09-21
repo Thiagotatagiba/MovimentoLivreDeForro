@@ -230,10 +230,10 @@
     "tipo": "Casa de Shows",
     "endereco": {
       "cep": "29103-865",
-      "logradouro": "Av. Est. José Júlio de Souza",
+      "logradouro": "Avenida Estudante José Júlio de Souza",
       "numero": "740",
       "complemento": null,
-      "bairro": "Praia de Itaparica",
+      "bairro": "Jockey de Itaparica",
       "cidade": "Vila Velha",
       "estado": "ES"
     },
@@ -249,6 +249,6 @@
     "ativo": true,
     "origem": "manual",
     "criadoEm": "2026-09-16T17:03:53.688Z",
-    "atualizadoEm": "2026-09-16T17:03:53.688Z"
+    "atualizadoEm": "2026-09-17T20:02:06.750Z"
   }
 ]
