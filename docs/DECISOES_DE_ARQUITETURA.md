@@ -324,3 +324,41 @@ Carioca sempre com título "Noite de Quinta"), mas isso é dado fabricado por mi
 exemplo, não confirmado como fato real da Marca, então não foi usado pra preencher.
 
 Site público (`marca.html`) ainda não exibe esse campo — só o admin, por enquanto.
+
+## 2026-09-19 (continuação) — Duplicar evento + Condições especiais
+
+**Duplicar:** botão novo na lista de Eventos do admin, ao lado de "Editar". Abre o
+mesmo modal de sempre, pré-preenchido com todos os campos do evento original —
+**exceto a data, que nasce em branco de propósito**, forçando escolher uma nova antes
+de salvar (evita duas edições idênticas na mesma data sem querer). O evento duplicado
+sempre nasce "Ativo", mesmo que o original estivesse desativado. Reaproveita a mesma
+função `abrirFormulario()` de sempre — só ganhou um segundo parâmetro opcional
+(`{ duplicarDeId }`), sem duplicar lógica entre os três modos (criar/editar/duplicar).
+
+**Condições especiais:** campo novo em Evento — `condicoesEspeciais: [{ tipo, descricao }]`,
+com `tipo` sendo `"aniversariante"` ou `"outros"`. No formulário, um botão "+
+Adicionar" abaixo da Descrição insere uma linha (select de tipo + campo de texto +
+botão de remover), podendo adicionar quantas quiser. Linhas com descrição vazia são
+filtradas antes de salvar — não sobra objeto `{descricao: ""}` no JSON. Texto da
+descrição passa por um escape antes de entrar no HTML gerado dinamicamente (aspas e
+`&` não quebram a renderização — testado com um caso real desses caracteres juntos).
+
+Site público ainda não exibe `condicoesEspeciais` em lugar nenhum — só o admin, por
+enquanto (mesma situação do `diasSemana` da Marca).
+
+## 2026-09-19 (continuação 2) — Site público passa a exibir diasSemana e condicoesEspeciais
+
+Os dois campos novos (Marca.diasSemana, Evento.condicoesEspeciais) ficaram só no admin
+quando foram criados — agora o site público também mostra os dois.
+
+**Marca (`marca.html`):** tag nova ao lado de "Baile mensal/semanal" mostrando os dias
+por extenso ("Sábados", "Quintas e Domingos", "Segundas, Quartas e Sextas"). Novo
+helper `formatarDiasSemana()` em `format.js` — pluraliza por "+s", que funciona certo
+pros 7 dias da semana em português. Marca sem `diasSemana` não mostra nada extra
+(testado).
+
+**Evento (`evento.html`):** nova seção "Condições especiais" entre Line-up e Ingresso
+— faz sentido próxima de tudo que envolve acesso ao evento. Cada condição vem com um
+emoji (🎂 aniversariante, ℹ️ outros) + a descrição. Evento sem `condicoesEspeciais`
+não mostra a seção (testado). Descrição com aspas e "&" testada especificamente, já
+que o texto vem direto do que foi digitado no admin.

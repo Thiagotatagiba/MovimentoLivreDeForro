@@ -53,6 +53,20 @@ function montarHtml(evento) {
         </section>
       ` : ''}
 
+      ${evento.condicoesEspeciais?.length ? `
+        <section class="secao">
+          <h2 style="font-size: var(--tam-titulo-sm);">Condições especiais</h2>
+          <div style="margin-top: var(--esp-sm); display: flex; flex-direction: column; gap: 8px;">
+            ${evento.condicoesEspeciais.map((condicao) => `
+              <div class="condicao-especial">
+                <span class="condicao-especial-icone">${condicao.tipo === 'aniversariante' ? '🎂' : 'ℹ️'}</span>
+                <span>${condicao.descricao}</span>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+      ` : ''}
+
       <section class="secao">
         <h2 style="font-size: var(--tam-titulo-sm);">Ingresso</h2>
         <p class="texto-suave" style="margin-top: var(--esp-sm);">

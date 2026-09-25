@@ -84,6 +84,23 @@
 .busca input::placeholder { color: var(--cor-texto-fraco); }
 
 /* ===== Resposta rápida "onde tem forró hoje" ===== */
+.condicao-especial {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: var(--cor-gold-claro);
+  color: var(--cor-gold-escuro);
+  border-radius: var(--raio-campo);
+  padding: 10px 12px;
+  font-size: var(--tam-caption);
+}
+
+.condicao-especial-icone {
+  flex-shrink: 0;
+  font-size: 16px;
+  line-height: 1.3;
+}
+
 .resposta-hoje {
   background: var(--bg-destaque);
   color: var(--texto-sobre-destaque);

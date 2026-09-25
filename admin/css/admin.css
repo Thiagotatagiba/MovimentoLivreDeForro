@@ -332,6 +332,45 @@ body {
   border-color: var(--cor-pine);
 }
 
+.admin-condicao-linha {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.admin-condicao-linha select,
+.admin-condicao-linha input {
+  font-family: inherit;
+  font-size: var(--tam-caption);
+  padding: 7px 10px;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-campo);
+  background: var(--bg-card);
+  color: var(--cor-texto);
+}
+
+.admin-condicao-linha select {
+  flex: 0 0 150px;
+}
+
+.admin-condicao-linha input {
+  flex: 1;
+}
+
+.admin-condicao-remover {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--cor-clay-escuro);
+  color: var(--cor-clay-escuro);
+  background: none;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
 .admin-erro-validacao {
   background: #fbe4de;
   color: #7a2313;

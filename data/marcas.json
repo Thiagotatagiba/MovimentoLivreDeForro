@@ -5,6 +5,9 @@
     "nome": "Forró Deck 16",
     "descricao": "Baile tradicional de forró pé-de-serra realizado na Serra, com música ao vivo, DJs e programação que atravessa a madrugada.",
     "frequencia": "mensal",
+    "diasSemana": [
+      "sábado"
+    ],
     "categorias": [
       "Baile",
       "Pé-de-serra"
@@ -15,10 +18,7 @@
     "whatsapp": "https://wa.me/5527998708404",
     "site": null,
     "logo": null,
-    "ativo": true,
-    "diasSemana": [
-      "sábado"
-    ]
+    "ativo": true
   },
   {
     "id": "mrc-002",

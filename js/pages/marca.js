@@ -1,6 +1,6 @@
 // marca.js
 import { obterPerfilMarca } from '../services/marcaService.js';
-import { formatarDataCurta, formatarDiaSemana, estiloMidia } from '../utils/format.js';
+import { formatarDataCurta, formatarDiaSemana, formatarDiasSemana, estiloMidia } from '../utils/format.js';
 
 const raiz = document.getElementById('conteudo-marca');
 const params = new URLSearchParams(window.location.search);
@@ -30,6 +30,7 @@ function montarHtml({ marca, localPadrao, proximos, historico }) {
       <p style="margin-top: var(--esp-sm); opacity: 0.9;">${marca.descricao}</p>
       <div style="margin-top: var(--esp-sm);">
         ${marca.frequencia ? `<span class="tag-categoria">Baile ${marca.frequencia}</span>` : ''}
+        ${marca.diasSemana?.length ? `<span class="tag-categoria">${formatarDiasSemana(marca.diasSemana)}</span>` : ''}
         ${marca.categorias.map((c) => `<span class="tag-categoria">${c}</span>`).join('')}
       </div>
     </div>

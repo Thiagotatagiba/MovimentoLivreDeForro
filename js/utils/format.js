@@ -21,6 +21,18 @@ export function formatarDiaSemana(isoString) {
   return DIAS_SEMANA[data.getDay()];
 }
 
+// Transforma ["sábado"] em "Sábados", ["quinta", "domingo"] em "Quintas e Domingos".
+// Pluralização por "+s" funciona certo pros 7 dias da semana em português.
+export function formatarDiasSemana(dias) {
+  if (!dias || dias.length === 0) return '';
+
+  const plural = dias.map((dia) => dia.charAt(0).toUpperCase() + dia.slice(1) + 's');
+
+  if (plural.length === 1) return plural[0];
+  if (plural.length === 2) return `${plural[0]} e ${plural[1]}`;
+  return `${plural.slice(0, -1).join(', ')} e ${plural.at(-1)}`;
+}
+
 export function formatarDataCompleta(isoString) {
   const data = paraData(isoString);
   const diaSemana = DIAS_SEMANA[data.getDay()];

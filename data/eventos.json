@@ -138,5 +138,37 @@
     },
     "imagemUrl": "em breve",
     "ativo": true
+  },
+  {
+    "id": "evt-007",
+    "slug": "forro-deck-16-2026-10-03",
+    "marcaId": "mrc-001",
+    "localId": "loc-001",
+    "titulo": "Baile do Deck 16 - Grandes Lendas - Edição de Outubro",
+    "data": "2026-10-03",
+    "horario": "22:00",
+    "descricao": "Edição mensal do Forró Deck 16 no Espaço Praia, com música ao vivo, DJs e programação que atravessa a madrugada.",
+    "ingresso": {
+      "precoAPartirDe": 30,
+      "link": "https://onticket.com.br/eventos/8726-forro-deck-16-serra-2026",
+      "plataforma": "Sympla"
+    },
+    "lineup": {
+      "bandas": [
+        "Mestre Genaro",
+        "Nikolas Krassik"
+      ],
+      "djs": [
+        "DJ André Barros"
+      ]
+    },
+    "imagemUrl": "https://cdn.onticket.com.br/evento/8726/thumb",
+    "condicoesEspeciais": [
+      {
+        "tipo": "aniversariante",
+        "descricao": "Se liguem Forrozeiros✨️  Afinal, Aniversariantes do mês terão gratuidade em nossa edição! Mas fiquem atentos às regrinhas:  ❤️‍🔥 Basta apresentar documento original com foto em nossa bilheteria até às 23:30!"
+      }
+    ],
+    "ativo": true
   }
 ]

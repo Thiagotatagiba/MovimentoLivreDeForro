@@ -20,6 +20,7 @@ const dataEl = document.getElementById('ev-data');
 
 let editandoId = null;
 let slugEditadoManualmente = false;
+let condicoesForm = []; // condições especiais do formulário aberto no momento
 
 export function renderizarEventos() {
   const ordenados = [...estado.eventos].sort((a, b) => a.data.localeCompare(b.data));
@@ -35,6 +36,7 @@ export function renderizarEventos() {
         </div>
         <div class="admin-item-acoes">
           <span class="admin-badge${evt.ativo ? '' : ' inativo'}">${evt.ativo ? 'Ativo' : 'Inativo'}</span>
+          <button type="button" class="admin-botao" data-duplicar="${evt.id}">Duplicar</button>
           <button type="button" class="admin-botao" data-editar="${evt.id}">Editar</button>
         </div>
       </div>
@@ -43,6 +45,9 @@ export function renderizarEventos() {
 
   listaEl.querySelectorAll('[data-editar]').forEach((botao) => {
     botao.addEventListener('click', () => abrirFormulario(botao.dataset.editar));
+  });
+  listaEl.querySelectorAll('[data-duplicar]').forEach((botao) => {
+    botao.addEventListener('click', () => abrirFormulario(null, { duplicarDeId: botao.dataset.duplicar }));
   });
 }
 
@@ -97,32 +102,90 @@ function sugerirSlug() {
   slugEl.value = `${marca.slug}-${dataEl.value}`;
 }
 
-export function abrirFormulario(id = null) {
+function escaparAtributo(texto) {
+  return String(texto ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+const condicoesListaEl = document.getElementById('ev-condicoes-lista');
+
+function renderizarCondicoes() {
+  if (condicoesForm.length === 0) {
+    condicoesListaEl.innerHTML = '<p class="admin-campo-ajuda">Nenhuma condição especial adicionada.</p>';
+    return;
+  }
+
+  condicoesListaEl.innerHTML = condicoesForm.map((cond, indice) => `
+    <div class="admin-condicao-linha">
+      <select data-indice="${indice}" class="admin-condicao-tipo">
+        <option value="aniversariante" ${cond.tipo === 'aniversariante' ? 'selected' : ''}>Aniversariante</option>
+        <option value="outros" ${cond.tipo === 'outros' ? 'selected' : ''}>Outros</option>
+      </select>
+      <input type="text" data-indice="${indice}" class="admin-condicao-descricao"
+             placeholder="Detalhe da condição..." value="${escaparAtributo(cond.descricao)}">
+      <button type="button" data-indice="${indice}" class="admin-condicao-remover" aria-label="Remover condição">×</button>
+    </div>
+  `).join('');
+
+  condicoesListaEl.querySelectorAll('.admin-condicao-tipo').forEach((select) => {
+    select.addEventListener('change', (evento) => {
+      condicoesForm[Number(evento.target.dataset.indice)].tipo = evento.target.value;
+    });
+  });
+
+  condicoesListaEl.querySelectorAll('.admin-condicao-descricao').forEach((input) => {
+    input.addEventListener('input', (evento) => {
+      condicoesForm[Number(evento.target.dataset.indice)].descricao = evento.target.value;
+    });
+  });
+
+  condicoesListaEl.querySelectorAll('.admin-condicao-remover').forEach((botao) => {
+    botao.addEventListener('click', (evento) => {
+      condicoesForm.splice(Number(evento.target.dataset.indice), 1);
+      renderizarCondicoes();
+    });
+  });
+}
+
+export function abrirFormulario(id = null, { duplicarDeId = null } = {}) {
   editandoId = id;
   erroEl.hidden = true;
   slugEditadoManualmente = false;
   formEl.reset();
 
   const evt = id ? estado.eventos.find((e) => e.id === id) : null;
-  tituloModalEl.textContent = evt ? `Editar: ${evt.titulo}` : 'Novo evento';
+  const origem = duplicarDeId ? estado.eventos.find((e) => e.id === duplicarDeId) : null;
+  const dadosBase = evt ?? origem; // de onde vêm os valores pra preencher o formulário
 
-  popularSelectDeMarcas(evt?.marcaId ?? estado.marcas[0]?.id ?? '');
+  tituloModalEl.textContent = evt
+    ? `Editar: ${evt.titulo}`
+    : origem
+      ? `Duplicar: ${origem.titulo}`
+      : 'Novo evento';
 
-  document.getElementById('ev-titulo').value = evt?.titulo ?? '';
-  dataEl.value = evt?.data ?? '';
-  document.getElementById('ev-horario').value = evt?.horario ?? '';
-  document.getElementById('ev-descricao').value = evt?.descricao ?? '';
-  document.getElementById('ev-preco').value = evt?.ingresso?.precoAPartirDe ?? 0;
-  document.getElementById('ev-plataforma').value = evt?.ingresso?.plataforma ?? '';
-  document.getElementById('ev-link').value = evt?.ingresso?.link ?? '';
-  document.getElementById('ev-bandas').value = (evt?.lineup?.bandas ?? []).join(', ');
-  document.getElementById('ev-djs').value = (evt?.lineup?.djs ?? []).join(', ');
-  document.getElementById('ev-imagem').value = evt?.imagemUrl ?? 'em breve';
-  document.getElementById('ev-ativo').checked = evt?.ativo ?? true;
+  popularSelectDeMarcas(dadosBase?.marcaId ?? estado.marcas[0]?.id ?? '');
+
+  document.getElementById('ev-titulo').value = dadosBase?.titulo ?? '';
+  dataEl.value = evt?.data ?? ''; // duplicar sempre nasce com a data em branco de propósito
+  document.getElementById('ev-horario').value = dadosBase?.horario ?? '';
+  document.getElementById('ev-descricao').value = dadosBase?.descricao ?? '';
+  document.getElementById('ev-preco').value = dadosBase?.ingresso?.precoAPartirDe ?? 0;
+  document.getElementById('ev-plataforma').value = dadosBase?.ingresso?.plataforma ?? '';
+  document.getElementById('ev-link').value = dadosBase?.ingresso?.link ?? '';
+  document.getElementById('ev-bandas').value = (dadosBase?.lineup?.bandas ?? []).join(', ');
+  document.getElementById('ev-djs').value = (dadosBase?.lineup?.djs ?? []).join(', ');
+  document.getElementById('ev-imagem').value = dadosBase?.imagemUrl ?? 'em breve';
+  document.getElementById('ev-ativo').checked = evt ? evt.ativo : true; // duplicado sempre nasce ativo
   slugEl.value = evt?.slug ?? '';
   slugEditadoManualmente = !!evt; // editando um evento existente, não mexe no slug sozinho
 
-  atualizarCampoDeLocal(evt?.localId ?? null);
+  condicoesForm = JSON.parse(JSON.stringify(dadosBase?.condicoesEspeciais ?? []));
+  renderizarCondicoes();
+
+  atualizarCampoDeLocal(dadosBase?.localId ?? null);
 
   modalEl.hidden = false;
 }
@@ -168,6 +231,7 @@ async function salvar(eventoSubmit) {
       djs: textoParaLista(document.getElementById('ev-djs').value),
     },
     imagemUrl: document.getElementById('ev-imagem').value.trim() || 'em breve',
+    condicoesEspeciais: condicoesForm.filter((c) => c.descricao && c.descricao.trim() !== ''),
     ativo: document.getElementById('ev-ativo').checked,
   };
 
@@ -210,4 +274,9 @@ export function configurarAbaEventos() {
   });
   dataEl.addEventListener('change', sugerirSlug);
   slugEl.addEventListener('input', () => { slugEditadoManualmente = true; });
+
+  document.getElementById('botao-add-condicao').addEventListener('click', () => {
+    condicoesForm.push({ tipo: 'aniversariante', descricao: '' });
+    renderizarCondicoes();
+  });
 }
