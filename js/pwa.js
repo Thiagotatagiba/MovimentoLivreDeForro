@@ -57,8 +57,23 @@ function configurarMenuLateral() {
   });
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', configurarMenuLateral);
-} else {
+// pwa.js é um script clássico (não type="module"), então o painel de
+// usuário — que precisa de import/export — é carregado sob demanda aqui.
+// Continua sendo UM único arquivo (components/painelUsuario.js) controlando
+// o conteúdo em todas as páginas; nada é duplicado por página.
+function inicializarPainelUsuario() {
+  import('../components/painelUsuario.js')
+    .then(({ inicializarPainelUsuario }) => inicializarPainelUsuario())
+    .catch((erro) => console.warn('Não foi possível carregar o painel do usuário:', erro));
+}
+
+function inicializarPwa() {
   configurarMenuLateral();
+  inicializarPainelUsuario();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', inicializarPwa);
+} else {
+  inicializarPwa();
 }

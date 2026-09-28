@@ -362,3 +362,81 @@ pros 7 dias da semana em português. Marca sem `diasSemana` não mostra nada ext
 emoji (🎂 aniversariante, ℹ️ outros) + a descrição. Evento sem `condicoesEspeciais`
 não mostra a seção (testado). Descrição com aspas e "&" testada especificamente, já
 que o texto vem direto do que foi digitado no admin.
+## 2026-09-28 — Login com Google + entidade Perfil (primeira feature de Fase 2)
+
+**Contexto:** login com Google via Supabase Auth já estava desenhado (ver
+`GUIA_SUPABASE_SETUP.md`); esta sessão finalizou a configuração (Google Cloud +
+Supabase Providers) e testou o fluxo de ponta a ponta. Depois, Thiago pediu uma
+página de Perfil (Foto, Nome, Sobrenome, apelido, e-mail, cidade/estado/país,
+Instagram, data de nascimento, gênero).
+
+**Bugs corrigidos na configuração de auth:**
+- `authService.js` usava `window.location.origin` no `redirectTo`/`emailRedirectTo` —
+  quebraria em produção no GitHub Pages, porque o site não vive na raiz do domínio
+  (`.../MovimentoLivreDeForro/`, não `https://thiagotatagiba.github.io/`). Trocado
+  para `window.location.href`, que preserva o path em qualquer ambiente.
+- `data/supabaseClient.js` ainda tinha os placeholders `COLOQUE_SUA_URL_AQUI` /
+  `COLOQUE_SUA_ANON_KEY_AQUI` — nunca preenchidos. Preenchidos com a URL e a anon key
+  reais do projeto.
+- `components/loginModal.js` já existia (Google + Magic Link, funcional), mas nunca
+  tinha sido conectado a nada na interface, e seu CSS (`components/modal-login.css`)
+  usava nomes de variável "prováveis" (`--sand`, `--pine`, `--clay`) que não existiam
+  em `tokens.css`, e nunca estava linkado em nenhuma página HTML. Corrigido pros tokens
+  reais (`--cor-paper`, `--cor-pine`, `--cor-clay`) e linkado nas 9 páginas públicas.
+- Erro real de configuração no Google Cloud: o Client Secret colado no Supabase estava
+  corrompido (valor tipo `w%c5jNw5×9xRUJ&`, não o formato `GOCSPX-...` do Google) —
+  causava "Unable to exchange external code" na troca do código OAuth. Corrigido
+  colando o secret certo, conferido contra o JSON baixado na criação do client.
+
+**Duplicação resolvida:** o painel "Bem vindo, Forrozeiro" do menu lateral estava
+com HTML idêntico fixo em 8 páginas. Criado `components/painelUsuario.js` — único
+lugar que decide o conteúdo (nome real ou "Entrar"/"Sair") — carregado
+automaticamente por `js/pwa.js` (que já roda em toda página) via `import()`
+dinâmico, já que `pwa.js` é script clássico, não módulo. As 8 páginas só ganharam
+`id`s e um botão no HTML; nenhuma lógica foi duplicada.
+
+**Decisão de modelo — entidade Perfil, em Supabase (não JSON):** diferente de
+Marca/Evento/Local (catálogo, editado só pelo admin), dados de perfil são privados
+por usuário e mudam a qualquer momento pelo próprio dono — exatamente o tipo de
+dado que o `ROADMAP.md` já reservava pra Fase 2 (comunidade). Tabela `perfis`,
+relação 1:1 com `auth.users` (mesmo `id`, FK), RLS restringindo select/update ao
+próprio dono — mesmo padrão já usado em `interacoes`. SQL completo em `sql/perfis.sql`.
+
+**E-mail não duplicado:** o formulário de Perfil mostra o e-mail como campo
+somente-leitura, lido da sessão (`auth.users`), em vez de copiar pra uma coluna
+separada em `perfis` — evita desatualização se o usuário trocar o e-mail de login
+(mesmo princípio de "Evento não copia Instagram" do `MODELO_DE_DADOS.md`).
+
+**Perfil nasce pré-preenchido:** gatilho `criar_perfil_no_cadastro()` em
+`auth.users` cria a linha em `perfis` automaticamente no primeiro login, com
+`nome`/`sobrenome`/`apelido` extraídos de `full_name` do Google e `avatar_url` da
+foto do Google. A tela de Perfil nasce como "editar", nunca "criar do zero". Um
+backfill no mesmo script cobre quem já tinha logado antes dessa migração existir.
+
+**Campo "Como gostaria de ser chamado" (apelido):** por pedido de Thiago, é esse
+apelido — não o nome completo do Google — que aparece no painel "Bem vindo," do
+menu lateral. `painelUsuario.js` busca o perfil via `perfilService.obterPerfil()`
+depois do login; o nome do Google fica como fallback imediato enquanto isso carrega.
+
+**Campos adicionados além do pedido original**, coerentes com a visão de "conectar
+participantes" do `VISION.md`: `telefone` (WhatsApp, opcional — útil pra
+organizadores no futuro) e `bio` (frase curta, opcional). Ambos claramente
+marcados como opcionais no formulário.
+
+**Upload de foto — Supabase Storage:** bucket `avatares` (público pra leitura,
+já que o app precisa exibir as fotos pra qualquer visitante), com policies de
+insert/update/delete restritas à própria pasta (`{usuario_id}/avatar.*`). URL
+pública salva em `perfis.avatar_url`, com cache-bust (`?v=timestamp`) porque o
+nome do arquivo não muda entre uploads.
+
+**Sem repository pro Perfil:** seguindo o padrão já estabelecido em
+`interacaoService.js` (dado vindo do Supabase, com RLS garantindo isolamento),
+`perfilService.js` fala direto com o `supabase` client — não há camada de
+repository intermediária, que só faz sentido pros dados ainda em JSON
+(Marca/Evento/Local).
+
+**Pendente pra próxima sessão:** rodar `sql/perfis.sql` no SQL Editor do Supabase
+(ainda não executado nesta sessão); revisar `sw.js` pra desativar cache-first em
+`localhost` durante desenvolvimento — o cache do Service Worker mascarou as
+correções de auth durante os testes desta sessão, e vai se repetir a cada mudança
+de JS/CSS local até ser resolvido.

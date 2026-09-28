@@ -1,0 +1,91 @@
+/* css/perfil.css
+   Formulário da página de Perfil. Reaproveita os tokens de
+   css/tokens.css e o padrão de input já usado em modal-login.css. */
+
+.perfil-avatar-bloco {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--esp-sm);
+  margin-bottom: var(--esp-lg);
+}
+
+.perfil-avatar-preview {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--cor-pine-claro);
+  border: 2px solid var(--cor-paper-linha);
+}
+
+.form-perfil-grade {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 var(--esp-md);
+}
+
+.form-perfil-grade-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.form-perfil-campo {
+  margin-bottom: var(--esp-md);
+}
+
+.form-perfil-campo label {
+  display: block;
+  font-family: var(--fonte-corpo);
+  font-size: var(--tam-caption);
+  color: var(--cor-pine);
+  margin-bottom: 6px;
+}
+
+.form-perfil-opcional {
+  opacity: 0.6;
+  font-weight: 400;
+}
+
+.form-perfil-campo input,
+.form-perfil-campo select,
+.form-perfil-campo textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--cor-paper-linha);
+  background: var(--cor-paper-alta);
+  font-family: var(--fonte-corpo);
+  font-size: var(--tam-corpo);
+  color: var(--cor-texto);
+}
+
+.form-perfil-campo input:disabled {
+  opacity: 0.6;
+}
+
+.form-perfil-campo textarea {
+  resize: vertical;
+}
+
+.form-perfil-dica {
+  font-size: var(--tam-caption);
+  opacity: 0.65;
+  margin-top: 4px;
+}
+
+.form-perfil-status {
+  margin-top: var(--esp-sm);
+  text-align: center;
+  font-size: var(--tam-caption);
+  color: var(--cor-pine);
+}
+
+.form-perfil-status-erro {
+  color: var(--cor-clay-escuro);
+}
+
+@media (max-width: 420px) {
+  .form-perfil-grade-3 {
+    grid-template-columns: 1fr;
+  }
+}

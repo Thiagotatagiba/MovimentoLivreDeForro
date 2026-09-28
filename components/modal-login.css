@@ -1,7 +1,6 @@
 /* components/modal-login.css
-   Ajuste os nomes das variáveis abaixo para os que já existem
-   em tokens.css — usei os nomes prováveis com base na paleta
-   Terra Acesa (pine, clay, sand, gold). */
+   Modal de login (Google + Magic Link). Usa os tokens reais de
+   css/tokens.css — conferidos em 2026-09-28. */
 
 .modal-login-overlay {
   position: fixed;
@@ -14,7 +13,7 @@
 }
 
 .modal-login {
-  background: var(--sand, #F5EFE1);
+  background: var(--cor-paper);
   width: 100%;
   max-width: 420px;
   border-radius: 20px 20px 0 0;
@@ -29,21 +28,21 @@
   background: none;
   border: none;
   font-size: 24px;
-  color: var(--pine, #1E4638);
+  color: var(--cor-pine);
   line-height: 1;
 }
 
 .modal-login-titulo {
-  font-family: 'Fraunces', serif;
+  font-family: var(--fonte-display);
   font-style: italic;
-  color: var(--pine, #1E4638);
+  color: var(--cor-pine);
   font-size: 1.6rem;
   margin: 0 0 6px;
 }
 
 .modal-login-subtitulo {
-  font-family: 'Work Sans', sans-serif;
-  color: var(--pine, #1E4638);
+  font-family: var(--fonte-corpo);
+  color: var(--cor-pine);
   opacity: 0.75;
   font-size: 0.9rem;
   margin: 0 0 20px;
@@ -53,10 +52,10 @@
   width: 100%;
   padding: 14px;
   border-radius: 12px;
-  border: 1px solid var(--pine, #1E4638);
-  background: var(--sand, #F5EFE1);
-  color: var(--pine, #1E4638);
-  font-family: 'Work Sans', sans-serif;
+  border: 1px solid var(--cor-pine);
+  background: var(--cor-paper);
+  color: var(--cor-pine);
+  font-family: var(--fonte-corpo);
   font-weight: 600;
 }
 
@@ -65,7 +64,7 @@
   align-items: center;
   gap: 12px;
   margin: 18px 0;
-  color: var(--pine, #1E4638);
+  color: var(--cor-pine);
   opacity: 0.5;
   font-size: 0.8rem;
 }
@@ -80,9 +79,9 @@
 
 .modal-login-form label {
   display: block;
-  font-family: 'Work Sans', sans-serif;
+  font-family: var(--fonte-corpo);
   font-size: 0.85rem;
-  color: var(--pine, #1E4638);
+  color: var(--cor-pine);
   margin-bottom: 6px;
 }
 
@@ -91,7 +90,7 @@
   padding: 12px 14px;
   border-radius: 12px;
   border: 1px solid rgba(30, 70, 56, 0.25);
-  font-family: 'Work Sans', sans-serif;
+  font-family: var(--fonte-corpo);
   font-size: 1rem;
   margin-bottom: 14px;
 }
@@ -101,9 +100,9 @@
   padding: 14px;
   border-radius: 12px;
   border: none;
-  background: var(--clay, #BD5A34);
-  color: var(--sand, #F5EFE1);
-  font-family: 'Work Sans', sans-serif;
+  background: var(--cor-clay);
+  color: var(--cor-paper);
+  font-family: var(--fonte-corpo);
   font-weight: 600;
 }
 
@@ -113,8 +112,8 @@
 
 .modal-login-status {
   margin-top: 14px;
-  font-family: 'Work Sans', sans-serif;
+  font-family: var(--fonte-corpo);
   font-size: 0.85rem;
-  color: var(--pine, #1E4638);
+  color: var(--cor-pine);
   text-align: center;
 }

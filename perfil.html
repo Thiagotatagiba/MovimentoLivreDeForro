@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meu Perfil — Vai Ter Forró!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="components/modal-login.css">
+<link rel="stylesheet" href="css/perfil.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#142F26">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
+<link rel="icon" href="assets/icons/favicon-32.png" type="image/png">
+</head>
+<body>
+
+<div class="barra-topo">
+  <a href="favoritos.html" class="barra-topo-icone" aria-label="Ver favoritos">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C0.3 8.4 2 5 5.5 5c2 0 3.5 1.2 4.5 2.8C11 6.2 12.5 5 14.5 5 18 5 19.7 8.4 22 11.7 19.5 16.3 12 21 12 21z"/></svg>
+  </a>
+  <span class="barra-topo-marca">Vai Ter Forró!</span>
+  <a href="index.html" class="barra-topo-icone" aria-label="Voltar pra Home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+  </a>
+</div>
+
+<main class="container">
+  <header class="cabecalho">
+    <p class="rotulo-eyebrow">Meu Perfil</p>
+    <h1 style="font-size: var(--tam-titulo-lg);">Seus dados</h1>
+  </header>
+
+  <!-- Estado: não logado -->
+  <section class="secao" id="perfil-bloqueado" hidden>
+    <p class="texto-suave">Entre com sua conta pra ver e editar seu perfil.</p>
+    <button type="button" class="botao botao-primario" id="perfil-botao-entrar" style="margin-top: var(--esp-md);">
+      Entrar
+    </button>
+  </section>
+
+  <!-- Estado: carregando -->
+  <section class="secao" id="perfil-carregando">
+    <p class="texto-suave">Carregando...</p>
+  </section>
+
+  <!-- Estado: formulário -->
+  <form class="secao form-perfil" id="perfil-form" hidden>
+
+    <div class="perfil-avatar-bloco">
+      <img id="perfil-avatar-preview" class="perfil-avatar-preview" src="" alt="Sua foto de perfil">
+      <input type="file" id="perfil-avatar-arquivo" accept="image/*" hidden>
+      <button type="button" class="botao botao-secundario" id="perfil-avatar-botao">Alterar foto</button>
+    </div>
+
+    <div class="form-perfil-grade">
+      <div class="form-perfil-campo">
+        <label for="perfil-nome">Nome</label>
+        <input type="text" id="perfil-nome" name="nome">
+      </div>
+      <div class="form-perfil-campo">
+        <label for="perfil-sobrenome">Sobrenome</label>
+        <input type="text" id="perfil-sobrenome" name="sobrenome">
+      </div>
+    </div>
+
+    <div class="form-perfil-campo">
+      <label for="perfil-apelido">Como gostaria de ser chamado</label>
+      <input type="text" id="perfil-apelido" name="apelido">
+      <p class="form-perfil-dica">É esse nome que vai aparecer pra você no app.</p>
+    </div>
+
+    <div class="form-perfil-campo">
+      <label for="perfil-email">E-mail</label>
+      <input type="email" id="perfil-email" name="email" disabled>
+    </div>
+
+    <div class="form-perfil-grade form-perfil-grade-3">
+      <div class="form-perfil-campo">
+        <label for="perfil-cidade">Cidade</label>
+        <input type="text" id="perfil-cidade" name="cidade">
+      </div>
+      <div class="form-perfil-campo">
+        <label for="perfil-estado">Estado</label>
+        <input type="text" id="perfil-estado" name="estado">
+      </div>
+      <div class="form-perfil-campo">
+        <label for="perfil-pais">País</label>
+        <input type="text" id="perfil-pais" name="pais" value="Brasil">
+      </div>
+    </div>
+
+    <div class="form-perfil-campo">
+      <label for="perfil-instagram">Instagram</label>
+      <input type="text" id="perfil-instagram" name="instagram" placeholder="@seu.usuario">
+    </div>
+
+    <div class="form-perfil-campo">
+      <label for="perfil-telefone">WhatsApp <span class="form-perfil-opcional">(opcional)</span></label>
+      <input type="tel" id="perfil-telefone" name="telefone" placeholder="(27) 90000-0000">
+    </div>
+
+    <div class="form-perfil-grade">
+      <div class="form-perfil-campo">
+        <label for="perfil-nascimento">Data de nascimento</label>
+        <input type="date" id="perfil-nascimento" name="data_nascimento">
+      </div>
+      <div class="form-perfil-campo">
+        <label for="perfil-genero">Gênero</label>
+        <select id="perfil-genero" name="genero">
+          <option value="">Prefiro não informar</option>
+          <option value="feminino">Feminino</option>
+          <option value="masculino">Masculino</option>
+          <option value="nao-binario">Não-binário</option>
+          <option value="outro">Outro</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-perfil-campo">
+      <label for="perfil-bio">Sobre você <span class="form-perfil-opcional">(opcional)</span></label>
+      <textarea id="perfil-bio" name="bio" rows="3" maxlength="200" placeholder="Uma frase sobre você e o forró"></textarea>
+    </div>
+
+    <button type="submit" class="botao botao-primario" id="perfil-botao-salvar">Salvar</button>
+    <p class="form-perfil-status" id="perfil-status" hidden></p>
+  </form>
+</main>
+
+<nav class="nav-inferior" aria-label="Navegação principal">
+  <a href="index.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+    Início
+  </a>
+  <a href="agenda.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4M16 3v4"/></svg>
+    Agenda
+  </a>
+  <button type="button" id="botao-menu" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-lateral">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    Menu
+  </button>
+</nav>
+
+<div class="menu-overlay" id="menu-overlay" hidden></div>
+<aside class="menu-lateral" id="menu-lateral" aria-hidden="true">
+  <div class="menu-lateral-topo">
+    <p>Bem vindo,</p>
+    <h2 id="painel-usuario-nome">Forrozeiro</h2>
+    <button type="button" id="painel-usuario-acao" class="menu-lateral-acao-auth">Entrar</button>
+  </div>
+  <nav class="menu-lateral-links">
+    <a href="sobre.html">Sobre</a>
+    <a href="perfil.html">Meu Perfil</a>
+    <a href="configuracoes.html">Configurações</a>
+  </nav>
+</aside>
+
+<script src="js/pwa.js"></script>
+<script type="module" src="js/pages/perfil.js"></script>
+</body>
+</html>

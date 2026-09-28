@@ -509,6 +509,22 @@
   font-size: var(--tam-titulo-lg);
 }
 
+.menu-lateral-acao-auth {
+  margin-top: var(--esp-sm);
+  padding: 6px 14px;
+  font-size: var(--tam-caption);
+  font-weight: 600;
+  color: var(--cor-paper);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.menu-lateral-acao-auth:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .menu-lateral-links {
   display: flex;
   flex-direction: column;

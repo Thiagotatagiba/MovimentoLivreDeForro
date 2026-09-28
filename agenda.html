@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="components/modal-login.css">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#142F26">
 <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
@@ -48,10 +49,12 @@
 <aside class="menu-lateral" id="menu-lateral" aria-hidden="true">
   <div class="menu-lateral-topo">
     <p>Bem vindo,</p>
-    <h2>Forrozeiro</h2>
+    <h2 id="painel-usuario-nome">Forrozeiro</h2>
+    <button type="button" id="painel-usuario-acao" class="menu-lateral-acao-auth">Entrar</button>
   </div>
   <nav class="menu-lateral-links">
     <a href="sobre.html">Sobre</a>
+    <a href="perfil.html">Meu Perfil</a>
     <a href="configuracoes.html">Configurações</a>
   </nav>
 </aside>
