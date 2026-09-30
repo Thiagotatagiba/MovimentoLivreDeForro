@@ -440,3 +440,141 @@ repository intermediária, que só faz sentido pros dados ainda em JSON
 `localhost` durante desenvolvimento — o cache do Service Worker mascarou as
 correções de auth durante os testes desta sessão, e vai se repetir a cada mudança
 de JS/CSS local até ser resolvido.
+
+## 2026-09-28 (continuação) — Perfil dividido em Visualizar / Editar
+
+Ajuste imediato depois do primeiro teste real da tela de Perfil: Thiago apontou que
+misturar visualização e edição numa página só deixava a tela sempre cheia de campos,
+mesmo pra quem só queria conferir os próprios dados.
+
+**Decisão:** duas páginas, cada uma com uma responsabilidade:
+- `perfil.html` — visualização, somente leitura. É o destino de todo link "Meu Perfil"
+  e do clique no nome no menu lateral (nenhuma outra página precisou mudar por causa
+  disso). Mostra apelido como nome principal, foto, localização, Instagram (como link
+  clicável), WhatsApp, data de nascimento, gênero e e-mail — só os campos preenchidos
+  aparecem. Botão "Editar perfil" leva pra `perfil-editar.html`.
+- `perfil-editar.html` (renomeada a partir do `perfil.html` original) — o formulário
+  completo. O ícone de voltar na barra do topo passou a apontar pra `perfil.html`
+  (visualização), não mais pra Home.
+
+`js/pages/perfil.js` foi reescrito do zero pra visualização; a lógica de formulário
+que estava lá virou `js/pages/perfil-editar.js`. `services/perfilService.js` não
+mudou — as duas páginas o usam igual.
+
+**Ajuste de UX também pedido nessa rodada:** "Como gostaria de ser chamado" agora
+autopreenche a partir do campo Nome no evento `blur` (ao sair do campo), não só no
+carregamento inicial — e para de sincronizar automaticamente assim que a pessoa edita
+o apelido manualmente (flag `apelidoTocadoPeloUsuario` em `perfil-editar.js`).
+
+## 2026-09-29 — Causa raiz dos bugs de login (Site URL do Supabase nunca configurado)
+
+Thiago reportou 3 sintomas depois de trazer um colaborador pro projeto: foto não
+sobe, dados não persistem entre logins, e login quebra em produção (GitHub Pages),
+redirecionando pra `http://localhost:3000` — inclusive testado do celular, onde
+obviamente não existe nada rodando nesse endereço.
+
+**Investigação via Supabase MCP** (conectado nessa sessão): tabela `perfis`, RLS e
+bucket `avatares` estavam todos corretos — inclusive havia uma foto real já enviada
+com sucesso em sessão anterior, e uma edição salva às 11:47 do mesmo dia. Os logs de
+auth (`auth_logs`) mostraram a causa real: toda vez que o OAuth do Google completa
+(`/callback`), o Supabase redireciona pra `http://localhost:3000` — mesmo quando o
+login começou em `http://localhost:8000/perfil-editar.html` ou em produção.
+
+**Causa raiz:** o campo **Site URL** em Authentication → URL Configuration nunca foi
+alterado do valor padrão de fábrica do Supabase (`http://localhost:3000`), e a lista
+de **Redirect URLs** permitidos nunca incluiu nem `http://localhost:8000/**` nem a
+URL de produção. Quando o `redirectTo` que o app envia não bate com nenhuma entrada
+dessa lista, o Supabase ignora silenciosamente o valor enviado e usa o Site URL —
+por isso login novo nunca chegava de volta no app de verdade. O que continuou
+"funcionando" até agora era uma sessão antiga (refresh token) obtida antes desse
+problema aparecer, sendo renovada silenciosamente — mascarando o problema até um
+login novo (ex: no ambiente do colaborador, ou em produção) expor a falha.
+
+**Correção:** ajuste manual no dashboard (não exposto via ferramentas MCP) —
+Site URL trocado pra URL de produção; adicionadas `https://thiagotatagiba.github.io/
+MovimentoLivreDeForro/**` e `http://localhost:8000/**` em Redirect URLs.
+
+**Endurecimento de segurança feito na mesma sessão** (via `get_advisors`, depois
+`apply_migration` direto no Supabase): `criar_perfil_no_cadastro()` e
+`atualizar_timestamp_perfil()` são funções de gatilho e não deveriam ser chamáveis
+via API/RPC por ninguém — o Postgres concede `EXECUTE` a `PUBLIC` por padrão na
+criação, o que as deixava invocáveis por `anon`/`authenticated` via
+`/rest/v1/rpc/...`. Revogado explicitamente (`REVOKE EXECUTE ... FROM PUBLIC, anon,
+authenticated`) — trigger continua funcionando normalmente, só a chamada direta via
+API é que fica bloqueada. `atualizar_timestamp_perfil()` também ganhou
+`set search_path = public` (mesmo padrão já usado em `criar_perfil_no_cadastro()`).
+`sql/perfis.sql` atualizado pra já nascer com esse endurecimento numa configuração
+nova (ex: ambiente do colaborador).
+
+**Não corrigido nessa sessão** (fora do escopo do que criamos): função
+`public.rls_auto_enable()` tem o mesmo problema de EXECUTE público, mas não foi
+criada por nós — origem desconhecida, não mexido sem entender o propósito. Proteção
+contra senha vazada (HaveIBeenPwned) está desativada nas configurações de Auth —
+recomendação geral do Supabase, não ligada a esse trabalho.
+
+## 2026-09-29 (continuação) — Barra do topo unificada via JS (fim da duplicação)
+
+Thiago pediu que a barra do topo da Home (logo + favoritos + ação da direita)
+aparecesse em todas as páginas, sem duplicar código. Levantamento mostrou que
+5 páginas (`agenda.html`, `evento.html`, `local.html`, `marca.html`, `sobre.html`)
+nem tinham a barra, e as outras 5 que tinham duplicavam o HTML inteiro, cada uma
+com pequenas variações no ícone da direita (busca na Home; "voltar" nas demais;
+`perfil-editar.html` volta pro perfil, não pra Home).
+
+**Decisão:** `js/barraTopo.js` — fonte única que gera o HTML da barra via
+`insertAdjacentHTML`. Cada página passa a ter só uma linha:
+`<script src="js/barraTopo.js"></script>`, como primeiro elemento dentro de
+`<body>`, mais um atributo opcional pra customizar (`data-busca-topo` na Home;
+`data-voltar-topo="perfil.html"` em `perfil-editar.html`; nenhum atributo =
+volta pra `index.html`, o padrão).
+
+**Por que não seguiu o padrão do `painelUsuario.js` (import dinâmico via
+`pwa.js`, disparado em `DOMContentLoaded`):** `home.js` lê `#botao-busca` de
+forma síncrona, no topo do módulo, sem esperar nenhum evento. Scripts
+`type="module"` são adiados pelo navegador e só rodam depois que todo o HTML
+foi parseado — mas ainda ANTES do evento `DOMContentLoaded` disparar. Se a
+barra fosse injetada de forma assíncrona (import dinâmico ou callback de
+`DOMContentLoaded`, como `painelUsuario.js` faz), ela nasceria tarde demais:
+`home.js` já teria rodado e `#botao-busca` ainda nem existiria no DOM.
+Por isso `barraTopo.js` é um script **clássico** (sem `type="module"`),
+colocado como primeira linha do `<body>` — roda de forma síncrona, bloqueando
+o parser ali mesmo, garantindo que a barra já existe antes de qualquer script
+de página (inclusive módulos) executar.
+
+Nenhum CSS novo foi necessário — as classes (`barra-topo`, `barra-topo-icone`,
+`barra-topo-marca`) já existiam em `components.css`, só o HTML duplicado foi
+removido das 5 páginas que já tinham a barra hardcoded.
+
+## 2026-09-30 — Varredura de duplicação: nav-inferior e menu-lateral centralizados
+
+Thiago pediu uma varredura geral por HTML duplicado desnecessariamente no projeto,
+depois da unificação da barra do topo. Achados (comparando hash de cada bloco entre
+as 10 páginas):
+
+- **`<nav class="nav-inferior">`**: idêntica em 8 das 10 páginas; Home e Agenda só
+  diferiam por um atributo (`aria-current="page"` na aba ativa).
+- **`<div class="menu-overlay">` + `<aside class="menu-lateral">` inteiro**:
+  byte-a-byte **idêntico nas 10 páginas**, incluindo o `<nav class="menu-lateral-links">`
+  — a maior duplicação encontrada.
+- **`<head>` (fontes, tokens.css, base.css, components.css, manifest, ícones)**:
+  também duplicado, mas isso é aceito de propósito — é a única forma de garantir CSS
+  sem flash de conteúdo sem estilo (FOUC), dado que o projeto decidiu não usar build
+  tools (`DECISOES_DE_ARQUITETURA.md`, 2026-07-18). Diferente de HTML de corpo (que
+  pode nascer via JS sem o usuário notar), CSS carregado tarde demais gera uma piscada
+  visível. Não mexido.
+
+**Correção:** as duas duplicações de corpo passaram a ser geradas por
+`gerarNavInferior()` e `gerarMenuLateral()`, novas funções em `js/pwa.js` (mesmo
+arquivo que já gerava o conteúdo do painel de usuário). Diferente de
+`barraTopo.js` (que precisou ser um script síncrono à parte, por causa do
+`#botao-busca` lido de forma síncrona por `home.js`), aqui não havia nenhum script
+de página lendo `#botao-menu`/`#menu-lateral`/links da nav de forma síncrona —
+confirmado via busca em todos os `js/pages/*.js` antes de mexer. Por isso deu pra
+simplesmente estender `inicializarPwa()` (que já roda em toda página) em vez de
+criar mais um arquivo/script novo — **zero linhas novas em qualquer HTML**, só a
+remoção do que já existia.
+
+Resultado: as 10 páginas ficaram sem nenhum HTML de navegação hardcoded — barra do
+topo, nav inferior e menu lateral nascem inteiramente de `js/barraTopo.js` e
+`js/pwa.js`. Qualquer mudança de navegação futura (novo item de menu, mudar um
+ícone) é feita em um lugar só.

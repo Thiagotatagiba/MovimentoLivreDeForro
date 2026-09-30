@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editar Perfil — Vai Ter Forró!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="components/modal-login.css">
+<link rel="stylesheet" href="css/perfil.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#142F26">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
+<link rel="icon" href="assets/icons/favicon-32.png" type="image/png">
+</head>
+<body data-voltar-topo="perfil.html">
+<script src="js/barraTopo.js"></script>
+
+<main class="container">
+  <header class="cabecalho">
+    <p class="rotulo-eyebrow">Editar Perfil</p>
+    <h1 style="font-size: var(--tam-titulo-lg);">Seus dados</h1>
+  </header>
+
+  <!-- Estado: não logado -->
+  <section class="secao" id="perfil-bloqueado" hidden>
+    <p class="texto-suave">Entre com sua conta pra ver e editar seu perfil.</p>
+    <button type="button" class="botao botao-primario" id="perfil-botao-entrar" style="margin-top: var(--esp-md);">
+      Entrar
+    </button>
+  </section>
+
+  <!-- Estado: carregando -->
+  <section class="secao" id="perfil-carregando">
+    <p class="texto-suave">Carregando...</p>
+  </section>
+
+  <!-- Estado: formulário -->
+  <form class="secao form-perfil" id="perfil-form" hidden>
+
+    <div class="perfil-avatar-bloco">
+      <img id="perfil-avatar-preview" class="perfil-avatar-preview" src="" alt="Sua foto de perfil">
+      <input type="file" id="perfil-avatar-arquivo" accept="image/*" hidden>
+      <button type="button" class="botao botao-secundario" id="perfil-avatar-botao">Alterar foto</button>
+    </div>
+
+    <div class="form-perfil-grade">
+      <div class="form-perfil-campo">
+        <label for="perfil-nome">Nome</label>
+        <input type="text" id="perfil-nome" name="nome">
+      </div>
+      <div class="form-perfil-campo">
+        <label for="perfil-sobrenome">Sobrenome</label>
+        <input type="text" id="perfil-sobrenome" name="sobrenome">
+      </div>
+    </div>
+
+    <div class="form-perfil-campo">
+      <label for="perfil-apelido">Como gostaria de ser chamado</label>
+      <input type="text" id="perfil-apelido" name="apelido">
+      <p class="form-perfil-dica">É esse nome que vai aparecer pra você no app.</p>
+    </div>
+
+    <div class="form-perfil-campo">
+      <label for="perfil-email">E-mail</label>
+      <input type="email" id="perfil-email" name="email" disabled>
+    </div>
+
+    <div class="form-perfil-grade form-perfil-grade-3">
+      <div class="form-perfil-campo">
+        <label for="perfil-cidade">Cidade</label>
+        <input type="text" id="perfil-cidade" name="cidade">
+      </div>
+      <div class="form-perfil-campo">
+        <label for="perfil-estado">Estado</label>
+        <input type="text" id="perfil-estado" name="estado">
+      </div>
+      <div class="form-perfil-campo">
+        <label for="perfil-pais">País</label>
+        <input type="text" id="perfil-pais" name="pais" value="Brasil">
+      </div>
+    </div>
+
+    <div class="form-perfil-campo">
+      <label for="perfil-instagram">Instagram</label>
+      <input type="text" id="perfil-instagram" name="instagram" placeholder="@seu.usuario">
+    </div>
+
+    <div class="form-perfil-campo">
+      <label for="perfil-telefone">WhatsApp <span class="form-perfil-opcional">(opcional)</span></label>
+      <input type="tel" id="perfil-telefone" name="telefone" placeholder="(27) 90000-0000">
+    </div>
+
+    <div class="form-perfil-grade">
+      <div class="form-perfil-campo">
+        <label for="perfil-nascimento">Data de nascimento</label>
+        <input type="date" id="perfil-nascimento" name="data_nascimento">
+      </div>
+      <div class="form-perfil-campo">
+        <label for="perfil-genero">Gênero</label>
+        <select id="perfil-genero" name="genero">
+          <option value="">Prefiro não informar</option>
+          <option value="feminino">Feminino</option>
+          <option value="masculino">Masculino</option>
+          <option value="nao-binario">Não-binário</option>
+          <option value="outro">Outro</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-perfil-campo">
+      <label for="perfil-bio">Sobre você <span class="form-perfil-opcional">(opcional)</span></label>
+      <textarea id="perfil-bio" name="bio" rows="3" maxlength="200" placeholder="Uma frase sobre você e o forró"></textarea>
+    </div>
+
+    <button type="submit" class="botao botao-primario" id="perfil-botao-salvar">Salvar</button>
+    <p class="form-perfil-status" id="perfil-status" hidden></p>
+  </form>
+</main>
+
+<script src="js/pwa.js"></script>
+<script type="module" src="js/pages/perfil-editar.js"></script>
+</body>
+</html>

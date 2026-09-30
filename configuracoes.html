@@ -16,16 +16,7 @@
 <link rel="icon" href="assets/icons/favicon-32.png" type="image/png">
 </head>
 <body>
-
-<div class="barra-topo">
-  <a href="favoritos.html" class="barra-topo-icone" aria-label="Ver favoritos">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.7-10-9.3C0.3 8.4 2 5 5.5 5c2 0 3.5 1.2 4.5 2.8C11 6.2 12.5 5 14.5 5 18 5 19.7 8.4 22 11.7 19.5 16.3 12 21 12 21z"/></svg>
-  </a>
-  <span class="barra-topo-marca">Vai Ter Forró!</span>
-  <a href="index.html" class="barra-topo-icone" aria-label="Voltar pra Home">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
-  </a>
-</div>
+<script src="js/barraTopo.js"></script>
 
 <main class="container">
   <header class="cabecalho">
@@ -57,35 +48,6 @@
     </div>
   </section>
 </main>
-
-<nav class="nav-inferior" aria-label="Navegação principal">
-  <a href="index.html">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
-    Início
-  </a>
-  <a href="agenda.html">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4M16 3v4"/></svg>
-    Agenda
-  </a>
-  <button type="button" id="botao-menu" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-lateral">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-    Menu
-  </button>
-</nav>
-
-<div class="menu-overlay" id="menu-overlay" hidden></div>
-<aside class="menu-lateral" id="menu-lateral" aria-hidden="true">
-  <div class="menu-lateral-topo">
-    <p>Bem vindo,</p>
-    <h2 id="painel-usuario-nome">Forrozeiro</h2>
-    <button type="button" id="painel-usuario-acao" class="menu-lateral-acao-auth">Entrar</button>
-  </div>
-  <nav class="menu-lateral-links">
-    <a href="sobre.html">Sobre</a>
-    <a href="perfil.html">Meu Perfil</a>
-    <a href="configuracoes.html">Configurações</a>
-  </nav>
-</aside>
 
 <script src="js/pwa.js"></script>
 <script src="js/pages/configuracoes.js"></script>

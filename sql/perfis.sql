@@ -71,6 +71,7 @@ create trigger ao_criar_usuario
 create or replace function public.atualizar_timestamp_perfil()
 returns trigger
 language plpgsql
+set search_path = public
 as $$
 begin
   new.atualizado_em = now();
@@ -82,6 +83,13 @@ drop trigger if exists ao_atualizar_perfil on public.perfis;
 create trigger ao_atualizar_perfil
   before update on public.perfis
   for each row execute function public.atualizar_timestamp_perfil();
+
+-- Funções de gatilho não precisam (e não devem) ser chamáveis diretamente
+-- via API/RPC por ninguém — só o próprio gatilho as invoca. Por padrão o
+-- Postgres concede EXECUTE a PUBLIC na criação; revogamos explicitamente
+-- (achado pelo linter de segurança do Supabase em 2026-09-29).
+revoke execute on function public.criar_perfil_no_cadastro() from public, anon, authenticated;
+revoke execute on function public.atualizar_timestamp_perfil() from public, anon, authenticated;
 
 -- 4. Bucket de avatares (upload de foto de perfil)
 insert into storage.buckets (id, name, public)

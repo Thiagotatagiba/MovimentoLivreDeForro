@@ -1,0 +1,73 @@
+/* css/perfil-visualizar.css
+   Card de visualização do perfil — página perfil.html.
+   O formulário de edição (perfil-editar.html) tem seu próprio CSS em
+   css/perfil.css; esse arquivo é só sobre exibir, não editar. */
+
+.perfil-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.perfil-card-avatar {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--cor-pine-claro);
+  border: 2px solid var(--cor-paper-linha);
+  margin-bottom: var(--esp-md);
+}
+
+.perfil-card-nome {
+  font-family: var(--fonte-display);
+  font-size: var(--tam-titulo-lg);
+  color: var(--cor-pine);
+}
+
+.perfil-card-nome-completo {
+  font-size: var(--tam-caption);
+  color: var(--cor-texto-suave);
+  margin-top: 2px;
+}
+
+.perfil-card-bio {
+  font-size: var(--tam-corpo);
+  color: var(--cor-texto);
+  font-style: italic;
+  margin-top: var(--esp-sm);
+  max-width: 320px;
+}
+
+.perfil-card-lista {
+  width: 100%;
+  margin-top: var(--esp-lg);
+  text-align: left;
+}
+
+.perfil-card-item {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--cor-paper-linha);
+}
+
+.perfil-card-item dt {
+  font-size: var(--tam-caption);
+  color: var(--cor-texto-fraco);
+  margin-bottom: 2px;
+}
+
+.perfil-card-item dd {
+  font-size: var(--tam-corpo);
+  color: var(--cor-texto);
+}
+
+.perfil-card-item a {
+  color: var(--cor-clay);
+  font-weight: 600;
+}
+
+.perfil-card-botao-editar {
+  margin-top: var(--esp-lg);
+  text-decoration: none;
+}

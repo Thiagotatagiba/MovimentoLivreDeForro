@@ -25,6 +25,59 @@ window.addEventListener('appinstalled', () => {
   window.dispatchEvent(new Event('pwa-instalado'));
 });
 
+// Gera a navegação inferior (Início/Agenda/Menu) uma vez aqui, em vez de
+// duplicada em cada página — era idêntica em 8 das 10 páginas, variando só
+// o aria-current de qual aba está ativa.
+function gerarNavInferior() {
+  if (document.querySelector('.nav-inferior')) return; // já existe (não deveria mais acontecer)
+
+  const pagina = location.pathname.split('/').pop() || 'index.html';
+  const ehHome = pagina === 'index.html' || pagina === '';
+  const ehAgenda = pagina === 'agenda.html';
+
+  const html = `
+<nav class="nav-inferior" aria-label="Navegação principal">
+  <a href="index.html"${ehHome ? ' aria-current="page"' : ''}>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+    Início
+  </a>
+  <a href="agenda.html"${ehAgenda ? ' aria-current="page"' : ''}>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4M16 3v4"/></svg>
+    Agenda
+  </a>
+  <button type="button" id="botao-menu" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-lateral">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    Menu
+  </button>
+</nav>`;
+
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
+// Gera o overlay + menu lateral (drawer) — HTML idêntico em toda página,
+// então nasce aqui uma vez só. O CONTEÚDO do painel de usuário continua
+// sendo preenchido por components/painelUsuario.js, como já era.
+function gerarMenuLateral() {
+  if (document.getElementById('menu-lateral')) return; // já existe (não deveria mais acontecer)
+
+  const html = `
+<div class="menu-overlay" id="menu-overlay" hidden></div>
+<aside class="menu-lateral" id="menu-lateral" aria-hidden="true">
+  <div class="menu-lateral-topo">
+    <p>Bem vindo,</p>
+    <h2 id="painel-usuario-nome">Forrozeiro</h2>
+    <button type="button" id="painel-usuario-acao" class="menu-lateral-acao-auth">Entrar</button>
+  </div>
+  <nav class="menu-lateral-links">
+    <a href="sobre.html">Sobre</a>
+    <a href="perfil.html">Meu Perfil</a>
+    <a href="configuracoes.html">Configurações</a>
+  </nav>
+</aside>`;
+
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
 function configurarMenuLateral() {
   const botaoMenu = document.getElementById('botao-menu');
   const menuLateral = document.getElementById('menu-lateral');
@@ -68,6 +121,8 @@ function inicializarPainelUsuario() {
 }
 
 function inicializarPwa() {
+  gerarNavInferior();
+  gerarMenuLateral();
   configurarMenuLateral();
   inicializarPainelUsuario();
 }

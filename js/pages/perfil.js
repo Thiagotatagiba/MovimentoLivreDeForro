@@ -1,155 +1,136 @@
 // js/pages/perfil.js
+// Página de VISUALIZAÇÃO do perfil (somente leitura). A edição em si vive
+// em js/pages/perfil-editar.js — cada página com uma responsabilidade só.
+
 import { obterUsuarioAtual, aoMudarAutenticacao } from '../../services/authService.js';
-import { obterPerfil, salvarPerfil, enviarAvatar } from '../../services/perfilService.js';
+import { obterPerfil } from '../../services/perfilService.js';
 import { abrirModalLogin } from '../../components/loginModal.js';
 
 const secaoBloqueada = document.getElementById('perfil-bloqueado');
 const secaoCarregando = document.getElementById('perfil-carregando');
-const form = document.getElementById('perfil-form');
+const secaoVisualizacao = document.getElementById('perfil-visualizacao');
 const botaoEntrar = document.getElementById('perfil-botao-entrar');
-const botaoSalvar = document.getElementById('perfil-botao-salvar');
-const status = document.getElementById('perfil-status');
-
-const avatarPreview = document.getElementById('perfil-avatar-preview');
-const avatarArquivo = document.getElementById('perfil-avatar-arquivo');
-const avatarBotao = document.getElementById('perfil-avatar-botao');
 
 const AVATAR_PADRAO = 'assets/icons/avatar-padrao.svg';
 
-const campos = {
-  nome: document.getElementById('perfil-nome'),
-  sobrenome: document.getElementById('perfil-sobrenome'),
-  apelido: document.getElementById('perfil-apelido'),
-  email: document.getElementById('perfil-email'),
-  cidade: document.getElementById('perfil-cidade'),
-  estado: document.getElementById('perfil-estado'),
-  pais: document.getElementById('perfil-pais'),
-  instagram: document.getElementById('perfil-instagram'),
-  telefone: document.getElementById('perfil-telefone'),
-  data_nascimento: document.getElementById('perfil-nascimento'),
-  genero: document.getElementById('perfil-genero'),
-  bio: document.getElementById('perfil-bio')
+const els = {
+  avatar: document.getElementById('perfil-avatar'),
+  apelido: document.getElementById('perfil-card-apelido'),
+  nomeCompleto: document.getElementById('perfil-card-nome-completo'),
+  bio: document.getElementById('perfil-card-bio'),
+
+  itemLocalizacao: document.getElementById('item-localizacao'),
+  valorLocalizacao: document.getElementById('valor-localizacao'),
+
+  itemInstagram: document.getElementById('item-instagram'),
+  valorInstagram: document.getElementById('valor-instagram'),
+
+  itemWhatsapp: document.getElementById('item-whatsapp'),
+  valorWhatsapp: document.getElementById('valor-whatsapp'),
+
+  itemNascimento: document.getElementById('item-nascimento'),
+  valorNascimento: document.getElementById('valor-nascimento'),
+
+  itemGenero: document.getElementById('item-genero'),
+  valorGenero: document.getElementById('valor-genero'),
+
+  valorEmail: document.getElementById('valor-email')
 };
 
-let usuarioAtual = null;
-let avatarUrlAtual = '';
+const ROTULOS_GENERO = {
+  feminino: 'Feminino',
+  masculino: 'Masculino',
+  'nao-binario': 'Não-binário',
+  outro: 'Outro'
+};
 
 function mostrarEstado(estado) {
   secaoBloqueada.hidden = estado !== 'bloqueado';
   secaoCarregando.hidden = estado !== 'carregando';
-  form.hidden = estado !== 'form';
+  secaoVisualizacao.hidden = estado !== 'visualizacao';
 }
 
-function preencherFormulario(usuario, perfil) {
-  campos.email.value = usuario.email || '';
-  campos.nome.value = perfil?.nome || '';
-  campos.sobrenome.value = perfil?.sobrenome || '';
-  // "Como gostaria de ser chamado" nasce igual ao Nome quando ainda não existe.
-  campos.apelido.value = perfil?.apelido || perfil?.nome || '';
-  campos.cidade.value = perfil?.cidade || '';
-  campos.estado.value = perfil?.estado || '';
-  campos.pais.value = perfil?.pais || 'Brasil';
-  campos.instagram.value = perfil?.instagram || '';
-  campos.telefone.value = perfil?.telefone || '';
-  campos.data_nascimento.value = perfil?.data_nascimento || '';
-  campos.genero.value = perfil?.genero || '';
-  campos.bio.value = perfil?.bio || '';
+function formatarData(dataIso) {
+  if (!dataIso) return '';
+  const [ano, mes, dia] = dataIso.split('-');
+  return `${dia}/${mes}/${ano}`;
+}
 
-  avatarUrlAtual = perfil?.avatar_url || '';
-  avatarPreview.src = avatarUrlAtual || AVATAR_PADRAO;
+function preencherCampoOpcional(itemEl, valorEl, valor, formatador) {
+  if (valor) {
+    valorEl.textContent = formatador ? formatador(valor) : valor;
+    itemEl.hidden = false;
+  } else {
+    itemEl.hidden = true;
+  }
+}
+
+function renderizar(usuario, perfil) {
+  els.avatar.src = perfil?.avatar_url || AVATAR_PADRAO;
+  els.apelido.textContent = perfil?.apelido || perfil?.nome || 'Forrozeiro';
+
+  const nomeCompleto = [perfil?.nome, perfil?.sobrenome].filter(Boolean).join(' ');
+  if (nomeCompleto && nomeCompleto !== els.apelido.textContent) {
+    els.nomeCompleto.textContent = nomeCompleto;
+    els.nomeCompleto.hidden = false;
+  } else {
+    els.nomeCompleto.hidden = true;
+  }
+
+  if (perfil?.bio) {
+    els.bio.textContent = perfil.bio;
+    els.bio.hidden = false;
+  } else {
+    els.bio.hidden = true;
+  }
+
+  const localizacao = [perfil?.cidade, perfil?.estado, perfil?.pais].filter(Boolean).join(', ');
+  preencherCampoOpcional(els.itemLocalizacao, els.valorLocalizacao, localizacao);
+
+  if (perfil?.instagram) {
+    const usuarioInsta = perfil.instagram.replace(/^@/, '');
+    els.valorInstagram.textContent = `@${usuarioInsta}`;
+    els.valorInstagram.href = `https://instagram.com/${usuarioInsta}`;
+    els.itemInstagram.hidden = false;
+  } else {
+    els.itemInstagram.hidden = true;
+  }
+
+  preencherCampoOpcional(els.itemWhatsapp, els.valorWhatsapp, perfil?.telefone);
+  preencherCampoOpcional(els.itemNascimento, els.valorNascimento, perfil?.data_nascimento, formatarData);
+  preencherCampoOpcional(els.itemGenero, els.valorGenero, perfil?.genero, (g) => ROTULOS_GENERO[g] || g);
+
+  els.valorEmail.textContent = usuario.email || '';
 }
 
 async function carregar() {
   mostrarEstado('carregando');
-  usuarioAtual = await obterUsuarioAtual();
+  const usuario = await obterUsuarioAtual();
 
-  if (!usuarioAtual) {
+  if (!usuario) {
     mostrarEstado('bloqueado');
     return;
   }
 
   try {
-    const perfil = await obterPerfil(usuarioAtual.id);
-    preencherFormulario(usuarioAtual, perfil);
-    mostrarEstado('form');
+    const perfil = await obterPerfil(usuario.id);
+    renderizar(usuario, perfil);
+    mostrarEstado('visualizacao');
   } catch (erro) {
     console.error('Não foi possível carregar o perfil:', erro);
-    mostrarStatus('Não foi possível carregar seu perfil. Tenta recarregar a página.', true);
-    mostrarEstado('form');
+    // Mesmo com erro, mostra o que dá pra mostrar (e-mail da sessão) em vez
+    // de travar a pessoa numa tela de carregando pra sempre.
+    renderizar(usuario, null);
+    mostrarEstado('visualizacao');
   }
-}
-
-function mostrarStatus(mensagem, ehErro) {
-  status.textContent = mensagem;
-  status.hidden = false;
-  status.classList.toggle('form-perfil-status-erro', !!ehErro);
 }
 
 botaoEntrar.addEventListener('click', () => abrirModalLogin());
 
-avatarBotao.addEventListener('click', () => avatarArquivo.click());
-
-avatarArquivo.addEventListener('change', async () => {
-  const arquivo = avatarArquivo.files[0];
-  if (!arquivo || !usuarioAtual) return;
-
-  // Preview imediato, antes mesmo do upload terminar.
-  avatarPreview.src = URL.createObjectURL(arquivo);
-  avatarBotao.disabled = true;
-  avatarBotao.textContent = 'Enviando...';
-
-  try {
-    avatarUrlAtual = await enviarAvatar(usuarioAtual.id, arquivo);
-    await salvarPerfil(usuarioAtual.id, { avatar_url: avatarUrlAtual });
-    avatarPreview.src = avatarUrlAtual;
-  } catch (erro) {
-    console.error('Não foi possível enviar a foto:', erro);
-    mostrarStatus('Não foi possível enviar a foto. Tenta de novo.', true);
-    avatarPreview.src = avatarUrlAtual || AVATAR_PADRAO;
-  } finally {
-    avatarBotao.disabled = false;
-    avatarBotao.textContent = 'Alterar foto';
-  }
-});
-
-form.addEventListener('submit', async (evento) => {
-  evento.preventDefault();
-  if (!usuarioAtual) return;
-
-  botaoSalvar.disabled = true;
-  botaoSalvar.textContent = 'Salvando...';
-  status.hidden = true;
-
-  const dados = {
-    nome: campos.nome.value.trim() || null,
-    sobrenome: campos.sobrenome.value.trim() || null,
-    apelido: campos.apelido.value.trim() || campos.nome.value.trim() || null,
-    cidade: campos.cidade.value.trim() || null,
-    estado: campos.estado.value.trim() || null,
-    pais: campos.pais.value.trim() || null,
-    instagram: campos.instagram.value.trim() || null,
-    telefone: campos.telefone.value.trim() || null,
-    data_nascimento: campos.data_nascimento.value || null,
-    genero: campos.genero.value || null,
-    bio: campos.bio.value.trim() || null
-  };
-
-  try {
-    await salvarPerfil(usuarioAtual.id, dados);
-    mostrarStatus('Perfil salvo!', false);
-  } catch (erro) {
-    console.error('Não foi possível salvar o perfil:', erro);
-    mostrarStatus('Não foi possível salvar. Tenta de novo em instantes.', true);
-  } finally {
-    botaoSalvar.disabled = false;
-    botaoSalvar.textContent = 'Salvar';
-  }
-});
-
-// Se a pessoa logar nessa mesma aba (via modal, sem ter recarregado),
-// recarrega os dados do perfil automaticamente.
+let jaCarregouLogado = false;
 aoMudarAutenticacao((usuario) => {
-  if (usuario && !usuarioAtual) {
+  if (usuario && !jaCarregouLogado) {
+    jaCarregouLogado = true;
     carregar();
   }
 });

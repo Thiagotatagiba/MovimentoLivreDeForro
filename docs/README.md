@@ -6,8 +6,8 @@ paleta **Terra Acesa** (evolução do pine/clay/paper original).
 
 ## Como rodar localmente
 
-As páginas usam `fetch()` para os arquivos de `data/*.json`. Isso **não funciona**
-abrindo o HTML direto no navegador (duplo clique / `file:///C:/...`) — o Chrome
+As páginas usam `fetch()` para os arquivos de `data/*.json`.
+Isso **não funciona** abrindo o HTML direto no navegador (duplo clique / `file:///C:/...`) — o Chrome
 bloqueia `fetch()` de arquivos locais por segurança, mesmo com caminho relativo
 correto. É preciso servir a pasta por HTTP, mesmo que localmente.
 
