@@ -578,3 +578,23 @@ Resultado: as 10 páginas ficaram sem nenhum HTML de navegação hardcoded — b
 topo, nav inferior e menu lateral nascem inteiramente de `js/barraTopo.js` e
 `js/pwa.js`. Qualquer mudança de navegação futura (novo item de menu, mudar um
 ícone) é feita em um lugar só.
+
+## 2026-10-01 — sw.js desativa cache em localhost
+
+Pendência registrada desde 2026-09-28 (o cache-first do Service Worker mascarou
+correções de JS/CSS várias vezes durante o desenvolvimento, exigindo limpeza
+manual — DevTools → Application → Unregister + Clear site data — repetidas vezes,
+inclusive mascarando a ausência da barra do topo em `sobre.html` que acabou
+gerando um susto desnecessário).
+
+**Correção:** `EH_LOCALHOST` checa `self.location.hostname` (o endereço de onde o
+próprio service worker foi registrado — não precisa de configuração extra). Com
+isso verdadeiro: o `install` pula o pré-cache inteiramente, e o `fetch` sempre
+busca da rede, sem ler nem escrever no cache. Produção (GitHub Pages) continua
+com o comportamento cache-first de sempre, sem nenhuma mudança.
+
+Aproveitado pra completar `ARQUIVOS_ESTATICOS` (lista de pré-cache), que estava
+desatualizada desde antes do login/perfil existirem — faltavam `evento.html`,
+`marca.html`, `local.html`, `perfil.html`, `perfil-editar.html`,
+`js/barraTopo.js`, `css/perfil.css`, `css/perfil-visualizar.css` e
+`components/modal-login.css`.

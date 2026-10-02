@@ -1,6 +1,6 @@
 # ROADMAP.md
 
-Última atualização: 2026-09-28
+Última atualização: 2026-09-30
 
 Este documento existe pra responder uma pergunta simples: **o que vem depois?**
 Prioridade é sempre de cima pra baixo — não pular etapa por parecer mais
@@ -24,54 +24,71 @@ interessante (ver `CLAUDE.md`).
 - [x] **Dados reais em produção**: `marcas.json`, `locais.json`, `eventos.json` já passaram
       por validação de integridade referencial e correção — zero referências quebradas
       confirmadas em todos os eventos.
-- [x] **Login com Google + Magic Link (Supabase Auth)** — configurado de ponta a ponta
-      (Google Cloud + Supabase Providers), testado com sucesso. Listener global
-      `onAuthStateChange` implementado via `components/painelUsuario.js`, carregado
-      automaticamente em toda página por `js/pwa.js`. Ver `DECISOES_DE_ARQUITETURA.md`
-      (2026-09-28) para os bugs corrigidos na configuração.
+- [x] **Login com Google + Magic Link (Supabase Auth)** — configurado de ponta a ponta e
+      testado com sucesso nos dois ambientes (local e produção). Causa raiz de três bugs
+      (foto não subia, dados não persistiam, login quebrava em produção) era o Site URL /
+      Redirect URLs do Supabase nunca configurado — corrigido. Ver `DECISOES_DE_ARQUITETURA.md`
+      (2026-09-28 e 2026-09-29).
+- [x] **Entidade Perfil** completa — tabela `perfis` no Supabase (SQL em `sql/perfis.sql`,
+      já executado), com gatilho de auto-criação no primeiro login, upload de foto via
+      Supabase Storage, e dividida em duas páginas: `perfil.html` (visualização) e
+      `perfil-editar.html` (edição) — Nome, Sobrenome, "Como gostaria de ser chamado"
+      (autopreenche do Nome), e-mail somente-leitura, Cidade/Estado/País, Instagram,
+      WhatsApp opcional, Data de nascimento, Gênero, Bio opcional.
+- [x] **Navegação centralizada, fim da duplicação de HTML**: barra do topo
+      (`js/barraTopo.js`), navegação inferior e menu lateral (ambos agora gerados por
+      `js/pwa.js`) — nenhuma das 10 páginas do site público tem mais esse HTML
+      hardcoded. 5 páginas nem tinham a barra do topo antes disso.
+- [x] **Hardening de segurança no Supabase**: funções de gatilho (`criar_perfil_no_cadastro`,
+      `atualizar_timestamp_perfil`) tiveram `EXECUTE` revogado de `PUBLIC`/`anon`/`authenticated`
+      — eram chamáveis via API sem necessidade, achado pelo linter de segurança do Supabase.
 
 ---
 
 ## 🔧 Em andamento / pendência imediata
 
-- [ ] **Entidade Perfil** — tabela `perfis` desenhada (SQL em `sql/perfis.sql`, ainda não
-      executado no Supabase), página `perfil.html` construída (Foto com upload via Supabase
-      Storage, Nome, Sobrenome, "Como gostaria de ser chamado", e-mail somente-leitura,
-      Cidade/Estado/País, Instagram, WhatsApp opcional, Data de nascimento, Gênero, Bio
-      opcional). Falta: rodar a migração no Supabase e testar o fluxo completo (upload de
-      foto, salvar, recarregar).
-- [ ] **Investigar defasagem entre o repositório GitHub e o projeto local** — o `ROADMAP.md`
-      do GitHub estava datado de 21/08, sem o admin nem dados reais, enquanto o projeto local
-      já tem tudo isso. Verificar se o deploy do GitHub Pages (produção) está atualizado.
+- [ ] **Documentação da pasta `docs/` desatualizada** — o repositório no GitHub está atrasado
+      em relação ao projeto local (o próprio `ROADMAP.md` de lá ainda era a versão de 21/08
+      até esta revisão). `ARQUITETURA.md`, `README.md` e `GUIA_SUPABASE_SETUP.md` precisam
+      de revisão — o guia de setup do Supabase, em especial, não menciona a configuração de
+      Site URL/Redirect URLs (causa dos bugs de login) e descreve uma tabela `interacoes`
+      que ainda não existe no banco (só existe como arquivo `services/interacaoService.js`,
+      não conectado a nada). Revisão em andamento.
+- [ ] **Investigar por que o GitHub está atrasado em relação ao projeto local** — confirmar
+      se o deploy do GitHub Pages (produção) reflete o código local mais recente.
 - [ ] **`sw.js` cacheando localhost durante desenvolvimento** — cache-first do Service Worker
-      mascarou correções de JS/CSS durante os testes de auth desta sessão (precisou limpar
-      cache manualmente). Considerar desativar cache quando `location.hostname === 'localhost'`.
+      mascarou correções de JS/CSS várias vezes durante os testes de auth. Considerar
+      desativar cache quando `location.hostname === 'localhost'`.
+- [ ] **`DECISOES_DE_ARQUITETURA.md` ficou grande (~37 KB)** — considerar arquivar entradas
+      mais antigas num arquivo separado, mantendo só as recentes no principal.
 
 ---
 
 ## 📌 Próximos passos (ordem de prioridade)
 
-1. **Entidade Festival**
+1. **Tabela `interacoes` (favoritar evento / seguir marca)**
+   Já desenhada em `GUIA_SUPABASE_SETUP.md` e como código em
+   `services/interacaoService.js`, mas a tabela nunca foi criada no Supabase. É a
+   peça que falta pra `favoritos.html` sair de placeholder — e agora que autenticação
+   e Perfil já existem, não tem mais nada bloqueando essa etapa.
+
+2. **Entidade Festival**
    Estrutura oficial: Marca → Festival → Dias do Festival → Eventos Diários.
    Nunca modelar Festival como um Evento único (ver `ARQUITETURA.md`).
 
-2. **Fortalecer entidade Bandas/DJs**
+3. **Fortalecer entidade Bandas/DJs**
    Hoje `lineup.bandas` e `lineup.djs` são só arrays de string dentro do Evento.
    Vira entidade própria quando precisarmos de perfil de banda/DJ (histórico de
    shows, redes sociais, etc.) — reaproveitar o padrão já usado em Marca.
 
-3. **Integração com Google Agenda**
+4. **Integração com Google Agenda**
    Só como importador — a base oficial de dados continua sendo o próprio sistema
    (ver `CLAUDE.md`, seção Integrações Futuras).
 
-4. **Página de detalhe de Local + mapa interativo**
+5. **Página de detalhe de Local + mapa interativo**
    `local.html` hoje só linka pro Google Maps externo. Levar o mapa pra dentro
    da página é o próximo salto de UX aqui — já temos `latitude`/`longitude` no
    schema do Local.
-
-5. **Funcionalidades de comunidade com Supabase**
-   Multiusuário, camada social. A Entidade Perfil (acima) é a primeira peça
-   dessa fase — favoritar/seguir (`interacoes`) já estava desenhado antes dela.
 
 ---
 
@@ -97,7 +114,7 @@ a etapa correspondente chegar.
   importador já previsto em Integrações Futuras; entra na mesma conversa da
   integração com Google Agenda/Sympla/Onticket.
 - **Página "Contratar Artistas"** — depende das entidades Banda/DJ existirem
-  primeiro (item 2 acima).
+  primeiro (item 3 acima).
 
 ---
 
@@ -117,8 +134,8 @@ a etapa correspondente chegar.
 
 ## 🗄️ Caminho de evolução de dados
 
-JSON (agora, pro catálogo) → Supabase (já em uso pra Auth, `interacoes` e agora
-`perfis` — tudo que é dado de usuário, não catálogo).
+JSON (agora, pro catálogo) → Supabase (já em uso pra Auth e `perfis` — tudo que é
+dado de usuário, não catálogo; `interacoes` é o próximo a entrar).
 
 Pendente à parte, sem prazo definido: adicionar checagem de integridade
 referencial ao `eventValidator.js` (hoje só valida campo a campo, não valida
