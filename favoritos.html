@@ -21,21 +21,40 @@
 <main class="container">
   <header class="cabecalho">
     <p class="rotulo-eyebrow">Favoritos</p>
-    <h1 style="font-size: var(--tam-titulo-lg);">Ainda estamos construindo isso</h1>
+    <h1 style="font-size: var(--tam-titulo-lg);">Seus favoritos</h1>
   </header>
 
-  <section class="secao">
-    <p class="texto-suave">
-      Favoritar bailes vai fazer parte da próxima grande etapa do Vai Ter Forró — junto com
-      perfil de usuário e outras funcionalidades de comunidade. Por enquanto, dá uma olhada
-      na agenda completa pra não perder nenhum baile.
-    </p>
-    <div style="margin-top: var(--esp-lg);">
-      <a class="botao botao-primario" href="agenda.html">Ver agenda completa</a>
-    </div>
+  <section class="secao" id="favoritos-bloqueado" hidden>
+    <p class="texto-suave">Entre com sua conta pra ver seus eventos favoritos e marcas que você segue.</p>
+    <button type="button" class="botao botao-primario" id="favoritos-botao-entrar" style="margin-top: var(--esp-md);">
+      Entrar
+    </button>
   </section>
+
+  <section class="secao" id="favoritos-carregando">
+    <p class="texto-suave">Carregando...</p>
+  </section>
+
+  <div id="favoritos-conteudo" hidden>
+    <section class="secao">
+      <h2 style="font-size: var(--tam-titulo-sm);">Eventos favoritados</h2>
+      <div class="grade-eventos" id="lista-eventos-favoritos" style="margin-top: var(--esp-md);"></div>
+      <div class="estado-vazio" id="vazio-eventos-favoritos" hidden>
+        Você ainda não favoritou nenhum evento. Toca no coração na página de um evento pra guardar aqui.
+      </div>
+    </section>
+
+    <section class="secao">
+      <h2 style="font-size: var(--tam-titulo-sm);">Segue o Baile</h2>
+      <div id="lista-marcas-seguindo" style="margin-top: var(--esp-md); display: flex; flex-direction: column; gap: 8px;"></div>
+      <div class="estado-vazio" id="vazio-marcas-seguindo" hidden>
+        Você ainda não segue nenhum baile. Toca em "Seguir" na página de uma Marca pra guardar aqui.
+      </div>
+    </section>
+  </div>
 </main>
 
 <script src="js/pwa.js"></script>
+<script type="module" src="js/pages/favoritos.js"></script>
 </body>
 </html>

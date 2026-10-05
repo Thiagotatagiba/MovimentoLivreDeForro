@@ -435,6 +435,54 @@
   border: 1px solid var(--cor-pine);
 }
 
+/* Seguir (marca.html): o botão fica dentro do .perfil-header, que tem fundo
+   --cor-pine escuro — o .botao-secundario padrão (texto/borda pine) ficaria
+   invisível ali. Sobrescreve especificamente nesse contexto. */
+.perfil-header .botao-seguir {
+  background: transparent;
+  color: var(--cor-paper);
+  border: 1px solid var(--cor-paper);
+}
+
+.perfil-header .botao-seguir.ativo {
+  background: var(--cor-clay);
+  color: var(--cor-paper);
+  border-color: var(--cor-clay);
+}
+
+/* Favoritar (evento.html): ícone flutuante sobre o banner do evento.
+   .midia já é position: relative, então isso ancora certinho. */
+.botao-favoritar {
+  position: absolute;
+  top: var(--esp-md);
+  right: var(--esp-md);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(20, 20, 20, 0.35);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cor-paper);
+}
+
+.botao-favoritar svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.botao-favoritar.ativo {
+  color: var(--cor-clay);
+}
+
+.botao-favoritar.ativo svg {
+  fill: currentColor;
+}
+
 /* ===== Navegação inferior ===== */
 .nav-inferior {
   position: fixed;

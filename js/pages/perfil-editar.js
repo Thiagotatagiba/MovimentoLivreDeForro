@@ -156,8 +156,13 @@ form.addEventListener('submit', async (evento) => {
 
   try {
     await salvarPerfil(usuarioAtual.id, dados);
-    mostrarStatus('Perfil salvo! ', false);
-    status.innerHTML = 'Perfil salvo! <a href="perfil.html">Ver perfil</a>';
+    mostrarStatus('Perfil salvo!', false);
+    // Pequena pausa só pra pessoa ver a confirmação antes da tela trocar —
+    // sem isso o "Perfil salvo!" nem chega a aparecer na tela.
+    setTimeout(() => {
+      window.location.href = 'perfil.html';
+    }, 700);
+    return; // não reabilita o botão: a página já está de saída
   } catch (erro) {
     console.error('Não foi possível salvar o perfil:', erro);
     mostrarStatus('Não foi possível salvar. Tenta de novo em instantes.', true);

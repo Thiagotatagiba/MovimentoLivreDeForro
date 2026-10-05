@@ -1,6 +1,8 @@
 // marca.js
 import { obterPerfilMarca } from '../services/marcaService.js';
-import { formatarDataCurta, formatarDiaSemana, formatarDiasSemana, estiloMidia } from '../utils/format.js';
+import { formatarDiasSemana } from '../utils/format.js';
+import { cardEventoHtml } from '../utils/cardEvento.js';
+import { ligarBotaoInteracao } from '../../components/botaoInteracao.js';
 
 const raiz = document.getElementById('conteudo-marca');
 const params = new URLSearchParams(window.location.search);
@@ -20,6 +22,9 @@ async function iniciar() {
 
   document.title = `${perfil.marca.nome} — Vai Ter Forró!`;
   raiz.innerHTML = montarHtml(perfil);
+
+  const botaoSeguir = document.getElementById('botao-seguir');
+  if (botaoSeguir) ligarBotaoInteracao(botaoSeguir, 'marca', perfil.marca.id, { inativo: 'Seguir', ativo: 'Seguindo' });
 }
 
 function montarHtml({ marca, localPadrao, proximos, historico }) {
@@ -33,6 +38,9 @@ function montarHtml({ marca, localPadrao, proximos, historico }) {
         ${marca.diasSemana?.length ? `<span class="tag-categoria">${formatarDiasSemana(marca.diasSemana)}</span>` : ''}
         ${marca.categorias.map((c) => `<span class="tag-categoria">${c}</span>`).join('')}
       </div>
+      <button type="button" class="botao botao-secundario botao-seguir" id="botao-seguir" style="margin-top: var(--esp-md); width: auto; padding-left: 24px; padding-right: 24px;" aria-pressed="false">
+        Seguir
+      </button>
     </div>
 
     <div class="container">
@@ -52,7 +60,9 @@ function montarHtml({ marca, localPadrao, proximos, historico }) {
       <section class="secao">
         <h2 style="font-size: var(--tam-titulo-sm);">Próximos eventos</h2>
         <div class="grade-eventos" style="margin-top: var(--esp-md);">
-          ${proximos.length ? proximos.map(cardEventoHtml).join('') : '<div class="estado-vazio">Nenhum evento futuro cadastrado.</div>'}
+          ${proximos.length
+            ? proximos.map((evento) => cardEventoHtml(evento, { mostrarMarca: false })).join('')
+            : '<div class="estado-vazio">Nenhum evento futuro cadastrado.</div>'}
         </div>
       </section>
 
@@ -60,7 +70,7 @@ function montarHtml({ marca, localPadrao, proximos, historico }) {
         <section class="secao">
           <h2 style="font-size: var(--tam-titulo-sm);">Histórico</h2>
           <div class="grade-eventos" style="margin-top: var(--esp-md);">
-            ${historico.map(cardEventoHtml).join('')}
+            ${historico.map((evento) => cardEventoHtml(evento, { mostrarMarca: false })).join('')}
           </div>
         </section>
       ` : ''}
@@ -73,22 +83,6 @@ function montarHtml({ marca, localPadrao, proximos, historico }) {
     </div>
   `;
 }
-
-function cardEventoHtml(evento) {
-  return `
-    <a class="card-evento" href="evento.html?slug=${encodeURIComponent(evento.slug)}">
-      <div class="midia" style="${estiloMidia(evento.imagemUrl)}">
-        <span class="badge">${formatarDataCurta(evento.data)}</span>
-      </div>
-      <div class="corpo">
-        <p class="titulo-evento">${evento.titulo}</p>
-        <p class="meta">${capitalizar(formatarDiaSemana(evento.data))} · ${evento.local?.nome ?? 'local em breve'}</p>
-      </div>
-    </a>
-  `;
-}
-
-function capitalizar(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
 
 function estadoVazio(mensagem) {
   return `<div class="estado-vazio" style="padding-top: 80px;">${mensagem}</div>`;

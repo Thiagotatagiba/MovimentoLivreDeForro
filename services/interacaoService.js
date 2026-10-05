@@ -23,6 +23,15 @@ async function buscarInteracaoExistente(usuarioId, tipo, entidadeTipo, entidadeI
   return data;
 }
 
+// Diz se a interação já existe — usado pra pintar o botão certo (coração
+// cheio, "Seguindo") assim que a página carrega, antes de qualquer clique.
+export async function verificarInteracao(entidadeTipo, entidadeId, usuarioId) {
+  const tipo = TIPO_POR_ENTIDADE[entidadeTipo];
+  if (!tipo) throw new Error(`Tipo de entidade inválido: ${entidadeTipo}`);
+  const existente = await buscarInteracaoExistente(usuarioId, tipo, entidadeTipo, entidadeId);
+  return !!existente;
+}
+
 // Alterna o estado (favorita se não existia, remove se já existia).
 // Retorna o novo estado: true = adicionado, false = removido.
 export async function alternarInteracao(entidadeTipo, entidadeId, usuarioId) {

@@ -16,6 +16,10 @@ export function formatarDataCurta(isoString) {
   return `${String(data.getDate()).padStart(2, '0')} ${MESES[data.getMonth()]}`;
 }
 
+export function capitalizar(texto) {
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
+
 export function formatarDiaSemana(isoString) {
   const data = paraData(isoString);
   return DIAS_SEMANA[data.getDay()];

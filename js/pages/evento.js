@@ -1,6 +1,7 @@
 // evento.js
 import { obterEventoCompleto } from '../services/eventoService.js';
 import { formatarDataCompleta, formatarPreco, enderecoResumido, enderecoCompleto, estiloMidia } from '../utils/format.js';
+import { ligarBotaoInteracao } from '../../components/botaoInteracao.js';
 
 const raiz = document.getElementById('conteudo-evento');
 const params = new URLSearchParams(window.location.search);
@@ -20,6 +21,9 @@ async function iniciar() {
 
   document.title = `${evento.titulo} — Vai Ter Forró!`;
   raiz.innerHTML = montarHtml(evento);
+
+  const botaoFavoritar = document.getElementById('botao-favoritar');
+  if (botaoFavoritar) ligarBotaoInteracao(botaoFavoritar, 'evento', evento.id);
 }
 
 function montarHtml(evento) {
@@ -30,6 +34,9 @@ function montarHtml(evento) {
   return `
     <div class="midia" style="height: 220px; border-radius: 0; ${estiloMidia(evento.imagemUrl)}">
       <span class="marca-nome" style="font-size: var(--tam-titulo-lg);">${marca?.nome ?? 'Marca em breve'}</span>
+      <button type="button" class="botao-favoritar" id="botao-favoritar" aria-label="Favoritar evento" aria-pressed="false">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.7-10-9.3C0.3 8.4 2 5 5.5 5c2 0 3.5 1.2 4.5 2.8C11 6.2 12.5 5 14.5 5 18 5 19.7 8.4 22 11.7 19.5 16.3 12 21 12 21z"/></svg>
+      </button>
     </div>
 
     <div class="container" style="margin-top: var(--esp-lg);">

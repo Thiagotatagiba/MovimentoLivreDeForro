@@ -26,6 +26,11 @@ export async function buscarEventoPorSlug(slug) {
   return eventos.find((e) => e.slug === slug && e.ativo) ?? null;
 }
 
+export async function buscarEventoPorId(id) {
+  const eventos = await carregarTodos();
+  return eventos.find((e) => e.id === id && e.ativo) ?? null;
+}
+
 export async function listarEventosPorMarca(marcaId) {
   const eventos = await carregarTodos();
   return eventos.filter((e) => e.marcaId === marcaId && e.ativo);

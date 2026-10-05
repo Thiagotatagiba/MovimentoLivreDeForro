@@ -598,3 +598,60 @@ desatualizada desde antes do login/perfil existirem — faltavam `evento.html`,
 `marca.html`, `local.html`, `perfil.html`, `perfil-editar.html`,
 `js/barraTopo.js`, `css/perfil.css`, `css/perfil-visualizar.css` e
 `components/modal-login.css`.
+
+## 2026-10-02 — Visualização de perfil redesenhada (chips, não lista plana)
+
+Thiago pediu mais organização visual na tela de visualização do perfil — até
+então era uma lista `<dl>` plana (rótulo em cima, valor embaixo, repetido).
+
+**Decisão:** reaproveitar padrões visuais já existentes no site, em vez de
+criar um estilo novo:
+- Localização vira uma pílula no estilo do filtro "Grande Vitória" da Home
+  (`--cor-pine-claro`, `--raio-pilula`), com o mesmo ícone de pin já usado lá.
+- Instagram e WhatsApp viram **chips clicáveis** lado a lado (estilo
+  `--sombra-card` + `--raio-campo`, o mesmo tratamento do `.local-mini` usado
+  em `evento.html`) — Instagram abre o perfil, WhatsApp abre uma conversa via
+  `wa.me` (número formatado como `(DD) 99999-9999` pra exibição, mas o link
+  usa só dígitos com prefixo `55`).
+- Ícones são SVG de traço simples (mesmo estilo do resto do site), não os
+  logos oficiais do Instagram/WhatsApp — evita copiar identidade visual de
+  terceiros (mesmo princípio do `CLAUDE.md` sobre não copiar identidade das
+  plataformas de inspiração).
+- Nascimento/Gênero viram "detalhes" discretos lado a lado, separados por uma
+  linha fina — informação que existe mas não precisa de destaque.
+- E-mail passou a ser a informação menos destacada da tela (é dado de conta,
+  não dado social) — texto pequeno, sem chip.
+
+Esse padrão de chip (ícone + texto + link, cartão com sombra leve) é
+reaproveitável no futuro pra qualquer perfil público (Marca, Local, Banda/DJ
+quando existirem) — não foi pensado só pra essa tela.
+
+## 2026-10-02 (continuação) — Interações (favoritar/seguir) implementadas
+
+Primeiro item da fila de "Próximos passos" do ROADMAP. Tabela `interacoes` criada
+(`sql/interacoes.sql`) — polimórfica, mas com uma constraint que a versão do
+`GUIA_SUPABASE_SETUP.md` não tinha: `favorito` só em `evento`, `seguindo` só em
+`marca` (reflete o que `services/interacaoService.js`, já escrito antes, já
+esperava via `TIPO_POR_ENTIDADE`). Sem policy de `update`: alternar sempre
+insere ou remove, nunca edita uma linha — mesma simplicidade de `perfis.sql`.
+
+**Componente compartilhado**: `components/botaoInteracao.js` — liga qualquer
+botão (coração em `evento.html`, "Seguir" em `marca.html`) ao
+`interacaoService.js`. Se a pessoa não estiver logada, o clique abre o modal
+de login em vez de tentar alternar — mesmo padrão de proteção já usado em
+outros lugares do app.
+
+**Descoberta de duplicação durante o trabalho**: ao montar `favoritos.html`,
+achei `cardEventoHtml` copiada (quase) igual em 4 páginas (`agenda.js`,
+`home.js`, `local.js`, `marca.js`), cada uma com pequenas variações (mostrar
+marca ou não, mostrar local ou não, badge "Hoje" especial ou não). E
+`capitalizar`, copiada em 3 delas. Consolidado em `js/utils/cardEvento.js`
+(função pura, com opções: `mostrarMarca`, `mostrarLocal`, `mostrarDiaSemana`,
+`badgeHojeEspecial`) e `capitalizar` movida pra `js/utils/format.js`. As 4
+páginas e a nova `favoritos.js` usam a mesma função agora.
+
+`favoritos.html` deixou de ser placeholder: duas seções (Eventos favoritados,
+Marcas que você segue), cada uma com estado vazio próprio. Resolve pela
+`entidade_id` guardada em `interacoes` contra o catálogo JSON via
+`eventoService.listarEventosPorIds()` / `marcaService.listarMarcasPorIds()`
+(funções novas, mesmo padrão de `buscarMarcaPorId` já existente).

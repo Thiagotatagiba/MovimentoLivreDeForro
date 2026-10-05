@@ -124,7 +124,7 @@
     "horario": "22:00",
     "descricao": "Edição mensal do Forró Deck 16 no Espaço Praia, com música ao vivo, DJs e programação que atravessa a madrugada.",
     "ingresso": {
-      "precoAPartirDe": 20,
+      "precoAPartirDe": 30,
       "link": "https://sympla.com.br/em-breve",
       "plataforma": "Sympla"
     },
@@ -137,6 +137,7 @@
       ]
     },
     "imagemUrl": "em breve",
+    "condicoesEspeciais": [],
     "ativo": true
   },
   {
@@ -167,6 +168,38 @@
       {
         "tipo": "aniversariante",
         "descricao": "Se liguem Forrozeiros✨️  Afinal, Aniversariantes do mês terão gratuidade em nossa edição! Mas fiquem atentos às regrinhas:  ❤️‍🔥 Basta apresentar documento original com foto em nossa bilheteria até às 23:30!"
+      }
+    ],
+    "ativo": true
+  },
+  {
+    "id": "evt-008",
+    "slug": "forrozada-boa-2026-10-09",
+    "marcaId": "mrc-002",
+    "localId": "loc-003",
+    "titulo": "Forrozada Boa de Outubro",
+    "data": "2026-10-09",
+    "horario": "22:00",
+    "descricao": "Prepara as canelas pra essa programação pesada do Forró + Dançante de Vitória 💃🏽🕺🏽 🔥\n\n🗓  09 de Outubro\n🕙  22:00 Horas\n\nATRAÇÕES:\n\n🎤  TRIO DONA ZEFA (SP)\n🎤  CLEBER GONZAGA (SP)\n🎧  DJ Fabricio Bravim (ES)\n\nFaz aniversário entre 01 e 31 de Outubro?\n👉 Faça o Cadastro de Aniversariante até 03/10 pelo WhatsApp e ganhe o ingresso 🥳\n📲 (27) 99962-5136\n\n🎫 INGRESSOS Antecipados pelo Site www.sympla.com.br ( link na Bio do Instagram do @forrozadaboa ) 👇🏼\n\nhttps://www.sympla.com.br/evento/forrozada-boa—dona-zefa—cleber-gonzaga—dj-bravim/3586476\n\n📍Local do Evento: Recreio dos Olhos: Avenida Coronel José Martins de Figueiredo, 575, Tabuazeiro, VITÓRIA, ES.\n\n🎥 📸 O evento será filmado e fotografado.\nAo participar do evento o portador do ingresso concorda e autoriza a utilização gratuita de sua imagem por prazo indeterminado.",
+    "ingresso": {
+      "precoAPartirDe": 40,
+      "link": "em breve",
+      "plataforma": "Sympla"
+    },
+    "lineup": {
+      "bandas": [
+        "Trio Dona Zefa",
+        "Cleber Gonzaga"
+      ],
+      "djs": [
+        "DJ Bravim"
+      ]
+    },
+    "imagemUrl": "https://www.sympla.com.br/evento/forrozada-boa-dona-zefa-cleber-gonzaga-dj-bravim/3586476?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0DMTAwAHBkb2YCc3J0YwZhcHBfaWQPOTM2NjE5NzQzMzkyNDU5AAGn8ytCRy1ywotefoaQuiOeoOLuoMuUBb9fHKy5SVCGLtQuc8_8NQz6XduDPH0_aem_QLYfsCMY3l80I65tR7ZFZQ&utm_id=97760_v0_s00_e0_tv3&referrer=l.instagram.com&referrer=l.instagram.com",
+    "condicoesEspeciais": [
+      {
+        "tipo": "aniversariante",
+        "descricao": "Faz aniversário entre 01 e 31 de Outubro? 👉 Faça o Cadastro de Aniversariante até 03/10 pelo WhatsApp e ganhe o ingresso 🥳 📲 (27) 99962-5136"
       }
     ],
     "ativo": true

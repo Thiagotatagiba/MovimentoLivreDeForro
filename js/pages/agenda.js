@@ -1,6 +1,7 @@
 // agenda.js
 import { listarAgendaOrdenada } from '../services/eventoService.js';
-import { formatarDataCurta, formatarDiaSemana, ehHoje, estiloMidia } from '../utils/format.js';
+import { capitalizar } from '../utils/format.js';
+import { cardEventoHtml } from '../utils/cardEvento.js';
 
 const gradeEl = document.getElementById('grade-agenda');
 const pillsEl = document.getElementById('pills-categoria');
@@ -51,32 +52,9 @@ function renderizarGrade() {
     return;
   }
 
-  gradeEl.innerHTML = filtrados.map(cardEventoHtml).join('');
-}
-
-function cardEventoHtml(evento) {
-  const nomeMarca = evento.marca?.nome ?? 'Marca em breve';
-  const nomeLocal = evento.local?.nome ?? 'Local em breve';
-  const badge = ehHoje(evento.data)
-    ? `<span class="badge badge-hoje">Hoje</span>`
-    : `<span class="badge">${formatarDataCurta(evento.data)}</span>`;
-
-  return `
-    <a class="card-evento" href="evento.html?slug=${encodeURIComponent(evento.slug)}">
-      <div class="midia" style="${estiloMidia(evento.imagemUrl)}">
-        ${badge}
-        <span class="marca-nome">${nomeMarca}</span>
-      </div>
-      <div class="corpo">
-        <p class="titulo-evento">${evento.titulo}</p>
-        <p class="meta">${capitalizar(formatarDiaSemana(evento.data))} · ${nomeLocal}</p>
-      </div>
-    </a>
-  `;
-}
-
-function capitalizar(texto) {
-  return texto.charAt(0).toUpperCase() + texto.slice(1);
+  gradeEl.innerHTML = filtrados
+    .map((evento) => cardEventoHtml(evento, { badgeHojeEspecial: true }))
+    .join('');
 }
 
 iniciar().catch((erro) => {

@@ -1,6 +1,7 @@
 // local.js
 import { obterPerfilLocal } from '../services/localService.js';
-import { formatarDataCurta, formatarDiaSemana, enderecoCompleto, estiloMidia } from '../utils/format.js';
+import { enderecoCompleto } from '../utils/format.js';
+import { cardEventoHtml } from '../utils/cardEvento.js';
 
 const raiz = document.getElementById('conteudo-local');
 const params = new URLSearchParams(window.location.search);
@@ -59,29 +60,14 @@ function montarHtml({ local, proximos, marcas }) {
       <section class="secao">
         <h2 style="font-size: var(--tam-titulo-sm);">Próximos eventos aqui</h2>
         <div class="grade-eventos" style="margin-top: var(--esp-md);">
-          ${proximos.length ? proximos.map(cardEventoHtml).join('') : '<div class="estado-vazio">Nenhum evento futuro neste Local por enquanto.</div>'}
+          ${proximos.length
+            ? proximos.map((evento) => cardEventoHtml(evento, { mostrarLocal: false })).join('')
+            : '<div class="estado-vazio">Nenhum evento futuro neste Local por enquanto.</div>'}
         </div>
       </section>
     </div>
   `;
 }
-
-function cardEventoHtml(evento) {
-  return `
-    <a class="card-evento" href="evento.html?slug=${encodeURIComponent(evento.slug)}">
-      <div class="midia" style="${estiloMidia(evento.imagemUrl)}">
-        <span class="badge">${formatarDataCurta(evento.data)}</span>
-        <span class="marca-nome">${evento.marca?.nome ?? ''}</span>
-      </div>
-      <div class="corpo">
-        <p class="titulo-evento">${evento.titulo}</p>
-        <p class="meta">${capitalizar(formatarDiaSemana(evento.data))}</p>
-      </div>
-    </a>
-  `;
-}
-
-function capitalizar(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
 
 function estadoVazio(mensagem) {
   return `<div class="estado-vazio" style="padding-top: 80px;">${mensagem}</div>`;

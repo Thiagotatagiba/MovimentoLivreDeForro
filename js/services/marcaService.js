@@ -8,6 +8,13 @@ export async function listarMarcasAtivas() {
   return listarMarcas();
 }
 
+// Usado pela página de Favoritos: várias marcas pelos ids vindos de
+// interacaoService.listarSeguindo().
+export async function listarMarcasPorIds(ids) {
+  const marcas = await listarMarcas();
+  return marcas.filter((m) => ids.includes(m.id));
+}
+
 export async function obterPerfilMarca(slug) {
   const marca = await buscarMarcaPorSlug(slug);
   if (!marca) return null;
