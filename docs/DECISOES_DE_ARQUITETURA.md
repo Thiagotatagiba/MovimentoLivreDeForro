@@ -655,3 +655,49 @@ Marcas que você segue), cada uma com estado vazio próprio. Resolve pela
 `entidade_id` guardada em `interacoes` contra o catálogo JSON via
 `eventoService.listarEventosPorIds()` / `marcaService.listarMarcasPorIds()`
 (funções novas, mesmo padrão de `buscarMarcaPorId` já existente).
+
+## 2026-10-02 (continuação) — "Marca" continua Marca no código; "Segue o Baile" é só rótulo
+
+Avaliado o impacto de renomear a entidade Marca pra "Baile" (pedido de Thiago).
+Levantamento real: 133 ocorrências de "marca" só no painel admin (52 em
+`admin/js/marcas.js`, 43 em `admin/js/eventos.js`, 25 em `admin/index.html`, 12
+em `admin/js/main.js`), fora rotas (`marca.html`), nomes de arquivo, funções
+(`listarMarcas`, `buscarMarcaPorId` etc.), e o campo `evento.marca` que
+atravessa praticamente toda página pública.
+
+Problema conceitual também identificado: "baile", em português coloquial, serve
+tanto pra marca quanto pro evento específico — renomear só Marca reintroduz a
+ambiguidade que a separação Marca/Evento existe pra evitar.
+
+**Decisão:** não renomear a entidade. Código, banco, rotas e admin continuam
+"Marca". Apenas a seção "Marcas que você segue" em `favoritos.html` passou a
+se chamar **"Segue o Baile"** na interface — rótulo de produto, não mudança de
+modelo. Mantém a linguagem natural do forró sem o custo/risco de um rename
+completo.
+
+## 2026-10-04 — evento.html: descrição com quebra de linha, ingresso no topo, "Conheça a Marca" no fim
+
+Thiago comparou nossa página de evento com a do Sympla (fonte original de onde
+o texto é colado) e pediu três ajustes:
+
+1. **Descrição sem quebra de linha** — `evento.descricao` tem `\n` reais
+   quando colada do Sympla/Instagram, mas HTML colapsa isso por padrão.
+   Corrigido com `white-space: pre-line` no parágrafo — sem precisar separar
+   em múltiplos `<p>` nem mexer no dado salvo.
+2. **Botão de ingresso movido pra logo após "Quando"** — antes só existia no
+   fim da página. A seção "Ingresso" (preço + botão) duplicada no fim foi
+   removida — um só lugar agora, igual ao padrão do Sympla.
+3. **Nova seção "Conheça a Marca" no final** — inspirada no card "Sobre o
+   produtor" do Sympla. Mostra nome + descrição da Marca, um botão **Seguir**
+   (reaproveita `components/botaoInteracao.js`, mesmo componente de
+   `marca.html` — zero lógica nova) e um link "Ver página →". Reforça o
+   objetivo do produto de incentivar conhecer novas Marcas, direto no
+   momento em que a pessoa está mais engajada (decidindo ir ao evento).
+
+Isso expôs um bug que eu mesmo causei ao corrigir o contraste do botão Seguir
+na sessão anterior: o `.botao-seguir.ativo` genérico tinha sido substituído
+por uma versão só para dentro de `.perfil-header` (fundo escuro). O novo
+card "Conheça a Marca" tem fundo claro — precisa do estilo genérico de volta.
+Agora os dois existem: `.botao-seguir.ativo` (fundo claro, preenche pine) e
+`.perfil-header .botao-seguir.ativo` (fundo escuro, preenche clay),
+coexistindo por especificidade de CSS.

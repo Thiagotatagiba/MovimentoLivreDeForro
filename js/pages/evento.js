@@ -24,6 +24,11 @@ async function iniciar() {
 
   const botaoFavoritar = document.getElementById('botao-favoritar');
   if (botaoFavoritar) ligarBotaoInteracao(botaoFavoritar, 'evento', evento.id);
+
+  const botaoSeguir = document.getElementById('botao-seguir-rodape');
+  if (botaoSeguir && evento.marca) {
+    ligarBotaoInteracao(botaoSeguir, 'marca', evento.marca.id, { inativo: 'Seguir', ativo: 'Seguindo' });
+  }
 }
 
 function montarHtml(evento) {
@@ -49,8 +54,18 @@ function montarHtml(evento) {
       </div>
 
       <section class="secao">
+        <h2 style="font-size: var(--tam-titulo-sm);">Ingresso</h2>
+        <p class="texto-suave" style="margin-top: var(--esp-sm);">
+          ${formatarPreco(evento.ingresso?.precoAPartirDe)} · ${evento.ingresso?.plataforma ?? 'em breve'}
+        </p>
+        <a class="botao botao-primario" style="margin-top: var(--esp-sm);" href="${evento.ingresso?.link && evento.ingresso.link !== 'em breve' ? evento.ingresso.link : '#'}">
+          Garantir ingresso
+        </a>
+      </section>
+
+      <section class="secao">
         <h2 style="font-size: var(--tam-titulo-sm);">Sobre o evento</h2>
-        <p class="texto-suave" style="margin-top: var(--esp-sm);">${evento.descricao}</p>
+        <p class="texto-suave" style="margin-top: var(--esp-sm); white-space: pre-line;">${evento.descricao}</p>
       </section>
 
       ${lineup.length ? `
@@ -75,13 +90,6 @@ function montarHtml(evento) {
       ` : ''}
 
       <section class="secao">
-        <h2 style="font-size: var(--tam-titulo-sm);">Ingresso</h2>
-        <p class="texto-suave" style="margin-top: var(--esp-sm);">
-          ${formatarPreco(evento.ingresso?.precoAPartirDe)} · ${evento.ingresso?.plataforma ?? 'em breve'}
-        </p>
-      </section>
-
-      <section class="secao">
         <h2 style="font-size: var(--tam-titulo-sm);">Localização</h2>
         <div class="local-mini" style="margin-top: var(--esp-sm);">
           <div>
@@ -95,11 +103,19 @@ function montarHtml(evento) {
         </p>
       </section>
 
-      <div style="padding: var(--esp-md) 0 var(--esp-xl);">
-        <a class="botao botao-primario" href="${evento.ingresso?.link && evento.ingresso.link !== 'em breve' ? evento.ingresso.link : '#'}">
-          Garantir ingresso
-        </a>
-      </div>
+      ${marca ? `
+        <section class="secao" style="padding-bottom: var(--esp-xl);">
+          <div style="background: var(--bg-card); border-radius: var(--raio-card); box-shadow: var(--sombra-card); padding: var(--esp-lg) var(--esp-md);">
+            <p class="rotulo-eyebrow">Conheça a Marca</p>
+            <h2 style="margin-top: 4px;">${marca.nome}</h2>
+            ${marca.descricao ? `<p class="texto-suave" style="margin-top: var(--esp-sm);">${marca.descricao}</p>` : ''}
+            <div style="display: flex; gap: var(--esp-sm); margin-top: var(--esp-md); flex-wrap: wrap;">
+              <button type="button" class="botao botao-secundario botao-seguir" id="botao-seguir-rodape" style="width: auto; padding-left: 24px; padding-right: 24px;" aria-pressed="false">Seguir</button>
+              <a class="botao botao-primario" style="width: auto; padding-left: 24px; padding-right: 24px;" href="marca.html?slug=${marca.slug}">Ver página →</a>
+            </div>
+          </div>
+        </section>
+      ` : ''}
     </div>
   `;
 }

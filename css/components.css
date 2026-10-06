@@ -435,9 +435,18 @@
   border: 1px solid var(--cor-pine);
 }
 
+/* Seguir, estado ativo — versão padrão, pra fundos claros (ex: o card
+   "Conheça a Marca" em evento.html). */
+.botao-seguir.ativo {
+  background: var(--cor-pine);
+  color: var(--cor-paper);
+  border-color: var(--cor-pine);
+}
+
 /* Seguir (marca.html): o botão fica dentro do .perfil-header, que tem fundo
    --cor-pine escuro — o .botao-secundario padrão (texto/borda pine) ficaria
-   invisível ali. Sobrescreve especificamente nesse contexto. */
+   invisível ali. Sobrescreve especificamente nesse contexto (e também o
+   .ativo acima, por ter seletor mais específico). */
 .perfil-header .botao-seguir {
   background: transparent;
   color: var(--cor-paper);
@@ -706,7 +715,6 @@
 .perfil-header .rotulo-eyebrow { color: var(--cor-gold); }
 
 .perfil-header h1 { margin-top: var(--esp-xs); }
-
 
 .tag-categoria {
   display: inline-block;
