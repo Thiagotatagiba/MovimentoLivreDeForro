@@ -125,8 +125,13 @@
           <input type="number" id="ev-preco" min="0" step="1" value="0">
         </div>
         <div class="admin-campo">
-          <label for="ev-plataforma">Plataforma</label>
-          <input type="text" id="ev-plataforma" placeholder="Na porta, Sympla...">
+          <label for="ev-tipo-entrada">Tipo de entrada</label>
+          <select id="ev-tipo-entrada">
+            <option value="Ingresso Online">Ingresso Online</option>
+            <option value="Ingresso no Local">Ingresso no Local</option>
+            <option value="Cover">Cover</option>
+            <option value="Gratuito">Gratuito</option>
+          </select>
         </div>
       </div>
 
@@ -244,6 +249,17 @@
       <div class="admin-campo">
         <label for="mr-site">Site</label>
         <input type="text" id="mr-site">
+      </div>
+
+      <div class="admin-campo-linha">
+        <div class="admin-campo">
+          <label for="mr-logo">Logo (imagem de perfil)</label>
+          <input type="text" id="mr-logo" placeholder="assets/marcas/nome-logo.jpg ou URL">
+        </div>
+        <div class="admin-campo">
+          <label for="mr-capa">Capa (imagem larga)</label>
+          <input type="text" id="mr-capa" placeholder="assets/marcas/nome-capa.jpg ou URL">
+        </div>
       </div>
 
       <div class="admin-campo admin-campo-checkbox">

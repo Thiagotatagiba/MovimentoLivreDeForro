@@ -1,6 +1,6 @@
 // marca.js
 import { obterPerfilMarca } from '../services/marcaService.js';
-import { formatarDiasSemana } from '../utils/format.js';
+import { formatarDiasSemana, estiloCapa } from '../utils/format.js';
 import { cardEventoHtml } from '../utils/cardEvento.js';
 import { ligarBotaoInteracao } from '../../components/botaoInteracao.js';
 
@@ -29,9 +29,14 @@ async function iniciar() {
 
 function montarHtml({ marca, localPadrao, proximos, historico }) {
   return `
-    <div class="perfil-header">
-      <p class="rotulo-eyebrow">Marca</p>
-      <h1>${marca.nome}</h1>
+    <div class="perfil-header" style="${estiloCapa(marca.capa)}">
+      <div class="perfil-header-topo">
+        ${marca.logo ? `<img class="marca-logo" src="${marca.logo}" alt="Logo ${marca.nome}">` : ''}
+        <div>
+          <p class="rotulo-eyebrow">Marca</p>
+          <h1>${marca.nome}</h1>
+        </div>
+      </div>
       <p style="margin-top: var(--esp-sm); opacity: 0.9;">${marca.descricao}</p>
       <div style="margin-top: var(--esp-sm);">
         ${marca.frequencia ? `<span class="tag-categoria">Baile ${marca.frequencia}</span>` : ''}

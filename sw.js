@@ -2,7 +2,14 @@
 // Estratégia: cache-first pra estático (HTML/CSS/JS/ícones), network-only pra
 // dados (data/*.json), porque agenda desatualizada é pior que sem cache nenhum.
 
-const CACHE_NOME = 'vai-ter-forro-v1';
+// Mudar esse nome (v1 → v2 → v3...) é o jeito de forçar todo visitante a
+// descartar o cache antigo e buscar tudo de novo — necessário sempre que um
+// arquivo que NÃO está em ARQUIVOS_ESTATICOS muda (esses só são atualizados
+// lazy, na primeira vez que alguém os pede, e ficam em cache pra sempre até
+// o nome do cache mudar). Bump em 2026-10-07: vários arquivos da página de
+// Marca mudaram nos últimos dias sem nunca terem o cache invalidado — ver
+// DECISOES_DE_ARQUITETURA.md.
+const CACHE_NOME = 'vai-ter-forro-v3';
 
 // Em desenvolvimento local o cache só atrapalha: mascara mudanças de JS/CSS
 // e obriga a limpar o Service Worker manualmente a cada teste (já aconteceu

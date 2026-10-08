@@ -1,6 +1,6 @@
 // home.js — página inicial: Tira de Dias abre um visualizador de stories em tela cheia
 import { listarAgendaOrdenada, listarEventosPorData, contarEventosPorData } from '../services/eventoService.js';
-import { formatarDataCompleta, estiloMidia, gerarCardsSemana } from '../utils/format.js';
+import { formatarDataCompleta, estiloMidia, imagemDoEvento, gerarCardsSemana } from '../utils/format.js';
 import { cardEventoHtml } from '../utils/cardEvento.js';
 
 const cardsSemanaEl = document.getElementById('cards-semana');
@@ -214,7 +214,7 @@ function renderizarSlideAtual() {
 
   storyConteudoEl.innerHTML = `
     <div class="story-slide">
-      <div class="story-arte" style="${estiloMidia(evento.imagemUrl)}">
+      <div class="story-arte" style="${estiloMidia(imagemDoEvento(evento))}">
         <div class="story-info">
           <p class="story-marca">${nomeMarca}</p>
           <h2 class="story-titulo">${evento.titulo}</h2>

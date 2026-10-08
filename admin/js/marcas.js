@@ -76,6 +76,8 @@ export function abrirFormulario(id = null) {
   document.getElementById('mr-instagram').value = marca?.instagram ?? '';
   document.getElementById('mr-whatsapp').value = marca?.whatsapp ?? '';
   document.getElementById('mr-site').value = marca?.site ?? '';
+  document.getElementById('mr-logo').value = marca?.logo ?? '';
+  document.getElementById('mr-capa').value = marca?.capa ?? '';
   document.getElementById('mr-ativo').checked = marca?.ativo ?? true;
 
   modalEl.hidden = false;
@@ -113,7 +115,8 @@ async function salvar(evento) {
     instagram: textoOuNulo(document.getElementById('mr-instagram').value),
     whatsapp: textoOuNulo(document.getElementById('mr-whatsapp').value),
     site: textoOuNulo(document.getElementById('mr-site').value),
-    logo: existente?.logo ?? null,
+    logo: textoOuNulo(document.getElementById('mr-logo').value),
+    capa: textoOuNulo(document.getElementById('mr-capa').value),
     ativo: document.getElementById('mr-ativo').checked,
   };
 

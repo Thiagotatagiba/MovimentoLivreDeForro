@@ -6,7 +6,7 @@
 // repete o nome da própria Marca, já que a pessoa já está na página dela).
 // Função pura: só monta uma string, nunca toca DOM nem repositório.
 
-import { formatarDataCurta, formatarDiaSemana, estiloMidia, ehHoje, capitalizar } from './format.js';
+import { formatarDataCurta, formatarDiaSemana, estiloMidia, imagemDoEvento, ehHoje, capitalizar } from './format.js';
 
 export function cardEventoHtml(evento, opcoes = {}) {
   const {
@@ -29,7 +29,7 @@ export function cardEventoHtml(evento, opcoes = {}) {
 
   return `
     <a class="card-evento" href="evento.html?slug=${encodeURIComponent(evento.slug)}">
-      <div class="midia" style="${estiloMidia(evento.imagemUrl)}">
+      <div class="midia" style="${estiloMidia(imagemDoEvento(evento))}">
         ${badge}
         ${mostrarMarca ? `<span class="marca-nome">${nomeMarca}</span>` : ''}
       </div>

@@ -250,5 +250,61 @@
     "origem": "manual",
     "criadoEm": "2026-09-16T17:03:53.688Z",
     "atualizadoEm": "2026-09-17T20:02:06.750Z"
+  },
+  {
+    "id": "loc-010",
+    "slug": "marina-bay-vix",
+    "nome": "Marina Bay Vix",
+    "tipo": "Clube",
+    "endereco": {
+      "cep": "29045360",
+      "logradouro": "Rua Vitalino dos Santos Valadares",
+      "numero": "175",
+      "complemento": null,
+      "bairro": "Santa Luíza",
+      "cidade": "Vitória",
+      "estado": "ES"
+    },
+    "latitude": null,
+    "longitude": null,
+    "mapsLink": "https://maps.app.goo.gl/AZTZetadiV9JhxiH7",
+    "fotoCapa": null,
+    "fotoPerfil": null,
+    "instagram": "https://www.instagram.com/marinabay.vix/",
+    "site": null,
+    "telefone": null,
+    "descricao": "🚤 Passeios de lancha em Vitória ES\n🌊 Jetski | Marina | Eventos\n🍹 Bar e Restaurante\n🎉 Locação de espaço\n📍 Marina Bay Vix",
+    "ativo": true,
+    "origem": "manual",
+    "criadoEm": "2026-10-08T18:43:21.162Z",
+    "atualizadoEm": "2026-10-08T18:43:21.162Z"
+  },
+  {
+    "id": "loc-011",
+    "slug": "vix-botequim",
+    "nome": "Vix Botequim",
+    "tipo": "Bar Fechado",
+    "endereco": {
+      "cep": "29051042",
+      "logradouro": "Avenida Vitória",
+      "numero": "1802",
+      "complemento": "de 1692 a 1950 - lado par",
+      "bairro": "Ilha de Santa Maria",
+      "cidade": "Vitória",
+      "estado": "ES"
+    },
+    "latitude": null,
+    "longitude": null,
+    "mapsLink": "https://maps.app.goo.gl/aRmKxNdGZwnvHGNz9",
+    "fotoCapa": null,
+    "fotoPerfil": null,
+    "instagram": "https://www.instagram.com/vixbotequim/",
+    "site": null,
+    "telefone": null,
+    "descricao": "O VIX Botequim é um bar e espaço de entretenimento localizado em Vitória, no Espírito Santo.\n\nPrincipais informações:\n\n• Endereço: Av. Vitória, 1802 – Ilha de Santa Maria, Vitória - ES (em frente ao IFES)\n• Estilo musical: Samba, pagode, forró e funk\n• Público: 18+",
+    "ativo": true,
+    "origem": "manual",
+    "criadoEm": "2026-10-08T19:09:05.820Z",
+    "atualizadoEm": "2026-10-08T19:11:16.008Z"
   }
 ]

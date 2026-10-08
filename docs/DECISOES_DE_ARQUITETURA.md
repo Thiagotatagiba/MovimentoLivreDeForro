@@ -701,3 +701,96 @@ card "Conheça a Marca" tem fundo claro — precisa do estilo genérico de volta
 Agora os dois existem: `.botao-seguir.ativo` (fundo claro, preenche pine) e
 `.perfil-header .botao-seguir.ativo` (fundo escuro, preenche clay),
 coexistindo por especificidade de CSS.
+
+## 2026-10-06 — "Plataforma" virou "Tipo de entrada" (vocabulário fechado)
+
+O campo `ingresso.plataforma` no admin era texto livre (placeholder "Na porta,
+Sympla...") e já estava sendo usado informalmente pra indicar tipo de acesso,
+não a plataforma de venda em si. Thiago pediu pra formalizar isso como um
+vocabulário fechado: Ingresso Online, Ingresso no Local, Cover, Gratuito.
+
+**Mudança:** campo renomeado de `plataforma` pra `tipoEntrada` (nome mais
+honesto pro que ele guarda agora), e o input de texto virou `<select>` com as
+4 opções — reforça o princípio de "Dados Estruturados" do `CLAUDE.md` (evitar
+texto livre quando um vocabulário fechado resolve melhor).
+
+Em `evento.html`, criei `textoIngresso()` pra evitar redundância: quando
+`tipoEntrada === 'Gratuito'`, `formatarPreco()` já retorna "Entrada gratuita"
+sozinho — não repete "· Gratuito" depois.
+
+**Dados existentes não migrados automaticamente** (os ~7-8 eventos já
+cadastrados têm `ingresso.plataforma`, não `ingresso.tipoEntrada` — ficam sem
+a tag de tipo até serem reabertos e salvos de novo pelo admin). Decisão
+deliberada: a cópia do `data/eventos.json` que uso pra trabalhar está
+desatualizada em relação ao projeto real (Thiago cadastra eventos direto no
+admin, sem me enviar o JSON atualizado) — reescrever esse arquivo aqui
+arriscaria apagar eventos reais que eu não tenho visibilidade. Degrada bem:
+sem `tipoEntrada`, a tela só mostra o preço, sem quebrar nada.
+
+## 2026-10-07 — Produção travando ("Carregando Marca...") por cache nunca invalidado
+
+Thiago reportou `marca.html` travado em "Carregando Marca..." pra sempre, em
+produção (GitHub Pages) — e um visual estranho de barra do topo/navegação
+parecendo duplicada na tela.
+
+**Causa raiz:** o fix de 2026-10-01 (desativar cache em `localhost`) só
+resolveu o ambiente de dev. Em produção, o `sw.js` continua cache-first — e
+arquivos como `js/pages/marca.js`, `js/services/marcaService.js`,
+`components/botaoInteracao.js`, `js/utils/cardEvento.js` **nunca estiveram em
+`ARQUIVOS_ESTATICOS`** (a lista de pré-cache): eles são cacheados de forma
+"preguiçosa", na primeira vez que alguém os pede, e ficam assim **pra
+sempre**, porque o nome do cache (`vai-ter-forro-v1`) nunca mudou desde que
+o `sw.js` foi criado. Sem mudar esse nome, o navegador nunca sabe que precisa
+descartar o cache velho. Como esses arquivos mudaram bastante nos últimos
+dias (interações, consolidação do card de evento), visitantes anteriores
+provavelmente estavam com uma mistura incompatível de arquivos novos e
+velhos — o tipo de inconsistência que trava uma página no meio do
+carregamento sem erro visível óbvio.
+
+**Correção:** `CACHE_NOME` bump de `v1` para `v2`. Com `skipWaiting()` +
+`clients.claim()` já em vigor desde antes, isso força o cache antigo a ser
+descartado por inteiro (`activate` já limpa qualquer cache com nome diferente
+do atual) na próxima visita de cada pessoa.
+
+**Pendência pra decidir depois, não resolvida agora:** esse problema volta a
+acontecer a cada novo deploy que mude um arquivo fora de `ARQUIVOS_ESTATICOS`,
+a menos que o nome do cache suba de novo manualmente. Duas saídas possíveis:
+(1) checklist — sempre bump o `CACHE_NOME` ao fazer deploy de mudança em
+JS/CSS; (2) mudar a estratégia de cache de arquivos `.js`/`.css` de
+cache-first pra network-first-com-fallback-pra-cache — mais tráfego de rede,
+mas nunca mais fica desatualizado sem um bump manual. Thiago não decidiu
+ainda qual caminho seguir.
+
+## 2026-10-08 — Imagens da Marca (logo + capa), nome repetido em evento.html, compartilhar
+
+**Nome da Marca repetido em evento.html:** aparecia duas vezes — sobreposto ao
+banner (`.marca-nome`) e como link acima do título. Removido o do banner; o
+link acima do título é o que fica (é funcional: leva à página da Marca).
+
+**Logo e Capa na Marca:** `marca.logo` já existia no schema (sem campo no admin,
+só editável à mão no JSON); agora ganhou campo no formulário, e `marca.capa` é
+novo. Mesmo padrão de `evento.imagemUrl`: texto livre, caminho local
+(`assets/marcas/...`) ou URL. Opcionais — Marca sem imagem continua igual.
+- `marca.html`: capa vira fundo do cabeçalho (gradiente escuro por cima pra
+  manter o texto legível), logo circular ao lado do título.
+- `evento.html`: mini-logo no link da Marca.
+- **Capa como imagem reserva do evento** (`imagemDoEvento()` em `format.js`):
+  evento sem arte própria usa a capa da Marca no banner, nos cards e nos
+  stories da Home, em vez do fundo liso de cor sólida. Só vale onde o evento
+  vem enriquecido com `.marca`. Fácil de reverter se não for desejado (é uma
+  função só).
+
+**Compartilhar (evento.html):** `components/compartilhar.js`, reutilizável.
+Web Share API no celular (menu nativo: WhatsApp etc.); onde não existe,
+copia o link e mostra aviso "Link copiado!". Botão de ícone no banner, ao
+lado do coração (`.midia-acoes` + `.botao-midia` substituíram o antigo
+`.botao-favoritar` absoluto).
+
+**Limitação conhecida do compartilhar:** o link compartilhado abre certo, mas
+a *prévia* (título/imagem que o WhatsApp mostra) será genérica — as páginas
+são montadas por JavaScript no navegador, e os robôs que geram prévias não
+executam JS. Resolver exige HTML por evento com meta tags Open Graph
+(gerado no deploy, ou servido por uma Edge Function do Supabase). Não feito.
+
+`CACHE_NOME` do `sw.js` foi para `v3` (mesma razão do bump de 2026-10-07:
+vários arquivos fora do pré-cache mudaram).

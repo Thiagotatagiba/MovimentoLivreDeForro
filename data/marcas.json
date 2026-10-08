@@ -101,5 +101,68 @@
     "site": null,
     "logo": null,
     "ativo": true
+  },
+  {
+    "id": "mrc-006",
+    "slug": "forro-na-marina",
+    "nome": "Forró na Marina",
+    "descricao": "Matinê de Forró todo domingo das 16h as 22h em Vitória no Marina Bay Vix",
+    "frequencia": "semanal",
+    "diasSemana": [
+      "domingo"
+    ],
+    "categorias": [
+      "Baile",
+      "Pé-de-serra"
+    ],
+    "cidadeBase": "Vitória",
+    "localPadraoId": "loc-010",
+    "instagram": "https://www.instagram.com/forronamarinavix/",
+    "whatsapp": null,
+    "site": null,
+    "logo": null,
+    "ativo": true
+  },
+  {
+    "id": "mrc-007",
+    "slug": "forro-do-praia",
+    "nome": "Forró do Praia",
+    "descricao": "Forró do Praia 🪗\nAgora todas Quintas Feiras de 19h a 1h",
+    "frequencia": "semanal",
+    "diasSemana": [
+      "quinta"
+    ],
+    "categorias": [
+      "Baile",
+      "Pé-de-serra"
+    ],
+    "cidadeBase": "Vitória",
+    "localPadraoId": "loc-007",
+    "instagram": "https://www.instagram.com/forrodopraia/",
+    "whatsapp": null,
+    "site": null,
+    "logo": null,
+    "ativo": true
+  },
+  {
+    "id": "mrc-008",
+    "slug": "forro-vix-botequim",
+    "nome": "Forró Vix Botequim",
+    "descricao": "Sabadão 17 de outubro a partir das 22h estreia 👇\nAvenida Vitória 1802, ilha de sta Maria em frente o IFES🌟",
+    "frequencia": null,
+    "diasSemana": [
+      "sábado"
+    ],
+    "categorias": [
+      "Baile",
+      "Pé-de-serra"
+    ],
+    "cidadeBase": "Vitória",
+    "localPadraoId": "loc-011",
+    "instagram": "https://www.instagram.com/forrovixbotequim/",
+    "whatsapp": "27996457828",
+    "site": null,
+    "logo": null,
+    "ativo": true
   }
 ]

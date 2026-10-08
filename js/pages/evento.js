@@ -1,7 +1,16 @@
 // evento.js
 import { obterEventoCompleto } from '../services/eventoService.js';
-import { formatarDataCompleta, formatarPreco, enderecoResumido, enderecoCompleto, estiloMidia } from '../utils/format.js';
+import { formatarDataCompleta, formatarPreco, enderecoResumido, enderecoCompleto, estiloMidia, imagemDoEvento, capitalizar } from '../utils/format.js';
 import { ligarBotaoInteracao } from '../../components/botaoInteracao.js';
+import { ligarBotaoCompartilhar } from '../../components/compartilhar.js';
+
+// "Entrada gratuita · Gratuito" seria redundante — nesse caso mostra só o preço.
+function textoIngresso(ingresso) {
+  const preco = formatarPreco(ingresso?.precoAPartirDe);
+  const tipo = ingresso?.tipoEntrada;
+  if (!tipo || tipo === 'Gratuito') return preco;
+  return `${preco} · ${tipo}`;
+}
 
 const raiz = document.getElementById('conteudo-evento');
 const params = new URLSearchParams(window.location.search);
@@ -25,6 +34,15 @@ async function iniciar() {
   const botaoFavoritar = document.getElementById('botao-favoritar');
   if (botaoFavoritar) ligarBotaoInteracao(botaoFavoritar, 'evento', evento.id);
 
+  const botaoCompartilhar = document.getElementById('botao-compartilhar');
+  if (botaoCompartilhar) {
+    ligarBotaoCompartilhar(botaoCompartilhar, {
+      titulo: evento.titulo,
+      texto: `${evento.titulo} — ${capitalizar(formatarDataCompleta(evento.data))} · ${evento.horario}`,
+      url: window.location.href,
+    });
+  }
+
   const botaoSeguir = document.getElementById('botao-seguir-rodape');
   if (botaoSeguir && evento.marca) {
     ligarBotaoInteracao(botaoSeguir, 'marca', evento.marca.id, { inativo: 'Seguir', ativo: 'Seguindo' });
@@ -37,15 +55,24 @@ function montarHtml(evento) {
   const lineup = [...(evento.lineup?.bandas ?? []), ...(evento.lineup?.djs ?? [])];
 
   return `
-    <div class="midia" style="height: 220px; border-radius: 0; ${estiloMidia(evento.imagemUrl)}">
-      <span class="marca-nome" style="font-size: var(--tam-titulo-lg);">${marca?.nome ?? 'Marca em breve'}</span>
-      <button type="button" class="botao-favoritar" id="botao-favoritar" aria-label="Favoritar evento" aria-pressed="false">
-        <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.7-10-9.3C0.3 8.4 2 5 5.5 5c2 0 3.5 1.2 4.5 2.8C11 6.2 12.5 5 14.5 5 18 5 19.7 8.4 22 11.7 19.5 16.3 12 21 12 21z"/></svg>
-      </button>
+    <div class="midia" style="height: 220px; border-radius: 0; ${estiloMidia(imagemDoEvento(evento))}">
+      <div class="midia-acoes">
+        <button type="button" class="botao-midia" id="botao-compartilhar" aria-label="Compartilhar evento">
+          <svg viewBox="0 0 24 24"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>
+        </button>
+        <button type="button" class="botao-midia botao-favoritar" id="botao-favoritar" aria-label="Favoritar evento" aria-pressed="false">
+          <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.7-10-9.3C0.3 8.4 2 5 5.5 5c2 0 3.5 1.2 4.5 2.8C11 6.2 12.5 5 14.5 5 18 5 19.7 8.4 22 11.7 19.5 16.3 12 21 12 21z"/></svg>
+        </button>
+      </div>
     </div>
 
     <div class="container" style="margin-top: var(--esp-lg);">
-      ${marca ? `<a class="rotulo-eyebrow" href="marca.html?slug=${marca.slug}">${marca.nome} →</a>` : ''}
+      ${marca ? `
+        <a class="rotulo-eyebrow marca-link" href="marca.html?slug=${marca.slug}">
+          ${marca.logo ? `<img class="marca-logo-mini" src="${marca.logo}" alt="">` : ''}
+          <span>${marca.nome} →</span>
+        </a>
+      ` : ''}
       <h1 style="margin-top: 4px;">${evento.titulo}</h1>
 
       <div class="resposta-hoje" style="margin-top: var(--esp-md);">
@@ -56,7 +83,7 @@ function montarHtml(evento) {
       <section class="secao">
         <h2 style="font-size: var(--tam-titulo-sm);">Ingresso</h2>
         <p class="texto-suave" style="margin-top: var(--esp-sm);">
-          ${formatarPreco(evento.ingresso?.precoAPartirDe)} · ${evento.ingresso?.plataforma ?? 'em breve'}
+          ${textoIngresso(evento.ingresso)}
         </p>
         <a class="botao botao-primario" style="margin-top: var(--esp-sm);" href="${evento.ingresso?.link && evento.ingresso.link !== 'em breve' ? evento.ingresso.link : '#'}">
           Garantir ingresso

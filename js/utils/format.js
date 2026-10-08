@@ -121,3 +121,19 @@ export function estiloMidia(imagemUrl) {
   if (semImagem) return '';
   return `background-image: linear-gradient(180deg, rgba(20,47,38,0) 40%, rgba(20,47,38,0.7) 100%), url('${imagemUrl}'); background-size: cover; background-position: center;`;
 }
+
+// Imagem do evento: a própria, se existir; senão a capa da Marca (evita o
+// banner/card liso de cor sólida quando o evento ainda não tem arte).
+// Só funciona onde o evento já vem enriquecido com .marca.
+export function imagemDoEvento(evento) {
+  const propria = evento.imagemUrl;
+  if (propria && propria !== 'em breve') return propria;
+  return evento.marca?.capa ?? null;
+}
+
+// Fundo do cabeçalho da página da Marca quando ela tem capa. Gradiente mais
+// escuro que o do card pra manter o texto claro legível por cima da foto.
+export function estiloCapa(capaUrl) {
+  if (!capaUrl) return '';
+  return `background-image: linear-gradient(180deg, rgba(20,47,38,0.55) 0%, rgba(20,47,38,0.92) 100%), url('${capaUrl}'); background-size: cover; background-position: center;`;
+}

@@ -1,75 +1,62 @@
 // eventos.js — aba de Eventos
-import { estado } from "./estado.js";
-import { salvarJSON } from "./fileAccess.js";
-import { paraSlug, proximoId, textoParaLista } from "./util.js";
-import { validarLocalDoEvento } from "../../js/services/eventValidator.js";
+import { estado } from './estado.js';
+import { salvarJSON } from './fileAccess.js';
+import { paraSlug, proximoId, textoParaLista } from './util.js';
+import { validarLocalDoEvento } from '../../js/services/eventValidator.js';
 
-const listaEl = document.getElementById("lista-eventos");
-const modalEl = document.getElementById("modal-evento");
-const formEl = document.getElementById("form-evento");
-const tituloModalEl = document.getElementById("modal-evento-titulo");
-const erroEl = document.getElementById("erro-evento");
+const listaEl = document.getElementById('lista-eventos');
+const modalEl = document.getElementById('modal-evento');
+const formEl = document.getElementById('form-evento');
+const tituloModalEl = document.getElementById('modal-evento-titulo');
+const erroEl = document.getElementById('erro-evento');
 
-const marcaSelectEl = document.getElementById("ev-marca");
-const grupoLocalFixoEl = document.getElementById("grupo-local-fixo");
-const localFixoEl = document.getElementById("ev-local-fixo");
-const grupoLocalLivreEl = document.getElementById("grupo-local-livre");
-const localSelectEl = document.getElementById("ev-local-select");
-const slugEl = document.getElementById("ev-slug");
-const dataEl = document.getElementById("ev-data");
+const marcaSelectEl = document.getElementById('ev-marca');
+const grupoLocalFixoEl = document.getElementById('grupo-local-fixo');
+const localFixoEl = document.getElementById('ev-local-fixo');
+const grupoLocalLivreEl = document.getElementById('grupo-local-livre');
+const localSelectEl = document.getElementById('ev-local-select');
+const slugEl = document.getElementById('ev-slug');
+const dataEl = document.getElementById('ev-data');
 
 let editandoId = null;
 let slugEditadoManualmente = false;
 let condicoesForm = []; // condições especiais do formulário aberto no momento
 
 export function renderizarEventos() {
-  const ordenados = [...estado.eventos].sort((a, b) =>
-    b.data.localeCompare(a.data),
-  );
+  const ordenados = [...estado.eventos].sort((a, b) => b.data.localeCompare(a.data));
 
-  listaEl.innerHTML =
-    ordenados
-      .map((evt) => {
-        const marca = estado.marcas.find((m) => m.id === evt.marcaId);
-        const local = estado.locais.find((l) => l.id === evt.localId);
-        return `
-      <div class="admin-item${evt.ativo ? "" : " inativo"}">
+  listaEl.innerHTML = ordenados.map((evt) => {
+    const marca = estado.marcas.find((m) => m.id === evt.marcaId);
+    const local = estado.locais.find((l) => l.id === evt.localId);
+    return `
+      <div class="admin-item${evt.ativo ? '' : ' inativo'}">
         <div class="admin-item-info">
           <strong>${evt.titulo}</strong>
-          <span>${evt.data} · ${evt.horario} · ${marca?.nome ?? "Marca?"} · ${local?.nome ?? "Local?"}</span>
+          <span>${evt.data} · ${evt.horario} · ${marca?.nome ?? 'Marca?'} · ${local?.nome ?? 'Local?'}</span>
         </div>
         <div class="admin-item-acoes">
-          <span class="admin-badge${evt.ativo ? "" : " inativo"}">${evt.ativo ? "Ativo" : "Inativo"}</span>
+          <span class="admin-badge${evt.ativo ? '' : ' inativo'}">${evt.ativo ? 'Ativo' : 'Inativo'}</span>
           <button type="button" class="admin-botao" data-duplicar="${evt.id}">Duplicar</button>
           <button type="button" class="admin-botao" data-editar="${evt.id}">Editar</button>
         </div>
       </div>
     `;
-      })
-      .join("") ||
-    '<p class="admin-campo-ajuda">Nenhum evento cadastrado ainda.</p>';
+  }).join('') || '<p class="admin-campo-ajuda">Nenhum evento cadastrado ainda.</p>';
 
-  listaEl.querySelectorAll("[data-editar]").forEach((botao) => {
-    botao.addEventListener("click", () =>
-      abrirFormulario(botao.dataset.editar),
-    );
+  listaEl.querySelectorAll('[data-editar]').forEach((botao) => {
+    botao.addEventListener('click', () => abrirFormulario(botao.dataset.editar));
   });
-  listaEl.querySelectorAll("[data-duplicar]").forEach((botao) => {
-    botao.addEventListener("click", () =>
-      abrirFormulario(null, { duplicarDeId: botao.dataset.duplicar }),
-    );
+  listaEl.querySelectorAll('[data-duplicar]').forEach((botao) => {
+    botao.addEventListener('click', () => abrirFormulario(null, { duplicarDeId: botao.dataset.duplicar }));
   });
 }
 
 function popularSelectDeMarcas(marcaIdAtual) {
   const opcoes = [...estado.marcas]
     .filter((m) => m.ativo)
-    .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"))
-    .map(
-      (m) =>
-        `<option value="${m.id}" ${m.id === marcaIdAtual ? "selected" : ""}>${m.nome}</option>`,
-    )
-    .join("");
+    .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
+    .map((m) => `<option value="${m.id}" ${m.id === marcaIdAtual ? 'selected' : ''}>${m.nome}</option>`)
+    .join('');
 
   marcaSelectEl.innerHTML = opcoes;
 }
@@ -77,12 +64,9 @@ function popularSelectDeMarcas(marcaIdAtual) {
 function popularSelectDeLocaisLivre(localIdAtual) {
   const opcoes = [...estado.locais]
     .filter((l) => l.ativo)
-    .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"))
-    .map(
-      (l) =>
-        `<option value="${l.id}" ${l.id === localIdAtual ? "selected" : ""}>${l.nome}</option>`,
-    )
-    .join("");
+    .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'))
+    .map((l) => `<option value="${l.id}" ${l.id === localIdAtual ? 'selected' : ''}>${l.nome}</option>`)
+    .join('');
 
   localSelectEl.innerHTML = opcoes;
 }
@@ -96,9 +80,7 @@ function atualizarCampoDeLocal(localIdParaManter) {
 
   if (marca?.localPadraoId) {
     const local = estado.locais.find((l) => l.id === marca.localPadraoId);
-    localFixoEl.value = local
-      ? local.nome
-      : "(Local não encontrado — confira o localPadraoId da Marca)";
+    localFixoEl.value = local ? local.nome : '(Local não encontrado — confira o localPadraoId da Marca)';
     grupoLocalFixoEl.hidden = false;
     grupoLocalLivreEl.hidden = true;
   } else {
@@ -121,64 +103,51 @@ function sugerirSlug() {
 }
 
 function escaparAtributo(texto) {
-  return String(texto ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/"/g, "&quot;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+  return String(texto ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
 
-const condicoesListaEl = document.getElementById("ev-condicoes-lista");
+const condicoesListaEl = document.getElementById('ev-condicoes-lista');
 
 function renderizarCondicoes() {
   if (condicoesForm.length === 0) {
-    condicoesListaEl.innerHTML =
-      '<p class="admin-campo-ajuda">Nenhuma condição especial adicionada.</p>';
+    condicoesListaEl.innerHTML = '<p class="admin-campo-ajuda">Nenhuma condição especial adicionada.</p>';
     return;
   }
 
-  condicoesListaEl.innerHTML = condicoesForm
-    .map(
-      (cond, indice) => `
+  condicoesListaEl.innerHTML = condicoesForm.map((cond, indice) => `
     <div class="admin-condicao-linha">
       <select data-indice="${indice}" class="admin-condicao-tipo">
-        <option value="aniversariante" ${cond.tipo === "aniversariante" ? "selected" : ""}>Aniversariante</option>
-        <option value="outros" ${cond.tipo === "outros" ? "selected" : ""}>Outros</option>
+        <option value="aniversariante" ${cond.tipo === 'aniversariante' ? 'selected' : ''}>Aniversariante</option>
+        <option value="outros" ${cond.tipo === 'outros' ? 'selected' : ''}>Outros</option>
       </select>
       <input type="text" data-indice="${indice}" class="admin-condicao-descricao"
              placeholder="Detalhe da condição..." value="${escaparAtributo(cond.descricao)}">
       <button type="button" data-indice="${indice}" class="admin-condicao-remover" aria-label="Remover condição">×</button>
     </div>
-  `,
-    )
-    .join("");
+  `).join('');
 
-  condicoesListaEl
-    .querySelectorAll(".admin-condicao-tipo")
-    .forEach((select) => {
-      select.addEventListener("change", (evento) => {
-        condicoesForm[Number(evento.target.dataset.indice)].tipo =
-          evento.target.value;
-      });
+  condicoesListaEl.querySelectorAll('.admin-condicao-tipo').forEach((select) => {
+    select.addEventListener('change', (evento) => {
+      condicoesForm[Number(evento.target.dataset.indice)].tipo = evento.target.value;
     });
+  });
 
-  condicoesListaEl
-    .querySelectorAll(".admin-condicao-descricao")
-    .forEach((input) => {
-      input.addEventListener("input", (evento) => {
-        condicoesForm[Number(evento.target.dataset.indice)].descricao =
-          evento.target.value;
-      });
+  condicoesListaEl.querySelectorAll('.admin-condicao-descricao').forEach((input) => {
+    input.addEventListener('input', (evento) => {
+      condicoesForm[Number(evento.target.dataset.indice)].descricao = evento.target.value;
     });
+  });
 
-  condicoesListaEl
-    .querySelectorAll(".admin-condicao-remover")
-    .forEach((botao) => {
-      botao.addEventListener("click", (evento) => {
-        condicoesForm.splice(Number(evento.target.dataset.indice), 1);
-        renderizarCondicoes();
-      });
+  condicoesListaEl.querySelectorAll('.admin-condicao-remover').forEach((botao) => {
+    botao.addEventListener('click', (evento) => {
+      condicoesForm.splice(Number(evento.target.dataset.indice), 1);
+      renderizarCondicoes();
     });
+  });
 }
 
 export function abrirFormulario(id = null, { duplicarDeId = null } = {}) {
@@ -188,43 +157,32 @@ export function abrirFormulario(id = null, { duplicarDeId = null } = {}) {
   formEl.reset();
 
   const evt = id ? estado.eventos.find((e) => e.id === id) : null;
-  const origem = duplicarDeId
-    ? estado.eventos.find((e) => e.id === duplicarDeId)
-    : null;
+  const origem = duplicarDeId ? estado.eventos.find((e) => e.id === duplicarDeId) : null;
   const dadosBase = evt ?? origem; // de onde vêm os valores pra preencher o formulário
 
   tituloModalEl.textContent = evt
     ? `Editar: ${evt.titulo}`
     : origem
       ? `Duplicar: ${origem.titulo}`
-      : "Novo evento";
+      : 'Novo evento';
 
-  popularSelectDeMarcas(dadosBase?.marcaId ?? estado.marcas[0]?.id ?? "");
+  popularSelectDeMarcas(dadosBase?.marcaId ?? estado.marcas[0]?.id ?? '');
 
-  document.getElementById("ev-titulo").value = dadosBase?.titulo ?? "";
-  dataEl.value = evt?.data ?? ""; // duplicar sempre nasce com a data em branco de propósito
-  document.getElementById("ev-horario").value = dadosBase?.horario ?? "";
-  document.getElementById("ev-descricao").value = dadosBase?.descricao ?? "";
-  document.getElementById("ev-preco").value =
-    dadosBase?.ingresso?.precoAPartirDe ?? 0;
-  document.getElementById("ev-plataforma").value =
-    dadosBase?.ingresso?.plataforma ?? "";
-  document.getElementById("ev-link").value = dadosBase?.ingresso?.link ?? "";
-  document.getElementById("ev-bandas").value = (
-    dadosBase?.lineup?.bandas ?? []
-  ).join(", ");
-  document.getElementById("ev-djs").value = (dadosBase?.lineup?.djs ?? []).join(
-    ", ",
-  );
-  document.getElementById("ev-imagem").value =
-    dadosBase?.imagemUrl ?? "em breve";
-  document.getElementById("ev-ativo").checked = evt ? evt.ativo : true; // duplicado sempre nasce ativo
-  slugEl.value = evt?.slug ?? "";
+  document.getElementById('ev-titulo').value = dadosBase?.titulo ?? '';
+  dataEl.value = evt?.data ?? ''; // duplicar sempre nasce com a data em branco de propósito
+  document.getElementById('ev-horario').value = dadosBase?.horario ?? '';
+  document.getElementById('ev-descricao').value = dadosBase?.descricao ?? '';
+  document.getElementById('ev-preco').value = dadosBase?.ingresso?.precoAPartirDe ?? 0;
+  document.getElementById('ev-tipo-entrada').value = dadosBase?.ingresso?.tipoEntrada ?? 'Ingresso Online';
+  document.getElementById('ev-link').value = dadosBase?.ingresso?.link ?? '';
+  document.getElementById('ev-bandas').value = (dadosBase?.lineup?.bandas ?? []).join(', ');
+  document.getElementById('ev-djs').value = (dadosBase?.lineup?.djs ?? []).join(', ');
+  document.getElementById('ev-imagem').value = dadosBase?.imagemUrl ?? 'em breve';
+  document.getElementById('ev-ativo').checked = evt ? evt.ativo : true; // duplicado sempre nasce ativo
+  slugEl.value = evt?.slug ?? '';
   slugEditadoManualmente = !!evt; // editando um evento existente, não mexe no slug sozinho
 
-  condicoesForm = JSON.parse(
-    JSON.stringify(dadosBase?.condicoesEspeciais ?? []),
-  );
+  condicoesForm = JSON.parse(JSON.stringify(dadosBase?.condicoesEspeciais ?? []));
   renderizarCondicoes();
 
   atualizarCampoDeLocal(dadosBase?.localId ?? null);
@@ -241,45 +199,40 @@ async function salvar(eventoSubmit) {
   eventoSubmit.preventDefault();
   erroEl.hidden = true;
 
-  const titulo = document.getElementById("ev-titulo").value.trim();
+  const titulo = document.getElementById('ev-titulo').value.trim();
   const marcaId = marcaSelectEl.value;
   const localId = localIdSelecionadoAtualmente();
   const data = dataEl.value;
 
   if (!titulo || !marcaId || !localId || !data) {
-    erroEl.textContent = "Preencha ao menos Título, Marca, Local e Data.";
+    erroEl.textContent = 'Preencha ao menos Título, Marca, Local e Data.';
     erroEl.hidden = false;
     return;
   }
 
-  const existente = editandoId
-    ? estado.eventos.find((e) => e.id === editandoId)
-    : null;
+  const existente = editandoId ? estado.eventos.find((e) => e.id === editandoId) : null;
 
   const novoEvento = {
-    id: existente?.id ?? proximoId(estado.eventos, "evt"),
+    id: existente?.id ?? proximoId(estado.eventos, 'evt'),
     slug: slugEl.value.trim() || paraSlug(`${titulo}-${data}`),
     marcaId,
     localId,
     titulo,
     data,
-    horario: document.getElementById("ev-horario").value,
-    descricao: document.getElementById("ev-descricao").value.trim(),
+    horario: document.getElementById('ev-horario').value,
+    descricao: document.getElementById('ev-descricao').value.trim(),
     ingresso: {
-      precoAPartirDe: Number(document.getElementById("ev-preco").value) || 0,
-      link: document.getElementById("ev-link").value.trim() || "em breve",
-      plataforma:
-        document.getElementById("ev-plataforma").value.trim() || "Na porta",
+      precoAPartirDe: Number(document.getElementById('ev-preco').value) || 0,
+      link: document.getElementById('ev-link').value.trim() || 'em breve',
+      tipoEntrada: document.getElementById('ev-tipo-entrada').value,
     },
     lineup: {
-      bandas: textoParaLista(document.getElementById("ev-bandas").value),
-      djs: textoParaLista(document.getElementById("ev-djs").value),
+      bandas: textoParaLista(document.getElementById('ev-bandas').value),
+      djs: textoParaLista(document.getElementById('ev-djs').value),
     },
-    imagemUrl: document.getElementById("ev-imagem").value.trim() || "em breve",
-    condicoesEspeciais: condicoesForm.filter(
-      (c) => c.descricao && c.descricao.trim() !== "",
-    ),
-    ativo: document.getElementById("ev-ativo").checked,
+    imagemUrl: document.getElementById('ev-imagem').value.trim() || 'em breve',
+    condicoesEspeciais: condicoesForm.filter((c) => c.descricao && c.descricao.trim() !== ''),
+    ativo: document.getElementById('ev-ativo').checked,
   };
 
   // Camada extra de segurança: mesmo a UI já travando o Local certo, roda a
@@ -300,7 +253,7 @@ async function salvar(eventoSubmit) {
       estado.eventos.push(novoEvento);
     }
 
-    await salvarJSON("eventos.json", estado.eventos);
+    await salvarJSON('eventos.json', estado.eventos);
     fecharFormulario();
     renderizarEventos();
   } catch (erro) {
@@ -311,27 +264,19 @@ async function salvar(eventoSubmit) {
 }
 
 export function configurarAbaEventos() {
-  document
-    .getElementById("botao-novo-evento")
-    .addEventListener("click", () => abrirFormulario(null));
-  document
-    .getElementById("botao-cancelar-evento")
-    .addEventListener("click", fecharFormulario);
-  formEl.addEventListener("submit", salvar);
+  document.getElementById('botao-novo-evento').addEventListener('click', () => abrirFormulario(null));
+  document.getElementById('botao-cancelar-evento').addEventListener('click', fecharFormulario);
+  formEl.addEventListener('submit', salvar);
 
-  marcaSelectEl.addEventListener("change", () => {
+  marcaSelectEl.addEventListener('change', () => {
     atualizarCampoDeLocal(null);
     sugerirSlug();
   });
-  dataEl.addEventListener("change", sugerirSlug);
-  slugEl.addEventListener("input", () => {
-    slugEditadoManualmente = true;
-  });
+  dataEl.addEventListener('change', sugerirSlug);
+  slugEl.addEventListener('input', () => { slugEditadoManualmente = true; });
 
-  document
-    .getElementById("botao-add-condicao")
-    .addEventListener("click", () => {
-      condicoesForm.push({ tipo: "aniversariante", descricao: "" });
-      renderizarCondicoes();
-    });
+  document.getElementById('botao-add-condicao').addEventListener('click', () => {
+    condicoesForm.push({ tipo: 'aniversariante', descricao: '' });
+    renderizarCondicoes();
+  });
 }
