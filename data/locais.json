@@ -306,5 +306,33 @@
     "origem": "manual",
     "criadoEm": "2026-10-08T19:09:05.820Z",
     "atualizadoEm": "2026-10-08T19:11:16.008Z"
+  },
+  {
+    "id": "loc-012",
+    "slug": "taiko-beach",
+    "nome": "TAIKÔ BEACH",
+    "tipo": "Bar Fechado",
+    "endereco": {
+      "cep": "29055095",
+      "logradouro": "Avenida Saturnino de Brito",
+      "numero": "820",
+      "complemento": null,
+      "bairro": "Santa Helena",
+      "cidade": "Vitória",
+      "estado": "ES"
+    },
+    "latitude": null,
+    "longitude": null,
+    "mapsLink": "https://share.google/1PejSLtFqknnWhS79",
+    "fotoCapa": null,
+    "fotoPerfil": null,
+    "instagram": "https://www.instagram.com/taikobeachclub/",
+    "site": null,
+    "telefone": "+55 27 99501-9111",
+    "descricao": "Seu novo BEACH CLUB no Triângulo das Bermudas (em frente o Caza Brava)",
+    "ativo": true,
+    "origem": "manual",
+    "criadoEm": "2026-10-13T14:54:32.506Z",
+    "atualizadoEm": "2026-10-13T14:54:32.506Z"
   }
 ]

@@ -142,28 +142,29 @@
   },
   {
     "id": "evt-007",
-    "slug": "forro-deck-16-2026-10-03",
+    "slug": "forro-deck-16-2026-11-07",
     "marcaId": "mrc-001",
     "localId": "loc-001",
-    "titulo": "Baile do Deck 16 - Grandes Lendas - Edição de Outubro",
-    "data": "2026-10-03",
+    "titulo": "Forró Deck 16 - ANIVERSÁRIO TRIO ALVORADA - Edição de Novembro",
+    "data": "2026-11-07",
     "horario": "22:00",
-    "descricao": "Edição mensal do Forró Deck 16 no Espaço Praia, com música ao vivo, DJs e programação que atravessa a madrugada.",
+    "descricao": "Edição mensal do Forró Deck 16 no Espaço Praia, com música ao vivo, DJs e programação que atravessa a madrugada.\n\nANIVERSÁRIO TRIO ALVORADA\n\n22 ANOS DE HISTÓRIA, E A CERTEZA DE UMA NOITE ESPECIAL NA CASA DE FORRÓ MAIS AMADA DO BRASIL\n\n📅 Data: 07 de novembro a partir das 22h.\n\n📍 Local: FORRÓ DECK 16, Serra, ES",
     "ingresso": {
       "precoAPartirDe": 30,
-      "link": "https://onticket.com.br/eventos/8726-forro-deck-16-serra-2026",
-      "plataforma": "Sympla"
+      "link": "https://onticket.com.br/eventos/8902-forro-deck-16-serra-2026",
+      "tipoEntrada": "Ingresso Online"
     },
     "lineup": {
       "bandas": [
-        "Mestre Genaro",
-        "Nikolas Krassik"
+        "Trio Alvorada",
+        "Nando do Acordeon",
+        "Jorge do Rojão"
       ],
       "djs": [
         "DJ André Barros"
       ]
     },
-    "imagemUrl": "https://cdn.onticket.com.br/evento/8726/thumb",
+    "imagemUrl": "https://cdn.onticket.com.br/evento/8902/thumb",
     "condicoesEspeciais": [
       {
         "tipo": "aniversariante",
@@ -306,6 +307,96 @@
     },
     "imagemUrl": "https://d4wlxs7f09dde.cloudfront.net/cdi-img-v2-8e1fddf833b2548d8cb70a2bff0a2a7e-ow640x640-w320.webp",
     "condicoesEspeciais": [],
+    "ativo": true
+  },
+  {
+    "id": "evt-013",
+    "slug": "forro-do-canto-2026-10-16",
+    "marcaId": "mrc-009",
+    "localId": "loc-012",
+    "titulo": "Forró do Canto - Estreia",
+    "data": "2026-10-16",
+    "horario": "22:00",
+    "descricao": "O FORRÓ PÉ DE SERRA ESTÁ DE VOLTA À PRAIA DO CANTO!\n\nSEXTA • 16/10\nTaikô Beach\nESTREIA DO FORRÓ DO CANTO!\n\nUma noite pra dançar, cantar e viver o melhor do nosso forró!\n\nAulão de dança com Brenda Barcellos\n\nDJ Relima\n\nBanda 1/4 de Coco convida:\nBárbara Greco\nThomas Bergamin\nDeco Bandeira\nVitor Ramos\n\n1º LOTE PROMOCIONAL — APENAS R$ 20!\n\nChama a turma, prepara o arrasta-pé e vem com a gente!\n\nDia 16/10, o encontro é no FORRÓ DO CANTO!",
+    "ingresso": {
+      "precoAPartirDe": 20,
+      "link": "https://www.sympla.com.br/evento/forro-do-canto/3610520",
+      "tipoEntrada": "Ingresso Online"
+    },
+    "lineup": {
+      "bandas": [
+        "Banda 1/4 de Coco",
+        "Bárbara Greco",
+        "Thomas Bergamin",
+        "Deco Bandeira",
+        "Vitor Ramos"
+      ],
+      "djs": [
+        "DJ Relima"
+      ]
+    },
+    "imagemUrl": "em breve",
+    "condicoesEspeciais": [],
+    "ativo": true
+  },
+  {
+    "id": "evt-014",
+    "slug": "forro-do-bombar-carioca-2026-10-16",
+    "marcaId": "mrc-003",
+    "localId": "loc-006",
+    "titulo": "Forró do Bombar - Especial Os 3 do Nordeste e Trio Nordestino",
+    "data": "2026-10-16",
+    "horario": "18:00",
+    "descricao": "Forró Bombar Carioca\n\n⚠️PROMOÇÃO SORTEIO QUEM MARCAR MAIS OS AMIGOS NOS COMENTÁRIOS GANHA 2 VIPS 😃\n\nESPECIAL\nOs 3 do Nordeste X Trio Nordestino\n\n16 de Outubro - Sexta - 18h\n\nFelipe Peó Trio 🪗\n\n2° Set todo dedicado aos Mestres\n\n(Acho que vão ser os dois sets hehehe)\n\nR$15h até 20H\nApós R$20\n\nRodada Dupla Caipirinha até 21H30\n\nBombar Carioca 🍻\nRua João Pessoa de Mattos,116, Centro V.V.",
+    "ingresso": {
+      "precoAPartirDe": 20,
+      "link": "em breve",
+      "tipoEntrada": "Ingresso no Local"
+    },
+    "lineup": {
+      "bandas": [
+        "Felipe Peó"
+      ],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "condicoesEspeciais": [
+      {
+        "tipo": "outros",
+        "descricao": "R$15h até 20H"
+      },
+      {
+        "tipo": "outros",
+        "descricao": "Rodada Dupla Caipirinha até 21H30"
+      }
+    ],
+    "ativo": true
+  },
+  {
+    "id": "evt-015",
+    "slug": "forrozada-boa-2026-11-13",
+    "marcaId": "mrc-002",
+    "localId": "loc-003",
+    "titulo": "Forrozada Boa de Novembro",
+    "data": "2026-11-13",
+    "horario": "22:00",
+    "descricao": "Forrozada Boa de Novembro",
+    "ingresso": {
+      "precoAPartirDe": 30,
+      "link": "em breve",
+      "tipoEntrada": "Ingresso Online"
+    },
+    "lineup": {
+      "bandas": [],
+      "djs": []
+    },
+    "imagemUrl": "em breve",
+    "condicoesEspeciais": [
+      {
+        "tipo": "aniversariante",
+        "descricao": "Aniversariante do Mês? 👉 Faça o Cadastro de Aniversariante até 03/10 pelo WhatsApp e ganhe o ingresso 🥳 📲 (27) 99962-5136"
+      }
+    ],
     "ativo": true
   }
 ]

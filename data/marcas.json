@@ -164,5 +164,27 @@
     "site": null,
     "logo": null,
     "ativo": true
+  },
+  {
+    "id": "mrc-009",
+    "slug": "forro-do-canto",
+    "nome": "Forró do Canto",
+    "descricao": "O FORRÓ PÉ DE SERRA ESTÁ DE VOLTA À PRAIA DO CANTO!",
+    "frequencia": null,
+    "diasSemana": [
+      "sexta"
+    ],
+    "categorias": [
+      "Baile",
+      "Pé-de-serra"
+    ],
+    "cidadeBase": "Vitória",
+    "localPadraoId": "loc-012",
+    "instagram": "https://www.instagram.com/forrodocantovix/",
+    "whatsapp": null,
+    "site": null,
+    "logo": null,
+    "capa": null,
+    "ativo": true
   }
 ]
