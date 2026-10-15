@@ -60,7 +60,8 @@
     "instagram": "https://www.instagram.com/bombarcarioca",
     "whatsapp": null,
     "site": null,
-    "logo": null,
+    "logo": "assets/marcas/forro-do-bombar-carioca-logo.jpg?v=1792091048976",
+    "capa": "assets/marcas/forro-do-bombar-carioca-capa.png?v=1792091051119",
     "ativo": true
   },
   {
@@ -184,8 +185,8 @@
     "instagram": "https://www.instagram.com/forrodocantovix/",
     "whatsapp": null,
     "site": null,
-    "logo": null,
-    "capa": null,
+    "logo": "assets/marcas/forro-do-canto-logo.png?v=1792084664516",
+    "capa": "assets/marcas/forro-do-canto-capa.png?v=1792084666718",
     "ativo": true
   }
 ]
