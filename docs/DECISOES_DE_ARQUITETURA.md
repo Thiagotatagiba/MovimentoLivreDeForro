@@ -794,3 +794,51 @@ executam JS. Resolver exige HTML por evento com meta tags Open Graph
 
 `CACHE_NOME` do `sw.js` foi para `v3` (mesma razão do bump de 2026-10-07:
 vários arquivos fora do pré-cache mudaram).
+
+## 2026-10-09 — Upload de logo/capa da Marca no admin (em vez de digitar caminho)
+
+Thiago pediu um botão de enviar imagem no lugar dos campos de texto de logo e
+capa: o arquivo é copiado pra pasta da marca com o slug no nome, e enviar outra
+imagem substitui a anterior.
+
+**Convenção de nomes:** `assets/marcas/{slug}-logo.{ext}` e
+`assets/marcas/{slug}-capa.{ext}` — a mesma que já existia
+(`forro-deck-16-logo.jpg`), então nada precisou migrar. Formatos aceitos: JPG,
+PNG, WebP, GIF, SVG e AVIF (HEIC de iPhone é recusado com aviso claro).
+
+**Gravação em duas fases, só ao clicar em "Salvar marca":** escolher a imagem
+apenas mostra uma prévia (fica em memória); cancelar o formulário nunca altera
+arquivos. Ao salvar: (1) grava a imagem nova, (2) salva o `marcas.json`,
+(3) só então apaga as versões antigas. Assim, se algo falhar no meio, nunca
+sobra um JSON apontando pra arquivo que já foi apagado.
+
+**"Substituir" de verdade:** trocar `logo.jpg` por `logo.png` gravaria um
+nome diferente e deixaria o `.jpg` órfão — a limpeza do passo (3) apaga
+qualquer `{slug}-logo.*` que não seja o novo. Não confunde com a logo de outra
+marca nem com arquivos parecidos (ex: `{slug}-logo-antiga.png`).
+
+**Cache:** o caminho salvo no JSON leva `?v=<timestamp>` (mesma técnica da foto
+de perfil). O site em produção guarda imagens em cache; sem isso, quem já
+visitou continuaria vendo a imagem antiga, pois o nome do arquivo não muda.
+
+**Maiúsculas/minúsculas (Windows × GitHub Pages):** se já existir `x-logo.JPG`
+e for enviado um `.jpg`, o Windows manteria o nome antigo em maiúsculas e o
+GitHub Pages (que diferencia) não acharia o arquivo. Antes de gravar, o código
+remove a variação que difere só na caixa.
+
+**Arquitetura:** `fileAccess.js` continua sendo a única porta pro disco (ganhou
+`salvarArquivo`, `listarArquivos`, `removerArquivo`); regras de nome e
+substituição em `imagensMarca.js`; widget do campo em `campoImagem.js`;
+`marcas.js` só orquestra. Aviso (não bloqueio) quando o arquivo passa de 2 MB:
+imagens grandes demais deixam o site lento no celular.
+
+**Validação:** a API de pastas do navegador não roda fora de um navegador real,
+então a lógica foi testada contra uma simulação em memória dessa API e a tela
+contra o `admin/index.html` real num navegador simulado (jsdom): envio,
+substituição com troca de extensão, cancelar, remover, edição sem tocar nas
+imagens, outras marcas intactas, caso Windows de maiúsculas/minúsculas, formato
+inválido. Falta o teste final no Chrome de verdade.
+
+**Possível próximo passo:** o mesmo botão para `imagemUrl` do Evento
+(`assets/eventos/{slug}.{ext}`) — o `campoImagem.js` foi escrito de forma a
+poder ser reaproveitado.

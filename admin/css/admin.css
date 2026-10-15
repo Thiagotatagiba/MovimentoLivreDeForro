@@ -379,3 +379,33 @@ body {
   font-size: var(--tam-caption);
   margin-bottom: var(--esp-md);
 }
+
+/* Campo de upload de imagem (logo/capa da Marca) */
+.admin-upload-linha {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-upload-previa {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--borda);
+  background: var(--cor-pine-claro);
+  flex-shrink: 0;
+}
+
+.admin-upload-previa-logo { border-radius: 50%; }
+.admin-upload-previa-capa { width: 128px; }
+
+.admin-upload-acoes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* sem isso, o display dos botões/imagem sobrescreve o atributo "hidden" */
+.admin-upload [hidden] { display: none !important; }
+

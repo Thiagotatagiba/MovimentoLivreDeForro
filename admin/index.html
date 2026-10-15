@@ -252,13 +252,29 @@
       </div>
 
       <div class="admin-campo-linha">
-        <div class="admin-campo">
-          <label for="mr-logo">Logo (imagem de perfil)</label>
-          <input type="text" id="mr-logo" placeholder="assets/marcas/nome-logo.jpg ou URL">
+        <div class="admin-campo admin-upload">
+          <label for="mr-logo-escolher">Logo (imagem de perfil)</label>
+          <div class="admin-upload-linha">
+            <img class="admin-upload-previa admin-upload-previa-logo" id="mr-logo-previa" alt="" hidden>
+            <div class="admin-upload-acoes">
+              <button type="button" class="admin-botao" id="mr-logo-escolher">Enviar imagem</button>
+              <button type="button" class="admin-botao" id="mr-logo-remover" hidden>Remover</button>
+            </div>
+          </div>
+          <input type="file" id="mr-logo-arquivo" accept="image/*" hidden>
+          <p class="admin-campo-ajuda" id="mr-logo-info"></p>
         </div>
-        <div class="admin-campo">
-          <label for="mr-capa">Capa (imagem larga)</label>
-          <input type="text" id="mr-capa" placeholder="assets/marcas/nome-capa.jpg ou URL">
+        <div class="admin-campo admin-upload">
+          <label for="mr-capa-escolher">Capa (imagem larga)</label>
+          <div class="admin-upload-linha">
+            <img class="admin-upload-previa admin-upload-previa-capa" id="mr-capa-previa" alt="" hidden>
+            <div class="admin-upload-acoes">
+              <button type="button" class="admin-botao" id="mr-capa-escolher">Enviar imagem</button>
+              <button type="button" class="admin-botao" id="mr-capa-remover" hidden>Remover</button>
+            </div>
+          </div>
+          <input type="file" id="mr-capa-arquivo" accept="image/*" hidden>
+          <p class="admin-campo-ajuda" id="mr-capa-info"></p>
         </div>
       </div>
 

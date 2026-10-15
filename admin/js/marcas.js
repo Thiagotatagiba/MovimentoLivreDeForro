@@ -2,6 +2,8 @@
 import { estado } from './estado.js';
 import { salvarJSON } from './fileAccess.js';
 import { paraSlug, proximoId, textoParaLista, listaParaTexto } from './util.js';
+import { criarCampoImagem } from './campoImagem.js';
+import { gravarImagem, limparOutrasVersoes } from './imagensMarca.js';
 
 const listaEl = document.getElementById('lista-marcas');
 const modalEl = document.getElementById('modal-marca');
@@ -11,6 +13,17 @@ const erroEl = document.getElementById('erro-marca');
 const localPadraoSelectEl = document.getElementById('mr-local-padrao');
 
 let editandoId = null;
+
+// Slug da marca em edição; pra uma marca nova, o que vai ser gerado a partir do nome.
+function slugAtual() {
+  const existente = editandoId ? estado.marcas.find((m) => m.id === editandoId) : null;
+  return existente?.slug ?? paraSlug(document.getElementById('mr-nome').value.trim());
+}
+
+const campos = {
+  logo: criarCampoImagem({ tipo: 'logo', obterSlug: slugAtual }),
+  capa: criarCampoImagem({ tipo: 'capa', obterSlug: slugAtual }),
+};
 
 export function renderizarMarcas() {
   const ordenadas = [...estado.marcas].sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
@@ -76,8 +89,8 @@ export function abrirFormulario(id = null) {
   document.getElementById('mr-instagram').value = marca?.instagram ?? '';
   document.getElementById('mr-whatsapp').value = marca?.whatsapp ?? '';
   document.getElementById('mr-site').value = marca?.site ?? '';
-  document.getElementById('mr-logo').value = marca?.logo ?? '';
-  document.getElementById('mr-capa').value = marca?.capa ?? '';
+  campos.logo.carregar(marca?.logo);
+  campos.capa.carregar(marca?.capa);
   document.getElementById('mr-ativo').checked = marca?.ativo ?? true;
 
   modalEl.hidden = false;
@@ -102,9 +115,11 @@ async function salvar(evento) {
 
   const existente = editandoId ? estado.marcas.find((m) => m.id === editandoId) : null;
 
+  const slug = existente?.slug ?? paraSlug(nome);
+
   const marca = {
     id: existente?.id ?? proximoId(estado.marcas, 'mrc'),
-    slug: existente?.slug ?? paraSlug(nome),
+    slug,
     nome,
     descricao: document.getElementById('mr-descricao').value.trim(),
     frequencia: textoOuNulo(document.getElementById('mr-frequencia').value),
@@ -115,12 +130,26 @@ async function salvar(evento) {
     instagram: textoOuNulo(document.getElementById('mr-instagram').value),
     whatsapp: textoOuNulo(document.getElementById('mr-whatsapp').value),
     site: textoOuNulo(document.getElementById('mr-site').value),
-    logo: textoOuNulo(document.getElementById('mr-logo').value),
-    capa: textoOuNulo(document.getElementById('mr-capa').value),
+    logo: existente?.logo ?? null,
+    capa: existente?.capa ?? null,
     ativo: document.getElementById('mr-ativo').checked,
   };
 
   try {
+    // 1) grava as imagens novas (ainda sem apagar nada) e ajusta os caminhos
+    const aLimpar = []; // [tipo, nomeAManter] — limpeza só depois do JSON salvo
+    for (const tipo of ['logo', 'capa']) {
+      const { arquivo, remover } = campos[tipo].pendente();
+      if (arquivo) {
+        const gravada = await gravarImagem({ slug, tipo, arquivo });
+        marca[tipo] = gravada.caminho;
+        aLimpar.push([tipo, gravada.nome]);
+      } else if (remover) {
+        marca[tipo] = null;
+        aLimpar.push([tipo, null]);
+      }
+    }
+
     if (existente) {
       const indice = estado.marcas.findIndex((m) => m.id === existente.id);
       estado.marcas[indice] = marca;
@@ -128,7 +157,19 @@ async function salvar(evento) {
       estado.marcas.push(marca);
     }
 
+    // 2) JSON salvo
     await salvarJSON('marcas.json', estado.marcas);
+
+    // 3) só agora apaga as versões antigas das imagens (ex: logo.jpg trocada
+    //    por logo.png). Se falhar, sobra um arquivo sobrando — inofensivo.
+    for (const [tipo, manter] of aLimpar) {
+      try {
+        await limparOutrasVersoes(slug, tipo, manter);
+      } catch (erro) {
+        console.warn(`Não consegui apagar versões antigas da ${tipo}:`, erro);
+      }
+    }
+
     fecharFormulario();
     renderizarMarcas();
   } catch (erro) {
@@ -142,4 +183,8 @@ export function configurarAbaMarcas() {
   document.getElementById('botao-nova-marca').addEventListener('click', () => abrirFormulario(null));
   document.getElementById('botao-cancelar-marca').addEventListener('click', fecharFormulario);
   formEl.addEventListener('submit', salvar);
+  document.getElementById('mr-nome').addEventListener('input', () => {
+    campos.logo.atualizarInfo();
+    campos.capa.atualizarInfo();
+  });
 }
