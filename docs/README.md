@@ -56,6 +56,8 @@ perfil.html                    → Visualização do perfil (somente leitura)
 perfil-editar.html              → Edição do perfil (Nome, foto, localização,
                                   Instagram, WhatsApp, data de nascimento,
                                   gênero, bio)
+carteira.html                  → Carteira de ingressos (só logado): guarda o print
+                                  do ingresso, marca como usado, arquiva os passados
 
 manifest.json           → nome, cores, ícones do PWA
 sw.js                     → service worker (cache-first estático, network-only pra dados)
@@ -73,12 +75,16 @@ css/
   components.css    → cards, pills, nav, botões, menu lateral
   perfil.css        → formulário de perfil-editar.html
   perfil-visualizar.css → card de perfil.html
+  carteira.css      → página e janelas da Carteira de ingressos
 
 components/
   loginModal.js      → modal de login (Google + Magic Link)
   modal-login.css     → estilo do modal acima
   painelUsuario.js     → conteúdo do painel "Bem vindo," no menu lateral
-                         (nome/avatar ou botão Entrar), chamado por js/pwa.js
+                         (nome/avatar ou botão Entrar) e mostra/esconde o item
+                         "Carteira de ingressos" conforme o login; chamado por js/pwa.js
+  modalIngresso.js     → janela "Adicionar ingresso" (sugere eventos da agenda)
+  detalheIngresso.js    → janela do ingresso: imagem, Usado/Desfazer, Excluir
 
 js/
   barraTopo.js      → gera a barra do topo (logo + favoritos + busca/voltar)
@@ -90,13 +96,15 @@ js/
   repositories/     → só busca o JSON, sem regra de negócio
   services/         → junta Evento + Marca + Local, aplica regras + integridade referencial
   utils/format.js   → formatação de data/preço/endereço
+  utils/ingressos.js → regras da Carteira (arquivar por data, ordenar, buscar, validar imagem)
+  utils/dom.js      → cria elementos com textContent (texto do usuário nunca vira HTML)
   pages/            → um script por página, só renderização
 
 services/
   authService.js     → login/logout/sessão via Supabase
   perfilService.js    → ler/salvar perfil + upload de foto
-  interacaoService.js  → favoritar/seguir — código pronto, tabela ainda não
-                         criada no Supabase (ver docs/GUIA_SUPABASE_SETUP.md)
+  interacaoService.js  → favoritar evento / seguir marca (tabela interacoes)
+  ingressoService.js    → Carteira de ingressos (tabela + bucket PRIVADO)
 
 data/
   eventos.json, marcas.json, locais.json  → dados reais
@@ -104,6 +112,8 @@ data/
 
 sql/
   perfis.sql    → migração completa de Perfil (tabela, gatilho, RLS, Storage)
+  interacoes.sql → favoritar/seguir
+  ingressos.sql  → Carteira de ingressos (tabela, RLS, bucket privado)
 ```
 
 Nenhuma página do site público tem mais HTML de navegação (barra do topo,

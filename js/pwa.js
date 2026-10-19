@@ -71,6 +71,7 @@ function gerarMenuLateral() {
   <nav class="menu-lateral-links">
     <a href="sobre.html">Sobre</a>
     <a href="perfil.html">Meu Perfil</a>
+    <a href="carteira.html" id="menu-carteira" hidden>Carteira de ingressos</a>
     <a href="configuracoes.html">Configurações</a>
   </nav>
 </aside>`;

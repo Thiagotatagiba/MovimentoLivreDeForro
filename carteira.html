@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carteira de ingressos — Vai Ter Forró!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="components/modal-login.css">
+<link rel="stylesheet" href="css/carteira.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#142F26">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
+<link rel="icon" href="assets/icons/favicon-32.png" type="image/png">
+</head>
+<body>
+<script src="js/barraTopo.js"></script>
+
+<main class="container">
+  <header class="cabecalho">
+    <p class="rotulo-eyebrow">Carteira</p>
+    <h1 style="font-size: var(--tam-titulo-lg);">Carteira de ingressos</h1>
+  </header>
+
+  <section class="secao" id="carteira-bloqueado" hidden>
+    <p class="texto-suave">Entre com sua conta pra guardar seus ingressos aqui.</p>
+    <button type="button" class="botao botao-primario" id="carteira-botao-entrar" style="margin-top: var(--esp-md);">
+      Entrar
+    </button>
+  </section>
+
+  <section class="secao" id="carteira-carregando">
+    <p class="texto-suave">Carregando...</p>
+  </section>
+
+  <section class="secao" id="carteira-erro" hidden>
+    <p class="texto-suave">Não foi possível carregar sua carteira agora. Confira a conexão.</p>
+    <button type="button" class="botao botao-secundario" id="carteira-tentar-de-novo" style="margin-top: var(--esp-md);">
+      Tentar de novo
+    </button>
+  </section>
+
+  <div id="carteira-conteudo" hidden>
+    <section class="secao">
+      <button type="button" class="botao botao-primario" id="carteira-adicionar">+ Adicionar ingresso</button>
+      <p class="ingresso-ajuda" style="margin-top: var(--esp-sm);">
+        Tire um print do ingresso (com o QR code) e guarde aqui. Fica salvo só pra você.
+      </p>
+    </section>
+
+    <section class="secao">
+      <h2 style="font-size: var(--tam-titulo-sm);">Próximos</h2>
+      <div class="lista-ingressos" id="lista-ingressos"></div>
+      <div class="estado-vazio" id="vazio-ingressos" hidden></div>
+    </section>
+
+    <details class="ingressos-arquivados" id="arquivados" hidden>
+      <summary id="arquivados-resumo">Ingressos arquivados</summary>
+      <div class="lista-ingressos" id="lista-arquivados"></div>
+    </details>
+  </div>
+</main>
+
+<script src="js/pwa.js"></script>
+<script type="module" src="js/pages/carteira.js"></script>
+</body>
+</html>

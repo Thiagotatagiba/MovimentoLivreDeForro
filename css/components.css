@@ -795,3 +795,6 @@
   padding: var(--esp-xl) var(--esp-md);
   color: var(--cor-texto-suave);
 }
+
+/* itens do menu que aparecem só em certas situações (ex: Carteira, só logado) */
+.menu-lateral-links a[hidden] { display: none; }

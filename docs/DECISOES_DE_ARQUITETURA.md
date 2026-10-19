@@ -842,3 +842,73 @@ inválido. Falta o teste final no Chrome de verdade.
 **Possível próximo passo:** o mesmo botão para `imagemUrl` do Evento
 (`assets/eventos/{slug}.{ext}`) — o `campoImagem.js` foi escrito de forma a
 poder ser reaproveitado.
+
+## 2026-10-14 — Carteira de ingressos
+
+Ideia de um amigo de Thiago: depois de logar, uma página no Menu onde a pessoa
+guarda o print do ingresso (com QR code), marca como usado e vê os passados
+arquivados. Fluxo: Menu > Carteira de ingressos > Adicionar (nome do evento com
+sugestão da agenda, data, anexo do print) > tocar no ingresso abre a imagem com
+Usado/Desfazer e Excluir.
+
+**Privacidade é a decisão central.** O QR code de um ingresso funciona como uma
+senha de entrada: quem tiver a imagem consegue usá-lo. Por isso o padrão do
+bucket de fotos de perfil (público) NÃO foi reaproveitado. O bucket `ingressos`
+é privado (`public = false`), com RLS em tabela e storage: só o dono lê, envia
+ou apaga. A imagem só é exibida por link assinado de 10 minutos. Limite de 5 MB
+e tipos JPG/PNG/WebP valem no servidor (no bucket), não só no JavaScript.
+
+**Validado no banco antes de aplicar** (transação desfeita no fim, com 2
+usuários reais): dono vê/cria/marca usado/desfaz; outro usuário não vê, não
+altera, não apaga, não cria em nome de outro nem transfere; visitante sem login
+não alcança tabela nem arquivos; título vazio/gigante e imagem fora da pasta do
+dono são barrados. O Supabase proíbe apagar arquivo de Storage por SQL, então a
+regra de apagar foi conferida pela definição da política (idêntica à de leitura).
+
+**Modelo de dados** (`sql/ingressos.sql`): `evento_id` opcional (NULL = evento
+fora da agenda); `titulo` e `data_evento` sempre preenchidos. Quando há
+`evento_id`, o catálogo manda na tela (evento remarcado, título corrigido) e a
+cópia guardada fica só como reserva — se o evento sair do catálogo, o ingresso
+continua inteiro. É duplicação deliberada, só como cópia de segurança.
+"Arquivado" não é gravado: é calculado pela data (nunca fica desatualizado).
+
+**Tolerância de madrugada:** o ingresso só é arquivado 6 horas depois da virada
+do dia (`TOLERANCIA_MADRUGADA_HORAS`). Baile vai até de madrugada; sem isso, à
+1h da manhã o ingresso sumiria da lista justo quando ainda é preciso na porta.
+Foge da regra literal "anterior a hoje", de propósito — é uma constante só.
+
+**Ordem das operações (nunca sobra lixo):** ao adicionar, sobe a imagem e só
+depois grava a linha; se a linha falha, apaga a imagem. Ao excluir, apaga a
+imagem primeiro e a linha depois (se a linha falhar, o ingresso continua
+visível e dá pra tentar de novo; o contrário deixaria imagem invisível pra
+sempre). Texto digitado pela pessoa é sempre inserido com `textContent`
+(`js/utils/dom.js`), nunca como HTML.
+
+**Arquitetura:** mesmo padrão de perfil/interações (service direto no Supabase,
+sem Repository). Componentes só cuidam de tela (`modalIngresso.js`,
+`detalheIngresso.js`) e recebem as operações por callback, o que os deixa
+testáveis sem Supabase. A Carteira só aparece no menu logado
+(`painelUsuario.js`); abrir a URL direto sem login mostra o convite de entrar.
+Ao sair da conta, os cartões são removidos da tela.
+
+**Fora do escopo desta versão (limitações conhecidas):**
+- **Sem internet na porta do evento a imagem não abre.** Para funcionar offline
+  é preciso guardar a lista e as imagens no aparelho (IndexedDB) e limpar no
+  logout. É o próximo passo mais valioso; hoje o print na galeria do celular é
+  a reserva. Atenção: o `activate` do `sw.js` apaga qualquer cache com nome
+  diferente do atual, então o cache offline dos ingressos deve usar IndexedDB.
+- Só imagens (não PDF — Sympla envia PDF); sem limite de ingressos por pessoa
+  (1 GB de Storage no plano grátis; vale um teto, ex.: 50 por pessoa).
+- Excluir a conta (ainda não existe) apagaria as linhas por cascata, mas NÃO os
+  arquivos do Storage: quando essa função existir, ela precisa apagar a pasta
+  `{usuario_id}/` do bucket `ingressos`.
+- Tela com brilho máximo / impedir a tela de apagar na porta (Wake Lock).
+
+**Cache:** `CACHE_NOME` do `sw.js` foi para `v4`; `carteira.html` e
+`css/carteira.css` entraram no pré-cache.
+
+**Verificação:** 194 verificações automáticas (lógica de datas e fuso, serviço
+com falhas injetadas, componentes, página inteira e menu) em navegador e
+Supabase simulados. Não testado num navegador/aparelho de verdade nem com a API
+real do Supabase Storage (link assinado, remoção): conferir no primeiro uso.
+

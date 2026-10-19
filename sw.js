@@ -9,7 +9,7 @@
 // o nome do cache mudar). Bump em 2026-10-07: vários arquivos da página de
 // Marca mudaram nos últimos dias sem nunca terem o cache invalidado — ver
 // DECISOES_DE_ARQUITETURA.md.
-const CACHE_NOME = 'vai-ter-forro-v3';
+const CACHE_NOME = 'vai-ter-forro-v4';
 
 // Em desenvolvimento local o cache só atrapalha: mascara mudanças de JS/CSS
 // e obriga a limpar o Service Worker manualmente a cada teste (já aconteceu
@@ -29,11 +29,13 @@ const ARQUIVOS_ESTATICOS = [
   'local.html',
   'perfil.html',
   'perfil-editar.html',
+  'carteira.html',
   'css/tokens.css',
   'css/base.css',
   'css/components.css',
   'css/perfil.css',
   'css/perfil-visualizar.css',
+  'css/carteira.css',
   'components/modal-login.css',
   'js/pwa.js',
   'js/barraTopo.js',

@@ -41,6 +41,14 @@ export async function obterEventoCompleto(slug) {
   return enriquecer(evento);
 }
 
+// Usado pela Carteira de ingressos (sugestões ao digitar o nome do evento):
+// todos os eventos ativos — inclusive os que já passaram, porque a pessoa pode
+// estar guardando o ingresso de um baile recente — já com Marca e Local.
+export async function listarEventosParaSugestao() {
+  const eventos = await listarEventos();
+  return Promise.all(eventos.map(enriquecer));
+}
+
 // Usado pela página de Favoritos: busca vários eventos pelos ids vindos de
 // interacaoService.listarFavoritos(), já enriquecidos com Marca e Local.
 export async function listarEventosPorIds(ids) {
