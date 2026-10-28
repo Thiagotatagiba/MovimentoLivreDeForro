@@ -1,0 +1,22 @@
+# dependências e ferramentas locais
+node_modules/
+package-lock.json
+
+# sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# editores
+.vscode/
+.idea/
+
+# logs e temporários
+*.log
+*.tmp
+
+# snapshots manuais antigos
+old.zip
+
+# prévias geradas localmente (screenshots de QA)
+preview/

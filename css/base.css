@@ -1,8 +1,13 @@
-/* base.css */
+/* base.css — reset, tipografia global e layout de página.
+   Revisão 2026-10-28: tipografia fluida, safe-area do iPhone, container
+   responsivo e foco visível mais forte. */
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; }
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
@@ -11,17 +16,21 @@ body {
   color: var(--cor-texto);
   background: var(--bg-pagina);
   line-height: 1.5;
-  padding-bottom: 76px; /* espaço pra nav inferior fixa */
+  /* espaço pra nav inferior fixa + indicador de home do iPhone */
+  padding-bottom: calc(76px + env(safe-area-inset-bottom));
 }
 
 h1, h2, h3 {
   font-family: var(--fonte-display);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.15;
   margin: 0;
+  text-wrap: balance;
 }
 
-h1 { font-size: var(--tam-titulo-xl); }
+/* Antes era 2.5rem fixo: nomes longos de Marca quebravam em 4 linhas no
+   celular. Agora o título acompanha a largura da tela. */
+h1 { font-size: clamp(1.75rem, 6.5vw, 2.5rem); }
 h2 { font-size: var(--tam-titulo-lg); }
 h3 { font-size: var(--tam-titulo-md); }
 
@@ -43,16 +52,19 @@ button { font-family: inherit; cursor: pointer; }
   padding: var(--esp-lg) 0;
 }
 
+/* A hierarquia dos títulos de seção passa a viver aqui, não em style="..."
+   repetido em cada template (eram 15+ cópias inline). */
+.secao > h2 {
+  font-size: var(--tam-titulo-sm);
+  margin-bottom: var(--esp-md);
+}
+
 .secao-dias {
   padding-bottom: var(--esp-xs);
 }
 
 .secao-proximos {
   padding-top: var(--esp-xs);
-}
-
-.secao > h2 {
-  margin-bottom: var(--esp-md);
 }
 
 .rotulo-eyebrow {
@@ -63,8 +75,14 @@ button { font-family: inherit; cursor: pointer; }
   color: var(--cor-clay-escuro);
 }
 
+/* variante para fundos escuros (pine) */
+.rotulo-eyebrow--claro {
+  color: var(--cor-gold);
+}
+
 .texto-suave { color: var(--cor-texto-suave); }
 .texto-fraco { color: var(--cor-texto-fraco); }
+.texto-caption { font-size: var(--tam-caption); }
 
 .somente-leitor {
   position: absolute;
@@ -75,10 +93,35 @@ button { font-family: inherit; cursor: pointer; }
 }
 
 :focus-visible {
-  outline: 2px solid var(--cor-clay);
-  outline-offset: 2px;
+  outline: 2px solid var(--cor-clay-escuro);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===== Desktop =====
+   Até 2026-10 o site era uma coluna de 640px com nav inferior fixa em
+   qualquer tela. A partir de 900px: container mais largo, nav inferior
+   desligada (a barra do topo ganha links) e grade de 3 colunas. */
+@media (min-width: 900px) {
+  body { padding-bottom: 0; }
+
+  .container {
+    max-width: 960px;
+    padding: 0 var(--esp-lg);
+  }
+
+  .nav-inferior { display: none; }
+}
+
+@media (min-width: 1200px) {
+  .container { max-width: 1040px; }
 }

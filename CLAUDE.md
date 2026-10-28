@@ -19,7 +19,11 @@ Leia antes de alterar:
 - docs/MODELO_DE_DADOS.md
 - docs/DECISOES_DE_ARQUITETURA.md
 - docs/GUIA_SUPABASE_SETUP.md (se mexer em login, Perfil ou qualquer dado de usuário)
+- docs/MELHORIAS.md (backlog completo com prioridades — use pra escolher o que fazer)
 - ROADMAP.md (pra saber o que fazer agora — fica na raiz, não em docs/)
+
+Antes de deploy: `node scripts/validar-dados.js` (integridade dos JSONs) e
+lembrar que o site é PWA — mudanças em JS/CSS ficam em cache no visitante.
 
 Nunca duplique componentes ou altere JSON sem justificar.
 Sempre documente mudanças importantes em docs/DECISOES_DE_ARQUITETURA.md.

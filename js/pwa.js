@@ -1,6 +1,13 @@
 // pwa.js — script não-módulo, carregado em toda página via <script src="js/pwa.js">.
-// Responsabilidades: registrar o service worker, controlar o menu lateral (drawer)
-// e capturar o evento de instalação do PWA pra página de Configurações usar depois.
+// Responsabilidades: registrar o service worker, gerar nav inferior e menu
+// lateral, controlar o drawer e capturar o evento de instalação do PWA.
+//
+// Revisão 2026-10-28 (ver MELHORIAS.md):
+// - menu fechado agora fica `inert` (antes o aria-hidden escondia, mas os
+//   links continuavam focáveis por Tab);
+// - drawer ganhou Favoritos e Privacidade;
+// - foco vai para o primeiro link ao abrir, volta pro botão ao fechar;
+// - travamento de scroll do body enquanto aberto.
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -10,8 +17,7 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Captura o prompt de instalação assim que o navegador oferecer (Chrome/Edge/Android).
-// Guardado em window pra qualquer página (especialmente configuracoes.html) poder usar.
+// Prompt de instalação (Chrome/Edge/Android), disponível pra configuracoes.html.
 window.deferredInstallPrompt = null;
 
 window.addEventListener('beforeinstallprompt', (evento) => {
@@ -25,11 +31,8 @@ window.addEventListener('appinstalled', () => {
   window.dispatchEvent(new Event('pwa-instalado'));
 });
 
-// Gera a navegação inferior (Início/Agenda/Menu) uma vez aqui, em vez de
-// duplicada em cada página — era idêntica em 8 das 10 páginas, variando só
-// o aria-current de qual aba está ativa.
 function gerarNavInferior() {
-  if (document.querySelector('.nav-inferior')) return; // já existe (não deveria mais acontecer)
+  if (document.querySelector('.nav-inferior')) return;
 
   const pagina = location.pathname.split('/').pop() || 'index.html';
   const ehHome = pagina === 'index.html' || pagina === '';
@@ -54,25 +57,26 @@ function gerarNavInferior() {
   document.body.insertAdjacentHTML('beforeend', html);
 }
 
-// Gera o overlay + menu lateral (drawer) — HTML idêntico em toda página,
-// então nasce aqui uma vez só. O CONTEÚDO do painel de usuário continua
-// sendo preenchido por components/painelUsuario.js, como já era.
 function gerarMenuLateral() {
-  if (document.getElementById('menu-lateral')) return; // já existe (não deveria mais acontecer)
+  if (document.getElementById('menu-lateral')) return;
 
   const html = `
 <div class="menu-overlay" id="menu-overlay" hidden></div>
-<aside class="menu-lateral" id="menu-lateral" aria-hidden="true">
+<aside class="menu-lateral" id="menu-lateral" aria-hidden="true" inert>
   <div class="menu-lateral-topo">
     <p>Bem vindo,</p>
     <h2 id="painel-usuario-nome">Forrozeiro</h2>
     <button type="button" id="painel-usuario-acao" class="menu-lateral-acao-auth">Entrar</button>
   </div>
-  <nav class="menu-lateral-links">
-    <a href="sobre.html">Sobre</a>
+  <nav class="menu-lateral-links" aria-label="Menu">
+    <a href="favoritos.html">Favoritos</a>
     <a href="perfil.html">Meu Perfil</a>
+    <a href="agenda.html">Agenda</a>
+    <a href="sobre.html">Sobre</a>
     <a href="configuracoes.html">Configurações</a>
+    <a href="privacidade.html">Privacidade</a>
   </nav>
+  <p class="menu-lateral-rodape">Vai Ter Forró! · vaiterforro.com.br</p>
 </aside>`;
 
   document.body.insertAdjacentHTML('beforeend', html);
@@ -84,36 +88,66 @@ function configurarMenuLateral() {
   const overlay = document.getElementById('menu-overlay');
   if (!botaoMenu || !menuLateral || !overlay) return;
 
+  const focaveis = () => [...menuLateral.querySelectorAll('a[href], button:not([disabled])')];
+
   function abrirMenu() {
+    menuLateral.inert = false;
     menuLateral.classList.add('aberto');
     overlay.hidden = false;
     botaoMenu.setAttribute('aria-expanded', 'true');
     menuLateral.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    // Espera o próximo frame: a transição de visibility/transform precisa ter
+    // sido aplicada antes de mover o foco pra dentro do drawer.
+    requestAnimationFrame(() => focaveis()[0]?.focus());
   }
 
-  function fecharMenu() {
+  function fecharMenu({ devolverFoco = true } = {}) {
     menuLateral.classList.remove('aberto');
     overlay.hidden = true;
     botaoMenu.setAttribute('aria-expanded', 'false');
     menuLateral.setAttribute('aria-hidden', 'true');
+    menuLateral.inert = true;
+    document.body.style.overflow = '';
+    if (devolverFoco) botaoMenu.focus();
   }
 
   botaoMenu.addEventListener('click', () => {
-    const jaAberto = menuLateral.classList.contains('aberto');
-    if (jaAberto) fecharMenu(); else abrirMenu();
+    if (menuLateral.classList.contains('aberto')) fecharMenu();
+    else abrirMenu();
   });
 
-  overlay.addEventListener('click', fecharMenu);
+  overlay.addEventListener('click', () => fecharMenu());
 
   document.addEventListener('keydown', (evento) => {
-    if (evento.key === 'Escape') fecharMenu();
+    if (evento.key === 'Escape' && menuLateral.classList.contains('aberto')) {
+      fecharMenu();
+    }
+  });
+
+  // Mantém o Tab dentro do drawer enquanto ele está aberto.
+  menuLateral.addEventListener('keydown', (evento) => {
+    if (evento.key !== 'Tab' || !menuLateral.classList.contains('aberto')) return;
+    const itens = focaveis();
+    if (itens.length === 0) return;
+    const primeiro = itens[0];
+    const ultimo = itens[itens.length - 1];
+
+    if (evento.shiftKey && document.activeElement === primeiro) {
+      evento.preventDefault();
+      ultimo.focus();
+    } else if (!evento.shiftKey && document.activeElement === ultimo) {
+      evento.preventDefault();
+      primeiro.focus();
+    }
+  });
+
+  menuLateral.querySelectorAll('a[href]').forEach((link) => {
+    link.addEventListener('click', () => fecharMenu({ devolverFoco: false }));
   });
 }
 
-// pwa.js é um script clássico (não type="module"), então o painel de
-// usuário — que precisa de import/export — é carregado sob demanda aqui.
-// Continua sendo UM único arquivo (components/painelUsuario.js) controlando
-// o conteúdo em todas as páginas; nada é duplicado por página.
+// painelUsuario.js precisa de import/export, então é carregado sob demanda.
 function inicializarPainelUsuario() {
   import('../components/painelUsuario.js')
     .then(({ inicializarPainelUsuario }) => inicializarPainelUsuario())

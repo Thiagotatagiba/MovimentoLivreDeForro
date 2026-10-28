@@ -4,7 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Vai Ter Forró! — Onde tem forró hoje</title>
-<meta name="description" content="Descubra bailes de forró pé de serra na Grande Vitória: Marcas, Locais e a agenda completa.">
+<meta name="description" content="Descubra bailes de forró pé de serra na Grande Vitória: marcas, locais e a agenda completa, atualizada toda semana.">
+<link rel="canonical" href="https://vaiterforro.com.br/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vai Ter Forró!">
+<meta property="og:title" content="Vai Ter Forró! — Onde tem forró hoje">
+<meta property="og:description" content="A agenda do forró pé de serra na Grande Vitória: bailes de hoje, próximos eventos, marcas e locais.">
+<meta property="og:url" content="https://vaiterforro.com.br/">
+<meta property="og:image" content="https://vaiterforro.com.br/assets/icons/icon-512.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
@@ -22,35 +30,42 @@
 <main class="container">
   <header class="cabecalho">
     <div>
-      <h1 class="somente-leitor">Vai Ter Forró! — Home</h1>
+      <h1 class="somente-leitor">Vai Ter Forró! — Onde tem forró hoje</h1>
       <p class="localizacao">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
-        Grande Vitória
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        Bailes na Grande Vitória e região
       </p>
     </div>
 
     <div id="busca-container" class="busca-container" hidden>
       <div class="busca">
-        <label for="campo-busca" class="somente-leitor">Pesquisar Marcas, Locais ou eventos</label>
-        <input id="campo-busca" type="search" placeholder="Buscar Marca, Local ou evento...">
+        <label for="campo-busca" class="somente-leitor">Pesquisar marcas, locais ou eventos</label>
+        <input id="campo-busca" type="search" placeholder="Buscar marca, local ou evento..." autocomplete="off" aria-controls="busca-resultados">
       </div>
+      <div id="busca-resultados" class="busca-resultados" role="region" aria-label="Resultados da busca" hidden></div>
     </div>
   </header>
 
-  <section class="secao secao-dias">
+  <section class="secao secao-hoje" aria-label="Hoje">
+    <div id="bloco-hoje">
+      <div class="esqueleto esqueleto-hoje"></div>
+    </div>
+  </section>
+
+  <section class="secao secao-dias" aria-labelledby="titulo-dias">
+    <h2 id="titulo-dias" class="somente-leitor">Dias da semana</h2>
     <div class="tira-dias">
-      <button type="button" class="seta-tira" id="seta-esquerda" hidden aria-label="Ver dias anteriores">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+      <button type="button" class="seta-tira seta-tira--esq" id="seta-esquerda" hidden aria-label="Ver dias anteriores">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
       <div id="cards-semana" class="cards-semana" role="list" aria-label="Dias da semana"></div>
-      <button type="button" class="controle-direita" id="controle-direita" aria-label="Ver próximos dias">
-        <span class="controle-direita-texto" hidden>Ver mais</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      <button type="button" class="seta-tira seta-tira--dir" id="seta-direita" hidden aria-label="Ver próximos dias">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18l6-6-6-6"/></svg>
       </button>
     </div>
   </section>
 
-  <section class="secao secao-proximos">
+  <section class="secao secao-proximos" aria-labelledby="titulo-secao-eventos">
     <h2 id="titulo-secao-eventos">Próximos bailes</h2>
     <div id="grade-proximos" class="grade-eventos"></div>
     <div style="margin-top: var(--esp-lg);">
@@ -59,13 +74,7 @@
   </section>
 </main>
 
-<div class="story-viewer" id="story-viewer" hidden role="dialog" aria-modal="true" aria-label="Eventos do dia">
-  <div class="story-progress" id="story-progress"></div>
-  <button type="button" class="story-fechar" id="story-fechar" aria-label="Fechar">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
-  </button>
-  <div class="story-conteudo" id="story-conteudo"></div>
-</div>
+<div class="story-viewer" id="story-viewer" hidden role="dialog" aria-modal="true" aria-label="Eventos do dia"></div>
 
 <script src="js/pwa.js"></script>
 <script type="module" src="js/pages/home.js"></script>

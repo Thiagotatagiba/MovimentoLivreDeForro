@@ -1,4 +1,7 @@
-/* components.css */
+/* components.css
+   Revisão 2026-10-28: contraste AA, alvos de 44px, card de evento com
+   horário/preço, hover/press, skeletons, story paginado, desktop.
+   Ver docs/MELHORIAS.md para o racional de cada mudança. */
 
 /* ===== Cabeçalho ===== */
 .cabecalho {
@@ -26,22 +29,33 @@
   background: var(--cor-pine-escuro);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 14px var(--esp-md);
+  gap: var(--esp-sm);
+  padding: 8px var(--esp-md);
+  min-height: 56px;
 }
 
 .barra-topo-marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--fonte-display);
   font-style: italic;
   font-weight: 600;
   font-size: 1.375rem;
   color: var(--cor-paper);
   letter-spacing: -0.01em;
+  min-height: var(--toque-min);
+}
+
+.barra-topo-marca img {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
 }
 
 .barra-topo-icone {
-  width: 32px;
-  height: 32px;
+  width: var(--toque-min);
+  height: var(--toque-min);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -49,16 +63,51 @@
   color: var(--cor-paper);
   background: none;
   border: none;
+  border-radius: 50%;
 }
+
 .barra-topo-icone svg { width: 22px; height: 22px; }
 
+.barra-topo-icone:hover { background: rgba(245, 239, 225, 0.12); }
+
+/* Navegação de desktop dentro da barra do topo (escondida no mobile). */
+.barra-topo-nav {
+  display: none;
+  align-items: center;
+  gap: var(--esp-xs);
+  margin-left: auto;
+}
+
+.barra-topo-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--toque-min);
+  padding: 0 14px;
+  border-radius: var(--raio-pilula);
+  color: var(--cor-paper);
+  font-size: var(--tam-caption);
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.barra-topo-nav a:hover { background: rgba(245, 239, 225, 0.12); opacity: 1; }
+.barra-topo-nav a[aria-current="page"] { background: rgba(245, 239, 225, 0.16); opacity: 1; }
+
+.barra-topo-espaco { flex: 1; }
+
+@media (min-width: 900px) {
+  .barra-topo { padding: 8px var(--esp-lg); }
+  .barra-topo-nav { display: flex; }
+  .barra-topo-espaco { display: none; }
+  .barra-topo-favoritos { display: none; }
+}
+
+/* ===== Busca ===== */
 .busca-container {
   margin-top: var(--esp-md);
 }
 
-.busca-container[hidden] {
-  display: none;
-}
+.busca-container[hidden] { display: none; }
 
 .busca {
   display: flex;
@@ -67,7 +116,7 @@
   background: var(--bg-card);
   border: 1px solid var(--borda);
   border-radius: var(--raio-pilula);
-  padding: 10px 16px;
+  padding: 4px 16px;
   margin-top: var(--esp-md);
 }
 
@@ -78,10 +127,59 @@
   font-family: var(--fonte-corpo);
   color: var(--cor-texto);
   width: 100%;
+  min-height: 40px;
 }
 
+/* Antes era outline:none — matava o anel de foco do teclado. */
 .busca input:focus { outline: none; }
 .busca input::placeholder { color: var(--cor-texto-fraco); }
+.busca:focus-within { border-color: var(--cor-pine); box-shadow: 0 0 0 3px rgba(30, 70, 56, 0.15); }
+
+.busca-resultados {
+  margin-top: var(--esp-sm);
+  background: var(--bg-card);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-card);
+  box-shadow: var(--sombra-card);
+  overflow: hidden;
+}
+
+.busca-resultados[hidden] { display: none; }
+
+.busca-status {
+  padding: 10px 16px;
+  font-size: var(--tam-caption);
+  color: var(--cor-texto-suave);
+  border-bottom: 1px solid var(--borda);
+}
+
+.busca-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: var(--toque-min);
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--borda);
+}
+
+.busca-item:last-child { border-bottom: none; }
+.busca-item:hover, .busca-item:focus-visible { background: var(--cor-pine-claro); }
+
+.busca-tipo {
+  flex-shrink: 0;
+  min-width: 64px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cor-clay-escuro);
+}
+
+.busca-nome {
+  font-size: var(--tam-caption);
+  font-weight: 600;
+  color: var(--cor-texto);
+}
 
 /* ===== Resposta rápida "onde tem forró hoje" ===== */
 .condicao-especial {
@@ -119,6 +217,77 @@
   font-size: var(--tam-corpo);
 }
 
+/* ===== Bloco "Hoje" da Home ===== */
+.secao-hoje { padding-top: 0; }
+
+.bloco-hoje {
+  border-radius: var(--raio-card);
+  overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--borda);
+  padding: var(--esp-lg) var(--esp-md);
+}
+
+.bloco-hoje a:not(.botao) { text-decoration: underline; text-underline-offset: 2px; }
+
+.bloco-hoje--tem {
+  background: var(--bg-destaque);
+  border-color: transparent;
+  color: var(--texto-sobre-destaque);
+}
+
+.bloco-hoje h2 {
+  font-size: var(--tam-titulo-md);
+  margin-top: var(--esp-xs);
+}
+
+.bloco-hoje .bloco-hoje-texto {
+  margin-top: var(--esp-sm);
+  font-size: var(--tam-caption);
+  opacity: 0.85;
+}
+
+.bloco-hoje .bloco-hoje-destaque {
+  font-weight: 600;
+  opacity: 1;
+}
+
+.hoje-lista {
+  list-style: none;
+  margin: var(--esp-md) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-sm);
+}
+
+.hoje-lista a {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--esp-md);
+  min-height: var(--toque-min);
+  padding: 8px 12px;
+  border-radius: var(--raio-campo);
+  background: rgba(245, 239, 225, 0.12);
+}
+
+.hoje-lista a:hover { background: rgba(245, 239, 225, 0.2); }
+
+.hoje-lista strong { font-family: var(--fonte-display); font-weight: 600; }
+
+.hoje-lista span {
+  flex-shrink: 0;
+  font-size: var(--tam-caption);
+  opacity: 0.9;
+}
+
+.bloco-hoje .botao { margin-top: var(--esp-md); }
+
+@media (min-width: 560px) {
+  .bloco-hoje .botao { width: auto; padding-left: 28px; padding-right: 28px; }
+}
+
 /* ===== Pills de filtro ===== */
 .pills {
   display: flex;
@@ -131,14 +300,20 @@
 
 .pill {
   flex-shrink: 0;
-  padding: 8px 16px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 18px;
   border-radius: var(--raio-pilula);
   border: 1px solid var(--borda);
   background: var(--bg-card);
   color: var(--cor-texto-suave);
   font-size: var(--tam-caption);
   font-weight: 500;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
+
+.pill:hover { border-color: var(--cor-pine); color: var(--cor-pine); }
 
 .pill[aria-pressed="true"] {
   background: var(--cor-pine);
@@ -157,24 +332,89 @@
   .grade-eventos { grid-template-columns: 1fr 1fr; }
 }
 
+@media (min-width: 1000px) {
+  .grade-eventos { grid-template-columns: repeat(3, 1fr); }
+}
+
 .card-evento {
-  display: block;
+  display: flex;
+  flex-direction: column;
   background: var(--bg-card);
   border-radius: var(--raio-card);
   overflow: hidden;
   box-shadow: var(--sombra-card);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card-evento:active { transform: scale(0.99); }
+
+@media (hover: hover) {
+  .card-evento:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sombra-card-hover);
+  }
 }
 
 .midia {
-  background: linear-gradient(180deg, rgba(20, 47, 38, 0) 40%, rgba(20, 47, 38, 0.7) 100%), var(--cor-clay);
+  background: linear-gradient(180deg, rgba(20, 47, 38, 0.05) 40%, rgba(20, 47, 38, 0.72) 100%), var(--cor-clay);
   position: relative;
   display: flex;
   align-items: flex-end;
   padding: var(--esp-sm) var(--esp-md);
+  overflow: hidden;
 }
 
 .card-evento .midia {
-  height: 140px;
+  aspect-ratio: 16 / 9;
+}
+
+.midia img.midia-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* véu de legibilidade sobre a foto */
+.card-evento .midia::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 47, 38, 0) 45%, rgba(20, 47, 38, 0.75) 100%);
+  pointer-events: none;
+}
+
+/* Marca sobre a foto: foto de perfil + nome. */
+.card-marca {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.card-marca-logo {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1.5px solid var(--cor-paper);
+  background: var(--cor-pine);
+}
+
+.card-marca-logo--letra {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fonte-display);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--cor-paper);
+  text-transform: uppercase;
 }
 
 .marca-nome {
@@ -182,37 +422,65 @@
   font-weight: 600;
   color: #fff;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .card-evento .marca-nome {
-  font-size: var(--tam-titulo-sm);
+  font-size: 1rem;
 }
 
-.badge {
+/* Selo sobre a foto: data (ou "Hoje"). Preço não entra mais aqui. */
+.card-selos {
   position: absolute;
   top: var(--esp-sm);
   left: var(--esp-sm);
-  background: var(--cor-gold);
-  color: var(--cor-gold-escuro);
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: var(--raio-pilula);
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.badge.badge-hoje {
-  background: var(--cor-clay);
-  color: #fff;
+/* Selo sobre a foto: data (ou "Hoje"). Preço não entra mais aqui. */
+.selo {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 9px;
+  border-radius: var(--raio-pilula);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
 }
+
+.selo--data {
+  background: var(--cor-paper);
+  color: var(--cor-pine-escuro);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.selo--hoje { background: var(--cor-clay-forte); color: #fff; }
 
 .card-evento .corpo {
   padding: var(--esp-sm) var(--esp-md) var(--esp-md);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
 }
 
 .card-evento .titulo-evento {
-  font-weight: 500;
+  font-weight: 600;
   font-size: var(--tam-corpo);
-  margin-bottom: 4px;
+  line-height: 1.3;
+  color: var(--cor-texto);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .card-evento .meta {
@@ -221,72 +489,66 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  margin-top: 2px;
 }
 
-/* ===== Tira de Dias (fileira de destaque com os próximos 7 dias) ===== */
+.card-evento .meta-local {
+  font-size: var(--tam-caption);
+  color: var(--cor-texto-fraco);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== Tira de Dias (próximos 7 dias) ===== */
+/* As setas flutuam sobre as bordas: antes ocupavam ~90px da linha e espremiam
+   os dias. Em telas largas, onde os 7 dias cabem, elas nem aparecem. */
 .tira-dias {
-  display: flex;
-  align-items: center;
-  gap: var(--esp-sm);
+  position: relative;
 }
 
 .cards-semana {
   display: flex;
-  gap: var(--esp-md);
+  gap: var(--esp-sm);
   overflow-x: auto;
-  padding: var(--esp-sm) 2px var(--esp-md);
+  padding: var(--esp-sm) 0 var(--esp-md);
   scroll-behavior: smooth;
   scrollbar-width: none;
-  flex: 1;
-  min-width: 0;
 }
 .cards-semana::-webkit-scrollbar { display: none; }
 
 .seta-tira {
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 36px;
+  height: 36px;
+  padding: 0;
   border-radius: 50%;
   border: 1px solid var(--borda);
-  background: var(--bg-card);
+  background: rgba(255, 253, 249, 0.94);
+  box-shadow: var(--sombra-card);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--cor-pine);
 }
-.seta-tira svg { width: 16px; height: 16px; }
 
-.seta-tira[hidden] {
-  display: none;
+/* Área de toque de 44px sem aumentar o círculo visível. */
+.seta-tira::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
 }
 
-.controle-direita {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  height: 32px;
-  min-width: 32px;
-  padding: 0;
-  border-radius: var(--raio-pilula);
-  border: 1px solid var(--borda);
-  background: var(--bg-card);
-  color: var(--cor-pine);
-  font-size: 12px;
-  font-weight: 600;
-  transition: padding 0.15s ease, background 0.15s ease, color 0.15s ease;
-}
-.controle-direita svg { width: 16px; height: 16px; flex-shrink: 0; }
-.controle-direita .controle-direita-texto { white-space: nowrap; }
+.seta-tira svg { width: 18px; height: 18px; }
 
-.controle-direita--fim {
-  min-width: auto;
-  padding: 0 12px 0 14px;
-  background: var(--cor-pine);
-  color: var(--cor-paper);
-  border-color: var(--cor-pine);
-}
+.seta-tira--esq { left: 2px; }
+.seta-tira--dir { right: 2px; }
+
+.seta-tira[hidden] { display: none; }
 
 .card-dia {
   flex-shrink: 0;
@@ -299,6 +561,7 @@
   border: none;
   padding: 0;
   font: inherit;
+  color: inherit;
   cursor: pointer;
   position: relative;
 }
@@ -306,13 +569,13 @@
 .card-dia-badge {
   position: absolute;
   top: -4px;
-  left: 2px;
+  right: 0;
   z-index: 1;
   min-width: 18px;
   height: 18px;
   padding: 0 4px;
   border-radius: 999px;
-  background: var(--cor-clay);
+  background: var(--cor-clay-forte);
   color: #fff;
   font-size: 10px;
   font-weight: 700;
@@ -323,25 +586,26 @@
   border: 2px solid var(--bg-pagina);
 }
 
-.card-dia-badge[hidden] {
-  display: none;
-}
+.card-dia-badge[hidden] { display: none; }
 
 .card-dia .cartao-borda {
   width: 56px;
   height: 84px;
   border-radius: 18px;
-  padding: 3px;
-  background: linear-gradient(135deg, var(--cor-clay), var(--cor-gold));
+  padding: 2px;
+  background: var(--borda);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.15s ease, transform 0.15s ease;
 }
+
+.card-dia:hover .cartao-borda { transform: translateY(-2px); }
 
 .card-dia .cartao-conteudo {
   width: 100%;
   height: 100%;
-  border-radius: 15px;
+  border-radius: 16px;
   background: var(--bg-card);
   display: flex;
   flex-direction: column;
@@ -362,7 +626,7 @@
   font-weight: 700;
   font-size: 9px;
   letter-spacing: 0.04em;
-  opacity: 0.65;
+  opacity: 0.75;
   margin-top: 1px;
 }
 
@@ -387,7 +651,32 @@
   font-weight: 700;
 }
 
-/* ===== Mini card de localização (usado na página de evento) ===== */
+/* ===== Esqueletos de carregamento ===== */
+.esqueleto {
+  position: relative;
+  overflow: hidden;
+  background: #ECE4D2;
+  border-radius: var(--raio-card);
+}
+
+.esqueleto::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  animation: esqueleto-brilho 1.2s infinite;
+}
+
+.esqueleto-card { height: 264px; }
+.esqueleto-hoje { height: 148px; margin-bottom: var(--esp-md); }
+.esqueleto-linha { height: 16px; border-radius: 8px; }
+
+@keyframes esqueleto-brilho {
+  100% { transform: translateX(100%); }
+}
+
+/* ===== Mini card de localização ===== */
 .local-mini {
   display: flex;
   align-items: center;
@@ -399,15 +688,14 @@
   padding: 12px 14px;
 }
 
-.local-mini[hidden] {
-  display: none;
-}
+.local-mini[hidden] { display: none; }
 
 .local-mini a {
   font-size: var(--tam-caption);
   font-weight: 600;
   color: var(--cor-pine);
   white-space: nowrap;
+  padding: 8px 0;
 }
 
 /* ===== Botões ===== */
@@ -416,77 +704,83 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  min-height: var(--toque-min);
   border-radius: var(--raio-pilula);
-  padding: 13px 24px;
+  padding: 12px 24px;
   font-size: var(--tam-corpo);
   font-weight: 600;
-  border: none;
+  border: 1px solid transparent;
   width: 100%;
+  text-align: center;
 }
+
+.botao[hidden] { display: none; }
 
 .botao-primario {
   background: var(--cor-pine);
   color: var(--cor-paper);
 }
 
+.botao-primario:hover { background: var(--cor-pine-escuro); }
+
 .botao-secundario {
   background: transparent;
   color: var(--cor-pine);
-  border: 1px solid var(--cor-pine);
+  border-color: var(--cor-pine);
 }
 
-/* Seguir, estado ativo — versão padrão, pra fundos claros (ex: o card
-   "Conheça a Marca" em evento.html). */
+.botao-secundario:hover { background: var(--cor-pine-claro); }
+
+.botao-claro {
+  background: var(--cor-paper);
+  color: var(--cor-pine-escuro);
+}
+
+.botao-claro:hover { background: #fff; }
+
+/* Botões que não ocupam a linha inteira. Antes era width:auto inline em
+   10+ lugares. */
+.botao--inline {
+  width: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.botao:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Seguir, estado ativo — fundos claros */
 .botao-seguir.ativo {
   background: var(--cor-pine);
   color: var(--cor-paper);
   border-color: var(--cor-pine);
 }
 
-/* Seguir (marca.html): o botão fica dentro do .perfil-header, que tem fundo
-   --cor-pine escuro — o .botao-secundario padrão (texto/borda pine) ficaria
-   invisível ali. Sobrescreve especificamente nesse contexto (e também o
-   .ativo acima, por ter seletor mais específico). */
-.perfil-header .botao-seguir {
-  background: transparent;
-  color: var(--cor-paper);
-  border: 1px solid var(--cor-paper);
-}
-
-.perfil-header .botao-seguir.ativo {
-  background: var(--cor-clay);
-  color: var(--cor-paper);
-  border-color: var(--cor-clay);
-}
-
-/* Ações flutuantes sobre o banner do evento (compartilhar, favoritar).
-   .midia já é position: relative, então isso ancora certinho. */
-.midia-acoes {
-  position: absolute;
-  top: var(--esp-md);
-  right: var(--esp-md);
-  display: flex;
-  gap: var(--esp-sm);
-}
-
+/* ===== Ações sobre mídia (compartilhar, favoritar) ===== */
 .botao-midia {
-  width: 40px;
-  height: 40px;
+  width: var(--toque-min);
+  height: var(--toque-min);
   border-radius: 50%;
-  background: rgba(20, 20, 20, 0.35);
+  background: rgba(20, 20, 20, 0.4);
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--cor-paper);
+  transition: background 0.15s ease, transform 0.15s ease;
 }
+
+.botao-midia:hover { background: rgba(20, 20, 20, 0.6); }
+.botao-midia:active { transform: scale(0.94); }
 
 .botao-midia svg {
   width: 20px;
   height: 20px;
   fill: none;
   stroke: currentColor;
-  stroke-width: 2;
+  stroke-width: var(--traco-icone);
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -499,39 +793,7 @@
   fill: currentColor;
 }
 
-/* Cabeçalho da Marca: logo ao lado do título (a capa vai de fundo, inline). */
-.perfil-header-topo {
-  display: flex;
-  align-items: center;
-  gap: var(--esp-md);
-}
-
-.marca-logo {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-  border: 2px solid var(--cor-paper);
-  background: var(--cor-pine-claro);
-}
-
-/* Link da Marca na página do evento: mini-logo + nome. */
-.marca-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.marca-logo-mini {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid var(--cor-paper-linha);
-}
-
-/* Aviso rápido (ex: "Link copiado!"). */
+/* ===== Aviso rápido (ex: "Link copiado!") ===== */
 .aviso-flutuante {
   position: fixed;
   left: 50%;
@@ -563,7 +825,7 @@
   border-top: 1px solid var(--borda);
   display: flex;
   justify-content: space-around;
-  padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+  padding: 4px 0 calc(4px + env(safe-area-inset-bottom));
   z-index: 10;
 }
 
@@ -572,15 +834,33 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 2px;
-  font-size: 11px;
-  color: var(--cor-texto-fraco);
-  padding: 4px 12px;
+  min-height: 52px;
+  min-width: 72px;
+  font-size: 12px;
+  color: var(--cor-texto-suave);
+  padding: 6px 12px;
   background: none;
   border: none;
+  border-radius: var(--raio-campo);
 }
 
-.nav-inferior svg { width: 22px; height: 22px; }
+.nav-inferior svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--traco-icone);
+}
+
+.nav-inferior a:hover { background: var(--cor-pine-claro); }
+
+/* Antes era --cor-clay (4,42:1). Agora clay-escuro, 8,4:1. */
+.nav-inferior a[aria-current="page"] {
+  color: var(--cor-clay-escuro);
+  font-weight: 700;
+}
 
 /* ===== Menu lateral (drawer) ===== */
 .menu-overlay {
@@ -590,48 +870,55 @@
   z-index: 20;
 }
 
-.menu-overlay[hidden] {
-  display: none;
-}
+.menu-overlay[hidden] { display: none; }
 
 .menu-lateral {
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
-  width: min(78%, 320px);
+  width: min(82%, 340px);
   background: var(--bg-pagina);
   z-index: 21;
   transform: translateX(-100%);
-  transition: transform 0.22s ease;
+  visibility: hidden;
+  /* visibility entra com atraso no fechamento (some depois da animação),
+     mas precisa ficar visível IMEDIATAMENTE na abertura — senão o foco
+     não consegue entrar no menu (bug encontrado em 2026-10-28). */
+  transition: transform 0.22s ease, visibility 0s linear 0.22s;
   display: flex;
   flex-direction: column;
   box-shadow: var(--sombra-flutuante);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .menu-lateral.aberto {
   transform: translateX(0);
+  visibility: visible;
+  transition: transform 0.22s ease, visibility 0s;
 }
 
 .menu-lateral-topo {
   background: var(--cor-pine-escuro);
   color: var(--cor-paper);
-  padding: var(--esp-xl) var(--esp-md) var(--esp-lg);
+  padding: calc(env(safe-area-inset-top) + 32px) var(--esp-md) var(--esp-lg);
 }
 
 .menu-lateral-topo p {
   font-size: var(--tam-caption);
-  opacity: 0.8;
+  opacity: 0.85;
   margin-bottom: 2px;
 }
 
 .menu-lateral-topo h2 {
   font-size: var(--tam-titulo-lg);
+  line-height: 1.15;
 }
 
 .menu-lateral-acao-auth {
   margin-top: var(--esp-sm);
-  padding: 6px 14px;
+  min-height: 36px;
+  padding: 6px 16px;
   font-size: var(--tam-caption);
   font-weight: 600;
   color: var(--cor-paper);
@@ -652,18 +939,31 @@
 }
 
 .menu-lateral-links a {
-  padding: 14px var(--esp-md);
+  display: flex;
+  align-items: center;
+  min-height: var(--toque-min);
+  padding: 12px var(--esp-md);
   font-weight: 600;
   font-size: var(--tam-corpo);
   color: var(--cor-texto);
   border-bottom: 1px solid var(--borda);
 }
 
-.nav-inferior a[aria-current="page"] {
-  color: var(--cor-clay);
+.menu-lateral-links a:hover { background: var(--cor-pine-claro); }
+
+.menu-lateral-rodape {
+  margin-top: auto;
+  padding: var(--esp-md);
+  font-size: 12px;
+  color: var(--cor-texto-fraco);
 }
 
-/* ===== Visualizador de Stories (eventos do dia, tela cheia) ===== */
+.menu-lateral-rodape a { text-decoration: underline; }
+
+/* ===== Carrossel de eventos do dia (ex-"stories") =====
+   Antes havia uma barra de progresso que prometia auto-advance e não
+   existia. Agora é um carrossel paginado explícito: contador, setas e
+   swipe. */
 .story-viewer {
   position: fixed;
   inset: 0;
@@ -671,57 +971,54 @@
   background: var(--cor-pine-escuro);
   display: flex;
   flex-direction: column;
+  padding-top: env(safe-area-inset-top);
 }
 
-.story-viewer[hidden] {
-  display: none;
-}
+.story-viewer[hidden] { display: none; }
 
-.story-progress {
+.story-topo {
   display: flex;
-  gap: 4px;
-  padding: calc(env(safe-area-inset-top) + 10px) var(--esp-md) 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--esp-md);
+  padding: 10px var(--esp-md) 6px;
 }
 
-.story-progress-segmento {
-  flex: 1;
-  height: 3px;
-  border-radius: 999px;
-  background: rgba(245, 239, 225, 0.3);
-  overflow: hidden;
-}
-
-.story-progress-segmento.preenchido {
-  background: var(--cor-paper);
+.story-contador {
+  color: var(--cor-paper);
+  font-size: var(--tam-caption);
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 .story-fechar {
-  position: absolute;
-  top: calc(env(safe-area-inset-top) + 8px);
-  right: var(--esp-md);
-  width: 36px;
-  height: 36px;
+  width: var(--toque-min);
+  height: var(--toque-min);
   border-radius: 50%;
-  background: rgba(20, 15, 10, 0.4);
+  background: rgba(245, 239, 225, 0.12);
   color: var(--cor-paper);
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
-  z-index: 2;
 }
-.story-fechar svg { width: 18px; height: 18px; }
+
+.story-fechar:hover { background: rgba(245, 239, 225, 0.22); }
+.story-fechar svg { width: 20px; height: 20px; }
 
 .story-conteudo {
   flex: 1;
   display: flex;
   overflow: hidden;
+  position: relative;
 }
 
 .story-slide {
   flex: 1;
   display: flex;
   flex-direction: column;
+  padding: 0 var(--esp-md) var(--esp-md);
+  gap: var(--esp-md);
 }
 
 .story-arte {
@@ -729,12 +1026,24 @@
   background: var(--cor-clay);
   background-size: cover;
   background-position: center;
+  border-radius: var(--raio-card);
   display: flex;
   align-items: flex-end;
   padding: var(--esp-lg) var(--esp-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.story-arte::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 47, 38, 0) 40%, rgba(20, 47, 38, 0.8) 100%);
 }
 
 .story-info {
+  position: relative;
+  z-index: 1;
   color: var(--cor-paper);
 }
 
@@ -742,12 +1051,12 @@
   font-size: var(--tam-caption);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
 .story-info .story-titulo {
   font-family: var(--fonte-display);
-  font-size: var(--tam-titulo-lg);
+  font-size: clamp(1.5rem, 6vw, var(--tam-titulo-lg));
   margin: 4px 0 12px;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
 }
@@ -758,35 +1067,171 @@
   gap: 8px;
   font-size: var(--tam-caption);
   margin-top: 6px;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 .story-info .story-dado svg { width: 15px; height: 15px; flex-shrink: 0; }
 
-.story-cta {
-  width: auto;
-  margin: var(--esp-md);
+.story-nav {
+  display: flex;
+  gap: var(--esp-sm);
 }
 
-/* ===== Cabeçalho de perfil (Marca / Local) ===== */
-.perfil-header {
-  background: var(--bg-destaque);
-  color: var(--texto-sobre-destaque);
-  padding: var(--esp-xl) var(--esp-md) var(--esp-lg);
-  border-radius: 0 0 var(--raio-card) var(--raio-card);
+.story-nav .botao { flex: 1; }
+.story-nav .botao[disabled] { visibility: hidden; }
+
+.story-cta { flex: 1; }
+
+.story-seta {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--toque-min);
+  height: var(--toque-min);
+  border-radius: 50%;
+  border: none;
+  background: rgba(20, 15, 10, 0.45);
+  color: var(--cor-paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
 }
 
-.perfil-header .rotulo-eyebrow { color: var(--cor-gold); }
+.story-seta svg { width: 22px; height: 22px; }
+.story-seta--esq { left: 10px; }
+.story-seta--dir { right: 10px; }
+.story-seta:disabled { opacity: 0.35; }
 
-.perfil-header h1 { margin-top: var(--esp-xs); }
+/* ===== Capa de Marca / Local ===== */
+/* Antes a capa era o fundo de um cabeçalho alto (261px no desktop) e a
+   identidade ficava abaixo. Agora é uma faixa curta com logo + nome por cima. */
+.perfil-capa {
+  position: relative;
+  height: clamp(160px, 20vw, 220px);
+  background-color: var(--cor-pine);
+  background-image: linear-gradient(135deg, var(--cor-pine) 0%, var(--cor-pine-escuro) 100%);
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--esp-md);
+  overflow: hidden;
+}
+
+.perfil-capa::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 47, 38, 0.1) 30%, rgba(20, 47, 38, 0.8) 100%);
+  pointer-events: none;
+}
+
+.perfil-capa-conteudo {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: var(--esp-md);
+  color: var(--cor-paper);
+}
+
+.perfil-capa-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid var(--cor-paper);
+  background: var(--cor-pine);
+}
+
+/* Fallback quando a Marca/Local não tem foto: inicial do nome. */
+.avatar-letra {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fonte-display);
+  font-weight: 600;
+  color: var(--cor-paper);
+  text-transform: uppercase;
+}
+
+.perfil-capa-logo.avatar-letra { font-size: 24px; }
+
+.perfil-capa-texto {
+  min-width: 0;
+}
+
+.perfil-capa-texto .rotulo-eyebrow { color: var(--cor-gold); }
+
+.perfil-capa-texto h1 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  line-height: 1.1;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.perfil-capa-texto p {
+  margin-top: 2px;
+  font-size: var(--tam-caption);
+  opacity: 0.9;
+}
+
+.perfil-resumo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-sm);
+  padding: var(--esp-md) 0 var(--esp-xs);
+}
+
+.perfil-resumo .secao-acoes { margin-top: var(--esp-xs); }
+
+@media (min-width: 900px) {
+  .perfil-capa { padding: var(--esp-lg); }
+}
 
 .tag-categoria {
   display: inline-block;
-  background: rgba(245, 239, 225, 0.15);
-  padding: 4px 12px;
+  background: var(--cor-pine-claro);
+  color: var(--cor-pine-escuro);
+  padding: 5px 12px;
   border-radius: var(--raio-pilula);
   font-size: 12px;
-  margin-top: var(--esp-sm);
-  margin-right: 6px;
+  font-weight: 500;
+  margin: 0 6px 6px 0;
+}
+
+.lista-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-sm);
+  margin-top: var(--esp-md);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-campo);
+  color: var(--cor-texto);
+  font-size: var(--tam-caption);
+  font-weight: 600;
+  box-shadow: var(--sombra-card);
+}
+
+.chip:hover { border-color: var(--cor-pine); }
+
+.chip svg {
+  width: 18px;
+  height: 18px;
+  color: var(--cor-clay-escuro);
+  flex-shrink: 0;
 }
 
 /* ===== Estado vazio ===== */
@@ -794,4 +1239,346 @@
   text-align: center;
   padding: var(--esp-xl) var(--esp-md);
   color: var(--cor-texto-suave);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--esp-sm);
+}
+
+.estado-vazio-icone {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.estado-vazio .botao { margin-top: var(--esp-sm); width: auto; padding-left: 24px; padding-right: 24px; }
+
+/* ===== Formulário: status e erros ===== */
+.form-status {
+  margin-top: var(--esp-sm);
+  text-align: center;
+  font-size: var(--tam-caption);
+  color: var(--cor-pine);
+}
+
+.form-status-erro { color: var(--cor-clay-escuro); font-weight: 600; }
+
+/* ===== Agenda agrupada por dia ===== */
+/* Container dos grupos de dia. NÃO pode ser .grade-eventos: os grupos são
+   empilhados e cada um tem sua própria grade de cards (senão no desktop os
+   cards ficam espremidos em 1/3 da largura). */
+.agenda-lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-lg);
+}
+
+.grupo-dia { margin-bottom: 0; }
+
+.grupo-dia-titulo {
+  font-family: var(--fonte-corpo);
+  font-size: var(--tam-caption);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cor-clay-escuro);
+  margin-bottom: var(--esp-sm);
+  padding-bottom: var(--esp-xs);
+  border-bottom: 1px solid var(--borda);
+}
+
+/* ===== Capa do evento ===== */
+/* Antes era aspect-ratio 16/10 em tela cheia: 791px de altura no desktop.
+   Agora tem altura fixa (pequena) e carrega a identidade da Marca por cima. */
+.evento-capa {
+  position: relative;
+  height: clamp(180px, 24vw, 280px);
+  background-color: var(--cor-clay);
+  background-image: linear-gradient(135deg, var(--cor-clay) 0%, var(--cor-clay-escuro) 100%);
+  background-size: cover;
+  background-position: center 30%;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.evento-capa::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 47, 38, 0.05) 30%, rgba(20, 47, 38, 0.85) 100%);
+  pointer-events: none;
+}
+
+.evento-capa-conteudo {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: var(--esp-md);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--esp-md);
+}
+
+.evento-capa-marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--toque-min);
+  color: var(--cor-paper);
+}
+
+.evento-capa-marca img,
+.evento-capa-marca .avatar-letra {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid var(--cor-paper);
+  background: var(--cor-pine);
+}
+
+.evento-capa-marca .info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  min-width: 0;
+}
+
+.evento-capa-marca .rotulo {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.evento-capa-marca .nome {
+  font-family: var(--fonte-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.15;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 60vw;
+}
+
+.evento-capa-acoes {
+  display: flex;
+  gap: var(--esp-sm);
+  flex-shrink: 0;
+}
+
+@media (min-width: 900px) {
+  .evento-capa-conteudo { padding: var(--esp-lg); }
+  .evento-capa-marca .nome { max-width: none; }
+}
+
+/* ===== Conteúdo do evento ===== */
+.evento-conteudo {
+  padding-top: var(--esp-lg);
+  padding-bottom: var(--esp-xl);
+}
+
+.evento-quando {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--cor-clay-escuro);
+  font-size: var(--tam-caption);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.evento-quando svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+.evento-cabecalho h1 {
+  margin-top: var(--esp-xs);
+  font-size: clamp(1.6rem, 4vw, 2.25rem);
+}
+
+.evento-selos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: var(--esp-sm);
+}
+
+.evento-selo {
+  background: var(--cor-pine-claro);
+  color: var(--cor-pine-escuro);
+  border-radius: var(--raio-pilula);
+  padding: 6px 12px;
+  font-size: var(--tam-caption);
+  font-weight: 600;
+}
+
+.evento-selo--destaque {
+  background: var(--cor-pine);
+  color: var(--cor-paper);
+}
+
+.evento-grade {
+  display: grid;
+  gap: var(--esp-lg);
+  margin-top: var(--esp-lg);
+}
+
+/* No celular o cartão de ingresso vem antes da descrição. */
+.evento-aside { order: -1; }
+
+.evento-cartao {
+  background: var(--bg-card);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-card);
+  box-shadow: var(--sombra-card);
+  padding: var(--esp-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-2xs);
+}
+
+.evento-cartao-rotulo {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cor-clay-escuro);
+}
+
+.evento-cartao-rotulo:not(:first-child) { margin-top: var(--esp-md); }
+
+.evento-cartao-destaque {
+  font-family: var(--fonte-display);
+  font-size: var(--tam-titulo-sm);
+  font-weight: 600;
+  color: var(--cor-texto);
+}
+
+.evento-cartao-linha {
+  font-size: var(--tam-caption);
+  color: var(--cor-texto-suave);
+}
+
+/* Atalho "Ver local" dentro do cartão: quem não conhece o espaço resolve
+   o caminho sem sair da página do evento. */
+.evento-cartao-local {
+  display: flex;
+  flex-direction: column;
+}
+
+.evento-cartao-rota {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--toque-min);
+  margin-top: 4px;
+  padding: 0 14px;
+  border: 1px solid var(--cor-pine);
+  border-radius: var(--raio-pilula);
+  color: var(--cor-pine);
+  font-size: var(--tam-caption);
+  font-weight: 600;
+}
+
+.evento-cartao-rota:hover { background: var(--cor-pine-claro); }
+
+.evento-cartao-rota svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.evento-cartao-acoes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-sm);
+  margin-top: var(--esp-md);
+}
+
+.evento-cartao .botao { width: 100%; }
+
+.evento-marca {
+  background: var(--bg-card);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-card);
+  padding: var(--esp-md);
+}
+
+.evento-marca-topo {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-sm);
+}
+
+.evento-marca-topo img,
+.evento-marca-topo .avatar-letra {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--cor-paper-linha);
+  background: var(--cor-pine);
+}
+
+.evento-marca-topo h2 { font-size: var(--tam-titulo-md); }
+
+.evento-marca .secao-acoes { margin-top: var(--esp-md); }
+
+.lista-condicoes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-sm);
+  margin-top: var(--esp-sm);
+}
+
+@media (min-width: 900px) {
+  .evento-conteudo { padding-top: var(--esp-xl); }
+
+  .evento-grade {
+    grid-template-columns: minmax(0, 1fr) 330px;
+    align-items: start;
+  }
+
+  .evento-aside {
+    order: 0;
+    position: sticky;
+    top: var(--esp-md);
+  }
+}
+
+.ingresso-aviso {
+  margin-top: var(--esp-sm);
+  font-size: var(--tam-caption);
+  color: var(--cor-texto-suave);
+}
+
+/* ===== Ações empilhadas (evento, marca, local) ===== */
+.secao-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--esp-sm);
+}
+
+/* Botão de ação não ocupa a linha inteira: antes ficava com largura total
+   em Marca/Local (dois botões gigantes empilhados). */
+.secao-acoes .botao {
+  flex: 0 1 auto;
+  width: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* Precisa vir DEPOIS de .nav-inferior { display: flex } — regra de mesmo
+   peso, então a que aparece por último vence (era o bug do desktop). */
+@media (min-width: 900px) {
+  .nav-inferior { display: none; }
 }

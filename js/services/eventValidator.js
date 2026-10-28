@@ -8,12 +8,21 @@
 // - Se a Marca ainda não tem localPadraoId (null), qualquer Local ativo é aceito
 //   por enquanto — ela ainda não tem um endereço fixo.
 //
-// Futuramente, quando Marca puder ter mais de um Local, essa checagem vira
-// "evento.localId precisa estar entre os locais da marca", não mais igualdade direta.
+// 2026-10-28: passou a validar também a existência/atividade do Local. Antes,
+// um localId quebrado virava "Local em breve" silencioso na tela.
 
-export function validarLocalDoEvento(evento, marca) {
+export function validarLocalDoEvento(evento, marca, local) {
   if (!marca) {
-    return { valido: false, motivo: `Evento "${evento.slug}" referencia uma Marca inexistente (${evento.marcaId}).` };
+    return { valido: false, motivo: `Evento "${evento.slug ?? evento.id}" referencia uma Marca inexistente (${evento.marcaId}).` };
+  }
+
+  // Só checa o Local quando ele foi passado pelo chamador (compatível com o
+  // uso antigo de dois argumentos).
+  if (arguments.length >= 3 && !local) {
+    return {
+      valido: false,
+      motivo: `Evento "${evento.slug ?? evento.id}" referencia um Local inexistente ou inativo (${evento.localId}).`,
+    };
   }
 
   if (!marca.localPadraoId) {
@@ -24,7 +33,7 @@ export function validarLocalDoEvento(evento, marca) {
   if (evento.localId !== marca.localPadraoId) {
     return {
       valido: false,
-      motivo: `Evento "${evento.slug}" usa o Local ${evento.localId}, mas a Marca "${marca.nome}" `
+      motivo: `Evento "${evento.slug ?? evento.id}" usa o Local ${evento.localId}, mas a Marca "${marca.nome}" `
         + `tem localPadraoId ${marca.localPadraoId}. Corrija o localId do evento ou o localPadraoId da marca.`,
     };
   }

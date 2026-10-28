@@ -1,9 +1,15 @@
 // js/pages/favoritos.js
+// Lista de eventos favoritados e marcas seguidas.
+// Revisão 2026-10-28: nomes escapados, estados vazios com CTA e tratamento
+// de erro sem deixar a tela em branco.
+
 import { obterUsuarioAtual, aoMudarAutenticacao } from '../../services/authService.js';
 import { listarFavoritos, listarSeguindo } from '../../services/interacaoService.js';
 import { listarEventosPorIds } from '../services/eventoService.js';
 import { listarMarcasPorIds } from '../services/marcaService.js';
 import { cardEventoHtml } from '../utils/cardEvento.js';
+import { estadoVazioHtml } from '../utils/ui.js';
+import { escaparHtml } from '../utils/format.js';
 import { abrirModalLogin } from '../../components/loginModal.js';
 
 const secaoBloqueada = document.getElementById('favoritos-bloqueado');
@@ -21,6 +27,22 @@ function mostrarEstado(estado) {
   secaoCarregando.hidden = estado !== 'carregando';
   conteudo.hidden = estado !== 'conteudo';
 }
+
+const VAZIO_EVENTOS = estadoVazioHtml({
+  icone: '💛',
+  titulo: 'Nenhum evento favoritado ainda',
+  texto: 'Toca no coração na página de um evento pra guardar aqui.',
+  ctaHref: 'agenda.html',
+  ctaTexto: 'Ver agenda',
+});
+
+const VAZIO_MARCAS = estadoVazioHtml({
+  icone: '🪗',
+  titulo: 'Você ainda não segue nenhum baile',
+  texto: 'Toca em "Seguir" na página de uma Marca pra acompanhar as próximas edições.',
+  ctaHref: 'agenda.html',
+  ctaTexto: 'Descobrir bailes',
+});
 
 async function carregar() {
   mostrarEstado('carregando');
@@ -48,34 +70,43 @@ async function carregar() {
   } catch (erro) {
     console.error('Não foi possível carregar seus favoritos:', erro);
     mostrarEstado('conteudo');
-    listaEventos.innerHTML = '<div class="estado-vazio">Não foi possível carregar agora. Tenta recarregar a página.</div>';
+    listaEventos.innerHTML = estadoVazioHtml({
+      icone: '⚠️',
+      titulo: 'Não foi possível carregar agora',
+      texto: 'Recarrega a página em instantes.',
+      ctaHref: 'index.html',
+      ctaTexto: 'Voltar para a Home',
+    });
+    vazioEventos.hidden = true;
+    listaMarcas.innerHTML = '';
+    vazioMarcas.hidden = true;
   }
 }
 
 function renderizarEventos(eventos) {
   if (eventos.length === 0) {
-    listaEventos.innerHTML = '';
-    vazioEventos.hidden = false;
+    listaEventos.innerHTML = VAZIO_EVENTOS;
+    vazioEventos.hidden = true;
     return;
   }
   vazioEventos.hidden = true;
-  listaEventos.innerHTML = eventos.map((e) => cardEventoHtml(e)).join('');
+  listaEventos.innerHTML = eventos.map((evento) => cardEventoHtml(evento)).join('');
 }
 
 function renderizarMarcas(marcas) {
   if (marcas.length === 0) {
-    listaMarcas.innerHTML = '';
-    vazioMarcas.hidden = false;
+    listaMarcas.innerHTML = VAZIO_MARCAS;
+    vazioMarcas.hidden = true;
     return;
   }
   vazioMarcas.hidden = true;
   listaMarcas.innerHTML = marcas
-    .map((m) => `
+    .map((marca) => `
       <div class="local-mini">
         <div>
-          <p style="font-weight: 600;">${m.nome}</p>
+          <p style="font-weight: 600;">${escaparHtml(marca.nome)}</p>
         </div>
-        <a href="marca.html?slug=${m.slug}">Ver Marca</a>
+        <a href="marca.html?slug=${encodeURIComponent(marca.slug)}">Ver Marca</a>
       </div>
     `)
     .join('');

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacidade — Vai Ter Forró!</title>
+<meta name="description" content="Como o Vai Ter Forró! trata seus dados: o que coletamos, por quê, onde fica guardado e como excluir sua conta.">
+<link rel="canonical" href="https://vaiterforro.com.br/privacidade.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vai Ter Forró!">
+<meta property="og:title" content="Privacidade — Vai Ter Forró!">
+<meta property="og:description" content="O que o Vai Ter Forró! coleta, por quê e como excluir sua conta.">
+<meta property="og:url" content="https://vaiterforro.com.br/privacidade.html">
+<meta property="og:image" content="https://vaiterforro.com.br/assets/icons/icon-512.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="components/modal-login.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#142F26">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-180.png">
+<link rel="icon" href="assets/icons/favicon-32.png" type="image/png">
+</head>
+<body>
+<script src="js/barraTopo.js"></script>
+
+<main class="container">
+  <header class="cabecalho">
+    <p class="rotulo-eyebrow">Privacidade</p>
+    <h1>Seus dados</h1>
+    <p class="texto-suave" style="margin-top: var(--esp-sm);">
+      Esta página explica, em português claro, o que o Vai Ter Forró! guarda sobre
+      você, por quê, e como pedir a exclusão — conforme a LGPD (Lei 13.709/2018).
+    </p>
+  </header>
+
+  <section class="secao">
+    <h2>O que coletamos</h2>
+    <p class="texto-suave" style="margin-top: var(--esp-sm);">
+      Só o necessário para a experiência social do app:
+    </p>
+    <ul class="texto-suave" style="margin: var(--esp-sm) 0 0 var(--esp-md); display: flex; flex-direction: column; gap: 6px;">
+      <li><strong>Conta:</strong> e-mail (Google ou link mágico) — usado só para login.</li>
+      <li><strong>Perfil:</strong> nome, sobrenome, apelido, foto, cidade/estado/país, Instagram, WhatsApp, data de nascimento, gênero e bio — todos opcionais, preenchidos por você.</li>
+      <li><strong>Interações:</strong> quais eventos você favoritou e quais marcas segue.</li>
+    </ul>
+    <p class="texto-fraco" style="margin-top: var(--esp-sm); font-size: var(--tam-caption);">
+      Não usamos cookies de anúncio, não vendemos dados e não rastreamos sua navegação fora do site.
+    </p>
+  </section>
+
+  <section class="secao">
+    <h2>Onde fica guardado</h2>
+    <p class="texto-suave" style="margin-top: var(--esp-sm);">
+      Conta, perfil e interações ficam no <strong>Supabase</strong> (Postgres com
+      Row Level Security): cada pessoa só lê e edita o próprio perfil. A foto fica no
+      Storage do mesmo projeto. O catálogo de eventos, marcas e locais é público e não
+      tem relação com seus dados pessoais.
+    </p>
+  </section>
+
+  <section class="secao">
+    <h2>Seus direitos</h2>
+    <p class="texto-suave" style="margin-top: var(--esp-sm);">
+      Você pode ver, corrigir e apagar seus dados. Ver e corrigir já é possível em
+      <a href="perfil.html" style="text-decoration: underline;">Meu Perfil</a> →
+      Editar perfil. Para <strong>excluir a conta</strong> (e tudo que está ligado a ela),
+      envie um pedido para o contato abaixo: a exclusão é feita em até 30 dias.
+    </p>
+  </section>
+
+  <section class="secao" style="padding-bottom: var(--esp-xl);">
+    <h2>Contato</h2>
+    <p class="texto-suave" style="margin-top: var(--esp-sm);">
+      Dúvidas sobre dados: fale com o Movimento Livre de Forró pelo Instagram
+      <a href="https://www.instagram.com/movimentolivredeforro/" target="_blank" rel="noopener" style="text-decoration: underline;">@movimentolivredeforro</a>.
+    </p>
+    <p class="texto-fraco" style="margin-top: var(--esp-md); font-size: var(--tam-caption);">
+      Última atualização: 28 de outubro de 2026.
+    </p>
+  </section>
+</main>
+
+<script src="js/pwa.js"></script>
+</body>
+</html>

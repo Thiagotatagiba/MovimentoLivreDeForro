@@ -11,7 +11,7 @@
     "ingresso": {
       "precoAPartirDe": 0,
       "link": "em breve",
-      "plataforma": "Na porta"
+      "tipoEntrada": "Ingresso no Local"
     },
     "lineup": {
       "bandas": [],
@@ -34,7 +34,7 @@
     "ingresso": {
       "precoAPartirDe": 0,
       "link": "em breve",
-      "plataforma": "Na porta"
+      "tipoEntrada": "Ingresso no Local"
     },
     "lineup": {
       "bandas": [
@@ -57,7 +57,7 @@
     "ingresso": {
       "precoAPartirDe": 0,
       "link": "em breve",
-      "plataforma": "Na porta"
+      "tipoEntrada": "Ingresso no Local"
     },
     "lineup": {
       "bandas": [],
@@ -80,7 +80,7 @@
     "ingresso": {
       "precoAPartirDe": 0,
       "link": "em breve",
-      "plataforma": "Na porta"
+      "tipoEntrada": "Ingresso no Local"
     },
     "lineup": {
       "bandas": [],
@@ -103,7 +103,7 @@
     "ingresso": {
       "precoAPartirDe": 15,
       "link": "em breve",
-      "plataforma": "Na porta"
+      "tipoEntrada": "Ingresso no Local"
     },
     "lineup": {
       "bandas": [
@@ -126,7 +126,7 @@
     "ingresso": {
       "precoAPartirDe": 30,
       "link": "https://sympla.com.br/em-breve",
-      "plataforma": "Sympla"
+      "tipoEntrada": "Ingresso Online"
     },
     "lineup": {
       "bandas": [
@@ -261,14 +261,14 @@
     "slug": "forro-do-praia-2026-11-05",
     "marcaId": "mrc-007",
     "localId": "loc-007",
-    "titulo": "Forró do Praia - 05 de Novembro",
+    "titulo": "Quinta Pé de Serra",
     "data": "2026-11-05",
     "horario": "19:00",
-    "descricao": "O verão se aproxima e o Forró do Praia está de volta e temos novidades 🍀 Dia 05 de Novembro estreia Quinta pé de serra 🪗\n\n• Todas as quintas no Oasis Beach Club - 19h a 1h\n\nDas 19h às 20h - Aulão de forró com a equipe Forrozen\n\n• Em seguida o dj Gabriel Rasta comanda a pista\n\n• A música ao vivo fica com a banda Forrofia e seus convidados\n\n• Ingressos : 20,00 antecipado até 17h de 05.11\n\nO @oasisbeachclubvix fica localizado na Praia de Camburi , com a aquele clima de beira de mar pra você dançar e curtir aquele pé de serra",
+    "descricao": "🪗 Tá chegando o verão e o Forró do Praia está de volta! A novidade é a “Quinta Pé de Serra”.\n\n• Estreia dia 05 de novembro, às 19h\n• Das 19h às 20h, aulão de forró com a equipe Forrozen\n• Depois, DJ Rasta comanda a pista\n• Música ao vivo com Forrofia e convidados\n\nO Oásis Beach Club fica na Praia de Camburi, com clima de beira-mar pra dançar pé de serra.",
     "ingresso": {
       "precoAPartirDe": 20,
-      "link": "em breve",
-      "tipoEntrada": "Ingresso no Local"
+      "link": "https://wa.me/5527997374267?text=Quero%20garantir%20meu%20ingresso%20antecipado%20(R%24%2020)%20da%20Quinta%20P%C3%A9%20de%20Serra%20(05%2F11)",
+      "tipoEntrada": "Ingresso Online"
     },
     "lineup": {
       "bandas": [
@@ -278,8 +278,21 @@
         "DJ Rasta"
       ]
     },
-    "imagemUrl": "em breve",
-    "condicoesEspeciais": [],
+    "imagemUrl": "assets/eventos/forro-do-praia-quinta-pe-de-serra-2026-11-05.webp",
+    "condicoesEspeciais": [
+      {
+        "tipo": "outros",
+        "descricao": "Ingresso antecipado R$ 20 via Pix — chave uniaodoforro@gmail.com"
+      },
+      {
+        "tipo": "outros",
+        "descricao": "Envie o comprovante no WhatsApp (27) 99737-4267"
+      },
+      {
+        "tipo": "outros",
+        "descricao": "Aulão de forró das 19h às 20h com a equipe Forrozen"
+      }
+    ],
     "ativo": true
   },
   {
@@ -395,6 +408,72 @@
       {
         "tipo": "aniversariante",
         "descricao": "Aniversariante do Mês? 👉 Faça o Cadastro de Aniversariante até 03/10 pelo WhatsApp e ganhe o ingresso 🥳 📲 (27) 99962-5136"
+      }
+    ],
+    "ativo": true
+  },
+  {
+    "id": "evt-016",
+    "slug": "forro-do-bombar-carioca-flor-da-penha-2026-10-30",
+    "marcaId": "mrc-003",
+    "localId": "loc-006",
+    "titulo": "Forró do Bombar — Flor da Penha",
+    "data": "2026-10-30",
+    "horario": "18:00",
+    "descricao": "Sexta no BomBar Carioca com Flor da Penha, a partir das 18h.",
+    "ingresso": {
+      "precoAPartirDe": 15,
+      "link": "em breve",
+      "tipoEntrada": "Ingresso no Local"
+    },
+    "lineup": {
+      "bandas": [
+        "Flor da Penha"
+      ],
+      "djs": []
+    },
+    "imagemUrl": "assets/eventos/forro-bombar-flor-da-penha-2026-10-30.webp",
+    "condicoesEspeciais": [
+      {
+        "tipo": "outros",
+        "descricao": "Ingresso R$ 15 até 20h · R$ 20 após as 20h"
+      },
+      {
+        "tipo": "outros",
+        "descricao": "Rodada dupla de caipirinha até 21h30"
+      }
+    ],
+    "ativo": true
+  },
+  {
+    "id": "evt-017",
+    "slug": "forro-na-wine-jardim-da-penha-2026-10-29",
+    "marcaId": "mrc-004",
+    "localId": "loc-004",
+    "titulo": "Forró da Wine — Felipe Pé",
+    "data": "2026-10-29",
+    "horario": "20:30",
+    "descricao": "Quinta na WineBeer de Jardim da Penha com Felipe Pé, a partir das 20h30.",
+    "ingresso": {
+      "precoAPartirDe": 0,
+      "link": "em breve",
+      "tipoEntrada": "Gratuito"
+    },
+    "lineup": {
+      "bandas": [
+        "Felipe Pé"
+      ],
+      "djs": []
+    },
+    "imagemUrl": "assets/eventos/forro-na-wine-felipe-pe-2026-10-29.webp",
+    "condicoesEspeciais": [
+      {
+        "tipo": "outros",
+        "descricao": "Entrada gratuita — sem couvert"
+      },
+      {
+        "tipo": "outros",
+        "descricao": "Transmissão no telão do Clássico dos Milhões"
       }
     ],
     "ativo": true

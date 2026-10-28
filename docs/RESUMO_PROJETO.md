@@ -19,6 +19,11 @@ Backend/Auth: Supabase. Deploy: GitHub Pages.
 
 - **Catálogo de eventos**: entidades Marca, Evento e Local, com dados reais
   validados (zero referências quebradas).
+- **Busca** na Home (marca, local ou evento, tolerante a acento) e **bloco
+  "Hoje"** respondendo à pergunta central — inclusive quando não tem baile.
+- **Página de evento** com compartilhar, "adicionar ao calendário" (.ics) e
+  preço/horário no card.
+- **Privacidade (LGPD)**: página explicando coleta, armazenamento e exclusão.
 - **Painel administrativo** completo (cadastro de Marcas/Eventos/Locais, com
   validação e soft-delete), lendo/escrevendo os JSONs direto do disco.
 - **Site público**: Home, Agenda, Evento, Marca, Local, Sobre — redesenhado

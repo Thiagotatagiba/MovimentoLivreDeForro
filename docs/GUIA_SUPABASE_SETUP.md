@@ -7,10 +7,11 @@ Este documento complementa `docs/ARQUITETURA.md` e `docs/DECISOES_DE_ARQUITETURA
 A camada de catálogo (Eventos/Marcas/Locais) continua em JSON — Supabase entra
 apenas para dados de usuário.
 
-**Status atual:** Login (Google + Magic Link) e Perfil — **implementados e em
-produção**. Interações (favoritar/seguir) — desenhadas abaixo, mas a tabela
-**ainda não foi criada** no Supabase; existe só como código em
-`services/interacaoService.js`, não conectado a nenhuma página ainda.
+**Status atual:** Login (Google + Magic Link), Perfil e **Interações**
+(favoritar evento / seguir marca) — implementados e em produção. As migrações
+estão em `sql/perfis.sql` e `sql/interacoes.sql`; ambas já foram executadas no
+projeto. O que ficou pendente é a revisão de privacidade da policy de leitura
+(ver seção 8).
 
 ---
 
@@ -63,7 +64,10 @@ create table perfis (
 Note que **não há coluna de e-mail** em `perfis` — ele é sempre lido de
 `auth.users` (a sessão), nunca duplicado (ver `docs/MODELO_DE_DADOS.md`).
 
-## 2.1. Schema SQL — Interações (⏳ desenhado, NÃO implementado ainda)
+## 2.1. Schema SQL — Interações (✅ implementado)
+
+O SQL completo e atualizado está em `sql/interacoes.sql` — rode esse arquivo,
+não o resumo abaixo. Resumo conceitual:
 
 ```sql
 create table interacoes (
@@ -71,15 +75,19 @@ create table interacoes (
   usuario_id uuid references auth.users(id) on delete cascade not null,
   entidade_tipo text not null check (entidade_tipo in ('marca', 'evento')),
   entidade_id text not null,
-  tipo text not null check (tipo in ('segue', 'favorito', 'vou', 'talvez')),
-  criado_em timestamptz default now(),
-  ativo boolean default true,
-  unique (usuario_id, entidade_tipo, entidade_id, tipo)
+  tipo text not null check (tipo in ('favorito', 'seguindo')),
+  criado_em timestamptz not null default now(),
+  unique (usuario_id, entidade_tipo, entidade_id, tipo),
+  constraint interacao_tipo_entidade_valida check (
+    (tipo = 'favorito' and entidade_tipo = 'evento') or
+    (tipo = 'seguindo' and entidade_tipo = 'marca')
+  )
 );
 ```
 
-Isso ainda não foi rodado no Supabase. É o item 1 dos "Próximos passos" do
-`ROADMAP.md` — primeira coisa a fazer quando for implementar favoritar/seguir.
+Repare que `tipo` só aceita `favorito`/`seguindo` (o desenho antigo previa
+`segue`/`vou`/`talvez`, que não foram adotados) e que favorito só existe em
+evento, seguindo só em marca.
 
 ## 3. Row Level Security (RLS)
 
@@ -88,19 +96,13 @@ próprio dono (`auth.uid() = id`). Sem política de `insert`: a linha só nasce
 pelo gatilho de auto-criação, nunca diretamente via API — evita perfis
 duplicados ou "órfãos".
 
-**Interações (⏳ ainda por rodar, quando a tabela for criada):**
-```sql
-alter table interacoes enable row level security;
+**Interações (✅ aplicado em `sql/interacoes.sql`):** leitura pública
+(`using (true)`, necessária pra contagem agregada futura), insert/delete só do
+próprio `usuario_id`, sem policy de update (alternar = inserir ou remover).
 
-create policy "Interacoes sao publicas para leitura"
-  on interacoes for select using (true);
-
-create policy "Usuario so insere sua propria interacao"
-  on interacoes for insert with check (auth.uid() = usuario_id);
-
-create policy "Usuario so atualiza sua propria interacao"
-  on interacoes for update using (auth.uid() = usuario_id);
-```
+> ⚠️ Revisão pendente: a leitura pública também permite listar quem favoritou
+> o quê. Se a intenção for só número agregado, trocar por view/RPC — ver
+> `MELHORIAS.md` (SEC-02).
 
 **Atenção ao criar funções de gatilho (como a de auto-criação de perfil):** o
 Postgres concede `EXECUTE` a `PUBLIC` por padrão na criação de qualquer
@@ -176,18 +178,12 @@ seção "Dados de usuário"). Funções: `obterPerfil(usuarioId)`,
 `salvarPerfil(usuarioId, dados)`, `enviarAvatar(usuarioId, arquivo)` (upload
 pro bucket `avatares` do Supabase Storage).
 
-## 6.1. Serviço de interações (⏳ código existe, não conectado, tabela não existe)
+## 6.1. Serviço de interações (✅ implementado)
 
-`services/interacaoService.js` já tem a forma abaixo escrita, mas **vai
-falhar em runtime** até a tabela `interacoes` ser criada (seção 2.1):
-```js
-import { supabase } from '../data/supabaseClient.js'
-import { obterUsuarioAtual } from './authService.js'
-
-export async function favoritarEvento(eventoId) { /* ... */ }
-export async function seguirMarca(marcaId) { /* ... */ }
-```
-Confira o arquivo real antes de usar — pode já ter evoluído desde este guia.
+`services/interacaoService.js` exporta `verificarInteracao`,
+`alternarInteracao`, `listarFavoritos` e `listarSeguindo`. A UI usa em
+`components/botaoInteracao.js` (evento.html e marca.html) e em
+`js/pages/favoritos.js`.
 
 ## 7. Limites do plano gratuito a ter em mente
 
@@ -195,11 +191,11 @@ Confira o arquivo real antes de usar — pode já ter evoluído desde este guia.
 - Sem backups automáticos nem SLA no plano free
 - Projeto pausa automaticamente após 7 dias sem requisições de API — reativa manualmente pelo dashboard quando isso acontecer
 
-## 8. Quando for implementar Interações (próximo passo real)
+## 8. Pendências de Interações
 
-1. Rodar o SQL da seção 2.1 e as políticas da seção 3
-2. Lembrar do `revoke execute` se criar alguma função de gatilho nova
-3. Conferir `services/interacaoService.js` contra o padrão real de `perfilService.js`
-4. Testar RLS direto no SQL Editor antes de confiar no client (inserir com
-   `usuario_id` de outro usuário deve falhar)
-5. Conectar à UI: botão de favoritar em `evento.html`, de seguir em `marca.html`
+1. Revisar a policy de leitura pública (SEC-02 do `MELHORIAS.md`): expor só
+   contagem agregada ou documentar a decisão de expor as linhas.
+2. Se for criar função de gatilho nova, lembrar do `revoke execute`.
+3. Testar RLS no SQL Editor ao mudar qualquer policy (inserir com
+   `usuario_id` de outro usuário deve falhar).
+4. Contagem social ("X pessoas vão") depende do item 1.

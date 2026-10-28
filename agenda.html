@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Agenda — Vai Ter Forró!</title>
+<meta name="description" content="A agenda completa do forró pé de serra na Grande Vitória: todos os bailes, por dia e por categoria.">
+<link rel="canonical" href="https://vaiterforro.com.br/agenda.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vai Ter Forró!">
+<meta property="og:title" content="Agenda — Vai Ter Forró!">
+<meta property="og:description" content="A agenda completa do forró pé de serra na Grande Vitória: todos os bailes, por dia e por categoria.">
+<meta property="og:url" content="https://vaiterforro.com.br/agenda.html">
+<meta property="og:image" content="https://vaiterforro.com.br/assets/icons/icon-512.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
@@ -25,9 +34,10 @@
   </header>
 
   <div class="pills" id="pills-categoria" role="group" aria-label="Filtrar por categoria"></div>
+  <p id="agenda-status" class="texto-fraco" role="status" style="font-size: var(--tam-caption); margin-bottom: var(--esp-sm);"></p>
 
   <section class="secao">
-    <div id="grade-agenda" class="grade-eventos"></div>
+    <div id="grade-agenda" class="agenda-lista"></div>
   </section>
 </main>
 

@@ -1,118 +1,111 @@
-# Vai Ter Forró! — Redesign Terra Acesa
+# Vai Ter Forró! — Site público, PWA e admin
 
-Site público + painel administrativo, com o design system **Terra Acesa**
-(evolução do pine/clay/paper original) e autenticação via Supabase.
+Site + painel administrativo com o design system **Terra Acesa** e Supabase
+para autenticação, perfil e interações.
+
+> **Atualizado em 2026-10-28** com a rodada de melhorias (busca, capa curta,
+> acessibilidade, SEO, cache e card redesenhado). O backlog completo e o que
+> ficou pendente estão em [`MELHORIAS.md`](MELHORIAS.md). Prioridades do dia a
+> dia: `ROADMAP.md` na raiz.
 
 ## Como rodar localmente
 
-As páginas usam `fetch()` para os arquivos de `data/*.json`.
-Isso **não funciona** abrindo o HTML direto no navegador (duplo clique / `file:///C:/...`) — o Chrome
-bloqueia `fetch()` de arquivos locais por segurança, mesmo com caminho relativo
-correto. É preciso servir a pasta por HTTP, mesmo que localmente.
+As páginas usam `fetch()` para os arquivos de `data/*.json`. Isso **não
+funciona** abrindo o HTML direto no navegador (`file://`) — o Chrome bloqueia
+`fetch()` de arquivos locais. Sirva a pasta por HTTP:
 
-**Windows (com Python instalado):**
+**Windows (Python):**
 ```powershell
-cd caminho\para\vai-ter-forro
 python -m http.server 8000
 ```
-Se `python` não for reconhecido, tente `py -m http.server 8000`.
 
-**Windows/Mac/Linux (com Node instalado, sem precisar instalar nada):**
+**Windows/Mac/Linux (Node):**
 ```bash
-cd caminho/para/vai-ter-forro
 npx serve .
 ```
 
-Depois abra `http://localhost:8000/index.html` (ou a porta que o `npx serve`
-mostrar no terminal) — **nunca** o caminho `file://`.
+Depois abra `http://localhost:8000/index.html` — **nunca** `file://`.
 
 **Isso vale ainda mais forte agora que o projeto é um PWA:** o service worker
-(`sw.js`) só registra em contexto seguro (`http://localhost` conta, `file://`
-não). Se você abrir por `file://`, além da agenda não carregar, o app também
-não vai poder ser instalado.
+só registra em contexto seguro (`http://localhost` conta, `file://` não).
 
-Se já tiver testado antes e mudado algum `.js`/`.css`, force um "hard
-refresh" (Ctrl+Shift+R) ou vá em DevTools → Application → Service Workers →
-Unregister + Clear site data — o cache-first do service worker pode mascarar
-mudanças durante o desenvolvimento.
+Se já tiver testado antes e mudado algum `.js`/`.css`, force um "hard refresh"
+(Ctrl+Shift+R) ou vá em DevTools → Application → Service Workers → Unregister +
+Clear site data. O `sw.js` **não cacheia nada em localhost**, justamente pra
+evitar esse tipo de fantasma.
 
 **Login com Google/Magic Link** exige um projeto Supabase configurado — ver
 `docs/GUIA_SUPABASE_SETUP.md`, especialmente a seção sobre Site URL/Redirect
-URLs (passo fácil de esquecer, e que já causou bugs reais aqui).
+URLs.
+
+**Antes de deploy:** rode `node scripts/validar-dados.js` (integridade dos JSONs
+e dos arquivos de imagem).
 
 ## Estrutura
 
 ```
-index.html              → Home ("onde tem forró hoje?")
-agenda.html              → Agenda completa com filtro por categoria
-evento.html               → Detalhe do evento (?slug=)
-marca.html                 → Perfil da Marca (?slug=)
-local.html                  → Perfil do Local (?slug=)
+index.html              → Home: bloco "Hoje", busca, Tira de Dias, próximos bailes
+agenda.html              → Agenda agrupada por dia, com filtro por categoria
+evento.html               → Detalhe do evento (?slug=), .ics e compartilhar
+marca.html                 → Perfil da Marca (?slug=), com próximos eventos e histórico
+local.html                  → Perfil do Local (?slug=), mapa e contato
 sobre.html
-favoritos.html               → Placeholder (login já existe; falta a tabela
-                                `interacoes` — ver ROADMAP.md, item 1)
-configuracoes.html            → Botão de instalar o PWA
-perfil.html                    → Visualização do perfil (somente leitura)
-perfil-editar.html              → Edição do perfil (Nome, foto, localização,
-                                  Instagram, WhatsApp, data de nascimento,
-                                  gênero, bio)
+favoritos.html               → Favoritos e marcas seguidas (requer login)
+perfil.html                   → Visualização do perfil
+perfil-editar.html             → Edição do perfil
+configuracoes.html              → Instalação do PWA
+privacidade.html                 → LGPD: o que coletamos, como excluir
 
-manifest.json           → nome, cores, ícones do PWA
-sw.js                     → service worker (cache-first estático, network-only pra dados)
+manifest.json, sw.js, robots.txt, sitemap.xml
+scripts/validar-dados.js        → validação sem dependências (node)
 
-admin/                   → Painel administrativo (Cadastro Geral): cadastro
-                           de Marcas/Eventos/Locais, usa File System Access
-                           API pra ler/escrever os JSONs direto do disco
-
-assets/
-  icons/                 → ícones do PWA e avatar padrão
+admin/                   → Painel administrativo (File System Access API)
 
 css/
-  tokens.css        → paleta Terra Acesa + tipografia (Fraunces/Work Sans)
-  base.css          → reset e layout global
-  components.css    → cards, pills, nav, botões, menu lateral
-  perfil.css        → formulário de perfil-editar.html
-  perfil-visualizar.css → card de perfil.html
+  tokens.css        → paleta Terra Acesa, tipografia, espaçamento, alvo de toque
+  base.css          → reset, tipografia fluida, container responsivo
+  components.css    → cards, pills, nav, botões, drawer, carrossel, skeletons
+  perfil.css        → formulário de perfil
+  perfil-visualizar.css → card de perfil
 
 components/
-  loginModal.js      → modal de login (Google + Magic Link)
-  modal-login.css     → estilo do modal acima
-  painelUsuario.js     → conteúdo do painel "Bem vindo," no menu lateral
-                         (nome/avatar ou botão Entrar), chamado por js/pwa.js
+  loginModal.js      → modal de login (Google + Magic Link), com foco preso
+  painelUsuario.js   → painel "Bem vindo," do menu lateral
+  botaoInteracao.js  → favoritar/seguir
+  compartilhar.js    → Web Share API + fallback de cópia
 
 js/
-  barraTopo.js      → gera a barra do topo (logo + favoritos + busca/voltar)
-                      em toda página — script clássico, síncrono, de propósito
-                      (ver docs/DECISOES_DE_ARQUITETURA.md, 2026-09-30)
-  pwa.js            → registro do service worker + gera nav inferior e menu
-                      lateral + inicializa o painel de usuário (tudo
-                      carregado em toda página)
+  barraTopo.js      → barra do topo (logo, nav desktop, favoritos, busca/voltar)
+  pwa.js            → service worker, nav inferior, drawer (inert + foco)
   repositories/     → só busca o JSON, sem regra de negócio
-  services/         → junta Evento + Marca + Local, aplica regras + integridade referencial
-  utils/format.js   → formatação de data/preço/endereço
+  services/         → join Evento+Marca+Local, busca, validação
+  utils/            → format, card, UI, metatags
   pages/            → um script por página, só renderização
 
 services/
   authService.js     → login/logout/sessão via Supabase
   perfilService.js    → ler/salvar perfil + upload de foto
-  interacaoService.js  → favoritar/seguir — código pronto, tabela ainda não
-                         criada no Supabase (ver docs/GUIA_SUPABASE_SETUP.md)
+  interacaoService.js  → favoritar evento / seguir marca
 
 data/
   eventos.json, marcas.json, locais.json  → dados reais
-  supabaseClient.js                        → configuração do Supabase (URL + anon key)
+  supabaseClient.js                        → configuração do Supabase
 
 sql/
-  perfis.sql    → migração completa de Perfil (tabela, gatilho, RLS, Storage)
+  perfis.sql, interacoes.sql  → migrações do Supabase
 ```
 
-Nenhuma página do site público tem mais HTML de navegação (barra do topo,
-nav inferior, menu lateral) hardcoded — tudo nasce de `js/barraTopo.js` e
-`js/pwa.js`. Ver `docs/DECISOES_DE_ARQUITETURA.md` (2026-09-30) se for mexer
-nisso.
+Nenhuma página do site público tem HTML de navegação hardcoded — tudo nasce de
+`js/barraTopo.js` e `js/pwa.js`.
+
+## Regras de design (novas)
+
+- Cores, espaçamento e tipografia só via tokens de `css/tokens.css`.
+- Nada de `style="font-size: ..."` em template novo: a hierarquia é do CSS.
+- Contraste mínimo AA, alvo de toque 44px, foco visível.
+- Imagem de card é `<img loading="lazy">`, não `background-image`.
 
 ## O que falta
 
-Ver `ROADMAP.md` (na raiz do projeto) para a lista priorizada — ele é o
-documento vivo, atualizado a cada sessão. `docs/DECISOES_DE_ARQUITETURA.md`
-tem o histórico completo de decisões e o porquê de cada uma.
+Ver `ROADMAP.md` (prioridades do momento) e `MELHORIAS.md` (backlog completo,
+com o que já foi entregue e o que ficou pendente).

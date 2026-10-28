@@ -842,3 +842,208 @@ inválido. Falta o teste final no Chrome de verdade.
 **Possível próximo passo:** o mesmo botão para `imagemUrl` do Evento
 (`assets/eventos/{slug}.{ext}`) — o `campoImagem.js` foi escrito de forma a
 poder ser reaproveitado.
+
+## 2026-10-28 — Rodada de melhorias: busca, recorrência, design e cache
+
+Rodada feita a partir da auditoria em `MELHORIAS.md` (P0/P1). Nada mudou de
+schema no Supabase; as decisões de produto estão abaixo.
+
+**Busca (PRD-01).** O campo de busca da Home existia, abria e não buscava nada.
+Agora `js/services/buscaService.js` busca em memória (9 marcas, 12 locais, 15
+eventos + virtuais), normaliza acento com `normalizar()` e ordena por
+relevância (exato → prefixo → contém), limitando a 8. **Por que client-side:**
+o catálogo é estático e pequeno; endpoint/índice seria complexidade sem
+benefício. A interface só mostra resultados a partir de 2 caracteres e usa
+`role="status"` para anunciar a contagem.
+
+**Recorrência semanal (PRD-02).** A maior lacuna de produto: `Marca` guardava
+`frequencia`/`diasSemana`, mas a agenda só tinha datas únicas — 3 eventos
+futuros, nenhum na semana corrente. `recorrenciaService.js` **materializa em
+memória** as próximas ocorrências semanais (até 4 por Marca, 4 semanas),
+herdando horário/preço/imagem do evento real mais recente. **Decisão:** não
+mudar o schema nem gravar no JSON (o admin continua a fonte de verdade) e não
+gerar `mensal` (não há como saber "qual sábado do mês" sem perguntar ao
+admin). Evento real sempre tem prioridade: data já cadastrada não é duplicada.
+O virtual tem `virtual: true`, `slug: null` e o card aponta para a Marca.
+Efeito: 3 → 22 eventos futuros; a Tira de Dias passou a ter badge em 5 dos 7
+dias. **Limitação conhecida:** horário/preço herdados podem estar
+desatualizados — por isso o card aponta para a Marca, e não para uma página de
+detalhe da ocorrência. (Na revisão 3 o selo "Semanal" foi removido do card: ele
+podia sugerir recorrência garantida. **A geração inteira foi removida em
+seguida — ver continuação 4.**)
+
+**Soft-delete (TEC-03).** Desativar Marca ou Local agora esconde os eventos: o
+`eventoService` descarta o evento quando o join não resolve (antes aparecia
+como "Marca em breve" para sempre). `obterEventoCompleto` também devolve
+`null`.
+
+**Validador (TEC-05).** `validarLocalDoEvento` ganhou o terceiro parâmetro
+`local` e passa a acusar Local inexistente/inativo — antes um `localId`
+quebrado era silencioso.
+
+**Design e acessibilidade.** Substituímos o card de evento por uma anatomia
+com horário, preço (selo) e título de 2 linhas; a imagem virou `<img
+loading="lazy" decoding="async">` com `aspect-ratio`, em vez de
+`background-image`. Contraste: `--cor-texto-fraco` de `#9C8E76` (2,8:1) para
+`#7A6B55` (4,5:1); badge de data passou a clay-forte com branco (5,6:1) e
+criamos `--cor-clay-forte` porque o clay puro dava 4,49:1. Alvos de toque
+foram para 44px (`--toque-min`), a barra do topo ganhou ícone de download de
+calendário? não — ganhou logo, nav desktop e chevron de voltar. O modal de
+login passou a fechar com Esc, prender o foco e devolver o foco; o drawer
+fechado usa `inert` (antes os links continuavam focáveis). `prefers-reduced-
+motion` já existia e continua respeitado.
+
+**Carrossel do dia (UX-09).** A antiga "story" tinha barra de progresso sem
+timer, o que prometia auto-advance inexistente. Decisão: **carrossel paginado**
+(contador "1 de 3", setas, swipe por Pointer Events e teclado ←/→/Esc), sem
+timer — mais simples, acessível e coerente com o resto do site. O foco vai
+para o fechar ao abrir e volta ao card de origem ao fechar.
+
+**Service worker (TEC-01/TEC-02).** Resolve a pendência registrada em
+2026-10-07. O estático same-origin virou **stale-while-revalidate** (serve
+cache e atualiza em background), o que elimina o bump manual de `CACHE_NOME` a
+cada deploy; `/data/` continua network-only; **cross-origin passou a ser
+network-only** (antes todo GET era cacheado, incluindo chamadas do Supabase
+cuja cache key é só a URL — risco de resposta de sessão antiga). O pré-cache
+agora inclui os módulos JS (pages/services/utils/components), então o app
+instalado abre offline. `CACHE_NOME` foi para `v4` uma última vez.
+
+**Navegação (UX-10).** O ícone de "voltar" era uma casa (parecia início) e
+levava a uma URL fixa; virou chevron com `history.back()` quando o referrer é
+do site, com fallback pro `data-voltar-topo`. Favoritos e Privacidade entraram
+no drawer; a partir de 900px a nav inferior some e a barra do topo ganha links
+(Início/Agenda/Favoritos/Perfil) e container de 960px. **Por que só isso de
+desktop:** o produto é mobile-first; um redesign desktop completo não é
+prioridade, mas a coluna de 640px com bottom nav era um artefato visível.
+
+**SEO (SEO-01/02/03).** Metatags, Open Graph, Twitter e canonical em todas as
+páginas públicas; `robots.txt` com `Disallow: /admin/`; `sitemap.xml` gerado a
+partir dos JSONs (40 URLs); `noindex` no admin. **Limitação mantida:** páginas
+de evento/marca/local são montadas por JS — robôs de prévia não veem o
+conteúdo. `utils/meta.js` atualiza as tags quando há JS, mas a prévia correta
+no WhatsApp continua exigindo pré-render (registrado no ROADMAP).
+
+**LGPD (SEC-01).** Criada `privacidade.html` (o que coletamos, onde fica, como
+pedir exclusão) e link no drawer. **Pendente:** exclusão automática de conta
+(Edge Function) — hoje é pedido por contato, com prazo de 30 dias declarado.
+
+**Dados (DAT-01/TEC-10).** WhatsApp de `mrc-008` normalizado para `wa.me`
+(estava como telefone cru e virava link relativo quebrado); `mrc-002` corrigido
+para 13 dígitos. Os 6 eventos com `ingresso.plataforma` foram migrados para
+`tipoEntrada` (mapa: "Na porta" → "Ingresso no Local"). Imagens de Marca
+convertidas para WebP (a capa do Forró do Canto tinha 1,19 MB e era
+byte-idêntica à logo: 68 KB + 15 KB agora); `logo-64.png` novo para a barra.
+
+**Operação e documentação.** `scripts/validar-dados.js` (sem dependências):
+JSON válido, IDs/slugs únicos, refs, `localPadraoId`, schema do ingresso,
+formato de links e existência dos arquivos de imagem — usado nesta rodada.
+Criados `README.md` na raiz, `.gitignore`, `robots.txt`, `sitemap.xml`; removidos
+`Teste.html` e `old.zip`. `MELHORIAS.md` virou o backlog oficial; ROADMAP,
+GUIA_SUPABASE, ARQUITETURA, MODELO_DE_DADOS e README de docs foram atualizados.
+
+**O que ficou de fora de propósito:** contagem social ("X pessoas vão") e
+revisão da policy pública de `interacoes`; exclusão de conta automática; prévia
+OG pré-renderizada; lint/CI; Festival, Bandas/DJs, importadores e mapa (P3).
+
+## 2026-10-28 (continuação) — Capa curta e página de evento em duas colunas
+
+Feedback depois do teste no navegador: *"a capa da marca ou evento ficaram
+enormes quando acessadas do computador, a ideia é ficar pequena a altura; na
+capa tem que ter a foto de perfil da Marca e a marca a que pertence; a página
+de evento é a que mais precisa ser melhorada."*
+
+**Causa:** a página de evento usava `aspect-ratio: 16/10` em largura total —
+**791px de altura no desktop** (medido). Marca e Local usavam a capa como fundo
+de um cabeçalho de 261px, com a identidade da Marca *abaixo* da imagem.
+
+**Decisões:**
+- **Capa do evento:** altura `clamp(180px, 24vw, 280px)`; foto de perfil da
+  Marca (ou inicial, quando não há logo) + rótulo "Marca" + nome sobrepostos,
+  e as ações (compartilhar/favoritar) no canto direito.
+- **Capa de Marca/Local:** `clamp(160px, 20vw, 220px)`, mesma identidade
+  sobreposta à esquerda. Descrição, tags e ações desceram para uma faixa clara
+  (`.perfil-resumo`) — a capa deixou de ser um cabeçalho alto.
+- **Página de evento em duas colunas** a partir de 900px: conteúdo à esquerda e
+  cartão de ingresso `sticky` à direita. No celular o cartão vem **antes** da
+  descrição (`order: -1`), porque é a informação de decisão.
+- **Hierarquia do topo:** data/hora em eyebrow → título → selos de preço e tipo
+  de entrada. O cartão repete data/hora, local e preço com o CTA.
+- **"Como chegar"** na seção de localização (usa `mapsLink` ou lat/long).
+- **Atalho "Ver local" no cartão de ingresso:** quem não conhece o espaço abre a
+  rota no Google Maps direto do cartão, sem passar pela página do Local. O
+  destino é `linkRota()` — coordenadas quando existem, endereço completo como
+  fallback e, por último, o `mapsLink`. O link "Ver Local" (perfil completo)
+  continua na seção de Localização, e a página do Local ganhou "Como chegar"
+  como ação primária + "Ver no mapa".
+- **Véu único:** `estiloMidia`/`estiloCapa` passaram a devolver só a imagem; o
+  gradiente de legibilidade é um `::after` no CSS. Antes o gradiente entrava
+  duas vezes (helper + CSS) e a capa ficava escura demais.
+- **Botões de ação inline:** Seguir/Compartilhar/Ver rota/Ligar não ocupam mais
+  a linha inteira (eram dois botões gigantes empilhados em Marca/Local).
+- **Card de evento (revisão 3):** o selo sobre a foto passou a mostrar a
+  **data** (ou "Hoje"); o **preço** desceu para a linha de informação, sempre
+  como "A partir de R$ X" (o campo é mínimo, não preço fechado). O selo
+  **"Semanal" foi removido** — podia sugerir recorrência garantida. A **foto de
+  perfil da Marca** agora aparece antes do nome sobre a capa (com inicial como
+  fallback quando não há logo).
+- **Evento gratuito sem link:** o cartão mostra apenas "Entrada gratuita" (sem
+  aviso de venda) e o topo tem um selo só ("Grátis"), sem duplicar "Gratuito".
+  Evento com ingresso no local mostra "Ingresso vendido na portaria." Se o link
+  de ingresso for do WhatsApp (`wa.me`), o botão diz "Garantir ingresso no
+  WhatsApp".
+
+**Arquivos:** `css/components.css` (blocos "Capa do evento" e "Capa de
+Marca/Local"), `js/pages/evento.js`, `js/pages/marca.js`, `js/pages/local.js`,
+`js/utils/format.js`.
+
+**Verificação:** alturas medidas em Chrome headless — evento 280px (desktop) /
+180px (mobile); Marca e Local 220px / 160px. Botões de ação medindo 92–176px
+(inline) em vez de ~100% da largura.
+
+## 2026-10-28 (continuação 4) — Ocorrências semanais geradas foram removidas
+
+Depois de ver o site, o Thiago pediu: *"esses eventos testes que você criou, que
+tá escrito 'Toda Quinta', pode excluir — não encontrei ele no código para
+remover."*
+
+**Por que não achava:** as ocorrências não existiam no JSON. Eram geradas em
+memória por `js/services/recorrenciaService.js` a partir de
+`Marca.frequencia`/`diasSemana`, com `virtual: true`, `slug: null` e título
+"Toda quinta". Nada era gravado no disco, então não havia linha para editar ou
+apagar.
+
+**Decisão:** remover a geração e o arquivo. A agenda volta a listar **somente
+eventos reais**. Motivos:
+1. a ocorrência não é confirmada pela Marca — podia prometer baile que não
+   acontece (mesmo risco que o selo "Semanal" já tinha);
+2. não é editável/excluível no admin, o que gera confusão legítima;
+3. o volume artificial (19 virtuais) distorcia a leitura da agenda.
+
+**Consequência:** agenda mais honesta, mas volta a esvaziar entre edições (hoje
+são 5 eventos futuros reais). Se a recorrência voltar, tem que ser com
+confirmação explícita por edição (campo no admin, ex. "confirmar próximas
+datas") ou importação de flyer — nunca por inferência de `frequencia`.
+
+**Arquivos:** removido `js/services/recorrenciaService.js`; limpeza em
+`eventoService.js`, `marcaService.js`, `localService.js`,
+`js/utils/cardEvento.js`, `js/pages/home.js`, `js/pages/marca.js`, `sw.js`;
+docs atualizados (ARQUITETURA, MODELO_DE_DADOS, ROADMAP, MELHORIAS,
+RESUMO_PROJETO, README).
+
+## 2026-10-28 (continuação 5) — Setas da Tira de Dias passaram a flutuar
+
+As duas setas ficavam no fluxo do flex e consumiam ~90px (44px cada + gaps),
+deixando só ~4 dias visíveis no celular. Agora são `position: absolute` sobre
+as bordas da Tira (36px visíveis, com área de toque de 44px via `::after`) e
+cada uma só aparece quando há conteúdo para aquele lado:
+
+- no início, só a seta direita aparece;
+- no fim, só a esquerda;
+- se os 7 dias couberem na largura (≥ ~500px de área útil), **nenhuma** seta
+  aparece — no desktop a Tira já mostra a semana inteira.
+
+O antigo botão "Ver mais" que virava pill no fim foi removido; a página já tem
+o botão "Ver agenda completa" logo abaixo.
+
+**Arquivos:** `index.html`, `js/pages/home.js`, `css/components.css`.
+

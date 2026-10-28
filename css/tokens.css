@@ -1,6 +1,7 @@
 /* tokens.css
    Paleta "Terra Acesa" — evolução direta do pine/clay/paper original,
-   mais rica e contrastada. Ver DECISOES_DE_ARQUITETURA.md (2026-08-20). */
+   mais rica e contrastada. Ver DECISOES_DE_ARQUITETURA.md (2026-08-20).
+   Revisão de acessibilidade em 2026-10-28 (contrastes medidos, ver MELHORIAS.md). */
 
 :root {
   /* cor — base */
@@ -15,6 +16,9 @@
   --cor-clay: #BD5A34;
   --cor-clay-escuro: #7A3A20;
   --cor-clay-claro: #F7E3D8;
+  /* clay-forte: fundo de badge/estado ativo com texto branco (5,6:1).
+     O --cor-clay puro dá 4,49:1 — passa raspando, não serve pra texto pequeno. */
+  --cor-clay-forte: #A84C28;
 
   --cor-gold: #D89A3E;
   --cor-gold-escuro: #7A5518;
@@ -22,7 +26,9 @@
 
   --cor-texto: #241F19;
   --cor-texto-suave: #6B5D48;
-  --cor-texto-fraco: #9C8E76;
+  /* 4,51:1 sobre paper e 5,17:1 sobre card branco (WCAG AA).
+     Era #9C8E76 (2,8:1) — reprovava em texto pequeno. */
+  --cor-texto-fraco: #7A6B55;
 
   /* papéis semânticos */
   --bg-pagina: var(--cor-paper);
@@ -36,25 +42,33 @@
   --fonte-corpo: 'Work Sans', -apple-system, sans-serif;
 
   --tam-caption: 0.8125rem;
-  --tam-corpo: 0.9375rem;
+  --tam-corpo: 1rem;
   --tam-titulo-sm: 1.125rem;
   --tam-titulo-md: 1.375rem;
   --tam-titulo-lg: 1.875rem;
   --tam-titulo-xl: 2.5rem;
 
   /* espaçamento */
+  --esp-2xs: 2px;
   --esp-xs: 4px;
   --esp-sm: 8px;
   --esp-md: 16px;
   --esp-lg: 24px;
   --esp-xl: 40px;
 
+  /* ícone — um único traço para todo o app (era 1.8 na nav e 2 no topo) */
+  --traco-icone: 1.8;
+
   /* forma */
   --raio-card: 16px;
   --raio-pilula: 999px;
   --raio-campo: 12px;
 
+  /* alvo de toque mínimo (WCAG 2.5.8 / Material) */
+  --toque-min: 44px;
+
   /* sombra — usada com moderação, só em elementos flutuantes */
   --sombra-card: 0 2px 12px rgba(36, 31, 25, 0.08);
+  --sombra-card-hover: 0 10px 24px rgba(36, 31, 25, 0.14);
   --sombra-flutuante: 0 8px 24px rgba(36, 31, 25, 0.16);
 }

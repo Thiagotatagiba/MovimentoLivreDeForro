@@ -113,6 +113,19 @@ avatarArquivo.addEventListener('change', async () => {
   const arquivo = avatarArquivo.files[0];
   if (!arquivo || !usuarioAtual) return;
 
+  // Validação antes de subir: sem isso, um .pdf ou uma foto de 12 MB só
+  // falhava depois do upload, com erro cru do Supabase.
+  if (!arquivo.type.startsWith('image/')) {
+    mostrarStatus('Escolha um arquivo de imagem (JPG, PNG ou WebP).', true);
+    avatarArquivo.value = '';
+    return;
+  }
+  if (arquivo.size > 5 * 1024 * 1024) {
+    mostrarStatus('A foto precisa ter menos de 5 MB.', true);
+    avatarArquivo.value = '';
+    return;
+  }
+
   // Preview imediato, antes mesmo do upload terminar.
   avatarPreview.src = URL.createObjectURL(arquivo);
   avatarBotao.disabled = true;

@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Editar Perfil — Vai Ter Forró!</title>
+<meta name="description" content="Edite seu perfil no Vai Ter Forró!.">
+<link rel="canonical" href="https://vaiterforro.com.br/perfil-editar.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vai Ter Forró!">
+<meta property="og:title" content="Editar Perfil — Vai Ter Forró!">
+<meta property="og:description" content="Edite seu perfil no Vai Ter Forró!.">
+<meta property="og:url" content="https://vaiterforro.com.br/perfil-editar.html">
+<meta property="og:image" content="https://vaiterforro.com.br/assets/icons/icon-512.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
@@ -22,7 +31,7 @@
 <main class="container">
   <header class="cabecalho">
     <p class="rotulo-eyebrow">Editar Perfil</p>
-    <h1 style="font-size: var(--tam-titulo-lg);">Seus dados</h1>
+    <h1>Seus dados</h1>
   </header>
 
   <!-- Estado: não logado -->
@@ -117,7 +126,7 @@
     </div>
 
     <button type="submit" class="botao botao-primario" id="perfil-botao-salvar">Salvar</button>
-    <p class="form-perfil-status" id="perfil-status" hidden></p>
+    <p class="form-perfil-status" id="perfil-status" role="status" aria-live="polite" hidden></p>
   </form>
 </main>
 
