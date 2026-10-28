@@ -72,6 +72,7 @@ function gerarMenuLateral() {
     <a href="favoritos.html">Favoritos</a>
     <a href="perfil.html">Meu Perfil</a>
     <a href="agenda.html">Agenda</a>
+    <a href="carteira.html" id="menu-carteira" hidden>Carteira de ingressos</a>
     <a href="sobre.html">Sobre</a>
     <a href="configuracoes.html">Configurações</a>
     <a href="privacidade.html">Privacidade</a>

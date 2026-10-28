@@ -1,0 +1,263 @@
+/* css/carteira.css
+   Carteira de ingressos: lista, janelas (adicionar / detalhe) e seus campos.
+   As janelas seguem o mesmo desenho do modal de login (folha que sobe de baixo). */
+
+/* ---------- lista ---------- */
+.lista-ingressos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--esp-sm);
+  margin-top: var(--esp-md);
+}
+
+.ingresso-cartao {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  padding: var(--esp-md);
+  text-align: left;
+  font-family: inherit;
+  color: var(--cor-texto);
+  background: var(--bg-card);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio-card);
+  box-shadow: var(--sombra-card);
+  cursor: pointer;
+}
+
+.ingresso-cartao-titulo {
+  font-weight: 600;
+  font-size: var(--tam-corpo);
+}
+
+.ingresso-cartao-data {
+  font-size: var(--tam-caption);
+  color: var(--cor-texto-suave);
+}
+
+.ingresso-cartao.usado,
+.ingresso-cartao.arquivado {
+  opacity: 0.65;
+}
+
+.ingresso-selo {
+  margin-top: 6px;
+  padding: 2px 10px;
+  font-size: var(--tam-caption);
+  font-weight: 600;
+  color: var(--cor-pine-escuro);
+  background: var(--cor-pine-claro);
+  border-radius: var(--raio-pilula);
+}
+
+.ingressos-arquivados {
+  margin-top: var(--esp-md);
+  padding-bottom: var(--esp-xl);
+}
+
+.ingressos-arquivados summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--cor-texto-suave);
+  padding: var(--esp-sm) 0;
+}
+
+/* ---------- janelas (folha que sobe de baixo) ---------- */
+.folha-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(20, 47, 38, 0.55);
+}
+
+.folha {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 28px 20px calc(24px + env(safe-area-inset-bottom));
+  background: var(--cor-paper);
+  border-radius: 20px 20px 0 0;
+}
+
+.folha h2 {
+  font-family: var(--fonte-display);
+  font-size: var(--tam-titulo-md, 1.375rem);
+  color: var(--cor-pine);
+  padding-right: 32px;
+}
+
+.folha-sub {
+  margin: 4px 0 var(--esp-md);
+  font-size: var(--tam-caption);
+  color: var(--cor-texto-suave);
+}
+
+.folha-fechar {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--cor-pine);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.folha-acoes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: var(--esp-md);
+}
+
+/* trava a rolagem da página de trás enquanto uma janela está aberta */
+body:has(.folha-overlay) {
+  overflow: hidden;
+}
+
+/* ---------- campos do formulário ---------- */
+.ingresso-campo {
+  margin-bottom: var(--esp-md);
+}
+
+.ingresso-campo label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: var(--tam-caption);
+  color: var(--cor-pine);
+}
+
+.ingresso-input {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: var(--fonte-corpo);
+  font-size: var(--tam-corpo);
+  color: var(--cor-texto);
+  background: var(--cor-paper-alta);
+  border: 1px solid var(--cor-paper-linha);
+  border-radius: var(--raio-campo);
+}
+
+.ingresso-input[readonly] {
+  opacity: 0.7;
+}
+
+.ingresso-ajuda {
+  margin-top: 6px;
+  font-size: var(--tam-caption);
+  color: var(--cor-texto-suave);
+}
+
+.ingresso-erro {
+  margin-top: var(--esp-sm);
+  font-size: var(--tam-caption);
+  font-weight: 600;
+  color: var(--cor-clay-escuro);
+}
+
+.ingresso-vinculo {
+  margin-top: 6px;
+  font-size: var(--tam-caption);
+  font-weight: 600;
+  color: var(--cor-pine);
+}
+
+.ingresso-link {
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: var(--cor-clay);
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* sugestões de eventos da agenda (aparecem logo abaixo do campo) */
+.ingresso-sugestoes {
+  margin-top: 4px;
+  max-height: 220px;
+  overflow-y: auto;
+  list-style: none;
+  background: var(--cor-paper-alta);
+  border: 1px solid var(--cor-paper-linha);
+  border-radius: var(--raio-campo);
+}
+
+.ingresso-sugestao {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--cor-paper-linha);
+}
+
+.ingresso-sugestao:last-child {
+  border-bottom: none;
+}
+
+.ingresso-sugestao:hover {
+  background: var(--cor-pine-claro);
+}
+
+.ingresso-sugestao span {
+  font-size: var(--tam-caption);
+  color: var(--cor-texto-suave);
+}
+
+.ingresso-previa {
+  display: block;
+  max-height: 160px;
+  max-width: 100%;
+  margin-top: var(--esp-sm);
+  border: 1px solid var(--cor-paper-linha);
+  border-radius: var(--raio-campo);
+}
+
+/* ---------- detalhe do ingresso ---------- */
+.ingresso-imagem-area {
+  padding: var(--esp-sm);
+  text-align: center;
+  /* fundo branco: o QR code precisa de contraste pra ser lido na porta */
+  background: #fff;
+  border-radius: var(--raio-campo);
+}
+
+.ingresso-imagem {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.ingresso-status {
+  display: inline-block;
+  margin-bottom: var(--esp-sm);
+  padding: 4px 12px;
+  font-size: var(--tam-caption);
+  font-weight: 600;
+  color: var(--cor-clay-escuro);
+  background: var(--cor-clay-claro);
+  border-radius: var(--raio-pilula);
+}
+
+.ingresso-confirma {
+  font-size: var(--tam-corpo);
+  color: var(--cor-texto);
+}
+
+.botao-perigo {
+  background: var(--cor-clay-escuro);
+  color: var(--cor-paper);
+}

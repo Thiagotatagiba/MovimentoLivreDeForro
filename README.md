@@ -22,6 +22,8 @@ dados de usuário, catálogo em JSON, deploy no GitHub Pages.
 - **Login** com Google e link mágico (Supabase Auth) + **Perfil** com foto,
   bio, redes e localização.
 - **Favoritar eventos e seguir marcas**, com página de Favoritos.
+- **Carteira de ingressos** (privada, só logado): guarda o print do ingresso,
+  marca como usado e arquiva os passados — bucket privado + link assinado.
 - **PWA** com service worker (offline na casca) e prompt de instalação.
 - **Painel administrativo** (`/admin/`) que lê e grava os JSONs direto do disco
   via File System Access API — rode localmente, no Chrome/Edge.
@@ -37,7 +39,8 @@ python -m http.server 8000
 ```
 
 Abra `http://localhost:8000`. Login exige um projeto Supabase configurado — ver
-[`docs/GUIA_SUPABASE_SETUP.md`](docs/GUIA_SUPABASE_SETUP.md).
+[`docs/GUIA_SUPABASE_SETUP.md`](docs/GUIA_SUPABASE_SETUP.md). A Carteira de
+ingressos exige também rodar `sql/ingressos.sql` (tabela + bucket privado).
 
 Antes de publicar, rode a validação dos dados:
 
@@ -51,6 +54,7 @@ node scripts/validar-dados.js
 index.html, agenda.html, evento.html, marca.html, local.html, sobre.html,
 favoritos.html, perfil.html, perfil-editar.html, configuracoes.html,
 privacidade.html            → páginas públicas
+carteira.html               → carteira de ingressos (só logado)
 admin/                      → painel de cadastro (uso local)
 css/                        → tokens, base e componentes
 components/                 → login, painel do usuário, favoritar, compartilhar
@@ -58,9 +62,9 @@ js/repositories/            → leitura dos JSONs
 js/services/                → regra de negócio (join, busca, validação)
 js/pages/                   → um script de renderização por página
 js/utils/                   → formatação, card, UI e metatags
-services/                   → Auth, Perfil e Interações (Supabase)
+services/                   → Auth, Perfil, Interações e Ingressos (Supabase)
 data/                       → eventos.json, marcas.json, locais.json, cliente Supabase
-sql/                        → migrações do Supabase
+sql/                        → migrações do Supabase (perfis, interações, ingressos)
 scripts/                    → validação dos dados
 docs/                       → visão, arquitetura, decisões, guia do Supabase
 ```

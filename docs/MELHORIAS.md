@@ -41,7 +41,7 @@ TEC-11, TEC-14, SEC-02, SEC-04? (não existe), DAT-02, DOC-05, DOC-06, OPS-01.
 **Revisão 2 (mesma data, depois do teste no navegador):** capa do evento e de
 Marca/Local com altura curta e identidade sobreposta, página de evento em duas
 colunas com cartão sticky, "Como chegar" e botões de ação inline. Registrado em
-`DECISOES_DE_ARQUITETURA.md` (2026-10-28, continuação).
+`DECISOES_DE_ARQUITETURA.md` (2026-10-28, continuação 2).
 
 ---
 

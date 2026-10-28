@@ -10,6 +10,8 @@ import { abrirModalLogin } from './loginModal.js';
 export function inicializarPainelUsuario() {
   const nomeEl = document.getElementById('painel-usuario-nome');
   const acaoEl = document.getElementById('painel-usuario-acao');
+  // Item do menu que só faz sentido pra quem está logado (pode não existir na página).
+  const carteiraEl = document.getElementById('menu-carteira');
 
   // Páginas que ainda não tiverem esses elementos simplesmente não fazem nada.
   if (!nomeEl || !acaoEl) return;
@@ -32,6 +34,7 @@ export function inicializarPainelUsuario() {
     // Nome do Google como fallback imediato, enquanto o apelido real do
     // perfil (que pode já ter sido customizado) ainda está carregando.
     nomeEl.textContent = usuario.user_metadata?.full_name || usuario.email || 'Forrozeiro';
+    if (carteiraEl) carteiraEl.hidden = false;
     nomeEl.style.cursor = 'pointer';
     nomeEl.onclick = () => { window.location.href = 'perfil.html'; };
 
@@ -48,6 +51,7 @@ export function inicializarPainelUsuario() {
 
   function renderizarDeslogado() {
     nomeEl.textContent = 'Forrozeiro';
+    if (carteiraEl) carteiraEl.hidden = true;
     nomeEl.style.cursor = '';
     nomeEl.onclick = null;
 

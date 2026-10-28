@@ -1582,3 +1582,5 @@
 @media (min-width: 900px) {
   .nav-inferior { display: none; }
 }
+/* itens do menu que aparecem só em certas situações (ex: Carteira, só logado) */
+.menu-lateral-links a[hidden] { display: none; }
