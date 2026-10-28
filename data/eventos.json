@@ -450,7 +450,7 @@
     "slug": "forro-na-wine-jardim-da-penha-2026-10-29",
     "marcaId": "mrc-004",
     "localId": "loc-004",
-    "titulo": "Forró da Wine — Felipe Pé",
+    "titulo": "Forró da Wine — Felipe Peó",
     "data": "2026-10-29",
     "horario": "20:30",
     "descricao": "Quinta na WineBeer de Jardim da Penha com Felipe Pé, a partir das 20h30.",
@@ -461,7 +461,7 @@
     },
     "lineup": {
       "bandas": [
-        "Felipe Pé"
+        "Felipe Peó"
       ],
       "djs": []
     },
@@ -473,7 +473,7 @@
       },
       {
         "tipo": "outros",
-        "descricao": "Transmissão no telão do Clássico dos Milhões"
+        "descricao": "Transmissão no telão: Vasco e Flamengo"
       }
     ],
     "ativo": true

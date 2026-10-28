@@ -134,10 +134,10 @@
     "site": null,
     "telefone": null,
     "descricao": "Bar localizado em Jardim da Penha, Vitória, com programação de música e eventos.",
-    "ativo": true,
+    "ativo": false,
     "origem": "manual",
-    "criadoEm": null,
-    "atualizadoEm": null
+    "criadoEm": "2026-10-28T20:17:13.016Z",
+    "atualizadoEm": "2026-10-28T20:17:13.016Z"
   },
   {
     "id": "loc-006",
@@ -310,7 +310,7 @@
   {
     "id": "loc-012",
     "slug": "taiko-beach",
-    "nome": "TAIKÔ BEACH",
+    "nome": "TAIKÔ BEACH | Triângulo",
     "tipo": "Bar Fechado",
     "endereco": {
       "cep": "29055095",
@@ -333,6 +333,6 @@
     "ativo": true,
     "origem": "manual",
     "criadoEm": "2026-10-13T14:54:32.506Z",
-    "atualizadoEm": "2026-10-13T14:54:32.506Z"
+    "atualizadoEm": "2026-10-28T20:18:07.046Z"
   }
 ]
