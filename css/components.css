@@ -263,23 +263,38 @@
 
 .hoje-lista a {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--esp-md);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
   min-height: var(--toque-min);
-  padding: 8px 12px;
+  padding: 10px 12px;
   border-radius: var(--raio-campo);
   background: rgba(245, 239, 225, 0.12);
+  text-decoration: none;
 }
 
 .hoje-lista a:hover { background: rgba(245, 239, 225, 0.2); }
 
-.hoje-lista strong { font-family: var(--fonte-display); font-weight: 600; }
+/* Sem isso, a regra geral .bloco-hoje a:not(.botao) sublinha cada palavra
+   do nome da Marca. */
+.bloco-hoje .hoje-lista a { text-decoration: none; }
+
+.hoje-lista strong {
+  font-family: var(--fonte-display);
+  font-weight: 600;
+  line-height: 1.25;
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
 .hoje-lista span {
-  flex-shrink: 0;
   font-size: var(--tam-caption);
   opacity: 0.9;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
 .bloco-hoje .botao { margin-top: var(--esp-md); }
