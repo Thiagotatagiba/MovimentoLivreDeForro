@@ -78,8 +78,10 @@ O backlog completo, com tudo que foi auditado e o que ficou pendente, vive em
    Diários. Nunca modelar Festival como Evento único (ver `ARQUITETURA.md`).
 2. **Bandas/DJs como entidade** — hoje `lineup.bandas`/`djs` são arrays de
    string; virar entidade quando houver perfil/histórico.
-3. **Prévia de compartilhamento por evento** — Open Graph estático já existe;
-   falta HTML pré-renderizado (ou Edge Function) para a prévia mostrar o baile.
+3. **Prévia de compartilhamento por evento** — resolvida para o botão
+   compartilhar com as páginas estáticas de `compartilhar/` (og:image do banner
+   + redirect para o evento). Falta automatizar a geração no deploy e, para
+   links colados à mão, migrar para URL estática por evento ou Edge Function.
 4. **Importador de eventos** (Google Agenda, Instagram/flyer, Sympla/Onticket).
 5. **Mapa interativo na página de Local** — `latitude`/`longitude` já existem.
 6. **Colaborador regional** — exige `regiao`/`cidade` como atributo de primeira

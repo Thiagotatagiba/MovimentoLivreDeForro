@@ -22,8 +22,9 @@ Leia antes de alterar:
 - docs/MELHORIAS.md (backlog completo com prioridades — use pra escolher o que fazer)
 - ROADMAP.md (pra saber o que fazer agora — fica na raiz, não em docs/)
 
-Antes de deploy: `node scripts/validar-dados.js` (integridade dos JSONs) e
-lembrar que o site é PWA — mudanças em JS/CSS ficam em cache no visitante.
+Antes de deploy: `node scripts/gerar-compartilhamento.js` (páginas de prévia por
+evento), `node scripts/validar-dados.js` e lembrar que o site é PWA — mudanças
+em JS/CSS ficam em cache no visitante.
 
 Nunca duplique componentes ou altere JSON sem justificar.
 Sempre documente mudanças importantes em docs/DECISOES_DE_ARQUITETURA.md.

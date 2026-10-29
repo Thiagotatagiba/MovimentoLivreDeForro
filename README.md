@@ -42,9 +42,11 @@ Abra `http://localhost:8000`. Login exige um projeto Supabase configurado — ve
 [`docs/GUIA_SUPABASE_SETUP.md`](docs/GUIA_SUPABASE_SETUP.md). A Carteira de
 ingressos exige também rodar `sql/ingressos.sql` (tabela + bucket privado).
 
-Antes de publicar, rode a validação dos dados:
+Antes de publicar, rode a validação dos dados e regere as páginas de
+compartilhamento (elas carregam a arte do evento na prévia do WhatsApp):
 
 ```bash
+node scripts/gerar-compartilhamento.js
 node scripts/validar-dados.js
 ```
 

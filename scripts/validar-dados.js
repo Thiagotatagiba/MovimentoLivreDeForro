@@ -115,6 +115,18 @@ marcas.forEach((marca) => {
   });
 });
 
+// ---------- páginas de compartilhamento ----------
+// Elas são o que faz o WhatsApp mostrar a arte do evento (o robô não roda JS).
+// Precisam ser regeradas sempre que data/*.json mudar.
+const pastaCompartilhar = path.join(RAIZ, 'compartilhar');
+eventos
+  .filter((evento) => evento.ativo && evento.slug)
+  .forEach((evento) => {
+    if (!fs.existsSync(path.join(pastaCompartilhar, `${evento.slug}.html`))) {
+      avisos.push(`evento ${evento.id}: sem página de compartilhamento (rode node scripts/gerar-compartilhamento.js)`);
+    }
+  });
+
 // ---------- relatório ----------
 const total = eventos.length + marcas.length + locais.length;
 console.log(`Catálogo: ${eventos.length} eventos, ${marcas.length} marcas, ${locais.length} locais (${total} itens).`);

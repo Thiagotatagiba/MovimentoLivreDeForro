@@ -507,6 +507,35 @@
   margin-top: 2px;
 }
 
+/* Atrações (bandas/DJs) — linha própria, com rótulo para não confundir com
+   o título do evento (que às vezes já cita o artista). */
+.card-evento .meta-atracoes {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+  margin-top: 2px;
+  font-size: var(--tam-caption);
+  font-weight: 600;
+  color: var(--cor-pine);
+}
+
+.card-evento .meta-atracoes-rotulo {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cor-clay-escuro);
+}
+
+.card-evento .meta-atracoes-nomes {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .card-evento .meta-local {
   font-size: var(--tam-caption);
   color: var(--cor-texto-fraco);
@@ -1569,6 +1598,50 @@
     top: var(--esp-md);
   }
 }
+
+/* ===== Lightbox da capa do evento ===== */
+.evento-capa--clicavel { cursor: zoom-in; }
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(10, 14, 12, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(env(safe-area-inset-top) + var(--esp-md)) var(--esp-md)
+    calc(env(safe-area-inset-bottom) + var(--esp-md));
+}
+
+.lightbox-img {
+  max-width: min(96vw, 1200px);
+  max-height: 92vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--raio-campo);
+  box-shadow: var(--sombra-flutuante);
+}
+
+.lightbox-fechar {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 10px);
+  right: 12px;
+  width: var(--toque-min);
+  height: var(--toque-min);
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--cor-paper);
+  font-size: 28px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-fechar:hover { background: rgba(255, 255, 255, 0.26); }
 
 .ingresso-aviso {
   margin-top: var(--esp-sm);

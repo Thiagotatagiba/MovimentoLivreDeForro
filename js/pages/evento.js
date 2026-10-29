@@ -82,6 +82,18 @@ async function iniciar() {
   });
   atualizarCanonical(`evento.html?slug=${encodeURIComponent(evento.slug)}`);
 
+  const imagemCapa = imagemDoEvento(evento);
+  const diretorio = window.location.pathname.replace(/[^/]*$/, '');
+  const paginaCompartilhar = `${window.location.origin}${diretorio}compartilhar/${encodeURIComponent(evento.slug)}.html`;
+  let urlCompartilhar = window.location.href;
+
+  // A página estática de compartilhamento é o que permite a prévia com a arte
+  // no WhatsApp (o robô não executa JS). Se ela ainda não foi gerada para este
+  // evento, cai no link normal em vez de compartilhar um 404.
+  fetch(paginaCompartilhar, { method: 'HEAD' })
+    .then((resposta) => { if (resposta.ok) urlCompartilhar = paginaCompartilhar; })
+    .catch(() => {});
+
   raiz.innerHTML = montarHtml(evento);
 
   const botaoFavoritar = document.getElementById('botao-favoritar');
@@ -92,7 +104,22 @@ async function iniciar() {
     ligarBotaoCompartilhar(botaoCompartilhar, {
       titulo: evento.titulo,
       texto: `${evento.titulo} — ${capitalizar(formatarDataCompleta(evento.data))} · ${evento.horario}`,
-      url: window.location.href,
+      url: () => urlCompartilhar,
+      imagem: imagemCapa,
+    });
+  }
+
+  const botaoAmpliar = document.getElementById('botao-ampliar-capa');
+  if (botaoAmpliar && imagemCapa) {
+    botaoAmpliar.addEventListener('click', () => abrirLightbox(imagemCapa, evento.titulo));
+  }
+
+  const capaEl = document.querySelector('.evento-capa');
+  if (capaEl && imagemCapa) {
+    capaEl.addEventListener('click', (clique) => {
+      // Marca, compartilhar e favoritar continuam com o comportamento deles.
+      if (clique.target.closest('a, button')) return;
+      abrirLightbox(imagemCapa, evento.titulo);
     });
   }
 
@@ -133,6 +160,7 @@ function montarHtml(evento) {
     local?.nome ?? 'Local em breve',
     bairro && !normalizar(local?.nome ?? '').includes(normalizar(bairro)) ? bairro : null,
   ].filter(Boolean).join(' — ');
+  const imagem = imagemDoEvento(evento);
 
   const linksMarca = [
     marca?.instagram ? { href: linkInstagram(marca.instagram), texto: 'Instagram' } : null,
@@ -141,7 +169,7 @@ function montarHtml(evento) {
   ].filter((link) => link?.href);
 
   return `
-    <div class="evento-capa" style="${estiloMidia(imagemDoEvento(evento))}">
+    <div class="evento-capa${imagem ? ' evento-capa--clicavel' : ''}" style="${estiloMidia(imagem)}">
       <div class="evento-capa-conteudo">
         ${marca ? `
           <a class="evento-capa-marca" href="marca.html?slug=${encodeURIComponent(marca.slug)}">
@@ -154,6 +182,11 @@ function montarHtml(evento) {
         ` : '<span></span>'}
 
         <div class="evento-capa-acoes">
+          ${imagem ? `
+            <button type="button" class="botao-midia" id="botao-ampliar-capa" aria-label="Ver imagem completa do evento">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5"/><path d="M20 9V4h-5"/><path d="M4 15v5h5"/><path d="M20 15v5h-5"/></svg>
+            </button>
+          ` : ''}
           <button type="button" class="botao-midia" id="botao-compartilhar" aria-label="Compartilhar evento">
             <svg viewBox="0 0 24 24"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>
           </button>
@@ -326,6 +359,57 @@ function baixarICS(evento) {
   link.click();
   link.remove();
   URL.revokeObjectURL(url);
+}
+
+// ---------- Lightbox da capa ----------
+
+let lightboxAberto = null;
+
+function abrirLightbox(src, titulo) {
+  if (lightboxAberto) return;
+
+  const origem = document.activeElement;
+  const overlay = document.createElement('div');
+  overlay.className = 'lightbox';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-label', `Imagem do evento: ${titulo}`);
+  overlay.innerHTML = `
+    <button type="button" class="lightbox-fechar" aria-label="Fechar imagem">&times;</button>
+    <img class="lightbox-img" src="${escaparHtml(src)}" alt="${escaparHtml(titulo)}">
+  `;
+
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
+  lightboxAberto = overlay;
+
+  const botaoFechar = overlay.querySelector('.lightbox-fechar');
+
+  function fechar() {
+    overlay.remove();
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', aoTeclar);
+    lightboxAberto = null;
+    origem?.focus?.();
+  }
+
+  function aoTeclar(evento) {
+    if (evento.key === 'Escape') {
+      evento.preventDefault();
+      fechar();
+      return;
+    }
+    if (evento.key === 'Tab') {
+      evento.preventDefault();
+      botaoFechar.focus();
+    }
+  }
+
+  overlay.addEventListener('click', (evento) => {
+    if (evento.target === overlay || evento.target.closest('.lightbox-fechar')) fechar();
+  });
+  document.addEventListener('keydown', aoTeclar);
+  botaoFechar.focus();
 }
 
 iniciar().catch((erro) => {

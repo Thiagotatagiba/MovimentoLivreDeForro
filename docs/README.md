@@ -38,8 +38,9 @@ Clear site data. O `sw.js` **não cacheia nada em localhost**.
 ingressos** exige também rodar `sql/ingressos.sql` no Supabase (tabela + bucket
 privado).
 
-**Antes de deploy:** rode `node scripts/validar-dados.js` (integridade dos JSONs
-e dos arquivos de imagem).
+**Antes de deploy:** rode `node scripts/gerar-compartilhamento.js` (gera as
+páginas com Open Graph por evento) e `node scripts/validar-dados.js`
+(integridade dos JSONs e dos arquivos de imagem).
 
 ## Estrutura
 
@@ -60,7 +61,11 @@ carteira.html                     → Carteira de ingressos (só logado): guarda
                                     arquiva os passados (bucket privado)
 
 manifest.json, sw.js, robots.txt, sitemap.xml
+compartilhar/                   → páginas estáticas geradas por evento (Open
+                                  Graph para a prévia no WhatsApp, com redirect
+                                  para a página real)
 scripts/validar-dados.js        → validação sem dependências (node)
+scripts/gerar-compartilhamento.js → gera compartilhar/{slug}.html
 
 admin/                   → Painel administrativo (File System Access API)
 

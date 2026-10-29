@@ -41,6 +41,22 @@ export function cardEventoHtml(evento, opcoes = {}) {
   if (evento.horario) partesMeta.push(formatarHora(evento.horario));
   if (preco) partesMeta.push(preco);
 
+  // Atrações (bandas + DJs), sempre visíveis quando existirem. Mesmo que o
+  // nome já esteja no título, a linha com o rótulo "Atrações" deixa explícito
+  // quem se apresenta — antes o filtro escondia a informação.
+  const atracoes = [...new Set(
+    [...(evento.lineup?.bandas ?? []), ...(evento.lineup?.djs ?? [])]
+      .map((nome) => String(nome).trim())
+      .filter(Boolean)
+  )];
+
+  const linhaAtracoes = atracoes.length
+    ? `<p class="meta-atracoes" title="${escaparHtml(atracoes.join(' · '))}">
+         <span class="meta-atracoes-rotulo">Atrações</span>
+         <span class="meta-atracoes-nomes">${escaparHtml(atracoes.join(' · '))}</span>
+       </p>`
+    : '';
+
   // Foto de perfil da Marca antes do nome (inicial quando não há logo).
   const inicialMarca = escaparHtml(nomeMarca.trim().charAt(0));
   const avatarMarca = evento.marca?.logo
@@ -61,6 +77,7 @@ export function cardEventoHtml(evento, opcoes = {}) {
       </div>
       <div class="corpo">
         <p class="titulo-evento">${escaparHtml(evento.titulo)}</p>
+        ${linhaAtracoes}
         ${partesMeta.length ? `<p class="meta">${escaparHtml(partesMeta.join(' · '))}</p>` : ''}
         ${mostrarLocal ? `<p class="meta-local">${escaparHtml(nomeLocal)}</p>` : ''}
       </div>

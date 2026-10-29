@@ -1116,3 +1116,45 @@ o botão "Ver agenda completa" logo abaixo.
 
 **Arquivos:** `index.html`, `js/pages/home.js`, `css/components.css`.
 
+## 2026-10-29 — Lightbox da capa + prévia de compartilhamento com a arte
+
+Pedido do Thiago: clicar no banner do evento deve abrir a imagem completa; e o
+compartilhamento mostrava o ícone do site, não a arte do evento.
+
+**Lightbox da capa.** A capa ganhou um botão de ampliar (ícone de expandir) e a
+área livre da capa também abre. O overlay mostra a imagem inteira
+(`object-fit: contain`), fecha com Esc, botão e clique fora, prende o foco no
+fechar e devolve ao elemento de origem, com o scroll do body travado. Só existe
+quando o evento tem imagem (própria ou capa da Marca).
+
+**Compartilhamento — por que precisou de página estática.** WhatsApp, Facebook
+e Telegram **não executam JavaScript**. `evento.html?slug=` é uma única página
+estática para todos os eventos; as metatags que `utils/meta.js` atualiza depois
+do render nunca são lidas pelos robôs — por isso a prévia caía no ícone padrão.
+A solução foi gerar, para cada evento ativo, `compartilhar/{slug}.html` com
+`og:title`, `og:description` e `og:image` daquele evento, `canonical` para a
+página real e redirect (meta refresh + JS). O botão de compartilhar usa essa
+URL **quando ela existe** (HEAD na carga da página; se não existir, mantém o
+link normal, sem 404). No celular, quando suportado, o Web Share também envia a
+**própria imagem** como arquivo (`files`), então o banner aparece no WhatsApp
+mesmo antes do crawler.
+
+**Fallbacks:** evento sem banner usa a capa da Marca; sem nenhuma das duas, usa
+o ícone do site (comportamento anterior). Páginas de compartilhamento têm
+`noindex` e `canonical`, para não competir com a página real na busca.
+
+**Operação:** `scripts/gerar-compartilhamento.js` precisa rodar quando
+`data/*.json` mudar (antes do deploy). `scripts/validar-dados.js` avisa quando
+falta página para algum evento ativo. Eventos novos, enquanto a página não for
+gerada, compartilham o link normal (prévia genérica) — nunca um 404.
+
+**Limitação conhecida:** se a pessoa copiar o endereço da página do evento e
+colar no WhatsApp (em vez de usar o botão), a prévia continua genérica, porque
+o endereço é o `evento.html?slug=`. Para resolver isso seria preciso mudar o
+esquema de URLs para páginas estáticas por evento (ou Edge Function), o que não
+foi feito agora.
+
+**Arquivos:** `js/pages/evento.js`, `components/compartilhar.js`,
+`css/components.css`, `scripts/gerar-compartilhamento.js`,
+`compartilhar/*.html` (gerados), `scripts/validar-dados.js` e docs.
+
