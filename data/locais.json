@@ -334,5 +334,61 @@
     "origem": "manual",
     "criadoEm": "2026-10-13T14:54:32.506Z",
     "atualizadoEm": "2026-10-28T20:18:07.046Z"
+  },
+  {
+    "id": "loc-013",
+    "slug": "vila-gardem",
+    "nome": "Vila Garden",
+    "tipo": "Bar Fechado",
+    "endereco": {
+      "cep": "29112-462",
+      "logradouro": "Avenida Serra Pelada",
+      "numero": "260",
+      "complemento": null,
+      "bairro": "Rio Marinho",
+      "cidade": "Vila Velha",
+      "estado": "ES"
+    },
+    "latitude": null,
+    "longitude": null,
+    "mapsLink": "https://maps.app.goo.gl/J9Nw3Ae8cQnjjxGY7",
+    "fotoCapa": null,
+    "fotoPerfil": null,
+    "instagram": "https://www.instagram.com/vilagarden.culturaelazer/",
+    "site": null,
+    "telefone": "27 99822-8866",
+    "descricao": null,
+    "ativo": true,
+    "origem": "manual",
+    "criadoEm": "2026-10-29T19:56:49.032Z",
+    "atualizadoEm": "2026-10-30T11:56:04.553Z"
+  },
+  {
+    "id": "loc-014",
+    "slug": "laje-027",
+    "nome": "Laje 027",
+    "tipo": "Casa de Shows",
+    "endereco": {
+      "cep": "29101700",
+      "logradouro": "Rua Doutor Jair Andrade",
+      "numero": "180",
+      "complemento": null,
+      "bairro": "Itapuã",
+      "cidade": "Vila Velha",
+      "estado": "ES"
+    },
+    "latitude": null,
+    "longitude": null,
+    "mapsLink": "https://share.google/Er8gEntY7Pi4buEuR",
+    "fotoCapa": null,
+    "fotoPerfil": null,
+    "instagram": "https://www.instagram.com/laje027ofc/",
+    "site": null,
+    "telefone": null,
+    "descricao": null,
+    "ativo": true,
+    "origem": "manual",
+    "criadoEm": "2026-10-30T13:16:36.259Z",
+    "atualizadoEm": "2026-10-30T13:16:36.259Z"
   }
 ]

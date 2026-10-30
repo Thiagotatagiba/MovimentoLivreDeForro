@@ -393,17 +393,22 @@
     "titulo": "Forrozada Boa de Novembro",
     "data": "2026-11-13",
     "horario": "22:00",
-    "descricao": "Forrozada Boa de Novembro",
+    "descricao": "Se você ama o Pé de Serra de verdade, essa será A NOITE IMPERDÍVEL\n\nPrepara o fôlego porque o Forró + Dançante de Vitória vai ser pesado!  \n\nPIPOCA SHOW (AL): Com seu sapateado e energia contagiante, já cantou com Mestre Zinho e participou das bandas: Trio Girassol, Sociais do Forró e Trio Classe A. Um show raro no ES, não perca! \n\nSEU BRANCO (PB): Diretamente de Fagundes na Paraíba, é tradição, é energia e é aquele forró gostoso que faz a pista ferver do início ao fim. Quem conhece já sabe… e quem ainda não viu, vai se apaixonar! Prepara as canelas pra dançar.  \n\nDISCOTECA FORRÓ VENENO (SP): é um coletivo formado pelos DJs Tick, Nalla e Márcio, com mais de 20 anos de experiência eles irão envenenar a pista.\n\ninstagram: @forrozadaboa\n\nO evento será filmado e fotografado. \nAo participar do evento o portador do ingresso concorda e autoriza a utilização gratuita de sua imagem por prazo indeterminado.",
     "ingresso": {
       "precoAPartirDe": 30,
-      "link": "em breve",
+      "link": "https://www.sympla.com.br/evento/forrozada-boa-pipoca-show-seu-branco-discoteca-forro-veneno/3614801?share_id=copiarlink",
       "tipoEntrada": "Ingresso Online"
     },
     "lineup": {
-      "bandas": [],
-      "djs": []
+      "bandas": [
+        "Pipoca Show",
+        "Seu Branco"
+      ],
+      "djs": [
+        "Discoteca Forró Veneno"
+      ]
     },
-    "imagemUrl": "em breve",
+    "imagemUrl": "https://images.sympla.com.br/6acbacec33181-lg.jpg",
     "condicoesEspeciais": [
       {
         "tipo": "aniversariante",
@@ -453,7 +458,7 @@
     "titulo": "Forró da Wine — Felipe Peó",
     "data": "2026-10-29",
     "horario": "20:30",
-    "descricao": "Quinta na WineBeer de Jardim da Penha com Felipe Peó, a partir das 20h30.",
+    "descricao": "Quinta na WineBeer de Jardim da Penha com Felipe Pé, a partir das 20h30.",
     "ingresso": {
       "precoAPartirDe": 0,
       "link": "em breve",
@@ -474,6 +479,136 @@
       {
         "tipo": "outros",
         "descricao": "Transmissão no telão: Vasco e Flamengo"
+      }
+    ],
+    "ativo": true
+  },
+  {
+    "id": "evt-018",
+    "slug": "Vila-Garden-2026-10-31",
+    "marcaId": "mrc-010",
+    "localId": "loc-013",
+    "titulo": "Sábado Pé de Serra | Vila Garden",
+    "data": "2026-10-31",
+    "horario": "21:00",
+    "descricao": "Neste sábado, o Villa Garden vai ter uma noite especial, com muito forró, música boa, cerveja gelada e aquele clima gostoso para curtir com os amigos! 💃🕺\n\n🎤 Matheus Nogueira, Marreta, Ramón e DJ Rodrigo Tatu vão animar a nossa noite!\n\n📅 Sábado, 31/10\n⏰ A partir das 21h\n🎟️ Antecipado: R$ 20,00\n📍 Villa Garden – Rio Marinho, Vila Velha",
+    "ingresso": {
+      "precoAPartirDe": 20,
+      "link": "em breve",
+      "tipoEntrada": "Ingresso no Local"
+    },
+    "lineup": {
+      "bandas": [
+        "Matheus Nogueira",
+        "Marreta",
+        "Ramón"
+      ],
+      "djs": [
+        "DJ Rodrigo Tatu"
+      ]
+    },
+    "imagemUrl": "https://scontent-gru2-1.cdninstagram.com/v/t51.82787-15/876139195_18010588400995939_82834913359498379_n.jpg?stp=dst-jpg_e15_tt6&_nc_cat=107&ig_cache_key=NDAxODEyMzM4MTk0NzE0OTgzOTE4MDEwNTg4Mzk3OTk1OTM5.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNMSVBTLnhwaWRzLjEzMjAuc2RyLnZpZGVvX3VzZXJfc2VsZWN0ZWRfdGh1bWJuYWlsLkMzIn0%3D&_nc_ohc=iTkx8dMD6aEQ7kNvwEV4fbd&_nc_oc=AdoP1CycwIqFHhcMEMf1LEjTIt48Qnc3zgq67zVLM_fF2DGP10YhMXPJGHM-tsXJC9s&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-gru2-1.cdninstagram.com&_nc_gid=f8N9pIxwh_aJPz4mvF196g&_nc_ss=7322e&oh=00_AQQoXyWR58Lq4jNbA6Nb1X94nq0ng7TTplUHILpNUkbBoA&oe=6AEA4CA7",
+    "condicoesEspeciais": [
+      {
+        "tipo": "outros",
+        "descricao": "Ingressos Antecipados R$ 20,00"
+      }
+    ],
+    "ativo": true
+  },
+  {
+    "id": "evt-019",
+    "slug": "Forrozin-Brizz-16-2026-10-31",
+    "marcaId": "mrc-012",
+    "localId": "loc-002",
+    "titulo": "FORRÓLLOWEEN | Brizz",
+    "data": "2026-11-01",
+    "horario": "17:00",
+    "descricao": "O 𝗙𝗢𝗥𝗥𝗢𝗟𝗟𝗢𝗪𝗘𝗘𝗡 vai tomar conta do Brizz! 🪗🎃 Uma noite de Halloween com muito forró, muita dança e uma atmosfera de arrepiar!\n\nNo comando do baile o Mafuá coloca todo mundo pra dançar e DJ Bravim vem balançando a pista!\n\n👻 Entre no clima do Halloween, venha com fantasias, roupas pretas e acessórios temáticos! (Não é obrigatório).\n\n🎨💀 Makes e pinturas disponíveis para você incrementar ainda mais o seu look!\n\n🍹 Welcome drink para os 50 primeiros fantasiados!\n\n🏆 Concurso de Melhor Fantasia:\n🥇 1º lugar: voucher de R$ 200\n🥈 2º lugar: voucher de R$ 100\n*válido para consumo no Brizz no dia do evento.",
+    "ingresso": {
+      "precoAPartirDe": 20,
+      "link": "https://zig.tickets/evento/forrolloween?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAcGRvZgJzcnRjBmFwcF9pZA85MzY2MTk3NDMzOTI0NTkAAae9YiyJI162_8aZqmuqPP7ii06MxJ3YR47aOYuBycVDnsI4TdUN6BvNGcZvpA_aem_5ChhNJsgtTac4OL4GbpvXQ",
+      "tipoEntrada": "Ingresso Online"
+    },
+    "lineup": {
+      "bandas": [
+        "Mafuá"
+      ],
+      "djs": [
+        "DJ Bravim"
+      ]
+    },
+    "imagemUrl": "https://scontent-gru2-1.cdninstagram.com/v/t51.82787-15/861147957_18391744450228524_10788193782568071_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=109&ig_cache_key=NDAxMzg2OTQxNDE5ODgyNzIzNA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTA4MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=gNVTR_tdpkEQ7kNvwEXEawJ&_nc_oc=Adq_EkzXMQuqAER93fjFxP5qUN7LsoXz3auXtUhcumu_oVmJZ_YW1MgVaAZULIvEU8U&_nc_zt=23&_nc_ht=scontent-gru2-1.cdninstagram.com&_nc_gid=g_qTBmP0LtWlqxZn2Vifag&_nc_ss=7b6a8&oh=00_AQT3lufL-Vc0ktg6gVXdAeBQiAeP6iWvAVcH-aEuJ0uokA&oe=6AEA4EB6",
+    "condicoesEspeciais": [
+      {
+        "tipo": "outros",
+        "descricao": "🍹 Welcome drink para os 50 primeiros fantasiados!"
+      }
+    ],
+    "ativo": true
+  },
+  {
+    "id": "evt-020",
+    "slug": "forro-na-marina-2026-11-01",
+    "marcaId": "mrc-006",
+    "localId": "loc-010",
+    "titulo": "Forró na Marina - 01 de Novembro",
+    "data": "2026-11-01",
+    "horario": "16:00",
+    "descricao": "Domingão véspera de feriado de volta nossa domingueira feliz com matinê é na Marina Bay com o melhor do forró pé de serra. A partir das 16h as 22h até a ultima dança🎉\n\nLocal incrível, ambiente agradável e fácil localização, com vista do canal de Vitória.\n\nVenha prestigiar este lugar sensacional que todo mundo ama❤️\n\nSiga os informes oficiais diariamente no stories e perfil. Promoções e listas in box!",
+    "ingresso": {
+      "precoAPartirDe": 25,
+      "link": "https://www.clubedoingresso.com/evento/forronamarina-11-10?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAcGRvZgJzcnRjBmFwcF9pZA85MzY2MTk3NDMzOTI0NTkAAadIYu4T6UwvNHT1J41peYqtlO77m-KTE7NXc47UOm_8chPIrJ8jcqvajSbMFA_aem_m6UTXXrmAqfg924AlwKx2A#",
+      "tipoEntrada": "Ingresso Online"
+    },
+    "lineup": {
+      "bandas": [
+        "Marcos Miranda",
+        "Cadu Romeiro",
+        "Maik Clandestino",
+        "Deco Bandeira"
+      ],
+      "djs": [
+        "DJ Rasta"
+      ]
+    },
+    "imagemUrl": "https://scontent-gru1-2.cdninstagram.com/v/t51.82787-15/865366417_18146602687590355_1677279743869645038_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=100&ig_cache_key=NDAxODA5NTM1NTc0MzMyNjcyMg%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkZFRUQueHBpZHMuMTI0OC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=dB54PQcm-MsQ7kNvwFIrqHt&_nc_oc=AdouBRCiz2eUrMAF4Ix2jI78_fjTvAIU7wN6L50l-UlD51J6-aJ95KMTIH78v2fc7kQ&_nc_zt=23&_nc_ht=scontent-gru1-2.cdninstagram.com&_nc_gid=GNpgeS0Ol2svK1o7yMduwA&_nc_ss=7b6a8&oh=00_AQTbq5KpoPk_XEbDdyZxXon6lRVDvOD5MscICgAAOZfHwA&oe=6AEA64EC",
+    "condicoesEspeciais": [],
+    "ativo": true
+  },
+  {
+    "id": "evt-021",
+    "slug": "forro-do-correria-2026-10-30",
+    "marcaId": "mrc-011",
+    "localId": "loc-009",
+    "titulo": "Festival de Forró no correria",
+    "data": "2026-10-30",
+    "horario": "22:00",
+    "descricao": "Alô gente! SEXTA 30/10 tem FESTIVAL no FORRÓ DO CORRERIA* ❤️\n\n🗓️ 30/10\n⏰ 22h\n\nNo palco:\nEdvan Jatobá\nPaula Dara\nTrio Clandestino\nDJ Jhony\n\n🎁 PROMOÇÃO: os 50 primeiros(as) ganham 1 drink + brinde!\n\n*INGRESSOS*\n\n- Lote 1 promocional até 28/10 a venda R$ 25,00 informações in box\n\n- Site cartão\n🔗 https://meaple.com.br/\n👉🏻 Link na bio\n\n- Ingresso Lista Pix antecipado enviar nome e comprovante até 18h no Whatts chave 🔑 tel 27996457828\n\n📍Correria Music Bar: Av. Est. José Júlio de Souza, 740 - Praia de Itaparica, Vila Velha-ES\n\nClassificação 16+\n🍺🥙 Bebidas e alimentação no local.\n🚗 Fácil Estacionamento.",
+    "ingresso": {
+      "precoAPartirDe": 25,
+      "link": "https://meaple.com.br/correria/festival-de-forro?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAcGRvZgJzcnRjBmFwcF9pZA85MzY2MTk3NDMzOTI0NTkAAacTr-kv71d3PfSjOU2TtVLyrmxstaxiK8xHT8BAHu-bDxGQpkF6sAWD5o-B2w_aem_Sg18wDNFO2J34_inEXP__g",
+      "tipoEntrada": "Ingresso Online"
+    },
+    "lineup": {
+      "bandas": [
+        "Edvan Jatobá",
+        "Paula Dara",
+        "Trio Clandestino"
+      ],
+      "djs": [
+        "DJ Jhony"
+      ]
+    },
+    "imagemUrl": "https://meaple.com.br/_next/image?url=https%3A%2F%2Ffiles.meaple.com.br%2Fmeaple%2F5f5da5d3-6928-4008-a32e-4c498c336953.jpeg&w=640&q=75",
+    "condicoesEspeciais": [
+      {
+        "tipo": "outros",
+        "descricao": "Ingresso Lista Pix antecipado enviar nome e comprovante até 18h no Whatts chave 🔑 tel 27996457828"
+      },
+      {
+        "tipo": "outros",
+        "descricao": "Os 50 primeiros(as) ganham 1 drink + brinde!"
       }
     ],
     "ativo": true

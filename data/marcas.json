@@ -122,7 +122,8 @@
     "instagram": "https://www.instagram.com/forronamarinavix/",
     "whatsapp": null,
     "site": null,
-    "logo": null,
+    "logo": "assets/marcas/forro-na-marina-logo.jpg?v=1793362164392",
+    "capa": "assets/marcas/forro-na-marina-capa.jpg?v=1793362164982",
     "ativo": true
   },
   {
@@ -187,6 +188,91 @@
     "site": null,
     "logo": "assets/marcas/forro-do-canto-logo.webp",
     "capa": "assets/marcas/forro-do-canto-capa.webp",
+    "ativo": true
+  },
+  {
+    "id": "mrc-010",
+    "slug": "vila-garden-forro",
+    "nome": "Vila Garden Forró",
+    "descricao": "🪗🎶 SÁBADO TEM FORROZINHO NO VILLA GARDEN! 🍻",
+    "frequencia": "semanal",
+    "diasSemana": [
+      "sábado"
+    ],
+    "categorias": [
+      "Baile",
+      "Pé de Serra"
+    ],
+    "cidadeBase": "Vila Velha",
+    "localPadraoId": "loc-013",
+    "instagram": "https://www.instagram.com/vilagarden.culturaelazer/",
+    "whatsapp": "27 99822-8866",
+    "site": null,
+    "logo": "assets/marcas/vila-garden-forro-logo.jpg?v=1793364175161",
+    "capa": null,
+    "ativo": true
+  },
+  {
+    "id": "mrc-011",
+    "slug": "forro-do-correria",
+    "nome": "Forró do Correria",
+    "descricao": "",
+    "frequencia": "mensal",
+    "diasSemana": [
+      "sábado"
+    ],
+    "categorias": [
+      "Baile"
+    ],
+    "cidadeBase": "Vila Velha",
+    "localPadraoId": "loc-009",
+    "instagram": "https://www.instagram.com/forrodocorreria/",
+    "whatsapp": null,
+    "site": null,
+    "logo": "assets/marcas/forro-do-correria-logo.jpg?v=1793362430036",
+    "capa": null,
+    "ativo": true
+  },
+  {
+    "id": "mrc-012",
+    "slug": "forrizin-brizz",
+    "nome": "Forrizin | Brizz",
+    "descricao": "",
+    "frequencia": null,
+    "diasSemana": [],
+    "categorias": [
+      "Baile",
+      "Pé de Serra"
+    ],
+    "cidadeBase": null,
+    "localPadraoId": "loc-002",
+    "instagram": "https://www.instagram.com/forrozin.vix/",
+    "whatsapp": null,
+    "site": null,
+    "logo": "assets/marcas/forrizin-brizz-logo.jpg?v=1793364854609",
+    "capa": null,
+    "ativo": true
+  },
+  {
+    "id": "mrc-013",
+    "slug": "laje-027-forro",
+    "nome": "Forró da Garagem | Laje 027",
+    "descricao": "• Espaço Cultural •\n✨ Aulas de dança\n✨ Eventos culturais",
+    "frequencia": "semanal",
+    "diasSemana": [
+      "quinta"
+    ],
+    "categorias": [
+      "Baile",
+      "Discotecagem"
+    ],
+    "cidadeBase": "Vila Velha",
+    "localPadraoId": "loc-014",
+    "instagram": "https://www.instagram.com/laje027ofc/",
+    "whatsapp": null,
+    "site": "https://linktr.ee/laje027ofc",
+    "logo": "assets/marcas/laje-027-forro-logo.jpg?v=1793366370082",
+    "capa": null,
     "ativo": true
   }
 ]
