@@ -48,7 +48,7 @@ function gerarNavInferior() {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4M16 3v4"/></svg>
     Agenda
   </a>
-  <button type="button" id="botao-menu" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-lateral">
+  <button type="button" id="botao-menu" data-abrir-menu aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-lateral">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     Menu
   </button>
@@ -84,10 +84,12 @@ function gerarMenuLateral() {
 }
 
 function configurarMenuLateral() {
-  const botaoMenu = document.getElementById('botao-menu');
+  // Há dois botões "Menu": o da nav inferior (celular) e o hambúrguer da barra
+  // do topo (desktop). Ambos abrem o mesmo drawer.
+  const botoesMenu = [...document.querySelectorAll('[data-abrir-menu]')];
   const menuLateral = document.getElementById('menu-lateral');
   const overlay = document.getElementById('menu-overlay');
-  if (!botaoMenu || !menuLateral || !overlay) return;
+  if (!botoesMenu.length || !menuLateral || !overlay) return;
 
   const focaveis = () => [...menuLateral.querySelectorAll('a[href], button:not([disabled])')];
 
@@ -95,7 +97,7 @@ function configurarMenuLateral() {
     menuLateral.inert = false;
     menuLateral.classList.add('aberto');
     overlay.hidden = false;
-    botaoMenu.setAttribute('aria-expanded', 'true');
+    botoesMenu.forEach((botao) => botao.setAttribute('aria-expanded', 'true'));
     menuLateral.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     // Espera o próximo frame: a transição de visibility/transform precisa ter
@@ -106,16 +108,21 @@ function configurarMenuLateral() {
   function fecharMenu({ devolverFoco = true } = {}) {
     menuLateral.classList.remove('aberto');
     overlay.hidden = true;
-    botaoMenu.setAttribute('aria-expanded', 'false');
+    botoesMenu.forEach((botao) => botao.setAttribute('aria-expanded', 'false'));
     menuLateral.setAttribute('aria-hidden', 'true');
     menuLateral.inert = true;
     document.body.style.overflow = '';
-    if (devolverFoco) botaoMenu.focus();
+    // Devolve o foco pro botão que está visível (o outro fica display:none).
+    if (devolverFoco) {
+      (botoesMenu.find((botao) => botao.offsetParent !== null) || botoesMenu[0]).focus();
+    }
   }
 
-  botaoMenu.addEventListener('click', () => {
-    if (menuLateral.classList.contains('aberto')) fecharMenu();
-    else abrirMenu();
+  botoesMenu.forEach((botao) => {
+    botao.addEventListener('click', () => {
+      if (menuLateral.classList.contains('aberto')) fecharMenu();
+      else abrirMenu();
+    });
   });
 
   overlay.addEventListener('click', () => fecharMenu());
