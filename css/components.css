@@ -70,6 +70,10 @@
 
 .barra-topo-icone:hover { background: rgba(245, 239, 225, 0.12); }
 
+/* Botão "Menu" da barra do topo: só no desktop, onde a nav inferior (e o seu
+   "Menu") fica escondida. */
+.botao-menu-topo { display: none; }
+
 /* Navegação de desktop dentro da barra do topo (escondida no mobile). */
 .barra-topo-nav {
   display: none;
@@ -100,6 +104,7 @@
   .barra-topo-nav { display: flex; }
   .barra-topo-espaco { display: none; }
   .barra-topo-favoritos { display: none; }
+  .botao-menu-topo { display: flex; }
 }
 
 /* ===== Busca ===== */
