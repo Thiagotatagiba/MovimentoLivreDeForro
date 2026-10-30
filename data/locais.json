@@ -390,5 +390,33 @@
     "origem": "manual",
     "criadoEm": "2026-10-30T13:16:36.259Z",
     "atualizadoEm": "2026-10-30T13:16:36.259Z"
+  },
+  {
+    "id": "loc-015",
+    "slug": "beats-club",
+    "nome": "Beats Club",
+    "tipo": "Clube",
+    "endereco": {
+      "cep": "29010-060",
+      "logradouro": "Rua Barão de Itapemirim",
+      "numero": "200",
+      "complemento": null,
+      "bairro": "Centro",
+      "cidade": "Vitória",
+      "estado": "ES"
+    },
+    "latitude": null,
+    "longitude": null,
+    "mapsLink": "https://share.google/K2uxUUqwx0ILS1M0V",
+    "fotoCapa": null,
+    "fotoPerfil": null,
+    "instagram": null,
+    "site": null,
+    "telefone": null,
+    "descricao": null,
+    "ativo": true,
+    "origem": "manual",
+    "criadoEm": "2026-10-30T17:59:17.753Z",
+    "atualizadoEm": "2026-10-30T17:59:17.753Z"
   }
 ]

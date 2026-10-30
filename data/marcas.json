@@ -274,5 +274,24 @@
     "logo": "assets/marcas/laje-027-forro-logo.jpg?v=1793366370082",
     "capa": null,
     "ativo": true
+  },
+  {
+    "id": "mrc-014",
+    "slug": "forro-no-centro-vix",
+    "nome": "Forró no Centro Vix",
+    "descricao": "",
+    "frequencia": null,
+    "diasSemana": [
+      "quarta"
+    ],
+    "categorias": [],
+    "cidadeBase": null,
+    "localPadraoId": "loc-015",
+    "instagram": "https://www.instagram.com/forronocentrovix/",
+    "whatsapp": null,
+    "site": null,
+    "logo": "assets/marcas/forro-no-centro-vix-logo.jpg?v=1793383272896",
+    "capa": null,
+    "ativo": true
   }
 ]
