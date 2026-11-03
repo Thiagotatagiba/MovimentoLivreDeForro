@@ -244,7 +244,7 @@
       "Baile",
       "Pé de Serra"
     ],
-    "cidadeBase": null,
+    "cidadeBase": "Vitória",
     "localPadraoId": "loc-002",
     "instagram": "https://www.instagram.com/forrozin.vix/",
     "whatsapp": null,
@@ -291,6 +291,26 @@
     "whatsapp": null,
     "site": null,
     "logo": "assets/marcas/forro-no-centro-vix-logo.jpg?v=1793383272896",
+    "capa": null,
+    "ativo": true
+  },
+  {
+    "id": "mrc-015",
+    "slug": "fesitival-praca-viva",
+    "nome": "Fesitival Praça Viva",
+    "descricao": "🌟 09 A 13 DE DEZEMBRO\n📍 Praça Sagrada Família – Jardim Camburi\n⛪ Em frente à Igreja Católica\n🎟️ ENTRADA GRATUITA!",
+    "frequencia": null,
+    "diasSemana": [],
+    "categorias": [
+      "Festival",
+      "Show"
+    ],
+    "cidadeBase": "Vitória",
+    "localPadraoId": "loc-016",
+    "instagram": "https://www.instagram.com/festivalpracaviva.es/",
+    "whatsapp": null,
+    "site": null,
+    "logo": "assets/marcas/fesitival-praca-viva-logo.jpg?v=1793731083566",
     "capa": null,
     "ativo": true
   }

@@ -418,5 +418,33 @@
     "origem": "manual",
     "criadoEm": "2026-10-30T17:59:17.753Z",
     "atualizadoEm": "2026-10-30T17:59:17.753Z"
+  },
+  {
+    "id": "loc-016",
+    "slug": "praca-sagrada-familia",
+    "nome": "Praça Sagrada Família",
+    "tipo": "Praça",
+    "endereco": {
+      "cep": "29090600",
+      "logradouro": "Rua Belmiro Teixeira Pimenta",
+      "numero": "12",
+      "complemento": null,
+      "bairro": "Jardim Camburi",
+      "cidade": "Vitória",
+      "estado": "ES"
+    },
+    "latitude": null,
+    "longitude": null,
+    "mapsLink": "https://share.google/bt7lJdV9Vt2cw20PH",
+    "fotoCapa": null,
+    "fotoPerfil": null,
+    "instagram": null,
+    "site": null,
+    "telefone": null,
+    "descricao": "📍 Praça Sagrada Família – Jardim Camburi\n⛪ Em frente à Igreja Católica",
+    "ativo": true,
+    "origem": "manual",
+    "criadoEm": "2026-11-03T18:25:24.348Z",
+    "atualizadoEm": "2026-11-03T18:39:17.550Z"
   }
 ]
