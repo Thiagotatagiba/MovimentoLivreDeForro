@@ -12,9 +12,26 @@ export function inicializarPainelUsuario() {
   const acaoEl = document.getElementById('painel-usuario-acao');
   // Item do menu que só faz sentido pra quem está logado (pode não existir na página).
   const carteiraEl = document.getElementById('menu-carteira');
+  const entrarTopoEl = document.getElementById('topo-entrar');
+  const favoritosTopoEl = document.getElementById('topo-favoritos');
+  const perfilTopoEl = document.getElementById('topo-perfil');
+  const avatarTopoEl = perfilTopoEl?.querySelector('img');
+  const AVATAR_PADRAO = 'assets/icons/avatar-padrao.svg';
+  function definirAvatar(url) {
+    if (!avatarTopoEl) return;
+    avatarTopoEl.dataset.fallbackApplied = 'false';
+    avatarTopoEl.src = url || AVATAR_PADRAO;
+  }
 
   // Páginas que ainda não tiverem esses elementos simplesmente não fazem nada.
   if (!nomeEl || !acaoEl) return;
+
+  entrarTopoEl?.addEventListener('click', () => abrirModalLogin());
+  avatarTopoEl?.addEventListener('error', () => {
+    if (avatarTopoEl.dataset.fallbackApplied === 'true') return;
+    avatarTopoEl.dataset.fallbackApplied = 'true';
+    avatarTopoEl.src = AVATAR_PADRAO;
+  });
 
   renderizarDeslogado(); // estado inicial, enquanto a sessão é verificada
 
@@ -40,10 +57,14 @@ export function inicializarPainelUsuario() {
 
     acaoEl.textContent = 'Sair';
     acaoEl.onclick = () => logout();
+    if (entrarTopoEl) entrarTopoEl.hidden = true;
+    if (favoritosTopoEl) favoritosTopoEl.hidden = false;
+    if (perfilTopoEl) perfilTopoEl.hidden = false;
 
     try {
       const perfil = await obterPerfil(usuario.id);
       if (perfil?.apelido) nomeEl.textContent = perfil.apelido;
+      definirAvatar(perfil?.avatar_url);
     } catch (erro) {
       console.warn('Não foi possível carregar o apelido do perfil:', erro);
     }
@@ -54,6 +75,10 @@ export function inicializarPainelUsuario() {
     if (carteiraEl) carteiraEl.hidden = true;
     nomeEl.style.cursor = '';
     nomeEl.onclick = null;
+    if (entrarTopoEl) entrarTopoEl.hidden = false;
+    if (favoritosTopoEl) favoritosTopoEl.hidden = true;
+    if (perfilTopoEl) perfilTopoEl.hidden = true;
+    definirAvatar(AVATAR_PADRAO);
 
     acaoEl.textContent = 'Entrar';
     acaoEl.onclick = () => abrirModalLogin();

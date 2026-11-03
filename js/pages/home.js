@@ -72,6 +72,12 @@ function configurarToggleBusca() {
     botaoBusca.setAttribute('aria-expanded', 'true');
     campoBusca?.focus();
   });
+
+  if (new URLSearchParams(window.location.search).get('buscar') === '1') {
+    buscaContainer.hidden = false;
+    botaoBusca.setAttribute('aria-expanded', 'true');
+    requestAnimationFrame(() => campoBusca?.focus());
+  }
 }
 
 function fecharBusca() {
@@ -115,7 +121,7 @@ function configurarBusca() {
   campoBusca.addEventListener('keydown', (evento) => {
     if (evento.key === 'Escape') {
       fecharBusca();
-      botaoBusca?.focus();
+      (document.getElementById('nav-buscar') || botaoBusca)?.focus();
     }
     if (evento.key === 'Enter') {
       const primeiro = buscaResultados.querySelector('a');

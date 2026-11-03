@@ -15,7 +15,7 @@
 //
 // É um script CLÁSSICO (sem type="module") de propósito: precisa rodar de
 // forma síncrona, bem no início do <body>, ANTES dos scripts de página
-// (type="module", sempre adiados pelo navegador) tentarem usar #botao-busca.
+// (type="module", sempre adiados pelo navegador) tentarem usar a busca.
 (function () {
   var body = document.body;
   var temBusca = body.hasAttribute('data-busca-topo');
@@ -31,14 +31,20 @@
   var svgCoracao = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg>';
 
   var iconeDireita = temBusca
-    ? '<button type="button" class="barra-topo-icone" id="botao-busca" aria-expanded="false" aria-controls="busca-container" aria-label="Buscar Marca, Local ou evento">' + svgBusca + '</button>'
-    : '<a href="' + voltarPara + '" class="barra-topo-icone barra-topo-voltar" aria-label="Voltar">' + svgVoltar + '</a>';
+    ? '<button type="button" class="barra-topo-icone barra-topo-contextual" id="botao-busca" aria-expanded="false" aria-controls="busca-container" aria-label="Buscar Marca, Local ou evento">' + svgBusca + '</button>'
+    : '<a href="' + voltarPara + '" class="barra-topo-icone barra-topo-voltar barra-topo-contextual" aria-label="Voltar">' + svgVoltar + '</a>';
 
   var html =
     '<div class="barra-topo">' +
       '<a class="barra-topo-marca" href="index.html" aria-label="Vai Ter Forró! — início">' +
         '<img src="assets/icons/logo-64.png" alt="" width="26" height="26">' +
         '<span>Vai Ter Forró!</span>' +
+      '</a>' +
+      '<span class="barra-topo-espaco-mobile"></span>' +
+      '<button type="button" class="barra-topo-conta-entrar" id="topo-entrar">Entrar</button>' +
+      '<a href="favoritos.html" class="barra-topo-icone barra-topo-favoritos" id="topo-favoritos" aria-label="Ver favoritos" hidden>' + svgCoracao + '</a>' +
+      '<a class="barra-topo-conta-perfil" id="topo-perfil" href="perfil.html" aria-label="Abrir meu perfil" hidden>' +
+        '<img src="assets/icons/avatar-padrao.svg" alt="" width="40" height="40">' +
       '</a>' +
       '<span class="barra-topo-espaco"></span>' +
       '<nav class="barra-topo-nav" aria-label="Navegação principal">' +
@@ -47,7 +53,6 @@
         '<a href="favoritos.html"' + atual('favoritos.html') + '>Favoritos</a>' +
         '<a href="perfil.html"' + atual('perfil.html') + '>Perfil</a>' +
       '</nav>' +
-      '<a href="favoritos.html" class="barra-topo-icone barra-topo-favoritos" aria-label="Ver favoritos">' + svgCoracao + '</a>' +
       iconeDireita +
     '</div>';
 

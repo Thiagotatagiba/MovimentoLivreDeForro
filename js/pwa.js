@@ -37,6 +37,7 @@ function gerarNavInferior() {
   const pagina = location.pathname.split('/').pop() || 'index.html';
   const ehHome = pagina === 'index.html' || pagina === '';
   const ehAgenda = pagina === 'agenda.html';
+  const buscarHref = ehHome ? '#busca-container' : 'index.html?buscar=1';
 
   const html = `
 <nav class="nav-inferior" aria-label="Navegação principal">
@@ -44,9 +45,13 @@ function gerarNavInferior() {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
     Início
   </a>
+  <a href="${buscarHref}"${ehHome ? ' id="nav-buscar" role="button"' : ''} aria-label="Buscar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    Buscar
+  </a>
   <a href="agenda.html"${ehAgenda ? ' aria-current="page"' : ''}>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4M16 3v4"/></svg>
-    Agenda
+    Eventos
   </a>
   <button type="button" id="botao-menu" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-lateral">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -55,6 +60,12 @@ function gerarNavInferior() {
 </nav>`;
 
   document.body.insertAdjacentHTML('beforeend', html);
+
+  const botaoBuscar = document.getElementById('nav-buscar');
+  botaoBuscar?.addEventListener('click', (evento) => {
+    evento.preventDefault();
+    document.getElementById('botao-busca')?.click();
+  });
 }
 
 function gerarMenuLateral() {
