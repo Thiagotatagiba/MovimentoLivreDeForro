@@ -1,3 +1,4 @@
+import { horarioEvento, situacaoEvento } from '../utils/eventoPublico.js';
 // home.js — página inicial.
 //
 // Revisão 2026-10-28 (ver docs/MELHORIAS.md):
@@ -18,7 +19,6 @@ import {
 import { buscar } from '../services/buscaService.js';
 import {
   formatarDataCompleta,
-  formatarHora,
   gerarCardsSemana,
   capitalizar,
   escaparHtml,
@@ -190,7 +190,8 @@ function renderizarBlocoHoje(eventosHoje, proximo) {
             <li>
               <a href="${escaparHtml(urlDoEvento(evento))}">
                 <strong>${escaparHtml(evento.marca?.nome ?? evento.titulo)}</strong>
-                <span>${escaparHtml(formatarHora(evento.horario))}${evento.local?.nome ? ` · ${escaparHtml(evento.local.nome)}` : ''}</span>
+                ${situacaoEvento(evento) ? `<span>${escaparHtml(situacaoEvento(evento))}</span>` : ''}
+                <span>${escaparHtml(horarioEvento(evento))}${evento.local?.nome ? ` · ${escaparHtml(evento.local.nome)}` : ''}</span>
               </a>
             </li>
           `).join('')}
@@ -209,7 +210,8 @@ function renderizarBlocoHoje(eventosHoje, proximo) {
         <p class="bloco-hoje-texto">
           O próximo é <span class="bloco-hoje-destaque">${escaparHtml(capitalizar(formatarDataCompleta(proximo.data)))}</span>
           — <a href="${escaparHtml(urlDoEvento(proximo))}"><strong>${escaparHtml(proximo.marca?.nome ?? proximo.titulo)}</strong></a>
-          ${proximo.horario ? `, às ${escaparHtml(formatarHora(proximo.horario))}` : ''}.
+          ${situacaoEvento(proximo) ? escaparHtml(situacaoEvento(proximo)) : ''}
+          ${proximo.horario ? `, às ${escaparHtml(horarioEvento(proximo))}` : ''}.
         </p>
         <a class="botao botao-primario" href="agenda.html">Ver a agenda</a>
       </div>
@@ -380,9 +382,10 @@ function renderizarCarrossel() {
           <div class="story-info">
             <p class="story-marca">${escaparHtml(nomeMarca)}</p>
             <h2 class="story-titulo">${escaparHtml(evento.titulo)}</h2>
+            ${situacaoEvento(evento) ? `<p class="story-dado">${escaparHtml(situacaoEvento(evento))}</p>` : ''}
             <p class="story-dado">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4M16 3v4"/></svg>
-              <span>${escaparHtml(capitalizar(formatarDataCompleta(evento.data)))} · ${escaparHtml(formatarHora(evento.horario))}</span>
+              <span>${escaparHtml(capitalizar(formatarDataCompleta(evento.data)))} · ${escaparHtml(horarioEvento(evento))}</span>
             </p>
             <p class="story-dado">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>

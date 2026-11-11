@@ -1,3 +1,5 @@
+import { FONTE_CATALOGO } from '../repositories/catalogoConfig.js';
+import { horarioEvento, situacaoEvento, gerarICS } from '../utils/eventoPublico.js';
 // evento.js — página de detalhe do evento.
 //
 // Revisão 2026-10-28 (2), a partir do feedback de uso:
@@ -11,7 +13,6 @@ import { obterEventoCompleto } from '../services/eventoService.js';
 import {
   formatarDataCompleta,
   formatarDataCurtaComDia,
-  formatarHora,
   formatarPreco,
   formatarPrecoCurto,
   enderecoResumido,
@@ -76,8 +77,8 @@ async function iniciar() {
   }
 
   atualizarMeta({
-    titulo: `${evento.titulo} — Vai Ter Forró!`,
-    descricao: `${evento.titulo} · ${capitalizar(formatarDataCompleta(evento.data))} às ${evento.horario} · ${evento.local?.nome ?? ''}`,
+    titulo: `${situacaoEvento(evento) ? situacaoEvento(evento) + ' - ' : ''}${evento.titulo} — Vai Ter Forró!`,
+    descricao: `${evento.titulo} · ${capitalizar(formatarDataCompleta(evento.data))} às ${horarioEvento(evento)} · ${evento.local?.nome ?? ''}`,
     imagem: imagemDoEvento(evento),
   });
   atualizarCanonical(`evento.html?slug=${encodeURIComponent(evento.slug)}`);
@@ -91,7 +92,7 @@ async function iniciar() {
   // no WhatsApp (o robô não executa JS). Se ela ainda não foi gerada para este
   // evento, cai no link normal em vez de compartilhar um 404.
   fetch(paginaCompartilhar, { method: 'HEAD' })
-    .then((resposta) => { if (resposta.ok) urlCompartilhar = paginaCompartilhar; })
+    .then((resposta) => { if (resposta.ok && FONTE_CATALOGO !== 'supabase' && !situacaoEvento(evento)) urlCompartilhar = paginaCompartilhar; })
     .catch(() => {});
 
   raiz.innerHTML = montarHtml(evento);
@@ -103,7 +104,7 @@ async function iniciar() {
   if (botaoCompartilhar) {
     ligarBotaoCompartilhar(botaoCompartilhar, {
       titulo: evento.titulo,
-      texto: `${evento.titulo} — ${capitalizar(formatarDataCompleta(evento.data))} · ${evento.horario}`,
+      texto: `${situacaoEvento(evento) ? situacaoEvento(evento) + ' - ' : ''}${evento.titulo} — ${capitalizar(formatarDataCompleta(evento.data))} · ${horarioEvento(evento)}`,
       url: () => urlCompartilhar,
       imagem: imagemCapa,
     });
@@ -201,9 +202,10 @@ function montarHtml(evento) {
       <header class="evento-cabecalho">
         <p class="evento-quando">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4M16 3v4"/></svg>
-          ${escaparHtml(capitalizar(formatarDataCompleta(evento.data)))} · ${escaparHtml(formatarHora(evento.horario))}
+          ${escaparHtml(capitalizar(formatarDataCompleta(evento.data)))} · ${escaparHtml(horarioEvento(evento))}
         </p>
         <h1>${escaparHtml(evento.titulo)}</h1>
+        ${situacaoEvento(evento) ? `<p class="evento-selo" role="status">${escaparHtml(situacaoEvento(evento))}</p>` : ''}
         <div class="evento-selos">
           ${preco ? `<span class="evento-selo evento-selo--destaque">${escaparHtml(preco)}</span>` : ''}
           ${mostrarTipo ? `<span class="evento-selo">${escaparHtml(tipo)}</span>` : ''}
@@ -287,7 +289,7 @@ function montarHtml(evento) {
         <aside class="evento-aside">
           <div class="evento-cartao">
             <p class="evento-cartao-rotulo">Quando</p>
-            <p class="evento-cartao-destaque">${escaparHtml(formatarDataCurtaComDia(evento.data))} · ${escaparHtml(formatarHora(evento.horario))}</p>
+            <p class="evento-cartao-destaque">${escaparHtml(formatarDataCurtaComDia(evento.data))} · ${escaparHtml(horarioEvento(evento))}</p>
             <div class="evento-cartao-local">
               <p class="evento-cartao-linha">${escaparHtml(localLinha)}</p>
               ${rotaLocal ? `
@@ -302,9 +304,9 @@ function montarHtml(evento) {
             <p class="evento-cartao-linha">${escaparHtml(textoIngresso(evento.ingresso))}</p>
 
             <div class="evento-cartao-acoes">
-              ${linkIngresso
+              ${linkIngresso && !situacaoEvento(evento)
                 ? `<a class="botao botao-primario" href="${escaparHtml(linkIngresso)}" target="_blank" rel="noopener">${ingressoViaWhatsapp ? 'Garantir ingresso no WhatsApp' : 'Garantir ingresso'}</a>`
-                : (!entradaGratuita
+                : (!entradaGratuita && !situacaoEvento(evento)
                     ? `<p class="ingresso-aviso">${vendaNoLocal
                         ? 'Ingresso vendido na portaria.'
                         : 'Venda de ingresso ainda não divulgada — confira as redes da Marca.'}</p>`
@@ -320,37 +322,8 @@ function montarHtml(evento) {
 
 // ---------- Calendário (.ics) ----------
 
-function escaparICS(texto) {
-  return String(texto ?? '')
-    .replace(/\\/g, '\\\\')
-    .replace(/;/g, '\\;')
-    .replace(/,/g, '\\,')
-    .replace(/\n/g, '\\n');
-}
-
 function baixarICS(evento) {
-  const [hora, minuto = '00'] = String(evento.horario || '20:00').split(':');
-  const data = evento.data.replace(/-/g, '');
-  const inicio = `${data}T${hora}${minuto}00`;
-  const horaFim = String((Number(hora) + 3) % 24).padStart(2, '0');
-  const fim = `${data}T${horaFim}${minuto}00`;
-
-  const linhas = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//Vai Ter Forro//PT-BR',
-    'BEGIN:VEVENT',
-    `UID:${evento.id}@vaiterforro.com.br`,
-    `DTSTART:${inicio}`,
-    `DTEND:${fim}`,
-    `SUMMARY:${escaparICS(evento.titulo)}`,
-    `LOCATION:${escaparICS(enderecoCompleto(evento.local?.endereco))}`,
-    `DESCRIPTION:${escaparICS(evento.descricao ?? '')}`,
-    'END:VEVENT',
-    'END:VCALENDAR',
-  ];
-
-  const blob = new Blob([linhas.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+  const blob = new Blob([gerarICS(evento)], { type: 'text/calendar;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
