@@ -84,6 +84,15 @@ try {
 } catch {
   # Never serialize headers, credential objects or HTTP request objects.
   if ($_.Exception.Response) {
+    if ($_.ErrorDetails.Message) {
+      try {
+        $detalhes = $_.ErrorDetails.Message | ConvertFrom-Json
+        Write-Warning $detalhes.message
+        foreach ($falha in $detalhes.errors) {
+          Write-Warning ("resource={0}, field={1}, code={2}, message={3}" -f $falha.resource,$falha.field,$falha.code,$falha.message)
+        }
+      } catch { Write-Warning 'Resposta HTTP sem detalhes JSON.' }
+    }
     throw "GitHub recusou a operacao HTTP ($([int]$_.Exception.Response.StatusCode)). A branch pode ter sido enviada; confirme o acesso a Pull requests da conta usada pelo Git."
   }
   throw
@@ -94,5 +103,6 @@ try {
   $env:GCM_INTERACTIVE = $oldInteractive
   Pop-Location
 }
+
 
 
