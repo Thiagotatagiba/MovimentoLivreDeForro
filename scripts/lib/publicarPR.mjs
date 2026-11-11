@@ -1,7 +1,7 @@
-﻿import fs from 'node:fs';
+import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 
-const [branch, title, description] = process.argv.slice(2);
+const [branch, title, description, updateFlag] = process.argv.slice(2);
 const repo = 'Thiagotatagiba/MovimentoLivreDeForro';
 if (!branch || branch === 'main' || !title || !description) {
   throw new Error('Development branch, title and description are required.');
@@ -12,10 +12,13 @@ if (git(['branch','--show-current']).trim() !== branch) throw new Error('Branch 
 if (git(['status','--porcelain']).trim()) throw new Error('Uncommitted changes; publication aborted.');
 
 // Use Git's configured credential helper, in memory only. Never print credentials.
-const response = git(['credential','fill'], {
+let response;
+try { response = git(['credential','fill'], {
   input:'protocol=https\nhost=github.com\npath='+repo+'.git\n\n',
   stdio:['pipe','pipe','pipe'],
-});
+}); } catch {
+  throw new Error('Git authentication unavailable without interaction. Sign into Git and retry.');
+}
 const credential = Object.fromEntries(response.trim().split(/\r?\n/).map(line => {
   const index = line.indexOf('=');
   return [line.slice(0,index),line.slice(index+1)];
@@ -41,12 +44,17 @@ try {
   const query = new URLSearchParams({state:'open',base:'main',head:'Thiagotatagiba:'+branch});
   const existing = await api('/pulls?'+query);
   git(['push','-u','https://github.com/'+repo+'.git',branch],{stdio:'inherit'});
-  const pr = existing[0] ?? await api('/pulls','POST',{
+  let pr = existing[0] ?? await api('/pulls','POST',{
     title,body:fs.readFileSync(description,'utf8').replace(/^\uFEFF/,''),
     head:branch,base:'main',draft:true,
   });
+  if (existing[0] && updateFlag === '--atualizar') {
+    pr = await api('/pulls/'+pr.number,'PATCH',{
+      title,body:fs.readFileSync(description,'utf8').replace(/^﻿/,''),
+    });
+  }
   if (!pr.html_url) throw new Error('GitHub did not return a pull request URL.');
-  console.log((existing[0] ? 'PR existente: ' : 'PR criado em rascunho: ')+pr.html_url);
+  console.log((existing[0] ? 'PR existente'+(updateFlag === '--atualizar' ? ' atualizado: ' : ': ') : 'PR criado em rascunho: ')+pr.html_url);
 } finally {
   credential.password = undefined;
 }

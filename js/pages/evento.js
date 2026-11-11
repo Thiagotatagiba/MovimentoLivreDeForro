@@ -78,7 +78,7 @@ async function iniciar() {
 
   atualizarMeta({
     titulo: `${situacaoEvento(evento) ? situacaoEvento(evento) + ' - ' : ''}${evento.titulo} — Vai Ter Forró!`,
-    descricao: `${evento.titulo} · ${capitalizar(formatarDataCompleta(evento.data))} às ${horarioEvento(evento)} · ${evento.local?.nome ?? ''}`,
+    descricao: `${evento.titulo} · ${capitalizar(formatarDataCompleta(evento.data))} · ${horarioEvento(evento)} · ${evento.local?.nome ?? ''}`,
     imagem: imagemDoEvento(evento),
   });
   atualizarCanonical(`evento.html?slug=${encodeURIComponent(evento.slug)}`);

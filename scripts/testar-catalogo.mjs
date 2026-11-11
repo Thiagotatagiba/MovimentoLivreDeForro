@@ -190,3 +190,32 @@ test('service worker precaches new modules and bypasses cross-origin data', asyn
   assert.ok(paths.includes('js/repositories/catalogoConfig.js'));
   assert.ok(paths.includes('js/utils/eventoPublico.js'));
 });
+
+test('local staging server selects source without changing committed flag and blocks private paths', async () => {
+  const {spawn} = await import('node:child_process');
+  const {fileURLToPath} = await import('node:url');
+  const before = fs.readFileSync(new URL('../js/repositories/catalogoConfig.js',import.meta.url),'utf8');
+  const server = spawn(process.execPath,[fileURLToPath(new URL('./servidor-homologacao.mjs',import.meta.url)),'--fonte=supabase','--porta=0'],
+    {cwd:new URL('..',import.meta.url),stdio:['ignore','pipe','pipe']});
+  try {
+    const address = await new Promise((resolve,reject)=>{
+      let text='';
+      const timeout=setTimeout(()=>reject(Error('Server startup timeout')),10000);
+      server.once('error',e=>{clearTimeout(timeout);reject(e);});
+      server.once('exit',code=>{clearTimeout(timeout);reject(Error('Server exited '+code));});
+      server.stdout.on('data',chunk=>{
+        text+=chunk;
+        const match=text.match(/http:\/\/127\.0\.0\.1:\d+/);
+        if(match){clearTimeout(timeout);resolve(match[0]);}
+      });
+    });
+    const config = await fetch(address+'/js/repositories/catalogoConfig.js');
+    assert.equal(config.headers.get('cache-control'),'no-store');
+    assert.match(await config.text(),/FONTE_CATALOGO = "supabase"/);
+    assert.equal((await fetch(address+'/.git/config')).status,403);
+    assert.equal((await fetch(address+'/js/pages/evento.js',{method:'POST'})).status,405);
+    assert.equal((await fetch(address+'/missing-file')).status,404);
+    assert.equal((await fetch(address+'/')).status,200);
+    assert.equal(fs.readFileSync(new URL('../js/repositories/catalogoConfig.js',import.meta.url),'utf8'),before);
+  } finally { server.kill(); }
+});

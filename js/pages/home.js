@@ -211,7 +211,7 @@ function renderizarBlocoHoje(eventosHoje, proximo) {
           O próximo é <span class="bloco-hoje-destaque">${escaparHtml(capitalizar(formatarDataCompleta(proximo.data)))}</span>
           — <a href="${escaparHtml(urlDoEvento(proximo))}"><strong>${escaparHtml(proximo.marca?.nome ?? proximo.titulo)}</strong></a>
           ${situacaoEvento(proximo) ? escaparHtml(situacaoEvento(proximo)) : ''}
-          ${proximo.horario ? `, às ${escaparHtml(horarioEvento(proximo))}` : ''}.
+          ${proximo.horario ? `, ${escaparHtml(horarioEvento(proximo))}` : ''}.
         </p>
         <a class="botao botao-primario" href="agenda.html">Ver a agenda</a>
       </div>

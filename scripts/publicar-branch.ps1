@@ -2,7 +2,8 @@
 param(
   [string]$Titulo = 'Integra leitura publica gradual do catalogo Supabase',
   [string]$Descricao = 'docs/PR_CATALOGO_SUPABASE.md',
-  [switch]$CompararRemoto
+  [switch]$CompararRemoto,
+  [switch]$AtualizarDescricao
 )
 $ErrorActionPreference = 'Stop'
 $raiz = Split-Path -Parent $PSScriptRoot
@@ -40,7 +41,9 @@ try {
   if (!$PSCmdlet.ShouldProcess("Thiagotatagiba/MovimentoLivreDeForro ($branch)", 'Enviar branch e abrir/reutilizar PR em rascunho')) {
     return
   }
-  Executar-Node -Argumentos @('scripts/lib/publicarPR.mjs', $branch, $Titulo, $Descricao)
+  $argsPublicacao = @('scripts/lib/publicarPR.mjs', $branch, $Titulo, $Descricao)
+  if ($AtualizarDescricao) { $argsPublicacao += '--atualizar' }
+  Executar-Node -Argumentos $argsPublicacao
 } finally {
   Pop-Location
 }

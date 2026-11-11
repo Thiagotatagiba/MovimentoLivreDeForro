@@ -1,4 +1,4 @@
-# Leitura publica Supabase - entrega A (11/11/2026)
+﻿# Leitura publica Supabase - entrega A (11/11/2026)
 
 Branch: `codex/supabase-leitura-publica`. Base verificada: `60e87d4`.
 A fonte de producao continua JSON. Esta entrega nao executa DDL, nao altera
@@ -64,9 +64,13 @@ Testes sinteticos cobrem versao errada, publicacao, inatividade, meia-noite,
 datas impossiveis, cancelamento/adiamento, falha de rede sem fallback, retry,
 busca/servicos, paginacao e bypass de cache de dados/cross-origin.
 
-Validacao visual/mobile, instalacao/atualizacao real do PWA e login com conta
-real ainda pendentes: abertura do servidor local foi recusada pelo mecanismo
-de autorizacao do navegador. Nao houve tentativa de contornar o bloqueio.
+Homologacao visual/mobile retomada apos autorizacao posterior: Home, Stories,
+busca, agenda/filtro Festival, detalhe, marca e local usando Supabase real
+confirmados no navegador. Detalhe em 320/390/1280 px sem overflow horizontal;
+sem erros/warnings no console da pagina inspecionada. Favoritar sem sessao
+abriu login sem escrita. ICS baixado confirmou UID evt-015, revisao 1, inicio
+13/11/2026 22h e termino 14/11/2026 02h. Login com conta real e
+instalacao/atualizacao real do PWA permanecem pendentes.
 Os testes anonimos com tabelas privadas vazias nao substituem os futuros testes
 de isolamento com usuarios de marcas diferentes.
 
@@ -110,7 +114,7 @@ listas VIP conforme o handoff, sem CSV e com acesso por titular/produtor.
 
 ## Automacao de testes e publicacao da branch
 
-Os workflows em .github/workflows/catalogo.yml executam os 15 testes,
+Os workflows em .github/workflows/catalogo.yml executam os 16 testes,
 integridade, sintaxe e reproducibilidade das previas a cada push em main/codex/**
 e PR para main. Nao recebem segredos administrativos nem fazem deploy.
 A comparacao com Supabase/dominio e opcional no disparo manual, depois que o
@@ -127,3 +131,20 @@ sem enviar nada, adicione -WhatIf (os testes locais ainda sao executados).
 Se a conta usada pelo Git nao puder criar PR, o erro e explicito. A descricao
 padrao fica em docs/PR_CATALOGO_SUPABASE.md; use -Descricao e -Titulo para outras
 entregas. A opcao -CompararRemoto e adequada ao catalogo nesta fase de transicao.
+
+## Servidor de homologacao sem trocar a flag do projeto
+
+    node scripts/servidor-homologacao.mjs --fonte=supabase --porta=8766
+
+Aceita json/comparacao/supabase e serve somente em 127.0.0.1. Substitui
+catalogoConfig.js apenas na resposta HTTP; nao escreve na configuracao ou no
+banco. Cache-Control no-store, metodos somente GET/HEAD e caminhos ocultos
+bloqueados. Teste automatizado usa porta efemera e confirma que a flag em disco
+nao muda. Serve para desenvolvimento; nao substitui hosting/PWA em producao.
+
+A publicacao aceita -AtualizarDescricao para sincronizar titulo/corpo de um PR
+existente com os arquivos revisados, sem duplicar PR:
+
+    powershell -NoProfile -File scripts/publicar-branch.ps1 -CompararRemoto -AtualizarDescricao
+
+O PR permanece em rascunho. Nao ha aprovacao/merge/deploy automatico.
