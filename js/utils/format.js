@@ -1,3 +1,4 @@
+import { imagemPersistida } from './midiasLocais.js';
 // format.js
 // Funções puras de formatação e utilidades de texto. Nunca acessam
 // repositório nem DOM.
@@ -195,8 +196,8 @@ export function estiloMidia(imagemUrl) {
 // Imagem do evento: a própria, se existir; senão a capa da Marca.
 export function imagemDoEvento(evento) {
   const propria = evento.imagemUrl;
-  if (propria && propria !== 'em breve') return propria;
-  return evento.marca?.capa ?? null;
+  if (propria && propria !== 'em breve') return imagemPersistida(propria);
+  return imagemPersistida(evento.marca?.capa ?? null);
 }
 
 export function estiloCapa(capaUrl) {

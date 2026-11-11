@@ -114,7 +114,7 @@ listas VIP conforme o handoff, sem CSV e com acesso por titular/produtor.
 
 ## Automacao de testes e publicacao da branch
 
-Os workflows em .github/workflows/catalogo.yml executam os 16 testes,
+Os workflows em .github/workflows/catalogo.yml executam os 17 testes,
 integridade, sintaxe e reproducibilidade das previas a cada push em main/codex/**
 e PR para main. Nao recebem segredos administrativos nem fazem deploy.
 A comparacao com Supabase/dominio e opcional no disparo manual, depois que o
@@ -148,3 +148,17 @@ existente com os arquivos revisados, sem duplicar PR:
     powershell -NoProfile -File scripts/publicar-branch.ps1 -CompararRemoto -AtualizarDescricao
 
 O PR permanece em rascunho. Nao ha aprovacao/merge/deploy automatico.
+
+
+## Imagem do Festival Praca Viva recuperada
+
+O evt-024 manteve o mesmo imagemUrl no JSON e no Supabase, mas o CDN Instagram
+retornou 403 "URL signature expired". A imagem original foi recuperada pela
+publicacao publica https://www.instagram.com/p/DfHluSKx7pf/ e copiada para
+assets/eventos/festival-praca-viva-2026-12.jpg, sem edicao. Proveniencia em
+assets/eventos/README.md. O resolver js/utils/midiasLocais.js relaciona o nome
+original do arquivo a essa copia local; nao altera dados nem substitui uma
+nova imagem publicada. A geracao de previews usa a mesma resolucao. O modulo
+entra no pre-cache e CACHE_NOME passa a v6. A copia e servida como imagem normal;
+o catalogo Supabase continua network-only. Validado no navegador com o lightbox
+(1088 x 1344) e teste de regressao para preservar uma nova arte.

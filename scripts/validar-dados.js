@@ -105,7 +105,7 @@ marcas.forEach((marca) => {
 });
 
 // ---------- arquivos de imagem ----------
-[['marcas', marcas, ['logo', 'capa']], ['locais', locais, ['fotoCapa', 'fotoPerfil']]].forEach(([nome, itens, campos]) => {
+[['marcas', marcas, ['logo', 'capa']], ['locais', locais, ['fotoCapa', 'fotoPerfil']], ['eventos', eventos, ['imagemUrl']]].forEach(([nome, itens, campos]) => {
   itens.forEach((item) => {
     campos.forEach((campo) => {
       const valor = item[campo];

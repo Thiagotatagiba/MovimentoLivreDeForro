@@ -8,7 +8,7 @@ Automacao:
 - Comparacao remota opcional via workflow_dispatch ou -CompararRemoto.
 
 Validacao executada em 11/11/2026:
-- 16 testes automatizados passaram, incluindo servidor de homologacao com protecao de caminhos privados e flag versionada preservada.
+- 17 testes automatizados passaram, incluindo servidor de homologacao com protecao de caminhos privados e flag versionada preservada.
 - API anonima contra checkout e JSONs do dominio: 15 marcas, 15 locais ativos e 24 eventos, sem divergencias nos campos legados.
 - Rascunhos/perfis/ingressos sem dados visiveis para anon; 24 versoes publicas.
 - Geradores JSON e Supabase, validador de dados, sintaxe e git diff --check executados.
@@ -20,3 +20,12 @@ Pendente: login com conta real e instalacao/atualizacao real do PWA. A homologac
 Para homologar sem editar arquivos de configuracao: node scripts/servidor-homologacao.mjs --fonte=supabase --porta=8766. O servidor e limitado ao loopback, nao cacheia respostas e bloqueia caminhos ocultos como .git/config. Tambem aceita json/comparacao. Nao usar como servidor de producao.
 
 Sem migracao, escrita no Supabase, merge ou deploy. JSON permanece como fonte padrao. Criterios de ativacao/reversao em docs/INTEGRACAO_CATALOGO_SUPABASE.md. Administracao multi-marca e VIP continuam nas entregas seguintes.
+
+
+Correcao da arte do Festival Praca Viva (evt-024):
+- A URL original preservada no JSON/Supabase retornava 403 "URL signature expired".
+- JPEG original recuperado do post publico do organizador DfHluSKx7pf e versionado em assets/eventos/festival-praca-viva-2026-12.jpg.
+- Resolver de midia usa essa copia apenas para o mesmo arquivo de origem; uma nova arte publicada nao e sobrescrita.
+- Detalhe/cards/Stories e previews compartilham a resolucao. Previa OG regenerada, service worker v6.
+- Conferido no navegador: lightbox carregou o JPEG local completo, 1088 x 1344.
+- JSONs e versoes Supabase nao foram alterados; paridade continua sem divergencias.

@@ -219,3 +219,21 @@ test('local staging server selects source without changing committed flag and bl
     assert.equal(fs.readFileSync(new URL('../js/repositories/catalogoConfig.js',import.meta.url),'utf8'),before);
   } finally { server.kill(); }
 });
+
+test('original festival artwork resolves locally without overriding new published images', async () => {
+  const {imagemDoEvento} = await import('../js/utils/format.js');
+  const {imagemPersistida} = await import('../js/utils/midiasLocais.js');
+  const event = json.eventos.find(e=>e.id==='evt-024');
+  const before = JSON.stringify(event);
+  const local = imagemDoEvento(event);
+  assert.equal(local,'assets/eventos/festival-praca-viva-2026-12.jpg');
+  const bytes = fs.readFileSync(new URL('../'+local,import.meta.url));
+  assert.equal(bytes.subarray(0,3).toString('hex'),'ffd8ff');
+  assert.ok(bytes.length > 10000);
+  assert.equal(JSON.stringify(event),before);
+  const next = 'https://scontent.example.cdninstagram.com/new-artwork.jpg?signed=new';
+  assert.equal(imagemDoEvento({...event,imagemUrl:next}),next);
+  assert.equal(imagemPersistida('https://example.com/880189607_18054198119813716_4883937518527682192_n.jpg'),
+    'https://example.com/880189607_18054198119813716_4883937518527682192_n.jpg');
+  assert.equal(imagemDoEvento({imagemUrl:'em breve',marca:{capa:local}}),local);
+});

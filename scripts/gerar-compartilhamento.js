@@ -64,6 +64,7 @@ function urlAbsoluta(valor) {
 }
 
 async function main() {
+const { imagemDoEvento } = await import('../js/utils/format.js');
 const { horarioEvento, situacaoEvento } = await import('../js/utils/eventoPublico.js');
 let catalogo;
 if (process.argv.includes('--supabase')) {
@@ -97,9 +98,7 @@ for (const evento of eventos) {
   const urlCompartilhar = `${BASE}compartilhar/${encodeURIComponent(evento.slug)}.html`;
   const urlRelativa = `../evento.html?slug=${encodeURIComponent(evento.slug)}`;
 
-  const imagem = urlAbsoluta(evento.imagemUrl)
-    || urlAbsoluta(marca.capa)
-    || ICONE_PADRAO;
+  const imagem = urlAbsoluta(imagemDoEvento({ ...evento, marca })) || ICONE_PADRAO;
 
   const descricaoPartes = [
     capitalizar(dataLonga(evento.data)),
