@@ -64,7 +64,8 @@ try {
   }
   $baseUri = "https://api.github.com/repos/$repo"
   $filtroHead = [Uri]::EscapeDataString("Thiagotatagiba:$branch")
-  $existentes = @(Invoke-RestMethod -Uri "$baseUri/pulls?state=open&base=main&head=$filtroHead" -Headers $headers)
+  $respostaLista = Invoke-RestMethod -Uri "$baseUri/pulls?state=open&base=main&head=$filtroHead" -Headers $headers
+  $existentes = @($respostaLista | ForEach-Object { $_ } | Where-Object { $_.html_url })
   & git push -u "https://github.com/$repo.git" $branch
   if ($LASTEXITCODE -ne 0) { throw 'Falha no push; nenhum PR foi criado.' }
   if ($existentes.Count -gt 0) {
@@ -93,4 +94,5 @@ try {
   $env:GCM_INTERACTIVE = $oldInteractive
   Pop-Location
 }
+
 
