@@ -7,10 +7,6 @@ param(
 $ErrorActionPreference = 'Stop'
 $raiz = Split-Path -Parent $PSScriptRoot
 Push-Location -LiteralPath $raiz
-$oldPrompt = $env:GIT_TERMINAL_PROMPT
-$oldInteractive = $env:GCM_INTERACTIVE
-$headers = $null
-$credenciais = $null
 try {
   function Executar-Node([string[]]$Argumentos) {
     & node @Argumentos
@@ -44,65 +40,11 @@ try {
   if (!$PSCmdlet.ShouldProcess("Thiagotatagiba/MovimentoLivreDeForro ($branch)", 'Enviar branch e abrir/reutilizar PR em rascunho')) {
     return
   }
-  $env:GIT_TERMINAL_PROMPT = '0'
-  $env:GCM_INTERACTIVE = 'never'
-  $repo = 'Thiagotatagiba/MovimentoLivreDeForro'
-  # Reuse the configured credential helper. Capture only in memory; never print/store.
-  $saidaCredencial = "protocol=https`nhost=github.com`npath=$repo.git`n`n" | & git credential fill 2>$null
-  if ($LASTEXITCODE -ne 0) { throw 'Git nao tem uma credencial disponivel sem interacao. Autentique o Git no VS Code e execute novamente.' }
-  $credenciais = @{}
-  foreach ($linha in $saidaCredencial) {
-    $partes = $linha -split '=', 2
-    if ($partes.Count -eq 2) { $credenciais[$partes[0]] = $partes[1] }
-  }
-  $saidaCredencial = $null
-  if (!$credenciais.password) { throw 'Credencial GitHub ausente no gerenciador do Git.' }
-  $headers = @{
-    Authorization = "Bearer $($credenciais.password)"
-    Accept = 'application/vnd.github+json'
-    'X-GitHub-Api-Version' = '2022-11-28'
-  }
-  $baseUri = "https://api.github.com/repos/$repo"
-  $filtroHead = [Uri]::EscapeDataString("Thiagotatagiba:$branch")
-  $respostaLista = Invoke-RestMethod -Uri "$baseUri/pulls?state=open&base=main&head=$filtroHead" -Headers $headers
-  $existentes = @($respostaLista | ForEach-Object { $_ } | Where-Object { $_.html_url })
-  & git push -u "https://github.com/$repo.git" $branch
-  if ($LASTEXITCODE -ne 0) { throw 'Falha no push; nenhum PR foi criado.' }
-  if ($existentes.Count -gt 0) {
-    Write-Output "PR existente: $($existentes[0].html_url)"
-    return
-  }
-  $body = @{
-    title = $Titulo
-    body = Get-Content -LiteralPath $Descricao -Raw -Encoding UTF8
-    head = $branch
-    base = 'main'
-    draft = $true
-  } | ConvertTo-Json -Depth 5
-  $pr = Invoke-RestMethod -Uri "$baseUri/pulls" -Headers $headers -Method Post -ContentType 'application/json; charset=utf-8' -Body ([Text.Encoding]::UTF8.GetBytes($body))
-  Write-Output "PR criado em rascunho: $($pr.html_url)"
-} catch {
-  # Never serialize headers, credential objects or HTTP request objects.
-  if ($_.Exception.Response) {
-    if ($_.ErrorDetails.Message) {
-      try {
-        $detalhes = $_.ErrorDetails.Message | ConvertFrom-Json
-        if (.message) { Write-Warning ([string]$detalhes.message) }
-        foreach ($falha in $detalhes.errors) {
-          Write-Warning ("resource={0}, field={1}, code={2}, message={3}" -f $falha.resource,$falha.field,$falha.code,$falha.message)
-        }
-      } catch { Write-Warning 'Resposta HTTP sem detalhes JSON.' }
-    }
-    throw "GitHub recusou a operacao HTTP ($([int]$_.Exception.Response.StatusCode)). A branch pode ter sido enviada; confirme o acesso a Pull requests da conta usada pelo Git."
-  }
-  throw
+  Executar-Node -Argumentos @('scripts/lib/publicarPR.mjs', $branch, $Titulo, $Descricao)
 } finally {
-  if ($credenciais) { $credenciais.Clear() }
-  if ($headers) { $headers.Clear() }
-  $env:GIT_TERMINAL_PROMPT = $oldPrompt
-  $env:GCM_INTERACTIVE = $oldInteractive
   Pop-Location
 }
+
 
 
 
