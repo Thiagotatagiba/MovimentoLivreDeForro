@@ -87,7 +87,7 @@ try {
     if ($_.ErrorDetails.Message) {
       try {
         $detalhes = $_.ErrorDetails.Message | ConvertFrom-Json
-        Write-Warning $detalhes.message
+        if (.message) { Write-Warning ([string]$detalhes.message) }
         foreach ($falha in $detalhes.errors) {
           Write-Warning ("resource={0}, field={1}, code={2}, message={3}" -f $falha.resource,$falha.field,$falha.code,$falha.message)
         }
@@ -103,6 +103,7 @@ try {
   $env:GCM_INTERACTIVE = $oldInteractive
   Pop-Location
 }
+
 
 
 
