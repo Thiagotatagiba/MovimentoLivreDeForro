@@ -107,3 +107,23 @@ Concluir homologacao visual/PWA e ativacao comunicada. Depois reconciliar
 migracoes remotas e implementar governanca multi-marca, permissoes e rascunho
 com revisao otimista, publicacao transacional/auditoria/outbox. Somente depois,
 listas VIP conforme o handoff, sem CSV e com acesso por titular/produtor.
+
+## Automacao de testes e publicacao da branch
+
+Os workflows em .github/workflows/catalogo.yml executam os 15 testes,
+integridade, sintaxe e reproducibilidade das previas a cada push em main/codex/**
+e PR para main. Nao recebem segredos administrativos nem fazem deploy.
+A comparacao com Supabase/dominio e opcional no disparo manual, depois que o
+workflow existir na branch principal.
+
+No Windows, com Node 24 e Git ja autenticado:
+
+    powershell -NoProfile -File scripts/publicar-branch.ps1 -CompararRemoto
+
+O comando exige branch de desenvolvimento e commits sem alteracoes pendentes,
+valida antes de enviar, reutiliza PR aberto ou cria rascunho e mostra o link.
+Nao instala GitHub CLI, nao grava tokens e nao faz merge/deploy. Para verificar
+sem enviar nada, adicione -WhatIf (os testes locais ainda sao executados).
+Se a conta usada pelo Git nao puder criar PR, o erro e explicito. A descricao
+padrao fica em docs/PR_CATALOGO_SUPABASE.md; use -Descricao e -Titulo para outras
+entregas. A opcao -CompararRemoto e adequada ao catalogo nesta fase de transicao.
