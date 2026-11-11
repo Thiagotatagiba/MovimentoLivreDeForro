@@ -2,18 +2,10 @@
 // Única responsabilidade: buscar eventos da fonte de dados (hoje JSON, futuramente Supabase).
 // Nunca conter regra de negócio aqui — isso é papel do service.
 
-const DATA_URL = 'data/eventos.json';
-
-let cache = null;
+import { lerCatalogo } from './catalogoRepository.js';
 
 async function carregarTodos() {
-  if (cache) return cache;
-  const resposta = await fetch(DATA_URL);
-  if (!resposta.ok) {
-    throw new Error(`Não foi possível carregar eventos (${resposta.status})`);
-  }
-  cache = await resposta.json();
-  return cache;
+  return (await lerCatalogo()).eventos;
 }
 
 export async function listarEventos() {

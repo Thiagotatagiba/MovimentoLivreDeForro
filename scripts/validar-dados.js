@@ -90,7 +90,10 @@ marcas.forEach((marca) => {
   if (marca.localPadraoId && !idsLocais.has(marca.localPadraoId)) {
     erros.push(`marca ${marca.id}: localPadraoId inexistente (${marca.localPadraoId})`);
   }
-  if (marca.whatsapp && !/^https?:\/\//.test(marca.whatsapp)) {
+  // The public UI also accepts a raw telephone (linkWhatsapp in format.js).
+  const telefoneWhatsapp = String(marca.whatsapp ?? '').replace(/\D/g, '');
+  const whatsappTelefone = /^[+()\d\s-]+$/.test(marca.whatsapp ?? '') && telefoneWhatsapp.length >= 10 && telefoneWhatsapp.length <= 13;
+  if (marca.whatsapp && !/^https?:\/\//.test(marca.whatsapp) && !whatsappTelefone) {
     erros.push(`marca ${marca.id}: whatsapp não é URL (${marca.whatsapp}) — deve começar com https://`);
   }
   if (marca.instagram && !/^https?:\/\//.test(marca.instagram)) {
@@ -102,7 +105,7 @@ marcas.forEach((marca) => {
 });
 
 // ---------- arquivos de imagem ----------
-[['marcas', marcas, ['logo', 'capa']], ['locais', locais, ['fotoCapa', 'fotoPerfil']]].forEach(([nome, itens, campos]) => {
+[['marcas', marcas, ['logo', 'capa']], ['locais', locais, ['fotoCapa', 'fotoPerfil']], ['eventos', eventos, ['imagemUrl']]].forEach(([nome, itens, campos]) => {
   itens.forEach((item) => {
     campos.forEach((campo) => {
       const valor = item[campo];

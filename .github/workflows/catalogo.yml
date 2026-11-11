@@ -1,0 +1,51 @@
+﻿name: Validar catalogo
+
+on:
+  push:
+    branches: [main, 'codex/**']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      verificar_remoto:
+        description: Comparar tambem com Supabase e dominio de producao (somente leitura)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: catalogo-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Testes de contratos, servicos e PWA
+        run: node --test scripts/testar-catalogo.mjs
+      - name: Integridade dos dados
+        run: node scripts/validar-dados.js
+      - name: Sintaxe de paginas e gerador
+        run: |
+          node --check js/pages/home.js
+          node --check js/pages/evento.js
+          node --check scripts/gerar-compartilhamento.js
+      - name: Verificar previas reproduziveis
+        run: |
+          node scripts/gerar-compartilhamento.js
+          git diff --exit-code -- compartilhar
+          test -z "$(git ls-files --others --exclude-standard compartilhar)"
+      - name: Comparacao remota opcional
+        if: github.event_name == 'workflow_dispatch' && inputs.verificar_remoto
+        run: |
+          node scripts/comparar-catalogo.mjs
+          node scripts/comparar-catalogo.mjs --site

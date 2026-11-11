@@ -1,3 +1,4 @@
+import { horarioEvento, situacaoEvento } from './eventoPublico.js';
 // js/utils/cardEvento.js
 // Gera o HTML do card de evento usado em agenda.html, index.html, local.html,
 // marca.html e favoritos.html. Função pura: só monta string, nunca toca DOM
@@ -9,7 +10,6 @@
 
 import {
   formatarDataCurtaComDia,
-  formatarHora,
   formatarPrecoCurto,
   ehHoje,
   escaparHtml,
@@ -38,7 +38,7 @@ export function cardEventoHtml(evento, opcoes = {}) {
 
   // Linha de informação: horário + preço mínimo.
   const partesMeta = [];
-  if (evento.horario) partesMeta.push(formatarHora(evento.horario));
+  if (evento.horario) partesMeta.push(horarioEvento(evento));
   if (preco) partesMeta.push(preco);
 
   // Atrações (bandas + DJs), sempre visíveis quando existirem. Mesmo que o
@@ -76,6 +76,7 @@ export function cardEventoHtml(evento, opcoes = {}) {
         ` : ''}
       </div>
       <div class="corpo">
+        ${situacaoEvento(evento) ? `<p class="meta">${escaparHtml(situacaoEvento(evento))}</p>` : ''}
         <p class="titulo-evento">${escaparHtml(evento.titulo)}</p>
         ${linhaAtracoes}
         ${partesMeta.length ? `<p class="meta">${escaparHtml(partesMeta.join(' · '))}</p>` : ''}
