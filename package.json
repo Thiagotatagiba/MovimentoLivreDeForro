@@ -1,0 +1,11 @@
+{
+  "name": "vai-ter-forro-checks",
+  "private": true,
+  "scripts": {
+    "test": "node --test scripts/testar-catalogo.mjs scripts/testar-administracao.mjs scripts/testar-servico-administrativo.mjs"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.16"
+  },
+  "type": "module"
+}

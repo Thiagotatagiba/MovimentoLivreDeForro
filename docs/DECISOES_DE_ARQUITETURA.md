@@ -1168,3 +1168,15 @@ ou escrita remota executada. Horarios de termino, estimativas e situacoes
 operacionais sao preservados na UI/ICS. Ver INTEGRACAO_CATALOGO_SUPABASE.md
 para diagnostico, testes e criterios de ativacao/reversao. Admin local
 continua distinto do painel multi-marca planejado; VIP ainda nao implementado.
+
+## 2026-11-11 - Base administrativa em validacao local
+
+Historico remoto de migracoes exportado com nomes/timestamps reais. Nova
+migracao pendente implementa permissoes por marca, rascunho com revisao,
+publicacao versionada, alteracao de situacao, ultimo administrador, auditoria
+e outbox. Entradas publicas SECURITY INVOKER; implementacoes privadas com
+autorizacao por auth.uid(), grants restritos e search_path vazio. Nenhum
+DDL remoto aplicado. Testes usam PostgreSQL descartavel (PGlite) somente como
+dependencia de desenvolvimento; o site continua ES modules sem build.
+O editor local admin/ foi preservado. Escopo, limitacoes e proximo incremento
+em BASE_ADMINISTRATIVA.md; nao confundir base SQL com painel multi-marca pronto.

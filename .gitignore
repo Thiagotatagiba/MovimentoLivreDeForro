@@ -1,6 +1,5 @@
 # dependências e ferramentas locais
 node_modules/
-package-lock.json
 
 # sistema operacional
 .DS_Store
@@ -20,3 +19,6 @@ old.zip
 
 # prévias geradas localmente (screenshots de QA)
 preview/
+
+# cache local do Supabase CLI
+supabase/.temp/
