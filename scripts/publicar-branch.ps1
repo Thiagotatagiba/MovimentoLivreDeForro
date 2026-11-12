@@ -1,5 +1,6 @@
 ﻿[CmdletBinding(SupportsShouldProcess)]
 param(
+  [string]$Base = 'main',
   [string]$Titulo = 'Integra leitura publica gradual do catalogo Supabase',
   [string]$Descricao = 'docs/PR_CATALOGO_SUPABASE.md',
   [switch]$CompararRemoto,
@@ -14,7 +15,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "Validacao falhou: node $($Argumentos -join ' ')" }
   }
   $branch = (& git branch --show-current).Trim()
-  if ($LASTEXITCODE -ne 0 -or !$branch -or $branch -eq 'main') {
+  if ($LASTEXITCODE -ne 0 -or !$branch -or ($branch -eq 'main' -or $branch -eq $Base)) {
     throw 'Use uma branch de desenvolvimento, fora de main.'
   }
   $alteracoes = & git status --porcelain
@@ -22,7 +23,9 @@ try {
     throw 'Registre as alteracoes em commit antes de publicar a branch.'
   }
   if (!(Test-Path -LiteralPath $Descricao -PathType Leaf)) { throw 'Descricao do PR nao encontrada.' }
-  Executar-Node -Argumentos @('--test', 'scripts/testar-catalogo.mjs')
+  & npm ci --ignore-scripts
+  if ($LASTEXITCODE -ne 0) { throw 'Instalacao das dependencias de teste falhou.' }
+  Executar-Node -Argumentos @('--test', 'scripts/testar-catalogo.mjs', 'scripts/testar-administracao.mjs', 'scripts/testar-servico-administrativo.mjs')
   Executar-Node -Argumentos @('scripts/validar-dados.js')
   Executar-Node -Argumentos @('--check', 'js/pages/home.js')
   Executar-Node -Argumentos @('--check', 'js/pages/evento.js')
@@ -41,7 +44,7 @@ try {
   if (!$PSCmdlet.ShouldProcess("Thiagotatagiba/MovimentoLivreDeForro ($branch)", 'Enviar branch e abrir/reutilizar PR em rascunho')) {
     return
   }
-  $argsPublicacao = @('scripts/lib/publicarPR.mjs', $branch, $Titulo, $Descricao)
+  $argsPublicacao = @('scripts/lib/publicarPR.mjs', $branch, $Titulo, $Descricao, '--base', $Base)
   if ($AtualizarDescricao) { $argsPublicacao += '--atualizar' }
   Executar-Node -Argumentos $argsPublicacao
 } finally {

@@ -1,10 +1,10 @@
-﻿name: Validar catalogo
+name: Validar catalogo
 
 on:
   push:
     branches: [main, 'codex/**']
   pull_request:
-    branches: [main]
+    branches: [main, 'codex/**']
   workflow_dispatch:
     inputs:
       verificar_remoto:
@@ -30,8 +30,10 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '24'
-      - name: Testes de contratos, servicos e PWA
-        run: node --test scripts/testar-catalogo.mjs
+      - name: Dependencias de teste (sem scripts de instalacao)
+        run: npm ci --ignore-scripts
+      - name: Testes de catalogo, administracao SQL, servicos e PWA
+        run: npm test
       - name: Integridade dos dados
         run: node scripts/validar-dados.js
       - name: Sintaxe de paginas e gerador
