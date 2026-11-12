@@ -65,5 +65,3 @@ alter table public.eventos enable row level security;
 alter table public.versoes_evento enable row level security;
 alter table public.rascunhos_evento enable row level security;
 revoke all on public.locais,public.marcas,public.eventos,public.versoes_evento,public.rascunhos_evento from anon,authenticated;
-
-

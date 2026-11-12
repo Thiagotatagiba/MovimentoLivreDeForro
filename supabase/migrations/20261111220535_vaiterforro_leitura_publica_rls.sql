@@ -5,5 +5,3 @@ create policy locais_publicos on public.locais for select to anon,authenticated 
 create policy marcas_publicas on public.marcas for select to anon,authenticated using (ativo);
 create policy eventos_publicados on public.eventos for select to anon,authenticated using (estado_publicacao='publicado' and versao_publicada_id is not null);
 create policy versoes_publicadas on public.versoes_evento for select to anon,authenticated using (exists (select 1 from public.eventos e where e.id=evento_id and e.versao_publicada_id=versoes_evento.id and e.estado_publicacao='publicado'));
-
-

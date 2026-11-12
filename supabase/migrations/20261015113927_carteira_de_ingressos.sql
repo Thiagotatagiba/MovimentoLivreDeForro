@@ -57,4 +57,3 @@ create policy "Dono envia os próprios arquivos de ingresso"
 create policy "Dono apaga os próprios arquivos de ingresso"
   on storage.objects for delete to authenticated
   using (bucket_id = 'ingressos' and (storage.foldername(name))[1] = (select auth.uid())::text);
-

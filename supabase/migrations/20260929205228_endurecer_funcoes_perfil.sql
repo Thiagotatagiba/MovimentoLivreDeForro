@@ -18,4 +18,3 @@ $$;
 
 revoke execute on function public.criar_perfil_no_cadastro() from anon, authenticated;
 revoke execute on function public.atualizar_timestamp_perfil() from anon, authenticated;
-

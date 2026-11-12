@@ -9,4 +9,3 @@ and (conteudo->>'horario') ~ '^([01][0-9]|2[0-3]):[0-5][0-9]$'
 and (conteudo->>'horarioTermino') ~ '^([01][0-9]|2[0-3]):[0-5][0-9]$'
 and ((conteudo->>'dataTermino')::date + (conteudo->>'horarioTermino')::time) > ((conteudo->>'data')::date + (conteudo->>'horario')::time)
 );
-

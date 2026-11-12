@@ -5,4 +5,3 @@
 -- Precisa revogar de PUBLIC também.
 revoke execute on function public.criar_perfil_no_cadastro() from public;
 revoke execute on function public.atualizar_timestamp_perfil() from public;
-

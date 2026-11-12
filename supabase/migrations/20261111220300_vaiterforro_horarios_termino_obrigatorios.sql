@@ -9,4 +9,3 @@ alter table public.versoes_evento add constraint versoes_evento_horarios_obrigat
   and ((conteudo->>'dataTermino')::date + (conteudo->>'horarioTermino')::time) >
       ((conteudo->>'data')::date + (conteudo->>'horario')::time)
 );
-
