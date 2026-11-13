@@ -42,6 +42,8 @@ jobs:
           node --check admin/js/gestaoDependencias.js
           node --check admin/js/editorModelo.js
           node --check scripts/fixtures/gestaoDemo.mjs
+          node --check scripts/homologar-auth.mjs
+          node --check scripts/lib/homologacaoAuth.mjs
           node --check js/pages/home.js
           node --check js/pages/evento.js
           node --check scripts/gerar-compartilhamento.js
