@@ -38,3 +38,36 @@ test('permission and validation errors remain distinct from network failure',asy
   await assert.rejects(service.publicarEvento({eventoId:'e',revisao:1,chave:'k'}),e=>e.codigo===expected);
  }
 });
+
+test('management context derives access from database membership, never user_metadata',async()=>{
+ const filters=[];
+ const membership=[
+  {papel:'equipe',marca:{id:'a',nome:'Marca A'},permissoes:[{permissao:'gerenciar_eventos'}]},
+  {papel:'equipe',marca:{id:'b',nome:'Marca B'},permissoes:[{permissao:'consultar_listas'}]},
+  {papel:'administrador',marca:null,permissoes:[]},
+ ];
+ const service=criarServicoAdministrativo({obterCliente:async()=>({
+  auth:{getUser:async()=>({data:{user:{id:'current-user',user_metadata:{administrador:true}}}})},
+  from:table=>({
+   select(){return this;},order(){return this;},range(){return this;},
+   eq(k,v){filters.push({table,k,v});return this;},
+   maybeSingle:async()=>({data:null,error:null}),
+   then(resolve){resolve({data:membership,error:null});},
+  }),
+ })});
+ const context=await service.carregarContexto();
+ assert.deepEqual(context.marcas.map(m=>m.id),['a']);
+ assert.deepEqual(context.marcas[0].permissoes,['gerenciar_eventos']);
+ assert.ok(filters.some(f=>f.table==='membros_marca'&&f.k==='usuario_id'&&f.v==='current-user'));
+});
+test('draft read failure never substitutes the published content as an editable draft',async()=>{
+ const service=criarServicoAdministrativo({obterCliente:async()=>({
+  from:table=>({
+   select(){return this;},eq(){return this;},
+   maybeSingle:async()=>table==='eventos'?
+    {data:{id:'event',versao:{conteudo:{titulo:'Published'}}},error:null}:
+    {data:null,error:{code:'42501'}},
+  }),
+ })});
+ await assert.rejects(service.carregarEvento('event'),e=>e.codigo==='SEM_PERMISSAO');
+});

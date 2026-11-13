@@ -8,7 +8,7 @@
 
 import { loginComMagicLink, loginComGoogle } from '../services/authService.js';
 
-export function abrirModalLogin() {
+export function abrirModalLogin({subtitulo} = {}) {
   const elementoDeOrigem = document.activeElement;
 
   const overlay = document.createElement('div');
@@ -34,6 +34,7 @@ export function abrirModalLogin() {
     </div>
   `;
 
+  if (subtitulo) overlay.querySelector('.modal-login-subtitulo').textContent = subtitulo;
   document.body.appendChild(overlay);
   document.body.style.overflow = 'hidden';
 

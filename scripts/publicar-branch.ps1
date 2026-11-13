@@ -25,7 +25,7 @@ try {
   if (!(Test-Path -LiteralPath $Descricao -PathType Leaf)) { throw 'Descricao do PR nao encontrada.' }
   & npm ci --ignore-scripts
   if ($LASTEXITCODE -ne 0) { throw 'Instalacao das dependencias de teste falhou.' }
-  Executar-Node -Argumentos @('--test', 'scripts/testar-catalogo.mjs', 'scripts/testar-administracao.mjs', 'scripts/testar-servico-administrativo.mjs')
+  Executar-Node -Argumentos @('--test', 'scripts/testar-catalogo.mjs', 'scripts/testar-administracao.mjs', 'scripts/testar-servico-administrativo.mjs', 'scripts/testar-editor-gestao.mjs')
   Executar-Node -Argumentos @('scripts/validar-dados.js')
   Executar-Node -Argumentos @('--check', 'js/pages/home.js')
   Executar-Node -Argumentos @('--check', 'js/pages/evento.js')

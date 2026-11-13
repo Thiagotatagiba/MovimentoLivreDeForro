@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gestão de eventos — Vai Ter Forró!</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="css/gestao.css">
+<link rel="stylesheet" href="../components/modal-login.css">
+</head>
+<body>
+<header class="topo"><a href="../index.html"><img src="../assets/icons/logo-64.png" alt="">Vai Ter Forró!</a><span>Gestão de eventos</span></header>
+<div id="demo" class="demo" hidden><strong>Demonstração local</strong><p>Dados fictícios. Nenhuma alteração será enviada ao site ou ao Supabase.</p><nav aria-label="Perfis de demonstração"><a href="?perfil=administrador">Administrador</a><a href="?perfil=editor">Editor</a><a href="?perfil=publicador">Publicador</a><a href="?perfil=outra-marca">Outra marca</a></nav><p id="perfil-demo"></p></div>
+<main>
+<h1>Seus eventos</h1>
+<p class="apoio">Prepare as alterações em um rascunho. A versão pública só muda quando alguém com permissão publica.</p>
+<p id="mensagem" role="status" aria-live="polite">Carregando seu acesso…</p>
+<button id="entrar" type="button" hidden>Entrar para gerenciar</button>
+<div id="painel" class="layout" hidden>
+<aside class="cartao navegacao"><label for="marca">Marca</label><select id="marca"></select><h2>Eventos</h2><div id="eventos" class="lista-eventos" role="group" aria-label="Escolher evento"></div></aside>
+<section id="editor" class="cartao" hidden aria-labelledby="titulo-editor">
+<div class="editor-topo"><div><p class="rotulo" id="estado-editor"></p><h2 id="titulo-editor">Editar evento</h2></div><button type="button" id="recarregar" class="secundario">Recarregar</button></div>
+<p id="publicado" class="apoio"></p><p id="papel" class="aviso"></p>
+<form id="form-evento" novalidate>
+<fieldset id="campos"><legend>Conteúdo do rascunho</legend>
+<label for="titulo">Título</label><input id="titulo" name="titulo" required maxlength="200">
+<div class="dupla"><div><label for="data">Data de início</label><input id="data" name="data" type="date" required></div><div><label for="horario">Horário de início</label><input id="horario" name="horario" type="time" required></div></div>
+<div class="dupla"><div><label for="dataTermino">Data de término</label><input id="dataTermino" name="dataTermino" type="date" required></div><div><label for="horarioTermino">Horário de término</label><input id="horarioTermino" name="horarioTermino" type="time" required></div></div>
+<p class="apoio">Use a data do dia seguinte se o baile atravessar a meia-noite. Horários de Brasília.</p>
+<label class="check"><input id="horarios-confirmados" type="checkbox">Confirmo os horários de início e término com o produtor</label>
+<label for="descricao">Descrição</label><textarea id="descricao" name="descricao" rows="6"></textarea>
+<div class="dupla"><div><label for="bandas">Bandas e artistas (um por linha)</label><textarea id="bandas" rows="3"></textarea></div><div><label for="djs">DJs (um por linha)</label><textarea id="djs" rows="3"></textarea></div></div>
+<h3>Ingresso</h3><div class="dupla"><div><label for="tipo-entrada">Tipo de entrada</label><input id="tipo-entrada" list="tipos-entrada"><datalist id="tipos-entrada"><option>Gratuito</option><option>Ingresso Online</option><option>Ingresso no Local</option><option>Cover</option></datalist></div><div><label for="preco">Preço a partir de (R$)</label><input id="preco" type="number" min="0" step="0.01"><small>Deixe em branco se ainda não foi informado.</small></div></div>
+<label for="link-ingresso">Link do ingresso</label><input id="link-ingresso" placeholder="https://" inputmode="url">
+<label class="check"><input id="ativo" type="checkbox">Exibir este evento no catálogo público</label>
+</fieldset>
+<section class="imagem-atual" aria-label="Imagem atual"><h3>Imagem atual</h3><img id="imagem" alt="Arte atual do evento" hidden><p id="sem-imagem" class="apoio">Imagem não informada.</p></section>
+<div class="acoes"><button id="salvar" type="submit">Salvar rascunho</button><button id="publicar" type="button">Revisar publicação</button></div>
+<p id="alteracoes" class="apoio"></p>
+</form>
+<section id="situacao-painel" class="situacao" aria-labelledby="titulo-situacao"><h3 id="titulo-situacao">Situação do evento publicado</h3><p class="apoio">Cancelamentos e adiamentos são publicados com histórico, separados do rascunho.</p><label for="situacao">Situação</label><select id="situacao"><option value="confirmado">Confirmado</option><option value="adiado">Adiado</option><option value="cancelado">Cancelado</option><option value="interrompido">Interrompido</option></select><button id="alterar-situacao" type="button" class="secundario">Revisar situação</button></section>
+</section>
+<section id="conflito" class="cartao conflito" hidden aria-labelledby="titulo-conflito"><h2 id="titulo-conflito">Outra pessoa alterou este rascunho</h2><p>Suas alterações foram preservadas. Compare e escolha o que manter. Nada será salvo automaticamente.</p><form id="form-conflito"><div id="comparacao"></div><button type="submit">Preparar revisão escolhida</button></form></section>
+</div>
+<dialog id="confirmacao" aria-labelledby="titulo-confirmacao"><h2 id="titulo-confirmacao"></h2><p id="texto-confirmacao"></p><dl id="resumo-confirmacao"></dl><div class="acoes"><button id="cancelar-confirmacao" type="button" class="secundario">Voltar</button><button id="confirmar" type="button">Confirmar</button></div></dialog>
+</main>
+<script type="module" src="js/gestao.js"></script>
+</body></html>
