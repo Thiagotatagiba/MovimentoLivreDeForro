@@ -185,6 +185,11 @@ test('service worker precaches new modules and bypasses cross-origin data', asyn
   let promise;
   handlers.fetch({request:{method:'GET',url:'https://example.com/data/eventos.json'},respondWith:p=>{promise=p;}});
   await assert.rejects(promise,/offline/);
+  for (const path of ['admin/gestao.html','admin/js/gestao.js','__admin_demo/contexto','services/administracaoService.js']) {
+    let pending;
+    handlers.fetch({request:{method:'GET',url:'https://example.com/'+path},respondWith:p=>{pending=p;}});
+    await assert.rejects(pending,/offline/);
+  }
   const paths = [...source.matchAll(/^  '([^']+)',/gm)].map(m=>m[1]);
   for (const path of paths) assert.ok(fs.existsSync(new URL('../'+path,import.meta.url)),path);
   assert.ok(paths.includes('js/repositories/catalogoConfig.js'));
@@ -215,6 +220,10 @@ test('local staging server selects source without changing committed flag and bl
     assert.equal((await fetch(address+'/.git/config')).status,403);
     assert.equal((await fetch(address+'/js/pages/evento.js',{method:'POST'})).status,405);
     assert.equal((await fetch(address+'/missing-file')).status,404);
+    assert.equal((await fetch(address+'/__admin_demo/contexto',{headers:{'X-Demo-Perfil':'administrador'}})).status,404);
+    const productionDeps=await (await fetch(address+'/admin/js/gestaoDependencias.js')).text();
+    assert.ok(productionDeps.includes('demonstracao:false'));
+    assert.ok(!productionDeps.includes('X-Demo-Perfil'));
     assert.equal((await fetch(address+'/')).status,200);
     assert.equal(fs.readFileSync(new URL('../js/repositories/catalogoConfig.js',import.meta.url),'utf8'),before);
   } finally { server.kill(); }

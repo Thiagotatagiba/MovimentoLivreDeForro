@@ -1180,3 +1180,14 @@ DDL remoto aplicado. Testes usam PostgreSQL descartavel (PGlite) somente como
 dependencia de desenvolvimento; o site continua ES modules sem build.
 O editor local admin/ foi preservado. Escopo, limitacoes e proximo incremento
 em BASE_ADMINISTRATIVA.md; nao confundir base SQL com painel multi-marca pronto.
+
+## 2026-11-11 — Interface incremental de gestão de eventos
+
+O incremento B2 usa módulos ES e os tokens visuais existentes, sem introduzir
+build/framework no site. A migração para Vue/Vite permanece uma avaliação
+futura; não é pré-condição para verificar o primeiro fluxo de rascunho/publicação.
+Novo painel em admin/gestao.html; editor local admin/index.html preservado.
+Revisão otimista, comparação explícita de conflitos e permissões são verificadas
+também pelo backend B1. A demonstração é somente loopback/PGlite e depende de
+opção explícita no servidor; nenhum parâmetro de URL ativa acesso administrativo
+real. Administração fica fora do cache do PWA. Ver PAINEL_EVENTOS.md.

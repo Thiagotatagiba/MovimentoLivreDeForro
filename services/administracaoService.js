@@ -1,4 +1,4 @@
-﻿export class ErroAdministracao extends Error {
+export class ErroAdministracao extends Error {
   constructor(codigo, mensagem, causa) {
     super(mensagem, {cause:causa}); this.name='ErroAdministracao'; this.codigo=codigo;
   }
@@ -22,7 +22,38 @@ export function criarServicoAdministrativo({
     if (error) throw traduzirErro(error);
     return data;
   }
+  async function lista(tabela,colunas,filtrar=q=>q) {
+    const cliente=await obterCliente(),rows=[];
+    for(let offset=0;;offset+=500) {
+      const {data,error}=await filtrar(cliente.from(tabela).select(colunas).order('id').range(offset,offset+499));
+      if(error) throw traduzirErro(error);
+      rows.push(...data);
+      if(data.length<500) return rows;
+    }
+  }
   return {
+    async carregarContexto() {
+      const cliente=await obterCliente();
+      const {data:{user},error:erroAuth}=await cliente.auth.getUser();
+      if(erroAuth || !user) throw new ErroAdministracao('SEM_PERMISSAO','Entre para acessar a gestão.');
+      const {data:global,error}=await cliente.from('administradores_sistema').select('ativo')
+        .eq('usuario_id',user.id).maybeSingle();
+      if(error) throw traduzirErro(error);
+      const todas=['editar_marca','gerenciar_eventos','publicar_eventos','gerenciar_listas','consultar_listas'];
+      if(global?.ativo) {
+        const marcas=await lista('marcas','id,id_legado,slug,nome',q=>q.eq('ativo',true));
+        return {marcas:marcas.map(m=>({...m,permissoes:todas}))};
+      }
+      const membros=await lista('membros_marca',
+        'id,marca_id,papel,permissoes:permissoes_membro(permissao),marca:marcas(id,id_legado,slug,nome)',
+        q=>q.eq('usuario_id',user.id).eq('ativo',true));
+      return {marcas:membros.filter(m=>m.marca).map(m=>({...m.marca,
+        permissoes:m.papel==='administrador'?todas:m.permissoes.map(p=>p.permissao)}))
+        .filter(m=>m.permissoes.some(p=>['gerenciar_eventos','publicar_eventos'].includes(p)))};
+    },
+    listarEventos:marcaId=>lista('eventos',
+      'id,id_legado,slug,estado_publicacao,versao_publicada_id,versao:versoes_evento!eventos_versao_publicada_do_mesmo_evento(numero,conteudo,situacao)',
+      q=>q.eq('marca_id',marcaId)),
     salvarRascunho:({eventoId,conteudo,revisao,chave})=>rpc('salvar_rascunho_evento',{
       p_evento:eventoId,p_conteudo:conteudo,p_revisao:revisao,p_chave:chave,
     }),
