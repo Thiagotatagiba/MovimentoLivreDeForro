@@ -4,7 +4,7 @@ export class ErroAdministracao extends Error {
   }
 }
 function traduzirErro(erro) {
-  if (erro.code === '40001') return new ErroAdministracao('CONFLITO',
+  if (['PT409','40001'].includes(erro.code)) return new ErroAdministracao('CONFLITO',
     'Outra pessoa alterou este registro. Recarregue e compare as mudancas antes de salvar.',erro);
   if (erro.code === '42501') return new ErroAdministracao('SEM_PERMISSAO',
     'Sua conta nao tem permissao para esta operacao.',erro);
@@ -18,7 +18,9 @@ export function criarServicoAdministrativo({
   async function rpc(nome,parametros) {
     if (!parametros.p_chave) throw new ErroAdministracao('VALIDACAO','Identificador da solicitacao obrigatorio.');
     const cliente=await obterCliente();
-    const {data,error}=await cliente.rpc(nome,parametros);
+    const consulta=cliente.rpc(nome,parametros);
+    // Recent SDKs retry HTTP 409 by default; a revision conflict needs user review.
+    const {data,error}=await (typeof consulta.retry==='function'?consulta.retry(false):consulta);
     if (error) throw traduzirErro(error);
     return data;
   }

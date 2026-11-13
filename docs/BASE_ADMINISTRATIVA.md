@@ -1,7 +1,7 @@
 ﻿# Base administrativa - incremento B1
 
-Estado: implementacao preparada e testada localmente; NAO instalada no Supabase
-remoto e ainda sem interface administrativa multi-marca. O admin/index.html
+Estado atualizado: base e interface instaladas e verificadas apenas no projeto
+separado de homologacao; NAO instaladas na producao. Ver docs/HOMOLOGACAO_SUPABASE.md. O admin/index.html
 existente continua sendo o editor local de JSON e nao foi modificado.
 
 Branch: codex/administracao-base, baseada em codex/supabase-leitura-publica.
@@ -88,7 +88,7 @@ Limitacoes explicitas:
 1. Concluir login/PWA e ativacao comunicada da leitura Supabase. Nao habilitar
    escrita administrativa enquanto o publico continuar lendo JSON.
 2. Comparar migration list local/remota: as sete versoes exportadas ja existem
-   em producao; somente a oitava deve estar pendente. Nunca usar reset ou
+   em producao; a base B1 e a correcao PT409 devem estar pendentes. Nunca usar reset ou
    reaplicar os snapshots no projeto remoto.
 3. Conferir se app_private continua fora dos schemas expostos na Data API.
    Revisar RLS/grants, dependencias e permissoes do owner das funcoes privadas.

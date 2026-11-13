@@ -32,6 +32,17 @@ test('conflicts are explicit and never auto-overwrite the draft',async()=>{
   e=>e.codigo==='CONFLITO');
  assert.equal(requests,1);
 });
+
+test('SDK automatic retries are disabled for terminal revision conflicts',async()=>{
+ for(const code of ['PT409','40001']) {
+  const retryFlags=[];
+  const service=criarServicoAdministrativo({obterCliente:async()=>({rpc:()=>({
+   retry(flag){retryFlags.push(flag);return Promise.resolve({error:{code}});},
+  })})});
+  await assert.rejects(service.salvarRascunho({eventoId:'e',conteudo:{},revisao:0,chave:'k'}),e=>e.codigo==='CONFLITO');
+  assert.deepEqual(retryFlags,[false]);
+ }
+});
 test('permission and validation errors remain distinct from network failure',async()=>{
  for(const [code,expected] of [['42501','SEM_PERMISSAO'],['23514','VALIDACAO'],['22023','VALIDACAO'],['PGRST202','INDISPONIVEL']]) {
   const service=criarServicoAdministrativo({obterCliente:async()=>({rpc:async()=>({error:{code}})})});
