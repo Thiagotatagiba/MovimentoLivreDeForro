@@ -2,7 +2,7 @@
   "name": "vai-ter-forro-checks",
   "private": true,
   "scripts": {
-    "test": "node --test scripts/testar-catalogo.mjs scripts/testar-administracao.mjs scripts/testar-servico-administrativo.mjs scripts/testar-editor-gestao.mjs"
+    "test": "node --test scripts/testar-catalogo.mjs scripts/testar-administracao.mjs scripts/testar-servico-administrativo.mjs scripts/testar-editor-gestao.mjs scripts/testar-homologacao-auth.mjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.16"

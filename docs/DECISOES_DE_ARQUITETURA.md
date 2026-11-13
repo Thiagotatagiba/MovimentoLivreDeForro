@@ -1191,3 +1191,16 @@ Revisão otimista, comparação explícita de conflitos e permissões são verif
 também pelo backend B1. A demonstração é somente loopback/PGlite e depende de
 opção explícita no servidor; nenhum parâmetro de URL ativa acesso administrativo
 real. Administração fica fora do cache do PWA. Ver PAINEL_EVENTOS.md.
+
+
+## 13/11/2026 — Homologação Auth/PostgREST separada (B3)
+
+O verificador de Auth/PostgREST usa chave pública e três contas de teste com
+permissões distintas, sem administrador global. Leitura é o padrão; escrita
+exige confirmação do ref separado e evento fictício evt-homologacao-. O projeto
+de produção conhecido é recusado. Não há promoção de usuário nem migração remota
+nesse fluxo. O servidor local pode substituir a configuração do cliente único
+somente com flag explícita, sem gravar credenciais nos arquivos do frontend.
+A disponibilidade do ambiente separado é pré-condição para comprovar os testes
+reais; APIs simuladas locais não comprovam Auth nem concorrência remota.
+Procedimento e limites: docs/HOMOLOGACAO_AUTH.md.
