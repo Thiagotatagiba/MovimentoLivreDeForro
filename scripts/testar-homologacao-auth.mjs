@@ -36,7 +36,7 @@ function fake({legacy='evt-homologacao-concorrencia',unverified=false}={}) {
     if(url.pathname.endsWith('/salvar_rascunho_evento')) {
       if(role!=='EDITOR') return result({code:'42501'},403);
       if(replays.has(body.p_chave)) return result(replays.get(body.p_chave));
-      if(body.p_revisao!==(draft?.revisao??0)) return result({code:'40001'},409);
+      if(body.p_revisao!==(draft?.revisao??0)) return result({code:'PT409'},409);
       draft={evento_id:id(100),conteudo:structuredClone(body.p_conteudo),revisao:body.p_revisao+1};
       const response={revisao:draft.revisao};replays.set(body.p_chave,response);return result(response);
     }
@@ -124,6 +124,10 @@ test('local server substitutes only public staging configuration and refuses pro
     assert.ok(!source.includes(env().VTF_EDITOR_PASSWORD));
     assert.ok(source.includes('vtf-homologacao-'+ref));
     assert.equal((await fetch(base+'/__admin_demo/contexto')).status,404);
+    const login=await (await fetch(base+'/__homologacao/login')).text();
+    assert.ok(login.includes('signInWithPassword'));
+    assert.ok(login.includes("supabase.supabaseUrl!=='https://qmhrlexpnnbjntpecjis.supabase.co'"));
+    assert.ok(!login.includes(env().VTF_EDITOR_PASSWORD));
     const real=await (await fetch(base+'/admin/js/gestaoDependencias.js')).text();
     assert.ok(real.includes('demonstracao:false'));
   } finally {server.child.kill();}

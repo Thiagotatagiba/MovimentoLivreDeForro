@@ -50,6 +50,11 @@ const server = http.createServer(async (req,res)=>{
         ',{auth:{storageKey:'+JSON.stringify('vtf-homologacao-'+staging.ref)+'}});');
       return;
     }
+    if(staging && pathname==='/__homologacao/login') {
+      res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'});
+      res.end(req.method==='HEAD'?'':await fs.readFile(path.join(root,'scripts/fixtures/loginHomologacao.html')));
+      return;
+    }
     if (pathname === '/js/repositories/catalogoConfig.js') {
       res.writeHead(200,{'Content-Type':'text/javascript; charset=utf-8','Cache-Control':'no-store'});
       res.end(req.method==='HEAD' ? '' : 'export const FONTE_CATALOGO = '+JSON.stringify(source)+';');

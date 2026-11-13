@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login de homologação — Vai Ter Forró!</title>
+<link rel="stylesheet" href="/css/tokens.css"><link rel="stylesheet" href="/css/base.css">
+<main style="max-width:32rem;margin:3rem auto;padding:1.5rem">
+<h1>Homologação</h1><p>Entrada de contas fictícias no Supabase separado. Nenhum dado real deve ser usado aqui.</p>
+<form id="login"><p><label>E-mail <input name="email" type="email" required autocomplete="off"></label></p>
+<p><label>Senha <input name="password" type="password" required autocomplete="off"></label></p>
+<button type="submit" disabled>Entrar na homologação</button></form>
+<p id="status" role="status">Verificando o ambiente…</p>
+<button id="sair" disabled>Encerrar sessão desta conta</button>
+</main><script type="module">
+import {supabase} from '/data/supabaseClient.js';
+const status=document.querySelector('#status'),form=document.querySelector('#login');
+if(location.hostname!=='127.0.0.1' || supabase.supabaseUrl!=='https://qmhrlexpnnbjntpecjis.supabase.co') {
+ status.textContent='Entrada bloqueada: este recurso exige o servidor local e o projeto de homologação.';
+} else {
+ form.querySelector('button').disabled=false;document.querySelector('#sair').disabled=false;
+ status.textContent='Ambiente: Vai Ter Forró! — Homologação';
+ form.addEventListener('submit',async event=>{
+  event.preventDefault();const button=form.querySelector('button');button.disabled=true;
+  const email=form.elements.email.value.trim(),password=form.elements.password.value;
+  try {
+   const {error}=await supabase.auth.signInWithPassword({email,password});
+   form.elements.password.value='';
+   if(error) {status.textContent='Não foi possível entrar com essa conta de teste.';return;}
+   location.assign('/admin/gestao.html');
+  } catch {status.textContent='Falha de conexão com a homologação.';}
+  finally {form.elements.password.value='';button.disabled=false;}
+ });
+ document.querySelector('#sair').addEventListener('click',async()=>{
+  const {error}=await supabase.auth.signOut({scope:'local'});
+  status.textContent=error?'Não foi possível encerrar a sessão.':'Sessão de teste encerrada.';
+ });
+}
+</script></html>

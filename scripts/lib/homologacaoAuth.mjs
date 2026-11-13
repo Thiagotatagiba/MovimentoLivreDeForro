@@ -123,7 +123,7 @@ export async function executarHomologacao(config,{fetchImpl=fetch,report=()=>{}}
     }
     const competitor={...command,p_chave:crypto.randomUUID()};
     const race=await Promise.all([rpc('salvar_rascunho_evento',command,editor.token),rpc('salvar_rascunho_evento',competitor,editor.token)]);
-    verificar(race.filter(r=>r.ok).length===1 && race.some(r=>!r.ok && r.data.code==='40001'),
+    verificar(race.filter(r=>r.ok).length===1 && race.some(r=>!r.ok && r.status===409 && r.data.code==='PT409'),
       'Concorrencia nao produziu um sucesso e um conflito.');
     const winning=race[0].ok?command:competitor,successful=race.find(r=>r.ok);
     const replay=await rpc('salvar_rascunho_evento',winning,editor.token);

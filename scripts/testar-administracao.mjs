@@ -50,7 +50,8 @@ test('permissions isolate brands, editing, publishing and list-only membership',
 test('draft CAS prevents lost updates and does not change the public version',async()=>{
  const first=await save();
  assert.equal(first.revisao,1);
- await denied('select public.salvar_rascunho_evento($1,$2,0,$3)',[event,{...draft,titulo:'Stale'},key(2)],/conflito_revisao/);
+ await denied('select public.salvar_rascunho_evento($1,$2,0,$3)',[event,{...draft,titulo:'Stale'},key(2)],
+  error=>error.code==='PT409' && /conflito_revisao/.test(error.message));
  await as(null,'anon');
  assert.equal((await db.query('select conteudo->>\'titulo\' titulo from public.versoes_evento')).rows[0].titulo,content.titulo);
  await as(5);

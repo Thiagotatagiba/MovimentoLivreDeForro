@@ -1,16 +1,16 @@
 # Homologação Auth/PostgREST — incremento B3
 
-Estado em 13/11/2026: ferramentas preparadas e testadas localmente. A consulta
-ao Supabase encontrou somente o projeto de produção e nenhuma branch remota.
-Não existe ainda um destino separado para executar estes testes reais.
-Nenhum projeto foi criado, nenhuma cobrança foi autorizada e nenhuma migração
-ou escrita foi executada remotamente nesta entrega.
+Estado atualizado em 13/11/2026: projeto separado qmhrlexpnnbjntpecjis criado
+no plano Free, cotação US$ 0/mês. Auth/PostgREST e painel foram verificados
+com contas fictícias. Evidências, correção PT409 e limitações atuais em
+docs/HOMOLOGACAO_SUPABASE.md. As instruções abaixo descrevem a preparação
+e o verificador; nenhuma alteração foi executada em produção.
 
-## Destino proposto
+## Destino de homologação
 
-Usar um projeto separado chamado **Vai Ter Forró! — Homologação**, preferencialmente
-na mesma região e versão PostgreSQL de produção (sa-east-1, PostgreSQL 17).
-O nome é uma proposta; não representa um recurso já provisionado.
+Projeto separado **Vai Ter Forró! — Homologação**, ref qmhrlexpnnbjntpecjis,
+na região sa-east-1 e PostgreSQL 17.11. Não reaplicar o bootstrap nesse projeto: ele
+já está preparado; os timestamps de instalação estão registrados no relatório real.
 Não copiar usuários, favoritos, ingressos nem senhas de produção.
 Uma branch Supabase também exige avaliação de custo antes da criação.
 
@@ -76,7 +76,7 @@ node --env-file=C:\caminho-fora-do-repositorio\vtf-homologacao.env scripts/homol
 O teste recusa o ref conhecido de produção, URLs customizadas, chave
 administrativa, confirmação ausente e evento sem o prefixo fictício. Envia dois
 salvamentos concorrentes na mesma revisão por requisições HTTP independentes:
-exige um sucesso e um conflito 40001. Confere replay idempotente, incremento único
+exige um sucesso e um conflito HTTP 409/PT409. Confere replay idempotente, incremento único
 da revisão e versão pública intacta até publicar. Publicador e outra marca não
 podem salvar; editor não pode publicar. A publicação pelo publicador deve trocar
 a versão pública, confirmar o título fictício e preservar a situação operacional.
@@ -102,15 +102,16 @@ Sem a flag, a configuração versionada continua a mesma. Nenhuma configuração
 homologação é gravada nos arquivos do frontend ou publicada no site.
 
 Depois dos testes CLI, validar no navegador login, troca de conta, resolução de
-conflitos e encerramento de sessão. Essa validação visual com contas reais ainda
-não foi executada; as verificações B2 com usuários fictícios não a substituem.
+conflitos e encerramento de sessão. A validação visual com Auth real e contas fictícias foi executada no B4;
+Google e Magic Link ainda precisam de verificações próprias.
 
 ## Evidências desta entrega
 
-Executar npm test: **55 testes**, incluindo sete novos testes do verificador e
+Executar npm test: **56 testes**, incluindo sete novos testes do verificador e
 da substituição HTTP local. As APIs Auth/PostgREST desses sete testes são
 simuladas: validam o verificador, seus bloqueios, o cenário e a limpeza de sessões;
-não constituem evidência de autenticação real nem concorrência remota.
+não constituem por si só evidência de autenticação real nem concorrência remota;
+as execuções reais posteriores estão registradas em docs/HOMOLOGACAO_SUPABASE.md.
 Os 16 testes SQL existentes continuam executando as funções reais em PGlite.
 O verificador não testa envio de e-mails, OAuth, atualização de PWA, entrega do
 outbox, convites, revogação concorrente nem comportamento de múltiplas conexões

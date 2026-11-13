@@ -1,8 +1,9 @@
 # Gestão de eventos — incremento B2
 
 Branch codex/painel-eventos, baseada em codex/administracao-base. Interface
-implementada e homologada em demonstração local; migração administrativa ainda
-não aplicada no Supabase. Não habilita escrita em produção por si só.
+implementada e homologada em demonstração local e, posteriormente, com Auth
+real no projeto separado qmhrlexpnnbjntpecjis. Evidências atuais em
+docs/HOMOLOGACAO_SUPABASE.md. Migração administrativa não aplicada em produção. Não habilita escrita em produção por si só.
 
 ## Fluxo entregue
 

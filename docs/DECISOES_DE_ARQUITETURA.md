@@ -1204,3 +1204,16 @@ somente com flag explícita, sem gravar credenciais nos arquivos do frontend.
 A disponibilidade do ambiente separado é pré-condição para comprovar os testes
 reais; APIs simuladas locais não comprovam Auth nem concorrência remota.
 Procedimento e limites: docs/HOMOLOGACAO_AUTH.md.
+
+
+## 13/11/2026 — Conflitos terminais e homologação Supabase real (B4)
+
+O projeto separado qmhrlexpnnbjntpecjis foi criado na organização confirmada,
+região sa-east-1, com cotação US$ 0/mês. Somente dados e contas fictícios.
+Os testes reais revelaram repetições no PostgREST 14 ao usar 40001 para revisão
+antiga. A migração corretiva usa PT409 nos conflitos de negócio; o serviço
+mantém compatibilidade e desativa retries administrativos do SDK. Uma revisão
+antiga exige comparação explícita, nunca repetição automática com nova revisão.
+O histórico remoto de instalação recebeu timestamps novos pelo conector; não
+executar db push/reset sem reconciliação. Produção permanece com sete migrações,
+sem a base administrativa. Relatório: docs/HOMOLOGACAO_SUPABASE.md.
