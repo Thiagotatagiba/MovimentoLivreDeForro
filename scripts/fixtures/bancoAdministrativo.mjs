@@ -12,6 +12,7 @@ export async function criarBancoAdministrativo() {
  await db.exec(`
  create role anon;
  create role authenticated;
+ create role service_role bypassrls;
  create schema auth;
  create table auth.users(id uuid primary key,email text,email_confirmed_at timestamptz,is_anonymous boolean default false);
  create function auth.uid() returns uuid language sql stable as

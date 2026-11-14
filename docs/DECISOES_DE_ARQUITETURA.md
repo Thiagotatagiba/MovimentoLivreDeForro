@@ -1232,3 +1232,13 @@ atômicas, auditadas e idempotentes; conflitos usam PT409. Hash de verificação
 fila de entrega ficam privados; a fila contém token sensível temporário e ainda
 não tem worker/provedor. Compartilhamento manual por link está disponível.
 Migração aplicada somente em homologação. Detalhes: docs/CONVITES_EQUIPE.md.
+
+## 14/11/2026 — Fila de entrega de convites (B6)
+
+Worker exclusivamente de servidor, desativado por padrão, com RPCs restritas a
+service_role e segredo adicional na chamada HTTP. Reserva temporária com fencing,
+revalidação de autoridade, corpo congelado e chave estável por tarefa impedem
+repetições ingênuas após respostas ambíguas. Até cinco tentativas dentro de 23 horas;
+não há garantia global de entrega exatamente uma vez. Tokens e corpos sensíveis
+são limpos em estados terminais. Adaptador Resend opcional, sem provedor ativado ou
+agendamento. Instalado somente em homologação. Guia: docs/ENVIO_CONVITES.md.
