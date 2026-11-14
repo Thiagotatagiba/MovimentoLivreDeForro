@@ -14,7 +14,7 @@
 // - instalação: pré-cacheia a casca (incluindo os módulos JS), então o app
 //   instalado abre offline em vez de mostrar página vazia.
 
-const CACHE_NOME = 'vai-ter-forro-v7';
+const CACHE_NOME = 'vai-ter-forro-v8';
 
 const EH_LOCALHOST = self.location.hostname === 'localhost' || self.location.hostname === '127.0.0.1';
 

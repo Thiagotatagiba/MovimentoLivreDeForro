@@ -127,6 +127,20 @@ test('Supabase adapter propagates API failure', async () => {
 test('repository/service/search compatibility with the JSON catalog', async () => {
   const previous = globalThis.fetch;
   globalThis.fetch = fetchJson;
+  // Exercise the configured singleton in JSON or Supabase mode, without a CDN
+  // import or live network in a unit test. Only the SDK transport is replaced.
+  const {registerHooks}=await import('node:module');
+  const data=fixture();
+  globalThis.__catalogoClienteTeste={from(table){let rows=data[table],start=0,end=499;return {
+    select(){return this;},order(){return this;},range(a,b){start=a;end=b;return this;},
+    eq(k,v){rows=rows.filter(r=>r[k]===v);return this;},
+    then(resolve){return Promise.resolve({data:rows.slice(start,end+1),error:null}).then(resolve);},
+  };}};
+  const hook=registerHooks({load(url,context,next){
+    if(url===new URL('../data/supabaseClient.js',import.meta.url).href) return {
+      format:'module',source:'export const supabase = globalThis.__catalogoClienteTeste;',shortCircuit:true};
+    return next(url,context);
+  }});
   try {
     const repo = await import('../js/repositories/eventoRepository.js');
     const service = await import('../js/services/eventoService.js');
@@ -142,7 +156,7 @@ test('repository/service/search compatibility with the JSON catalog', async () =
     assert.ok(agenda.every((x,i)=>!i || agenda[i-1].data <= x.data));
     const results = await search.buscar('forro');
     assert.ok(results.length > 0 && results.length <= 8);
-  } finally { globalThis.fetch = previous; }
+  } finally { hook.deregister();delete globalThis.__catalogoClienteTeste;globalThis.fetch = previous; }
 });
 test('reader paginates all entities and uses explicit published FK and filters', async () => {
   const f = fixture(), calls = [];
