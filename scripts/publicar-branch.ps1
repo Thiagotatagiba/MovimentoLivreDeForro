@@ -22,7 +22,7 @@ try {
     throw 'Registre as alteracoes em commit antes de publicar a branch.'
   }
   if (!(Test-Path -LiteralPath $Descricao -PathType Leaf)) { throw 'Descricao do PR nao encontrada.' }
-  Executar-Node -Argumentos @('--test', 'scripts/testar-catalogo.mjs')
+  Executar-Node -Argumentos @('--test', 'scripts/testar-catalogo.mjs', 'scripts/testar-publicacao.mjs')
   Executar-Node -Argumentos @('scripts/validar-dados.js')
   Executar-Node -Argumentos @('--check', 'js/pages/home.js')
   Executar-Node -Argumentos @('--check', 'js/pages/evento.js')

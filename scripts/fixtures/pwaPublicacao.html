@@ -1,0 +1,35 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Verificação de atualização PWA</title><link rel="stylesheet" href="/css/tokens.css"><link rel="stylesheet" href="/css/base.css"><link rel="stylesheet" href="/css/components.css">
+<main style="max-width:60rem;margin:2rem auto;padding:1rem"><h1>Atualização do PWA — ambiente local</h1>
+<p>Verifica o service worker real, da versão publicada v4 para a candidata. Não altera produção.</p>
+<button id="instalar">Registrar versão anterior</button> <button id="atualizar" disabled>Atualizar para candidata</button>
+<button id="conferir">Conferir estado</button><pre id="resultado" role="status" style="white-space:pre-wrap"></pre></main>
+<div id="estado-oculto" class="estado-vazio" hidden>Este estado vazio deve permanecer oculto.</div>
+<script type="module">
+const out=document.querySelector('#resultado');
+async function conferir(){
+ const reg=await navigator.serviceWorker.getRegistration('/'),keys=(await caches.keys()).filter(k=>k.startsWith('vai-ter-forro-'));
+ const data={origem:location.origin,seguro:isSecureContext,worker:reg?.active?.state??null,caches:keys,
+  estadoVazioOculto:getComputedStyle(document.querySelector('#estado-oculto')).display==='none',arquivos:{}};
+ for(const key of keys){const cache=await caches.open(key),requests=await cache.keys();
+  data.arquivos[key]={total:requests.length,configuracao:(await (await cache.match('/js/repositories/catalogoConfig.js'))?.text())??null,
+   moduloSupabase:!!await cache.match('/js/repositories/catalogoSupabase.js'),
+   dadosPrivados:requests.some(r=>/supabase\.co|rascunhos|ingressos\?/.test(r.url))};}
+ out.textContent=JSON.stringify(data,null,2);
+}
+document.querySelector('#instalar').onclick=async()=>{
+ try {await navigator.serviceWorker.register('/sw.js',{scope:'/'});await navigator.serviceWorker.ready;
+ document.querySelector('#atualizar').disabled=false;await conferir();}catch{out.textContent='Falha ao registrar o service worker local.';}
+};
+document.querySelector('#atualizar').onclick=async()=>{
+ try {const response=await fetch('/__pwa/atualizar',{method:'POST'});if(!response.ok)throw Error();
+ const reg=await navigator.serviceWorker.getRegistration('/');await reg.update();
+ out.textContent='Atualização solicitada. Aguarde a troca do controlador e confira o estado.';
+ }catch{out.textContent='Falha ao atualizar o service worker local.';}
+};
+document.querySelector('#conferir').onclick=conferir;
+navigator.serviceWorker.addEventListener('controllerchange',()=>{
+ document.querySelector('#atualizar').disabled=false;conferir();
+});
+conferir();
+</script></html>
