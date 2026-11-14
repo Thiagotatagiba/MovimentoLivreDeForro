@@ -1,16 +1,8 @@
 // marcaRepository.js
-const DATA_URL = 'data/marcas.json';
-
-let cache = null;
+import { lerCatalogo } from './catalogoRepository.js';
 
 async function carregarTodas() {
-  if (cache) return cache;
-  const resposta = await fetch(DATA_URL);
-  if (!resposta.ok) {
-    throw new Error(`Não foi possível carregar marcas (${resposta.status})`);
-  }
-  cache = await resposta.json();
-  return cache;
+  return (await lerCatalogo()).marcas;
 }
 
 export async function listarMarcas() {

@@ -96,7 +96,7 @@ export async function listarEventosPorData(isoData) {
 // Badge de contagem da Tira de Dias. Não enriquece de propósito: pra contar,
 // o join com Marca/Local seria trabalho desperdiçado.
 export async function contarEventosPorData(isoDatas) {
-  const eventos = await carregarEventos();
+  const eventos = await enriquecerTodos(await carregarEventos());
   const contagem = Object.fromEntries(isoDatas.map((data) => [data, 0]));
 
   eventos.forEach((evento) => {

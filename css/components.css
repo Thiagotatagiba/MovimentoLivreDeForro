@@ -1318,6 +1318,8 @@
 }
 
 /* ===== Estado vazio ===== */
+.estado-vazio[hidden] { display: none; }
+
 .estado-vazio {
   text-align: center;
   padding: var(--esp-xl) var(--esp-md);

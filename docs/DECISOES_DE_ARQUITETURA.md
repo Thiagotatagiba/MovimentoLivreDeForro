@@ -1158,3 +1158,13 @@ foi feito agora.
 `css/components.css`, `scripts/gerar-compartilhamento.js`,
 `compartilhar/*.html` (gerados), `scripts/validar-dados.js` e docs.
 
+
+## 2026-11-11 - Leitura publica gradual do catalogo Supabase
+
+Adaptador preserva IDs legados e slugs; a FK composta seleciona somente a
+versao publicada. Fontes versionadas json/comparacao/supabase; JSON continua
+padrao nesta entrega. Sem fallback automatico apos a troca. Nenhuma migracao
+ou escrita remota executada. Horarios de termino, estimativas e situacoes
+operacionais sao preservados na UI/ICS. Ver INTEGRACAO_CATALOGO_SUPABASE.md
+para diagnostico, testes e criterios de ativacao/reversao. Admin local
+continua distinto do painel multi-marca planejado; VIP ainda nao implementado.

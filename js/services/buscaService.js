@@ -67,7 +67,7 @@ export async function buscar(termo) {
 
   eventos.forEach((evento) => {
     const marca = marcasPorId.get(evento.marcaId);
-    if (!marca) return; // Marca inativa: o evento não aparece em lugar nenhum
+    if (!marca || !locais.some(l => l.id === evento.localId)) return; // Marca inativa: o evento não aparece em lugar nenhum
     const pontos = Math.max(
       pontuar(alvo, evento.titulo),
       pontuar(alvo, marca.nome)

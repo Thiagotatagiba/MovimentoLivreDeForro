@@ -1,16 +1,8 @@
 // localRepository.js
-const DATA_URL = 'data/locais.json';
-
-let cache = null;
+import { lerCatalogo } from './catalogoRepository.js';
 
 async function carregarTodos() {
-  if (cache) return cache;
-  const resposta = await fetch(DATA_URL);
-  if (!resposta.ok) {
-    throw new Error(`Não foi possível carregar locais (${resposta.status})`);
-  }
-  cache = await resposta.json();
-  return cache;
+  return (await lerCatalogo()).locais;
 }
 
 export async function listarLocais() {

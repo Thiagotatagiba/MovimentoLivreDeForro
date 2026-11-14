@@ -63,9 +63,18 @@ function urlAbsoluta(valor) {
   return `${BASE}${String(valor).replace(/^\//, '')}`;
 }
 
-const eventos = lerJSON('eventos.json');
-const marcas = lerJSON('marcas.json');
-const locais = lerJSON('locais.json');
+async function main() {
+const { imagemDoEvento } = await import('../js/utils/format.js');
+const { horarioEvento, situacaoEvento } = await import('../js/utils/eventoPublico.js');
+let catalogo;
+if (process.argv.includes('--supabase')) {
+  const { client } = await import('./lib/catalogoRemoto.mjs');
+  const { lerCatalogoSupabase } = await import('../js/repositories/catalogoSupabase.js');
+  catalogo = await lerCatalogoSupabase(client);
+} else {
+  catalogo = { eventos: lerJSON('eventos.json'), marcas: lerJSON('marcas.json'), locais: lerJSON('locais.json') };
+}
+const { eventos, marcas, locais } = catalogo;
 
 const marcasPorId = new Map(marcas.map((marca) => [marca.id, marca]));
 const locaisPorId = new Map(locais.map((local) => [local.id, local]));
@@ -80,7 +89,7 @@ for (const evento of eventos) {
 
   const marca = marcasPorId.get(evento.marcaId);
   const local = locaisPorId.get(evento.localId);
-  if (!marca || !local) {
+  if (!marca?.ativo || !local?.ativo) {
     console.warn(`- ${evento.id}: ignorado (Marca ou Local inexistente)`);
     continue;
   }
@@ -89,20 +98,20 @@ for (const evento of eventos) {
   const urlCompartilhar = `${BASE}compartilhar/${encodeURIComponent(evento.slug)}.html`;
   const urlRelativa = `../evento.html?slug=${encodeURIComponent(evento.slug)}`;
 
-  const imagem = urlAbsoluta(evento.imagemUrl)
-    || urlAbsoluta(marca.capa)
-    || ICONE_PADRAO;
+  const imagem = urlAbsoluta(imagemDoEvento({ ...evento, marca })) || ICONE_PADRAO;
 
   const descricaoPartes = [
     capitalizar(dataLonga(evento.data)),
-    evento.horario,
+    horarioEvento(evento),
+    situacaoEvento(evento),
     local.nome,
     marca.nome,
     precoTexto(evento.ingresso?.precoAPartirDe),
   ].filter(Boolean);
 
   const descricao = descricaoPartes.join(' · ').slice(0, 200);
-  const titulo = `${evento.titulo} — Vai Ter Forró!`;
+  const tituloEvento = [situacaoEvento(evento), evento.titulo].filter(Boolean).join(' - ');
+  const titulo = `${tituloEvento} — Vai Ter Forró!`;
 
   const html = `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -117,13 +126,13 @@ for (const evento of eventos) {
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Vai Ter Forró!">
 <meta property="og:locale" content="pt_BR">
-<meta property="og:title" content="${esc(evento.titulo)}">
+<meta property="og:title" content="${esc(tituloEvento)}">
 <meta property="og:description" content="${esc(descricao)}">
 <meta property="og:image" content="${esc(imagem)}">
 <meta property="og:image:alt" content="${esc(`Arte do evento ${evento.titulo}`)}">
 <meta property="og:url" content="${esc(urlCompartilhar)}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${esc(evento.titulo)}">
+<meta name="twitter:title" content="${esc(tituloEvento)}">
 <meta name="twitter:description" content="${esc(descricao)}">
 <meta name="twitter:image" content="${esc(imagem)}">
 
@@ -147,3 +156,6 @@ for (const evento of eventos) {
 }
 
 console.log(`Páginas de compartilhamento geradas: ${gerados} em compartilhar/.`);
+
+}
+main().catch(erro => { console.error(erro.message); process.exitCode = 1; });
