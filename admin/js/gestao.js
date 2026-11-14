@@ -2,6 +2,7 @@ import {dependencias as deps} from './gestaoDependencias.js';
 import {criarEditor,validarParaPublicar} from './editorModelo.js';
 import {imagemDoEvento} from '../../js/utils/format.js';
 const $=id=>document.getElementById(id);
+$('link-equipe').hidden=deps.demonstracao;
 let contexto=null,marca=null,editor=null,busy=false,epoch=0,verificacaoSessao=0,usuarioId=null,confirmarAcao=null;
 const pode=p=>!!marca?.permissoes.includes(p);
 const rotuloSituacao=s=>({confirmado:'Confirmado',adiado:'Adiado',cancelado:'Cancelado',interrompido:'Interrompido'})[s]??'Não publicado';

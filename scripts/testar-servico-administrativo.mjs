@@ -69,7 +69,19 @@ test('management context derives access from database membership, never user_met
  const context=await service.carregarContexto();
  assert.deepEqual(context.marcas.map(m=>m.id),['a']);
  assert.deepEqual(context.marcas[0].permissoes,['gerenciar_eventos']);
+ assert.equal(context.marcas[0].administrador,false);
  assert.ok(filters.some(f=>f.table==='membros_marca'&&f.k==='usuario_id'&&f.v==='current-user'));
+});
+
+test('invitation commands preserve request keys and never derive membership without acceptance',async()=>{
+ const calls=[];
+ const service=criarServicoAdministrativo({obterCliente:async()=>({rpc:async(name,args)=>{calls.push({name,args});return {data:{convite_id:'invite'}};}})});
+ await service.criarConvite({marcaId:'m',email:'destino@example.test',papel:'equipe',permissoes:['gerenciar_eventos'],token:'secret-invite',chave:'create-key'});
+ await service.aceitarConvite({conviteId:'invite',token:'secret-invite',chave:'accept-key'});
+ await service.revogarConvite({conviteId:'invite',chave:'revoke-key'});
+ assert.deepEqual(calls.map(c=>c.name),['criar_convite_marca','aceitar_convite_marca','revogar_convite_marca']);
+ assert.equal(calls[0].args.p_chave,'create-key');assert.equal(calls[1].args.p_token,'secret-invite');
+ assert.ok(!Object.hasOwn(calls[1].args,'p_papel'));assert.ok(!Object.hasOwn(calls[1].args,'p_permissoes'));
 });
 test('draft read failure never substitutes the published content as an editable draft',async()=>{
  const service=criarServicoAdministrativo({obterCliente:async()=>({

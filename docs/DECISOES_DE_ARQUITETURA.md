@@ -1217,3 +1217,18 @@ antiga exige comparação explícita, nunca repetição automática com nova rev
 O histórico remoto de instalação recebeu timestamps novos pelo conector; não
 executar db push/reset sem reconciliação. Produção permanece com sete migrações,
 sem a base administrativa. Relatório: docs/HOMOLOGACAO_SUPABASE.md.
+
+
+## 14/11/2026 — Convites de equipe com aceitação explícita (B5)
+
+A branch administrativa incorporou a main publicada 671efef, mantendo catálogo
+Supabase e worker v8. Convites são criados/revogados por administrador ativo da
+marca ou global. Aceitação exige token válido de uso único e e-mail primário
+confirmado correspondente, consultado em auth.users. Papel e permissões vêm do
+convite persistido, nunca de metadados ou do pedido de aceitação. Vínculo ativo
+não é sobrescrito por convite; vínculo inativo pode ser reativado explicitamente.
+O emissor deve manter autoridade ao aceitar. Criação, aceitação e revogação são
+atômicas, auditadas e idempotentes; conflitos usam PT409. Hash de verificação e
+fila de entrega ficam privados; a fila contém token sensível temporário e ainda
+não tem worker/provedor. Compartilhamento manual por link está disponível.
+Migração aplicada somente em homologação. Detalhes: docs/CONVITES_EQUIPE.md.

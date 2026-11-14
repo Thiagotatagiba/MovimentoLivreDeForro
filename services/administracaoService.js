@@ -44,12 +44,12 @@ export function criarServicoAdministrativo({
       const todas=['editar_marca','gerenciar_eventos','publicar_eventos','gerenciar_listas','consultar_listas'];
       if(global?.ativo) {
         const marcas=await lista('marcas','id,id_legado,slug,nome',q=>q.eq('ativo',true));
-        return {marcas:marcas.map(m=>({...m,permissoes:todas}))};
+        return {marcas:marcas.map(m=>({...m,administrador:true,permissoes:todas}))};
       }
       const membros=await lista('membros_marca',
         'id,marca_id,papel,permissoes:permissoes_membro(permissao),marca:marcas(id,id_legado,slug,nome)',
         q=>q.eq('usuario_id',user.id).eq('ativo',true));
-      return {marcas:membros.filter(m=>m.marca).map(m=>({...m.marca,
+      return {marcas:membros.filter(m=>m.marca).map(m=>({...m.marca,administrador:m.papel==='administrador',
         permissoes:m.papel==='administrador'?todas:m.permissoes.map(p=>p.permissao)}))
         .filter(m=>m.permissoes.some(p=>['gerenciar_eventos','publicar_eventos'].includes(p)))};
     },
@@ -68,6 +68,20 @@ export function criarServicoAdministrativo({
     alterarMembro:({membroId,papel,ativo,permissoes,chave})=>rpc('alterar_membro_marca',{
       p_membro:membroId,p_papel:papel,p_ativo:ativo,p_permissoes:permissoes,p_chave:chave,
     }),
+    criarConvite:({marcaId,email,papel,permissoes,token,chave})=>rpc('criar_convite_marca',{
+      p_marca:marcaId,p_email:email,p_papel:papel,p_permissoes:permissoes,p_token:token,p_chave:chave,
+    }),
+    revogarConvite:({conviteId,chave})=>rpc('revogar_convite_marca',{p_convite:conviteId,p_chave:chave}),
+    aceitarConvite:({conviteId,token,chave})=>rpc('aceitar_convite_marca',{p_convite:conviteId,p_token:token,p_chave:chave}),
+    listarConvites:()=>lista('convites_marca',
+      'id,marca_id,email_destino,papel,permissoes,estado,criado_em,expira_em,aceito_por,membro_id,marca:marcas(nome)'),
+    async carregarConvite(conviteId) {
+      const cliente=await obterCliente();
+      const {data,error}=await cliente.from('convites_marca')
+        .select('id,marca_id,email_destino,papel,permissoes,estado,expira_em,marca:marcas(nome)').eq('id',conviteId).maybeSingle();
+      if(error)throw traduzirErro(error);
+      return data;
+    },
     async carregarEvento(eventoId) {
       const cliente=await obterCliente();
       const {data:evento,error}=await cliente.from('eventos')
