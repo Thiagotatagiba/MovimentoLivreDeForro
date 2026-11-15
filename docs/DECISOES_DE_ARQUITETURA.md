@@ -1277,3 +1277,15 @@ Adiamento sem confirmação explícita de nova data suspende; a confirmação é
 administrativa usam polling de cinco segundos, sem dados pessoais em cache/localStorage.
 PWA candidato v9 validado em loopback. Migração e testes apenas em homologação;
 produção permanece v8. Guia: docs/GUIA_LISTAS_VIP.md.
+
+## 15/11/2026 — Candidata administrativa consolidada e liberação verificável
+
+Os PRs administrativos/VIP formam uma única candidata contra main. Preparação
+local congela sete SQLs e hashes, pré/pós-verificação e bootstrap privado da conta
+confirmada indicada pelo responsável. Nenhuma atribuição por metadados e nenhum
+e-mail pessoal em arquivos versionados. Hardening condicional retira EXECUTE de
+clientes do event trigger de RLS sem alterar sua definição ou funcionamento.
+Ensaio preserva catálogo/usuários/interações/ingressos e testa pausa não destrutiva
+das novas RPCs. Publicação exige HTTPS obrigatório antes da atribuição global,
+migrações conferidas e Pages validado com manifesto de 37 arquivos. Preparação
+não executa alterações em produção. Plano: docs/LIBERACAO_ADMINISTRATIVA.md.

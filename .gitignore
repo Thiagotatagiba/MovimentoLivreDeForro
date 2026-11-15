@@ -22,3 +22,9 @@ preview/
 
 # cache local do Supabase CLI
 supabase/.temp/
+
+# credenciais e arquivos locais de configuração (exemplos continuam versionáveis)
+*.env
+*.env.*
+!*.example.env
+!.env.example

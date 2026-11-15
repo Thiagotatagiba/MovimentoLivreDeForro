@@ -22,3 +22,10 @@ Listas VIP C2: fluxo completo implementado em homologação — configuração p
 O tópico de listas VIP/desconto do escopo aprovado está implementado e verificado em homologação. Próximo trabalho de liberação: revisar/consolidar os PRs empilhados e reconciliar migrações antes de uma proposta de publicação administrativa. Ativação de e-mail depende de configurar provedor/remetente, segredo e testar caixa autorizada em homologação; não houve envio real.
 
 Antes de publicar administração: consolidar/revisar PRs empilhados, reconciliar histórico das migrações, validar fluxos completos e comunicar alterações/riscos. Não há nova data de publicação definida, nem liberação de administração em produção nesta rodada.
+
+Preparação consolidada em `codex/liberacao-administrativa`: sete migrações pendentes,
+conta inicial indicada e confirmada (bootstrap ainda não executado), guardas e
+reversão ensaiadas, manifesto com 37 arquivos e 154 testes. Homologação recebeu a
+migração condicional de hardening e tem 16 registros. Produção permanece no mesmo
+estado. O plano inclui tornar HTTPS obrigatório antes do acesso administrativo,
+pois HTTP ainda responde sem redirecionamento. Ver [LIBERACAO_ADMINISTRATIVA.md](LIBERACAO_ADMINISTRATIVA.md).

@@ -43,6 +43,8 @@ jobs:
           node --check admin/js/editorModelo.js
           node --check admin/js/convites.js
           node --check admin/js/conviteModelo.js
+          node --check scripts/preparar-liberacao-administrativa.mjs
+          node --check scripts/lib/liberacaoAdministrativa.mjs
           node --check scripts/homologar-listas-vip.mjs
           node --check admin/js/listas.js
           node --check js/pages/lista-vip.js

@@ -3,6 +3,8 @@
 > **Estado consolidado em 15/11/2026:** [resumo do projeto](ESTADO_ATUAL_2026-11-15.md).
 > Listas VIP têm fluxo completo validado em homologação, sem publicação em produção.
 > [Guia de uso](GUIA_LISTAS_VIP.md) e [relatório técnico](LISTAS_VIP_IMPLEMENTACAO.md).
+> Candidata administrativa consolidada: [plano de liberação](LIBERACAO_ADMINISTRATIVA.md),
+> ainda sem alteração de produção.
 
 > **Continuidade em 14/11/2026:** catálogo público Supabase publicado; painel e
 > convites apenas em homologação, com envio automático desativado. Para usar o
