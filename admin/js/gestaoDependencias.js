@@ -1,4 +1,4 @@
-import {administracao} from '../../services/administracaoService.js?v=cadastros-1';
+import {administracao} from '../../services/administracaoService.js?v=edicao-cadastros-1';
 import {obterUsuarioAtual,aoMudarAutenticacao} from '../../services/authService.js';
 import {abrirModalLogin} from '../../components/loginModal.js';
 export const dependencias={

@@ -1,7 +1,7 @@
-import {dependencias as deps} from './gestaoDependencias.js?v=cadastros-1';
-import {criarEditor,validarParaPublicar} from './editorModelo.js?v=cadastros-1';
+import {dependencias as deps} from './gestaoDependencias.js?v=edicao-cadastros-1';
+import {criarEditor,validarParaPublicar} from './editorModelo.js?v=edicao-cadastros-1';
 import {imagemDoEvento} from '../../js/utils/format.js';
-import {criarNovoEvento,conteudoNovoEvento} from './novoEventoModelo.js?v=cadastros-1';
+import {criarNovoEvento,conteudoNovoEvento} from './novoEventoModelo.js?v=edicao-cadastros-1';
 const $=id=>document.getElementById(id);
 $('link-equipe').hidden=deps.demonstracao;
 let contexto=null,marca=null,editor=null,busy=false,epoch=0,verificacaoSessao=0,usuarioId=null,confirmarAcao=null;
