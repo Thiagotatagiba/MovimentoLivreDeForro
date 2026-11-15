@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 
 export const arquivosPublicacao=[
+ 'admin/cadastros.html','admin/js/cadastros.js','admin/js/cadastroModelo.js','admin/js/mapaCadastro.js','data/mapasConfig.json',
  'index.html','agenda.html','evento.html','favoritos.html','carteira.html',
  'css/components.css',
  'js/repositories/catalogoConfig.js','js/repositories/catalogoAdapter.js',
