@@ -1,5 +1,13 @@
 # Vai Ter Forró! — Site público, PWA, admin e Carteira
 
+> **Continuidade em 14/11/2026:** catálogo público Supabase publicado; painel e
+> convites apenas em homologação, com envio automático desativado. Para usar o
+> painel, leia [GUIA_USO_PAINEL.md](GUIA_USO_PAINEL.md). Para operação técnica,
+> leia [ENVIO_CONVITES.md](ENVIO_CONVITES.md) e
+> [AGENDAMENTO_CONVITES.md](AGENDAMENTO_CONVITES.md). As seções históricas abaixo
+> descrevem a base anterior; para testar escrita use o servidor de homologação
+> específico, não um servidor estático genérico com a configuração de produção.
+
 Site + painel administrativo com o design system **Terra Acesa**, Supabase para
 autenticação/perfil/interações e **Carteira de ingressos** privada.
 

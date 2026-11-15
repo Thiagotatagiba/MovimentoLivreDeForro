@@ -33,4 +33,8 @@ Para pausar, desativar ambas as flags e verificar novamente a resposta desativad
 - Endpoint implantado invocado por HTTP: 503 e `{"estado":"desativado"}` confirmados. O caminho ativo da Edge ainda não foi exercitado remotamente.
 - Advisors: cinco avisos INFO de RLS sem policies em tabelas privadas, intencionais com acesso cliente revogado; aviso preexistente de proteção contra senhas vazadas desativada. [Orientação Supabase](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection).
 
-Próximo trabalho: configurar o provedor/remetente e o agendamento em homologação; executar teste autorizado de recebimento, aceitação e recuperação de falha. O painel e listas VIP continuam fora da produção.
+Continuação B7: o chamador e workflow de agendamento estão preparados, desativados,
+em [AGENDAMENTO_CONVITES.md](AGENDAMENTO_CONVITES.md). Nenhuma agenda foi instalada
+ou executada remotamente. Próximo trabalho: configurar provedor/remetente e
+segredos, validar limpeza e depois recebimento/aceitação em homologação. O painel
+e listas VIP continuam fora da produção. Guia de uso: [GUIA_USO_PAINEL.md](GUIA_USO_PAINEL.md).

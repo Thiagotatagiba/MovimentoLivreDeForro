@@ -1242,3 +1242,14 @@ repetições ingênuas após respostas ambíguas. Até cinco tentativas dentro d
 não há garantia global de entrega exatamente uma vez. Tokens e corpos sensíveis
 são limpos em estados terminais. Adaptador Resend opcional, sem provedor ativado ou
 agendamento. Instalado somente em homologação. Guia: docs/ENVIO_CONVITES.md.
+
+## 14/11/2026 — Chamador e guia operacional de convites (B7)
+
+Agendamento preparado via GitHub Actions, condicionado a variável de repositório
+e environment com segredos. Chamador limitado ao projeto de homologação, JWT
+público anon e segredo separado; nenhuma chave administrativa no GitHub.
+Uma chamada por execução, sem retry HTTP; a recuperação permanece no worker.
+Sem alterações remotas ou agenda ativa. Publicação do workflow na branch padrão
+depende de revisão própria, pois main também publica o site. Guia de uso para
+administradores/equipe em docs/GUIA_USO_PAINEL.md; operação em
+docs/AGENDAMENTO_CONVITES.md.
