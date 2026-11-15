@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/tokens.css">
-<link rel="stylesheet" href="css/gestao.css">
+<link rel="stylesheet" href="css/gestao.css?v=condicoes-1">
 <link rel="stylesheet" href="../components/modal-login.css">
 </head>
 <body>
@@ -34,6 +34,7 @@
 <p class="apoio">Use a data do dia seguinte se o baile atravessar a meia-noite. Horários de Brasília.</p>
 <label class="check"><input id="horarios-confirmados" type="checkbox">Confirmo os horários de início e término com o produtor</label>
 <label for="descricao">Descrição</label><textarea id="descricao" name="descricao" rows="6"></textarea>
+<h3>Condições especiais</h3><p class="apoio">Informe benefícios e regras, como gratuidade para aniversariantes, documentos e horário limite.</p><div id="condicoes-lista"></div><button id="adicionar-condicao" type="button" class="secundario">+ Adicionar condição</button>
 <div class="dupla"><div><label for="bandas">Bandas e artistas (um por linha)</label><textarea id="bandas" rows="3"></textarea></div><div><label for="djs">DJs (um por linha)</label><textarea id="djs" rows="3"></textarea></div></div>
 <h3>Ingresso</h3><div class="dupla"><div><label for="tipo-entrada">Tipo de entrada</label><input id="tipo-entrada" list="tipos-entrada"><datalist id="tipos-entrada"><option>Gratuito</option><option>Ingresso Online</option><option>Ingresso no Local</option><option>Cover</option></datalist></div><div><label for="preco">Preço a partir de (R$)</label><input id="preco" type="number" min="0" step="0.01"><small>Deixe em branco se ainda não foi informado.</small></div></div>
 <label for="link-ingresso">Link do ingresso</label><input id="link-ingresso" placeholder="https://" inputmode="url">
@@ -50,5 +51,5 @@
 </div>
 <dialog id="confirmacao" aria-labelledby="titulo-confirmacao"><h2 id="titulo-confirmacao"></h2><p id="texto-confirmacao"></p><dl id="resumo-confirmacao"></dl><div class="acoes"><button id="cancelar-confirmacao" type="button" class="secundario">Voltar</button><button id="confirmar" type="button">Confirmar</button></div></dialog>
 </main>
-<script type="module" src="js/gestao.js?v=busca-marcas-1"></script>
+<script type="module" src="js/gestao.js?v=condicoes-1"></script>
 </body></html>

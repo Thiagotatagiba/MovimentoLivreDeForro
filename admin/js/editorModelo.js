@@ -6,7 +6,7 @@ const equal=(a,b)=>JSON.stringify(canonical(a))===JSON.stringify(canonical(b));
 export function normalizarConteudoEditor(c) {
  return {...c,titulo:c.titulo??'',data:c.data??'',horario:c.horario??'',
   dataTermino:c.dataTermino??'',horarioTermino:c.horarioTermino??'',descricao:c.descricao??'',
-  terminoEstimado:!!c.terminoEstimado,
+  terminoEstimado:!!c.terminoEstimado,condicoesEspeciais:c.condicoesEspeciais??[],
   lineup:{bandas:c.lineup?.bandas??[],djs:c.lineup?.djs??[]},
   ingresso:{...c.ingresso,tipoEntrada:c.ingresso?.tipoEntrada??'',
    precoAPartirDe:c.ingresso?.precoAPartirDe??null,link:c.ingresso?.link||'em breve'},ativo:!!c.ativo};
@@ -15,7 +15,7 @@ export const CAMPOS_EDITAVEIS=[
  ['titulo','Título'],['data','Data de início'],['horario','Horário de início'],
  ['dataTermino','Data de término'],['horarioTermino','Horário de término'],
  ['terminoEstimado','Confirmação de término'],['descricao','Descrição'],['ingresso','Ingresso'],
- ['lineup','Atrações'],['imagemUrl','Imagem'],['ativo','Visibilidade'],
+ ['condicoesEspeciais','Condi\u00e7\u00f5es especiais'],['lineup','Atrações'],['imagemUrl','Imagem'],['ativo','Visibilidade'],
 ];
 export function compararEdicoes(base,local,remoto) {
  return CAMPOS_EDITAVEIS.filter(([campo])=>!equal(local[campo],remoto[campo])).map(([campo,rotulo])=>({

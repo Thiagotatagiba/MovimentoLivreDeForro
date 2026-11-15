@@ -1,0 +1,3 @@
+O catalogo ja exibia condicoes especiais, mas o painel Supabase nao permitia edita-las e a criacao recusava o campo. Adiciona linhas de tipo Aniversariante/Outros, descricao e remocao, preservando o contrato legado. Linhas vazias sao omitidas; texto entra no DOM por value/textContent. Salvar continua privado ate publicacao explicita.
+
+Inclui condicoes na comparacao de conflitos e no resumo. Migracao substitui apenas dois helpers privados para aceitar o campo na criacao e validar sua estrutura na publicacao, preservando assinaturas, grants, auditoria e idempotencia; nao altera registros. Teste SQL cobre criacao/publicacao e recusa formatos invalidos. Navegador local confirmou adicionar, salvar e recarregar. Guia atualizado.

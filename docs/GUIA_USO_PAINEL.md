@@ -98,3 +98,9 @@ A situação é uma operação separada do rascunho. Cancelar ou adiar mantém a
 | Alteração não apareceu no site de produção | Homologação é separada. Salvar rascunho também não publica. Confira onde a operação foi feita. |
 
 Para suporte, informe a tela, a marca/evento, a ação e o horário aproximado. Não envie senha, chave de API ou link completo de convite em chamados públicos. O responsável técnico encontra configuração e limites em [ENVIO_CONVITES.md](ENVIO_CONVITES.md) e [AGENDAMENTO_CONVITES.md](AGENDAMENTO_CONVITES.md).
+
+## Condicoes especiais
+
+No formulario do evento, abaixo de Descricao, clique em **+ Adicionar condicao**. Escolha **Aniversariante** ou **Outros** e descreva o beneficio e as regras (periodo do aniversario, documento, cadastro previo e horario limite). Voce pode adicionar varias condicoes ou remover uma linha. Linhas sem descricao sao ignoradas.
+
+Clique em **Salvar rascunho** (ou **Criar rascunho** no evento novo), revise e publique. As condicoes aparecem na pagina publica somente depois da publicacao. Este campo informa regras; nao cadastra aniversariantes ou concede ingressos automaticamente.
