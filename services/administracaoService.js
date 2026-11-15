@@ -44,12 +44,12 @@ export function criarServicoAdministrativo({
       const todas=['editar_marca','gerenciar_eventos','publicar_eventos','gerenciar_listas','consultar_listas'];
       if(global?.ativo) {
         const marcas=await lista('marcas','id,id_legado,slug,nome,local_padrao_id',q=>q.eq('ativo',true));
-        return {marcas:marcas.map(m=>({...m,administrador:true,permissoes:todas}))};
+        return {administradorSistema:true,marcas:marcas.map(m=>({...m,administrador:true,permissoes:todas}))};
       }
       const membros=await lista('membros_marca',
         'id,marca_id,papel,permissoes:permissoes_membro(permissao),marca:marcas(id,id_legado,slug,nome,local_padrao_id)',
         q=>q.eq('usuario_id',user.id).eq('ativo',true));
-      return {marcas:membros.filter(m=>m.marca).map(m=>({...m.marca,administrador:m.papel==='administrador',
+      return {administradorSistema:false,marcas:membros.filter(m=>m.marca).map(m=>({...m.marca,administrador:m.papel==='administrador',
         permissoes:m.papel==='administrador'?todas:m.permissoes.map(p=>p.permissao)}))
         .filter(m=>m.permissoes.some(p=>['gerenciar_eventos','publicar_eventos'].includes(p)))};
     },
@@ -57,6 +57,8 @@ export function criarServicoAdministrativo({
       'id,id_legado,slug,estado_publicacao,versao_publicada_id,versao:versoes_evento!eventos_versao_publicada_do_mesmo_evento(numero,conteudo,situacao),rascunho:rascunhos_evento(conteudo)',
       q=>q.eq('marca_id',marcaId)),
     listarLocais:()=>lista('locais','id,id_legado,slug,nome',q=>q.eq('ativo',true)).then(rows=>rows.filter(r=>r.id_legado)),
+    criarMarca:({conteudo,chave})=>rpc('criar_marca_catalogo',{p_conteudo:conteudo,p_chave:chave}),
+    criarLocal:({conteudo,chave})=>rpc('criar_local_catalogo',{p_conteudo:conteudo,p_chave:chave}),
     criarEvento:({marcaId,localId,conteudo,chave})=>rpc('criar_evento_rascunho',{
       p_marca:marcaId,p_local:localId,p_conteudo:conteudo,p_chave:chave,
     }),

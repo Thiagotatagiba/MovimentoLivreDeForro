@@ -104,3 +104,16 @@ Para suporte, informe a tela, a marca/evento, a ação e o horário aproximado. 
 No formulario do evento, abaixo de Descricao, clique em **+ Adicionar condicao**. Escolha **Aniversariante** ou **Outros** e descreva o beneficio e as regras (periodo do aniversario, documento, cadastro previo e horario limite). Voce pode adicionar varias condicoes ou remover uma linha. Linhas sem descricao sao ignoradas.
 
 Clique em **Salvar rascunho** (ou **Criar rascunho** no evento novo), revise e publique. As condicoes aparecem na pagina publica somente depois da publicacao. Este campo informa regras; nao cadastra aniversariantes ou concede ingressos automaticamente.
+
+## Cadastrar marcas e locais
+
+No painel de eventos, clique em **Cadastrar marcas e locais**. Somente o administrador global tem esse acesso. Criar uma marca não atribui administradores ou produtores; convide a equipe separadamente.
+
+1. Em **Novo local**, confira os nomes existentes e informe nome/tipo do espaço.
+2. Busque o endereço, escolha uma sugestão e confira os campos de rua, número, bairro, cidade e UF. Você também pode preencher o endereço e clicar no mapa.
+3. Ajuste o pino arrastando ou usando as setas do teclado e marque **Conferi o endereço e a posição do pino**. Alterar o endereço exige marcar o ponto novamente.
+4. Clique em **Revisar cadastro do local**, confira os dados e **Cadastrar agora**. O cadastro oficial fica público imediatamente.
+5. Em **Nova marca**, informe nome, descrição, cidade, frequência, categorias/dias e links públicos opcionais. Escolha o **Local padrão**, ou **Sem local fixo** para marca itinerante.
+6. Revise e confirme. Volte aos eventos e atualize a página: a nova marca estará disponível, sem precisar cadastrar um produtor.
+
+Não há edição de marcas/locais existentes nesta entrega. Endereços históricos não são alterados. Logo e capa aceitam URL HTTPS; envio de arquivo continua pendente. A busca/mapa usa serviços públicos externos: se a busca falhar, preencha o endereço e marque no mapa; se o mapa não carregar, tente atualizar antes de cadastrar o local. O cadastro de marca continua disponível.

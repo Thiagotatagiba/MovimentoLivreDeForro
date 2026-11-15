@@ -1299,3 +1299,7 @@ envia identidade ou estado público. A resposta canônica alimenta o editor exis
 sem depender de refresh para distinguir criação confirmada de falha ambígua. Imagem
 opcional por HTTPS, sem upload nesta etapa. Migração testada somente em homologação;
 detalhes em docs/CRIACAO_EVENTOS.md.
+
+## 2026-11-15 — Cadastro oficial de marcas e locais no Supabase
+
+Somente global cadastra novas marcas e locais canônicos; cadastro não concede equipe. Não há edição de registros existentes neste incremento para preservar endereços/referências históricas. Marca pode escolher local padrão ativo ou ficar itinerante. IDs e slugs gerados no servidor; RLS e auditoria global separada, idempotência e validação transacional. Tela usa Photon com busca moderada/cache e Leaflet 1.9.4/OpenStreetMap, configuração pública substituível, atribuição, sem geolocalização ou download offline. Pino ajustável por toque/mouse/teclado e confirmação explícita. Serviços externos são best-effort; cadastro de local exige mapa disponível, marca não depende dele. Ver CADASTROS_MARCAS_LOCAIS.md.

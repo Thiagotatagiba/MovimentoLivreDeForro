@@ -1,0 +1,5 @@
+{
+  "busca": "https://photon.komoot.io/api/",
+  "tiles": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+  "centro": [-20.3155, -40.3128]
+}
