@@ -73,3 +73,15 @@ test('incident pause also disables event creation without changing public catalo
  await owner('select 1');await db.exec(fs.readFileSync(new URL('../supabase/liberacao/pausar_administracao.sql',import.meta.url),'utf8').replace('\nbegin;','').replace('\ncommit;',''));
  await as();await denied(()=>create(),/permission denied/);await as(null,'anon');assert.equal((await db.query('select count(*)::int n from public.eventos')).rows[0].n,1);
 });
+
+test('special conditions survive hidden creation and explicit publication; malformed public conditions are rejected',async()=>{
+ const conditions=[{tipo:'aniversariante',descricao:'Documento original ate 23:30'},{tipo:'outros',descricao:'Desconto com cadastro'}];
+ const result=await create({...content(),condicoesEspeciais:conditions});
+ assert.deepEqual(result.conteudo.condicoesEspeciais,conditions);
+ const published=await rpc('publicar_evento',[result.evento_id,1,id(9799)]);
+ const row=await owner('select conteudo from public.versoes_evento where id=$1',[published.versao_id]);
+ assert.deepEqual(row.rows[0].conteudo.condicoesEspeciais,conditions);
+ await as();
+ for(const bad of [null,{},[{}],[{tipo:'vip',descricao:'x'}],[{tipo:'outros',descricao:'   '}],[{tipo:'outros',descricao:1}]])
+  await denied(()=>create({...content(),condicoesEspeciais:bad},id(9798)),/condicoes_especiais_invalidas/);
+});

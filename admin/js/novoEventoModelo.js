@@ -1,4 +1,4 @@
-import {validarParaPublicar} from './editorModelo.js';
+import {validarParaPublicar} from './editorModelo.js?v=condicoes-1';
 export function conteudoNovoEvento(){return {titulo:'',data:'',horario:'',dataTermino:'',horarioTermino:'',
  terminoEstimado:true,descricao:'',lineup:{bandas:[],djs:[]},ingresso:{tipoEntrada:'',precoAPartirDe:null,link:'em breve'},ativo:true};}
 export function validarImagemNova(value){

@@ -1,7 +1,7 @@
-import {dependencias as deps} from './gestaoDependencias.js?v=busca-marcas-1';
-import {criarEditor,validarParaPublicar} from './editorModelo.js';
+import {dependencias as deps} from './gestaoDependencias.js?v=condicoes-1';
+import {criarEditor,validarParaPublicar} from './editorModelo.js?v=condicoes-1';
 import {imagemDoEvento} from '../../js/utils/format.js';
-import {criarNovoEvento,conteudoNovoEvento} from './novoEventoModelo.js';
+import {criarNovoEvento,conteudoNovoEvento} from './novoEventoModelo.js?v=condicoes-1';
 const $=id=>document.getElementById(id);
 $('link-equipe').hidden=deps.demonstracao;
 let contexto=null,marca=null,editor=null,busy=false,epoch=0,verificacaoSessao=0,usuarioId=null,confirmarAcao=null;
@@ -15,6 +15,7 @@ function lerForm(){
  const conteudo={...base,titulo:$('titulo').value,data:$('data').value,horario:$('horario').value,
   dataTermino:$('dataTermino').value,horarioTermino:$('horarioTermino').value,
   terminoEstimado:!$('horarios-confirmados').checked,descricao:$('descricao').value,
+  condicoesEspeciais:[...$('condicoes-lista').children].map(row=>({tipo:row.querySelector('select').value,descricao:row.querySelector('textarea').value})).filter(c=>c.descricao.trim()),
   lineup:{bandas:listaLinhas($('bandas').value),djs:listaLinhas($('djs').value)},
   ingresso:{...base.ingresso,tipoEntrada:$('tipo-entrada').value,
    precoAPartirDe:$('preco').value===''?null:Number($('preco').value),
@@ -22,7 +23,16 @@ function lerForm(){
  if(novo){const url=$('imagem-url-nova').value.trim();if(url)conteudo.imagemUrl=url;else delete conteudo.imagemUrl;}
  return conteudo;
 }
+function adicionarCondicao(c={tipo:'aniversariante',descricao:''}){
+ const row=document.createElement('div');row.className='condicao-editor';
+ const tipo=document.createElement('select');tipo.setAttribute('aria-label','Tipo da condição');tipo.append(new Option('Aniversariante','aniversariante'),new Option('Outros','outros'));tipo.value=c.tipo;
+ const descricao=document.createElement('textarea');descricao.setAttribute('aria-label','Descrição da condição');descricao.rows=3;descricao.value=c.descricao??'';
+ const remover=document.createElement('button');remover.type='button';remover.className='secundario';remover.textContent='Remover condição';remover.addEventListener('click',()=>{row.remove();$('form-evento').dispatchEvent(new Event('input',{bubbles:true}));});
+ row.append(tipo,descricao,remover);$('condicoes-lista').append(row);return descricao;
+}
+$('adicionar-condicao').addEventListener('click',()=>{if(!busy&&pode('gerenciar_eventos'))adicionarCondicao().focus();});
 function escreverForm(c){
+ $('condicoes-lista').replaceChildren();for(const condicao of c.condicoesEspeciais??[])adicionarCondicao(condicao);
  for(const id of ['titulo','data','horario','dataTermino','horarioTermino','descricao']) $(id).value=c[id]??'';
  $('horarios-confirmados').checked=!c.terminoEstimado;
  $('bandas').value=(c.lineup?.bandas??[]).join('\n');$('djs').value=(c.lineup?.djs??[]).join('\n');
@@ -68,6 +78,7 @@ function valor(campo,value){
  if(value==null||value==='')return 'Não informado';
  if(campo==='ativo')return value?'Visível':'Oculto';
  if(campo==='terminoEstimado')return value?'Horário estimado':'Horário confirmado';
+ if(campo==='condicoesEspeciais')return value.map(c=>(c.tipo==='aniversariante'?'Aniversariante':'Outros')+': '+c.descricao).join('\n')||'Nenhuma condição especial';
  if(campo==='lineup')return [...(value.bandas??[]),...(value.djs??[])].join('\n')||'Nenhuma atração informada';
  if(campo==='ingresso')return [value.tipoEntrada,value.precoAPartirDe==null?'Valor não informado':
   Number(value.precoAPartirDe).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}),value.link].filter(Boolean).join('\n');

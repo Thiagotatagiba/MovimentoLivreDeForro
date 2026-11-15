@@ -63,12 +63,12 @@ test('CAS conflict preserves local content and explicit choice prepares but does
  assert.equal(editor.estado().conteudo.titulo,'Meu título');assert.equal(calls,1);
  assert.equal(editor.estado().alterado,true);
 });
-test('merge preserves noneditable remote fields and can select the remote content explicitly',async()=>{
- const remoto=snapshot({...conteudo,titulo:'Atual',condicoesEspeciais:[{tipo:'aviso',descricao:'Atualização'}]},2);
+test('merge requires explicit selection of special conditions and preserves remote content',async()=>{
+ const remoto=snapshot({...conteudo,titulo:'Atual',condicoesEspeciais:[{tipo:'outros',descricao:'Atualização'}]},2);
  const editor=criar({salvarRascunho:async()=>{throw Object.assign(Error('conflict'),{codigo:'CONFLITO'});},
  carregarEvento:async()=>remoto});
  editor.carregar(snapshot());editor.editar({...conteudo,titulo:'Local'});
- await assert.rejects(editor.salvar());editor.resolver({titulo:'remoto'});
+ await assert.rejects(editor.salvar());editor.resolver({titulo:'remoto',condicoesEspeciais:'remoto'});
  assert.equal(editor.estado().conteudo.titulo,'Atual');
  assert.deepEqual(editor.estado().conteudo.condicoesEspeciais,remoto.conteudo.condicoesEspeciais);
  assert.equal(editor.estado().alterado,false);
