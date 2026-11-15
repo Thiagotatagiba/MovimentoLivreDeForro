@@ -10,15 +10,15 @@ Projeto separado `qmhrlexpnnbjntpecjis`, somente contas/dados fictícios. Base d
 
 Worker de e-mail preparado e implantado desativado, com reserva exclusiva, repetição limitada, chave estável e limpeza de tokens/corpos. Provedor não configurado; nenhum e-mail real foi enviado. Agendador GitHub preparado em branch, sem variável/secrets cadastrados ou agenda ativa. A existência do workflow em branch não o torna um agendamento em execução.
 
-Listas VIP C1: configuração por edição, benefício/prazo/limite de acompanhantes, consulta de metadados protegida, encerramento e auditoria. Migração aplicada em homologação; sem listas persistidas após os testes. **Ainda não há inscrições ou tela VIP.** A suíte tem 126 testes aprovados.
+Listas VIP C2: fluxo completo implementado em homologação — configuração por edição, inscrição do titular/acompanhantes, alteração/cancelamento/reinscrição enquanto aberta, consulta do produtor, correções pós-fechamento e texto para copiar. Prazo e permissões são aplicados pelo servidor. Foram preservados evento/lista encerrada e dois grupos fictícios, totalizando cinco pessoas. A suíte tem 148 testes. Telas, Auth/PostgREST e PWA candidato v9 foram validados; produção mantém v8.
 
 ## Como testar e o que falta
 
 - [Guia de uso do painel e convites](GUIA_USO_PAINEL.md): ações disponíveis, permissões e solução de problemas.
 - [Homologação de Auth](HOMOLOGACAO_AUTH.md): servidor e contas fictícias, com credenciais fora do repositório.
 - [Envio](ENVIO_CONVITES.md) e [agendamento](AGENDAMENTO_CONVITES.md): configuração técnica pendente e pausa segura.
-- [Listas VIP C1](LISTAS_VIP_BASE.md): contrato, testes e limites deste incremento.
+- [Guia de listas VIP](GUIA_LISTAS_VIP.md) e [implementação C2](LISTAS_VIP_IMPLEMENTACAO.md): operação e evidências.
 
-Próximo desenvolvimento: inscrições VIP e acompanhantes com isolamento e prazo controlado pelo servidor. Em paralelo, ativação de e-mail depende de configurar provedor/remetente, segredo e testar caixa autorizada em homologação. Não é necessário bloquear as listas por esse serviço externo.
+O tópico de listas VIP/desconto do escopo aprovado está implementado e verificado em homologação. Próximo trabalho de liberação: revisar/consolidar os PRs empilhados e reconciliar migrações antes de uma proposta de publicação administrativa. Ativação de e-mail depende de configurar provedor/remetente, segredo e testar caixa autorizada em homologação; não houve envio real.
 
 Antes de publicar administração: consolidar/revisar PRs empilhados, reconciliar histórico das migrações, validar fluxos completos e comunicar alterações/riscos. Não há nova data de publicação definida, nem liberação de administração em produção nesta rodada.

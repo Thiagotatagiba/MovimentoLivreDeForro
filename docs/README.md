@@ -1,8 +1,8 @@
 # Vai Ter Forró! — Site público, PWA, admin e Carteira
 
 > **Estado consolidado em 15/11/2026:** [resumo do projeto](ESTADO_ATUAL_2026-11-15.md).
-> Listas VIP têm configuração de banco validada em homologação; inscrições e telas
-> ainda não foram implementadas. Contrato em [LISTAS_VIP_BASE.md](LISTAS_VIP_BASE.md).
+> Listas VIP têm fluxo completo validado em homologação, sem publicação em produção.
+> [Guia de uso](GUIA_LISTAS_VIP.md) e [relatório técnico](LISTAS_VIP_IMPLEMENTACAO.md).
 
 > **Continuidade em 14/11/2026:** catálogo público Supabase publicado; painel e
 > convites apenas em homologação, com envio automático desativado. Para usar o

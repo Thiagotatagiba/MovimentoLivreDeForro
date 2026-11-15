@@ -1,0 +1,13 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><title>Lista VIP — Vai Ter Forró!</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/tokens.css"><link rel="stylesheet" href="admin/css/gestao.css"><link rel="stylesheet" href="css/listas-vip.css"></head>
+<body class="vip"><header class="topo"><a href="index.html">Vai Ter Forró!</a><a href="agenda.html">Agenda</a></header><main>
+<h1 id="titulo">Lista VIP</h1><p id="mensagem" role="status" aria-live="polite">Carregando…</p>
+<section id="beneficio" class="cartao" hidden><h2 id="estado"></h2><p id="termos" class="termos"></p><p id="datas"></p><p id="limite"></p></section>
+<button id="entrar" hidden>Entrar para se inscrever</button><p id="conta"></p><button id="atualizar" class="secundario">Atualizar</button>
+<section id="inscricao" class="cartao" hidden><h2>Meu grupo</h2><p id="situacao-grupo"></p><form id="form-inscricao"><fieldset id="campos">
+<label for="nome">Seu nome na lista</label><input id="nome" required maxlength="120" autocomplete="name">
+<label for="acompanhantes">Nomes dos acompanhantes (um por linha)</label><textarea id="acompanhantes"></textarea>
+<label><input id="aceite" type="checkbox" required> Li e aceito os termos deste benefício.</label>
+<div class="acoes"><button type="submit" id="salvar">Revisar inscrição</button><button id="cancelar" type="button" class="secundario" hidden>Cancelar minha inscrição</button></div></fieldset></form></section>
+<dialog id="confirmacao"><h2>Confira sua solicitação</h2><p id="resumo" class="termos"></p><div class="acoes"><button id="voltar" type="button" class="secundario">Voltar</button><button id="confirmar" type="button">Confirmar</button></div></dialog>
+</main><script type="module" src="js/pages/lista-vip.js"></script></body></html>

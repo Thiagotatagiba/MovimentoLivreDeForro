@@ -2,7 +2,7 @@
 
 Guia para responsáveis por marcas e equipes. Atualizado em 14/11/2026.
 
-**Situação atual:** o catálogo público já lê do Supabase em produção. O novo painel, convites e envio de e-mails estão em desenvolvimento e homologação. Não abra os caminhos abaixo no domínio de produção esperando que estejam publicados. O envio automático está desativado. Não há tela de listas VIP pronta nesta entrega.
+**Situação atual:** o catálogo público já lê do Supabase em produção. O novo painel e convites estão em homologação. Não abra os caminhos abaixo no domínio de produção esperando que estejam publicados. O envio automático está desativado. As listas VIP agora têm telas e fluxo completo em homologação: veja [GUIA_LISTAS_VIP.md](GUIA_LISTAS_VIP.md).
 
 ## 1. Entrar no ambiente certo
 
@@ -30,8 +30,8 @@ O link só fica disponível na sessão em que foi criado. Se perdê-lo, revogue 
 | Editar a marca | Permissão registrada; a tela de edição de marca ainda não foi entregue neste painel. |
 | Editar eventos | Editar e salvar rascunhos dos eventos existentes da marca. |
 | Publicar eventos | Publicar rascunhos salvos e alterar a situação dos eventos publicados. |
-| Gerenciar listas | Permissão registrada para a etapa de listas VIP; tela ainda pendente. |
-| Consultar listas | Permissão registrada para a etapa de listas VIP; tela ainda pendente. |
+| Gerenciar listas | Criar/encerrar listas, conferir grupos e corrigir nomes após fechamento. |
+| Consultar listas | Conferir grupos e preparar texto após fechamento; não permite criar, encerrar ou corrigir. |
 
 Editar e publicar são permissões separadas. Uma pessoa que só publica não pode editar o rascunho. Um administrador da marca tem as permissões de administração dessa marca, não das demais.
 

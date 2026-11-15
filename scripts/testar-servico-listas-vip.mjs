@@ -20,3 +20,14 @@ test('VIP service distinguishes conflict, permission, validation and unavailable
   await assert.rejects(service.encerrar({listaId:'list',revisao:1,chave:'key'}),{codigo});
  }
 });
+test('VIP registration/producer methods preserve consent, revision and keys without accepting a target owner',async()=>{
+ const calls=[],service=criarServicoListasVip({obterCliente:async()=>({rpc:async(name,params)=>{calls.push([name,params]);return {data:null,error:null};}})});
+ await service.salvar({listaId:'l',nome:'Ana',acompanhantes:['Bia'],aceitaTermos:true,revisao:2,chave:'k',usuarioId:'forged'});
+ await service.cancelar({listaId:'l',revisao:3,chave:'c'});await service.corrigir({inscricaoId:'i',nome:'Ana Nova',acompanhantes:['Bia'],revisao:4,chave:'x'});
+ await service.confirmarData({listaId:'l',versaoId:'v',revisao:2,chave:'d'});
+ await service.minha('l');await service.grupos('l');await service.exportar('l');await service.gestao();await service.doEvento('legacy');
+ assert.deepEqual(calls,[['salvar_inscricao_vip',{p_lista:'l',p_nome:'Ana',p_acompanhantes:['Bia'],p_aceita_termos:true,p_revisao:2,p_chave:'k'}],
+ ['cancelar_inscricao_vip',{p_lista:'l',p_revisao:3,p_chave:'c'}],['corrigir_inscricao_vip',{p_inscricao:'i',p_nome:'Ana Nova',p_acompanhantes:['Bia'],p_revisao:4,p_chave:'x'}],
+ ['confirmar_data_lista_vip',{p_lista:'l',p_versao:'v',p_revisao:2,p_chave:'d'}],['consultar_minha_inscricao_vip',{p_lista:'l'}],['consultar_grupos_vip',{p_lista:'l'}],
+ ['exportar_lista_vip',{p_lista:'l'}],['consultar_gestao_listas_vip',{}],['consultar_lista_vip_evento',{p_evento_legado:'legacy'}]]);
+});

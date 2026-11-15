@@ -1263,3 +1263,17 @@ Prazo é calculado no servidor sem cron; cancelamento/interrupção encerra de f
 permanente via trigger. Adiamento sinaliza suspensão; a distinção de nova data deve
 ser integrada antes de habilitar inscrições. Migração somente em homologação,
 sem interface publicada. Detalhes: docs/LISTAS_VIP_BASE.md.
+
+## 15/11/2026 — Inscrições e operação completa de listas VIP (C2)
+
+Um grupo por conta/lista, titular por auth.uid(), acompanhantes sem conta e termos
+aceitos explicitamente. RLS direto somente do próprio grupo; produtores consultam
+RPC por permissão de listas e marca. Escritas usam revisão, idempotência e locks
+evento → lista → inscrição; prazo e suspensão são aplicados no servidor. Após
+fechamento, correções conservam quantidade e são auditadas; exportação somente
+textual e autorizada, sem fotos/CSV. Duplicidades são sinalizadas só ao produtor.
+Adiamento sem confirmação explícita de nova data suspende; a confirmação é ligada
+à versão publicada e não estende prazo nem reabre encerramento. Telas pública e
+administrativa usam polling de cinco segundos, sem dados pessoais em cache/localStorage.
+PWA candidato v9 validado em loopback. Migração e testes apenas em homologação;
+produção permanece v8. Guia: docs/GUIA_LISTAS_VIP.md.

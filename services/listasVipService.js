@@ -12,8 +12,20 @@ export function criarServicoListasVip({obterCliente=async()=>(await import('../d
  }
  return {
   consultar:listaId=>rpc('consultar_lista_vip',{p_lista:listaId}),
+  doEvento:eventoLegado=>rpc('consultar_lista_vip_evento',{p_evento_legado:eventoLegado}),
   criar:({eventoId,titulo,termos,prazo,inicio,fim,maxAcompanhantes,chave})=>rpc('criar_lista_vip',{
    p_evento:eventoId,p_titulo:titulo,p_termos:termos,p_prazo:prazo,p_inicio:inicio,p_fim:fim,p_acompanhantes:maxAcompanhantes,p_chave:chave},true),
   encerrar:({listaId,revisao,chave})=>rpc('encerrar_lista_vip',{p_lista:listaId,p_revisao:revisao,p_chave:chave},true),
+  minha:listaId=>rpc('consultar_minha_inscricao_vip',{p_lista:listaId}),
+  salvar:({listaId,nome,acompanhantes,aceitaTermos,revisao,chave})=>rpc('salvar_inscricao_vip',{
+   p_lista:listaId,p_nome:nome,p_acompanhantes:acompanhantes,p_aceita_termos:aceitaTermos,p_revisao:revisao,p_chave:chave},true),
+  cancelar:({listaId,revisao,chave})=>rpc('cancelar_inscricao_vip',{p_lista:listaId,p_revisao:revisao,p_chave:chave},true),
+  corrigir:({inscricaoId,nome,acompanhantes,revisao,chave})=>rpc('corrigir_inscricao_vip',{
+   p_inscricao:inscricaoId,p_nome:nome,p_acompanhantes:acompanhantes,p_revisao:revisao,p_chave:chave},true),
+  grupos:listaId=>rpc('consultar_grupos_vip',{p_lista:listaId}),
+  exportar:listaId=>rpc('exportar_lista_vip',{p_lista:listaId}),
+  gestao:()=>rpc('consultar_gestao_listas_vip',{}),
+  confirmarData:({listaId,versaoId,revisao,chave})=>rpc('confirmar_data_lista_vip',{
+   p_lista:listaId,p_versao:versaoId,p_revisao:revisao,p_chave:chave},true),
  };
 }

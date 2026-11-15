@@ -96,6 +96,16 @@ async function iniciar() {
     .catch(() => {});
 
   raiz.innerHTML = montarHtml(evento);
+  if (FONTE_CATALOGO === 'supabase') {
+    import('../../services/listasVipService.js').then(async ({criarServicoListasVip})=>{
+      const lista=await criarServicoListasVip().doEvento(evento.id);
+      if(!lista)return;
+      const link=document.createElement('a');link.className='botao botao-secundario';
+      const url=new URL('lista-vip.html',location.href);url.searchParams.set('id',lista.id);link.href=url.href;
+      link.textContent=lista.estado==='aberta'?'Ver lista VIP / desconto':lista.estado==='encerrada'?'Lista VIP encerrada':'Lista VIP — inscrições suspensas';
+      document.querySelector('.evento-cartao-acoes')?.append(link);
+    }).catch(()=>{}); // Optional benefit failure must not hide the public event.
+  }
 
   const botaoFavoritar = document.getElementById('botao-favoritar');
   if (botaoFavoritar) ligarBotaoInteracao(botaoFavoritar, 'evento', evento.id);

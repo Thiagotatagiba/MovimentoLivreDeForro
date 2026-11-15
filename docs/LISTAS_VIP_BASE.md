@@ -1,5 +1,9 @@
 # Listas VIP — configuração C1
 
+> Registro histórico do incremento C1. O fluxo completo foi implementado depois,
+> em C2: [relatório](LISTAS_VIP_IMPLEMENTACAO.md) e [guia de uso](GUIA_LISTAS_VIP.md).
+> As limitações de inscrições/telas descritas abaixo se referem à etapa C1.
+
 Implementação em `codex/listas-vip-base`, 15/11/2026. Esta etapa entrega configuração no banco e serviço JavaScript. **Não há tela VIP, inscrição de pessoas, acompanhantes cadastrados ou exportação nesta entrega.** Nenhuma lista foi aberta para uso público em produção.
 
 ## Contrato entregue
