@@ -1,32 +1,43 @@
-﻿# Estado do projeto — 15/11/2026, após publicação
-
-Administração publicada com autorização pelo [PR #13](https://github.com/Thiagotatagiba/MovimentoLivreDeForro/pull/13), commit funcional `58ce308b1754b086efca4220853c0270fc5c09c6`.
+# Estado do projeto — 15/11/2026
 
 ## Produção
 
-Atualizacao posterior: criacao de eventos publicada pelo PR #15; migracao 20261115190551, 38 arquivos conferidos. Ver [registro de criacao](CRIACAO_EVENTOS.md#publicacao-confirmada).
+Site: https://vaiterforro.com.br/. Painel: https://vaiterforro.com.br/admin/gestao.html.
 
-Incremento posterior em desenvolvimento: botão **Novo evento**, validado em homologação
-com 172 testes, ainda sem ativação em produção nesta rodada. Ver [CRIACAO_EVENTOS.md](CRIACAO_EVENTOS.md).
+- Catálogo Supabase: 15 marcas, 16 locais (15 ativos), 24 eventos e 24 versões publicadas. Foto do Festival preservada.
+- HTTPS obrigatório, worker v9 e 38 arquivos críticos conferidos por hash após o PR #19.
+- Administrador global cria eventos sem produtores/equipes. Marca e local devem existir; o local padrão vem selecionado e pode ser trocado para a edição.
+- Campo de marca aceita digitação e sugestões das marcas autorizadas.
+- Início/término explícitos obrigatórios, rascunho privado e publicação separada, versionada e auditada.
+- Condições especiais: Aniversariante ou Outros, descrição, inclusão/remoção e comparação de conflitos. Aparecem no site após publicar. Não cadastram aniversariantes automaticamente.
+- Convites por link, aceitação/e-mail confirmado, papéis por marca e listas VIP publicados. E-mails automáticos e agendamento desativados.
+- Um administrador global autorizado. Dados fictícios não foram importados.
+- Perfis, interações, ingressos, eventos e versões preservados por contagem/hash nas migrações recentes.
 
-- Catálogo Supabase: 15 marcas, 16 locais, 24 eventos e 24 versões. Foto do Festival preservada e carregamento conferido.
-- HTTPS obrigatório: HTTP redireciona à mesma rota HTTPS. Pages/CI passaram e 37 arquivos críticos foram verificados.
-- Painel de eventos existentes, rascunhos/publicação versionada, papéis por marca e auditoria publicados.
-- Convites por link com aceitação explícita/e-mail confirmado e listas VIP completas publicados.
-- Sete migrações novas aplicadas, total 14; um único administrador global, na conta confirmada indicada pelo responsável. Nenhuma conta ou fixture de homologação foi importada.
-- Perfis, interações, ingressos, eventos e versões tiveram contagens/assinaturas preservadas. Backup protegido de aplicação validado fora do Git.
-- E-mails automáticos e processamento agendado continuam desativados. Não há função de entrega implantada em produção.
+## Entregas e migrações
 
-## Validação e primeiro acesso
+| PR | Entrega | Migração real em produção |
+| --- | --- | --- |
+| #13 | Administração, convites e listas VIP | Sete migrações; histórico chegou a 14 |
+| #15 | Criação de eventos | 20261115190551 |
+| #17 | Local padrão na criação | Sem migração |
+| #18 | Busca digitada de marca | Sem migração |
+| #19 | Condições especiais | 20261115193652 |
 
-154 testes passaram no commit publicado. Fluxos autenticados completos foram exercitados previamente em homologação. Após publicação, foram conferidos banco, atribuição de papel, bloqueio anônimo, site, arte, páginas administrativas e modal de login. O responsável deve fazer seu próprio primeiro login; não foram usadas suas credenciais nem enviada mensagem de autenticação pelo agente.
+Produção tem **16 migrações**. Os timestamps remotos diferem dos nomes locais; não executar db push/reset sem reconciliar o histórico. Main funcional do PR #19: e4d4eb8839c29178128670e97a5bb4cc2d049db2.
 
-Abra [Gestão de eventos](https://vaiterforro.com.br/admin/gestao.html), [Equipe e convites](https://vaiterforro.com.br/admin/convites.html) ou [Listas VIP](https://vaiterforro.com.br/admin/listas.html). Se o site já estava aberto, atualize a página. Guias: [painel](GUIA_USO_PAINEL.md) e [listas VIP](GUIA_LISTAS_VIP.md).
+## Validação e acesso
 
-## Homologação e próximos trabalhos
+**173 testes passaram** na última entrega. Navegador local confirmou inclusão, salvamento e recarga de condição especial. Criação/publicação autenticadas validadas em homologação; em produção, conferidos banco, permissões, preservação, arquivos publicados e paridade pública. Não foram usadas credenciais do responsável nem criados eventos fictícios em produção.
 
-Projeto separado `qmhrlexpnnbjntpecjis`, com 16 migrações, contas/dados fictícios e lista VIP de teste encerrada. Continua adequado para testar mudanças; não confundir com o domínio de produção. A fonte e o catálogo públicos permanecem no projeto de produção.
+Atualize abas antigas com Ctrl + Shift + R. Guias: [painel](GUIA_USO_PAINEL.md) e [listas VIP](GUIA_LISTAS_VIP.md).
 
-Próximo trabalho: conferência autenticada do responsável e, depois, configuração de provedor/remetente em homologação para envio automático, caso desejado. Permanecem fora do escopo entregue: aniversariantes, CSV (não aprovado), criação de novas edições pelo painel e alteração posterior de termos/prazos de listas.
+## Homologação e pendências
 
-Os PRs administrativos antigos foram encerrados como substituídos, preservando branches/histórico. PR #1 continua independente. Evidências, migrações reais, limitações e reversão em [PUBLICACAO_ADMINISTRATIVA_2026-11-15.md](PUBLICACAO_ADMINISTRATIVA_2026-11-15.md).
+Projeto qmhrlexpnnbjntpecjis: **18 migrações, quatro eventos e cinco versões**, conferidos em 15/11/2026. Contas/dados fictícios; não importar para produção.
+
+Pendentes no novo painel: envio de imagem por arquivo (hoje há URL HTTPS na criação), substituição de imagem existente, cadastro/edição de marcas e locais, cadastro específico de aniversariantes e alteração posterior de termos/prazos de listas. CSV não aprovado. E-mail automático depende de provedor/remetente a configurar em homologação.
+
+O administrador antigo que grava arquivos locais não substitui o painel Supabase. PRs administrativos substituídos encerrados preservando histórico; PR #1 independente.
+
+Registros: [publicação inicial](PUBLICACAO_ADMINISTRATIVA_2026-11-15.md), [criação](CRIACAO_EVENTOS.md) e descrições dos PRs #17–#19.
