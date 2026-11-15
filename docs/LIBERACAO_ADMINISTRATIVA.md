@@ -1,6 +1,8 @@
 # Liberação administrativa — candidata de 15/11/2026
 
-**Preparação para revisão. Não executada em produção.** Branch `codex/liberacao-administrativa`, baseada na entrega C2. Consolida a implementação dos PRs #3, #4, #5, #6, #8, #9, #10, #11 e #12 para um único PR contra main. PR #7 já está publicado; PR #1 é independente e permanece fora desta liberação.
+**Plano aprovado e executado em produção em 15/11/2026 pelo PR #13.** Consulte o [registro da publicação](PUBLICACAO_ADMINISTRATIVA_2026-11-15.md) para versões reais, verificações e acesso. As seções abaixo preservam o plano e os valores de pré-verificação anteriores à execução; não representam o estado atual.
+
+Branch `codex/liberacao-administrativa`, baseada na entrega C2. Consolida a implementação dos PRs #3, #4, #5, #6, #8, #9, #10, #11 e #12 para um único PR contra main. PR #7 já estava publicado; PR #1 é independente e permaneceu fora desta liberação.
 
 ## Escopo concreto proposto
 

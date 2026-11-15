@@ -1,6 +1,6 @@
 # Como usar listas VIP e de desconto
 
-Atualizado em 15/11/2026. Funcionalidade implementada e validada **em homologação**. Ainda não publicada no domínio de produção. Use somente contas e nomes fictícios nesse ambiente. O responsável técnico fornece o endereço e o acesso; não há senhas neste guia.
+Atualizado em 15/11/2026. Funcionalidade **publicada em produção**: [Gestão de listas VIP](https://vaiterforro.com.br/admin/listas.html). Entre na sua conta autorizada. Para testes, use somente dados fictícios no ambiente separado de homologação. Não há senhas neste guia. [Registro da publicação](PUBLICACAO_ADMINISTRATIVA_2026-11-15.md).
 
 ## Para quem organiza o evento
 
