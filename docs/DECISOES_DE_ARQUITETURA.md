@@ -1253,3 +1253,13 @@ Sem alterações remotas ou agenda ativa. Publicação do workflow na branch pad
 depende de revisão própria, pois main também publica o site. Guia de uso para
 administradores/equipe em docs/GUIA_USO_PAINEL.md; operação em
 docs/AGENDAMENTO_CONVITES.md.
+
+## 15/11/2026 — Configuração de listas VIP por edição (C1)
+
+Uma configuração opcional por eventos.id, independente de republicações. Somente
+metadados do benefício são públicos; nenhuma inscrição/nome é coletado nesta etapa.
+Criação/encerramento exigem gerenciar_listas, com idempotência, revisão e auditoria.
+Prazo é calculado no servidor sem cron; cancelamento/interrupção encerra de forma
+permanente via trigger. Adiamento sinaliza suspensão; a distinção de nova data deve
+ser integrada antes de habilitar inscrições. Migração somente em homologação,
+sem interface publicada. Detalhes: docs/LISTAS_VIP_BASE.md.

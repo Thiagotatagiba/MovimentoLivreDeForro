@@ -43,6 +43,7 @@ jobs:
           node --check admin/js/editorModelo.js
           node --check admin/js/convites.js
           node --check admin/js/conviteModelo.js
+          node --check services/listasVipService.js
           node --check scripts/acionar-fila-convites.mjs
           node --check supabase/functions/enviar-convites/worker.mjs
           node --check scripts/homologar-convites.mjs
