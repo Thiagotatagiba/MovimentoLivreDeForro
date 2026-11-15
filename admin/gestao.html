@@ -21,7 +21,7 @@
 <p id="mensagem" role="status" aria-live="polite">Carregando seu acesso…</p>
 <button id="entrar" type="button" hidden>Entrar para gerenciar</button>
 <div id="painel" class="layout" hidden>
-<aside class="cartao navegacao"><label for="marca">Marca</label><select id="marca"></select><button id="novo-evento" type="button" class="novo-evento" hidden>Novo evento</button><h2>Eventos</h2><div id="eventos" class="lista-eventos" role="group" aria-label="Escolher evento"></div></aside>
+<aside class="cartao navegacao"><label for="marca-busca">Marca</label><input id="marca-busca" type="text" list="marcas-opcoes" autocomplete="off" placeholder="Digite ou selecione a marca" aria-describedby="marca-ajuda"><datalist id="marcas-opcoes"></datalist><small id="marca-ajuda">Digite para buscar e escolha uma marca da lista.</small><select id="marca" hidden aria-hidden="true" tabindex="-1"></select><button id="novo-evento" type="button" class="novo-evento" hidden>Novo evento</button><h2>Eventos</h2><div id="eventos" class="lista-eventos" role="group" aria-label="Escolher evento"></div></aside>
 <section id="editor" class="cartao" hidden aria-labelledby="titulo-editor">
 <div class="editor-topo"><div><p class="rotulo" id="estado-editor"></p><h2 id="titulo-editor">Editar evento</h2></div><button type="button" id="recarregar" class="secundario">Recarregar</button></div>
 <p id="publicado" class="apoio"></p><p><a id="ver-publico" target="_blank" rel="noopener" hidden>Ver evento no site</a></p><p id="papel" class="aviso"></p>
@@ -50,5 +50,5 @@
 </div>
 <dialog id="confirmacao" aria-labelledby="titulo-confirmacao"><h2 id="titulo-confirmacao"></h2><p id="texto-confirmacao"></p><dl id="resumo-confirmacao"></dl><div class="acoes"><button id="cancelar-confirmacao" type="button" class="secundario">Voltar</button><button id="confirmar" type="button">Confirmar</button></div></dialog>
 </main>
-<script type="module" src="js/gestao.js?v=local-padrao-1"></script>
+<script type="module" src="js/gestao.js?v=busca-marcas-1"></script>
 </body></html>
