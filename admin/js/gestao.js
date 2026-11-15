@@ -1,4 +1,4 @@
-import {dependencias as deps} from './gestaoDependencias.js?v=criacao-eventos-1';
+import {dependencias as deps} from './gestaoDependencias.js?v=local-padrao-1';
 import {criarEditor,validarParaPublicar} from './editorModelo.js';
 import {imagemDoEvento} from '../../js/utils/format.js';
 import {criarNovoEvento,conteudoNovoEvento} from './novoEventoModelo.js';
@@ -122,6 +122,7 @@ async function abrirNovoEvento(){
  try{const locais=await deps.servico.listarLocais();if(atual!==epoch)return;
   if(!locais.length)throw Error('Não há locais ativos disponíveis. Cadastre ou reative um local antes de criar esta edição.');
   $('local-novo').replaceChildren(new Option('Escolha um local',''),...locais.sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR')).map(l=>new Option(l.nome,l.id)));
+  $('local-novo').value=locais.some(l=>l.id===marca.local_padrao_id)?marca.local_padrao_id:'';
   novo=true;criacao=criarNovoEvento({servico:deps.servico});editor=criarEditor({servico:deps.servico});
   editor.carregar({evento:{id:null,slug:'Novo evento',versao_publicada_id:null,versao:null},rascunho:null,conteudo:conteudoNovoEvento(),revisao:0});
   escreverForm(editor.estado().conteudo);$('imagem-url-nova').value='';$('editor').hidden=false;

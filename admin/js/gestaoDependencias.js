@@ -1,4 +1,4 @@
-import {administracao} from '../../services/administracaoService.js?v=criacao-eventos-1';
+import {administracao} from '../../services/administracaoService.js?v=local-padrao-1';
 import {obterUsuarioAtual,aoMudarAutenticacao} from '../../services/authService.js';
 import {abrirModalLogin} from '../../components/loginModal.js';
 export const dependencias={

@@ -43,11 +43,11 @@ export function criarServicoAdministrativo({
       if(error) throw traduzirErro(error);
       const todas=['editar_marca','gerenciar_eventos','publicar_eventos','gerenciar_listas','consultar_listas'];
       if(global?.ativo) {
-        const marcas=await lista('marcas','id,id_legado,slug,nome',q=>q.eq('ativo',true));
+        const marcas=await lista('marcas','id,id_legado,slug,nome,local_padrao_id',q=>q.eq('ativo',true));
         return {marcas:marcas.map(m=>({...m,administrador:true,permissoes:todas}))};
       }
       const membros=await lista('membros_marca',
-        'id,marca_id,papel,permissoes:permissoes_membro(permissao),marca:marcas(id,id_legado,slug,nome)',
+        'id,marca_id,papel,permissoes:permissoes_membro(permissao),marca:marcas(id,id_legado,slug,nome,local_padrao_id)',
         q=>q.eq('usuario_id',user.id).eq('ativo',true));
       return {marcas:membros.filter(m=>m.marca).map(m=>({...m.marca,administrador:m.papel==='administrador',
         permissoes:m.papel==='administrador'?todas:m.permissoes.map(p=>p.permissao)}))
