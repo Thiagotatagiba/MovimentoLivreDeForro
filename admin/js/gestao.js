@@ -1,4 +1,4 @@
-import {dependencias as deps} from './gestaoDependencias.js';
+import {dependencias as deps} from './gestaoDependencias.js?v=criacao-eventos-1';
 import {criarEditor,validarParaPublicar} from './editorModelo.js';
 import {imagemDoEvento} from '../../js/utils/format.js';
 import {criarNovoEvento,conteudoNovoEvento} from './novoEventoModelo.js';
