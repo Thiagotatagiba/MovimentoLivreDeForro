@@ -2,11 +2,11 @@
 
 Guia para responsáveis por marcas e equipes. Atualizado em 14/11/2026.
 
-**Situação atual:** o catálogo público já lê do Supabase em produção. O novo painel e convites estão em homologação. Não abra os caminhos abaixo no domínio de produção esperando que estejam publicados. O envio automático está desativado. As listas VIP agora têm telas e fluxo completo em homologação: veja [GUIA_LISTAS_VIP.md](GUIA_LISTAS_VIP.md).
+**Situação atual:** painel, convites e listas VIP publicados em produção em 15/11/2026. O envio automático de convites continua desativado. Veja também [GUIA_LISTAS_VIP.md](GUIA_LISTAS_VIP.md) e o [registro da publicação](PUBLICACAO_ADMINISTRATIVA_2026-11-15.md).
 
 ## 1. Entrar no ambiente certo
 
-Use o endereço de homologação informado pelo responsável técnico. Abra `/admin/gestao.html` para eventos ou `/admin/convites.html` para equipe. As contas de teste são fornecidas por canal privado; este documento não contém senhas.
+Em produção, abra [Gestão de eventos](https://vaiterforro.com.br/admin/gestao.html), [Equipe e convites](https://vaiterforro.com.br/admin/convites.html) ou [Listas VIP](https://vaiterforro.com.br/admin/listas.html), e entre na sua conta autorizada. Use o ambiente separado de homologação para testes com dados fictícios. As contas de teste são fornecidas por canal privado; este documento não contém senhas.
 
 Para o desenvolvedor iniciar o servidor local ligado à homologação, consultar [HOMOLOGACAO_AUTH.md](HOMOLOGACAO_AUTH.md). Um servidor estático comum pode usar a configuração de produção do código; não o use para testar escritas administrativas sem a configuração de homologação.
 
