@@ -94,3 +94,10 @@ test('draft read failure never substitutes the published content as an editable 
  })});
  await assert.rejects(service.carregarEvento('event'),e=>e.codigo==='SEM_PERMISSAO');
 });
+test('creation service passes only brand, venue, content and request key through the restricted RPC',async()=>{
+ const calls=[];const service=criarServicoAdministrativo({obterCliente:async()=>({rpc:(name,params)=>({retry:async value=>{assert.equal(value,false);calls.push({name,params});return {data:{evento_id:'server-id'},error:null};}})})});
+ const args={marcaId:'brand',localId:'venue',conteudo:{titulo:'Baile'},chave:'request',usuarioId:'forged'};
+ assert.deepEqual(await service.criarEvento(args),{evento_id:'server-id'});
+ assert.deepEqual(calls,[{name:'criar_evento_rascunho',params:{p_marca:'brand',p_local:'venue',p_conteudo:{titulo:'Baile'},p_chave:'request'}}]);
+ await assert.rejects(service.criarEvento({...args,chave:null}),{codigo:'VALIDACAO'});assert.equal(calls.length,1);
+});

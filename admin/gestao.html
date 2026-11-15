@@ -21,12 +21,13 @@
 <p id="mensagem" role="status" aria-live="polite">Carregando seu acesso…</p>
 <button id="entrar" type="button" hidden>Entrar para gerenciar</button>
 <div id="painel" class="layout" hidden>
-<aside class="cartao navegacao"><label for="marca">Marca</label><select id="marca"></select><h2>Eventos</h2><div id="eventos" class="lista-eventos" role="group" aria-label="Escolher evento"></div></aside>
+<aside class="cartao navegacao"><label for="marca">Marca</label><select id="marca"></select><button id="novo-evento" type="button" class="novo-evento" hidden>Novo evento</button><h2>Eventos</h2><div id="eventos" class="lista-eventos" role="group" aria-label="Escolher evento"></div></aside>
 <section id="editor" class="cartao" hidden aria-labelledby="titulo-editor">
 <div class="editor-topo"><div><p class="rotulo" id="estado-editor"></p><h2 id="titulo-editor">Editar evento</h2></div><button type="button" id="recarregar" class="secundario">Recarregar</button></div>
-<p id="publicado" class="apoio"></p><p id="papel" class="aviso"></p>
+<p id="publicado" class="apoio"></p><p><a id="ver-publico" target="_blank" rel="noopener" hidden>Ver evento no site</a></p><p id="papel" class="aviso"></p>
 <form id="form-evento" novalidate>
 <fieldset id="campos"><legend>Conteúdo do rascunho</legend>
+<div id="dados-novos" hidden><p class="aviso">Crie uma edição para a marca selecionada. Não é necessário cadastrar uma conta de produtor. Salvar cria um rascunho; publicar é uma ação separada.</p><label for="local-novo">Local desta edição</label><select id="local-novo" required disabled></select><p class="apoio">Escolha um local já cadastrado. Marca e local ficam vinculados a esta edição.</p></div>
 <label for="titulo">Título</label><input id="titulo" name="titulo" required maxlength="200">
 <div class="dupla"><div><label for="data">Data de início</label><input id="data" name="data" type="date" required></div><div><label for="horario">Horário de início</label><input id="horario" name="horario" type="time" required></div></div>
 <div class="dupla"><div><label for="dataTermino">Data de término</label><input id="dataTermino" name="dataTermino" type="date" required></div><div><label for="horarioTermino">Horário de término</label><input id="horarioTermino" name="horarioTermino" type="time" required></div></div>
@@ -36,10 +37,11 @@
 <div class="dupla"><div><label for="bandas">Bandas e artistas (um por linha)</label><textarea id="bandas" rows="3"></textarea></div><div><label for="djs">DJs (um por linha)</label><textarea id="djs" rows="3"></textarea></div></div>
 <h3>Ingresso</h3><div class="dupla"><div><label for="tipo-entrada">Tipo de entrada</label><input id="tipo-entrada" list="tipos-entrada"><datalist id="tipos-entrada"><option>Gratuito</option><option>Ingresso Online</option><option>Ingresso no Local</option><option>Cover</option></datalist></div><div><label for="preco">Preço a partir de (R$)</label><input id="preco" type="number" min="0" step="0.01"><small>Deixe em branco se ainda não foi informado.</small></div></div>
 <label for="link-ingresso">Link do ingresso</label><input id="link-ingresso" placeholder="https://" inputmode="url">
+<div id="imagem-nova" hidden><label for="imagem-url-nova">Imagem do evento — URL HTTPS (opcional)</label><input id="imagem-url-nova" type="url" placeholder="https://" maxlength="2000" disabled><p class="apoio">Use o endereço público da arte, ou deixe em branco. Envio de arquivo ainda não está disponível.</p></div>
 <label class="check"><input id="ativo" type="checkbox">Exibir este evento no catálogo público</label>
 </fieldset>
 <section class="imagem-atual" aria-label="Imagem atual"><h3>Imagem atual</h3><img id="imagem" alt="Arte atual do evento" hidden><p id="sem-imagem" class="apoio">Imagem não informada.</p></section>
-<div class="acoes"><button id="salvar" type="submit">Salvar rascunho</button><button id="publicar" type="button">Revisar publicação</button></div>
+<div class="acoes"><button id="salvar" type="submit">Salvar rascunho</button><button id="publicar" type="button">Revisar publicação</button><button id="cancelar-novo" type="button" class="secundario" hidden>Cancelar criação</button></div>
 <p id="alteracoes" class="apoio"></p>
 </form>
 <section id="situacao-painel" class="situacao" aria-labelledby="titulo-situacao"><h3 id="titulo-situacao">Situação do evento publicado</h3><p class="apoio">Cancelamentos e adiamentos são publicados com histórico, separados do rascunho.</p><label for="situacao">Situação</label><select id="situacao"><option value="confirmado">Confirmado</option><option value="adiado">Adiado</option><option value="cancelado">Cancelado</option><option value="interrompido">Interrompido</option></select><button id="alterar-situacao" type="button" class="secundario">Revisar situação</button></section>
@@ -48,5 +50,5 @@
 </div>
 <dialog id="confirmacao" aria-labelledby="titulo-confirmacao"><h2 id="titulo-confirmacao"></h2><p id="texto-confirmacao"></p><dl id="resumo-confirmacao"></dl><div class="acoes"><button id="cancelar-confirmacao" type="button" class="secundario">Voltar</button><button id="confirmar" type="button">Confirmar</button></div></dialog>
 </main>
-<script type="module" src="js/gestao.js"></script>
+<script type="module" src="js/gestao.js?v=criacao-eventos-1"></script>
 </body></html>

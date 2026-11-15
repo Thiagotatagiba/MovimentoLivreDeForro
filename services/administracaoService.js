@@ -54,8 +54,12 @@ export function criarServicoAdministrativo({
         .filter(m=>m.permissoes.some(p=>['gerenciar_eventos','publicar_eventos'].includes(p)))};
     },
     listarEventos:marcaId=>lista('eventos',
-      'id,id_legado,slug,estado_publicacao,versao_publicada_id,versao:versoes_evento!eventos_versao_publicada_do_mesmo_evento(numero,conteudo,situacao)',
+      'id,id_legado,slug,estado_publicacao,versao_publicada_id,versao:versoes_evento!eventos_versao_publicada_do_mesmo_evento(numero,conteudo,situacao),rascunho:rascunhos_evento(conteudo)',
       q=>q.eq('marca_id',marcaId)),
+    listarLocais:()=>lista('locais','id,id_legado,slug,nome',q=>q.eq('ativo',true)).then(rows=>rows.filter(r=>r.id_legado)),
+    criarEvento:({marcaId,localId,conteudo,chave})=>rpc('criar_evento_rascunho',{
+      p_marca:marcaId,p_local:localId,p_conteudo:conteudo,p_chave:chave,
+    }),
     salvarRascunho:({eventoId,conteudo,revisao,chave})=>rpc('salvar_rascunho_evento',{
       p_evento:eventoId,p_conteudo:conteudo,p_revisao:revisao,p_chave:chave,
     }),

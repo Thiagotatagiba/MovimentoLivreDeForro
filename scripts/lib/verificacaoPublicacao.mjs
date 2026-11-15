@@ -12,6 +12,7 @@ export const arquivosPublicacao=[
  'admin/gestao.html','admin/convites.html','admin/listas.html',
  'admin/css/gestao.css','admin/css/convites.css',
  'admin/js/gestao.js','admin/js/gestaoDependencias.js','admin/js/editorModelo.js',
+ 'admin/js/novoEventoModelo.js',
  'admin/js/convites.js','admin/js/conviteModelo.js','admin/js/listas.js',
  'lista-vip.html','css/listas-vip.css','js/pages/lista-vip.js','js/utils/vipModelo.js',
  'services/administracaoService.js','services/listasVipService.js','components/loginModal.js',
