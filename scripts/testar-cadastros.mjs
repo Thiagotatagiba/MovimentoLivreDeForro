@@ -51,3 +51,46 @@ test('audit failure rolls back entity and idempotency; existing identities remai
  const result=await owner('select (select count(*) from public.locais)::int locais,(select count(*) from app_private.operacoes_administrativas)::int operacoes');assert.deepEqual(result.rows[0],{locais:1,operacoes:0});
  assert.equal((await owner('select id_legado from public.marcas where id=$1',[id(101)])).rows[0].id_legado,'mrc-a');
 });
+
+const edit=async(tipo,entity,rev,patch,key=id(9951))=>(await db.query('select public.editar_'+tipo+'_catalogo($1,$2,$3,$4) result',[entity,rev,patch,key])).rows[0].result;
+test('global loads active/inactive records; other accounts cannot read the management snapshot',async()=>{
+ await owner('update public.locais set ativo=false where id=$1',[id(201)]);await as();
+ const all=(await db.query('select public.consultar_cadastros_catalogo() result')).rows[0].result;
+ assert.equal(all.locais[0].ativo,false);assert.equal(all.locais[0].tem_publicacao,true);assert.equal(all.marcas[0].revisao,1);
+ await as(1);await denied(()=>db.query('select public.consultar_cadastros_catalogo()'),/somente_administrador_global/);
+ await as(null,'anon');await denied(()=>db.query('select public.consultar_cadastros_catalogo()'),/permission denied/);
+});
+test('edits preserve brand ID/slug and opaque legacy assets; stale revision cannot overwrite',async()=>{
+ await owner("update public.marcas set dados='{\"logo\":\"assets/marcas/antiga.webp\",\"desconhecido\":\"preservado\"}' where id=$1",[id(101)]);await as();
+ const first=await edit('marca',id(101),1,{nome:'Nome corrigido',descricao:'Nova descrição'});
+ assert.equal(first.registro.id_legado,'mrc-a');assert.equal(first.registro.slug,'marca-a');assert.equal(first.registro.revisao,2);assert.equal(first.registro.dados.logo,'assets/marcas/antiga.webp');assert.equal(first.registro.dados.desconhecido,'preservado');
+ assert.deepEqual(await edit('marca',id(101),1,{nome:'Nome corrigido',descricao:'Nova descrição'}),first);
+ await denied(()=>edit('marca',id(101),1,{nome:'Sobrescrever'},id(9952)),/conflito_revisao/);
+});
+test('editing address referenced by a published version forks a venue and preserves event/default references',async()=>{
+ const change={endereco:local().endereco,latitude:-20.4,longitude:-40.4};const result=await edit('local',id(201),1,change);
+ assert.equal(result.novo_endereco,true);assert.notEqual(result.id,id(201));assert.equal(result.registro.revisao,1);assert.equal(result.anterior_revisao,2);
+ const old=(await owner('select * from public.locais where id=$1',[id(201)])).rows[0];assert.deepEqual(old.endereco,{});assert.equal(old.id_legado,'loc-a');assert.equal(old.slug,'local-a');assert.equal(old.ativo,true);
+ const refs=(await owner('select (select local_id from public.eventos where id=$1) evento,(select local_padrao_id from public.marcas where id=$2) marca',[id(301),id(101)])).rows[0];assert.deepEqual(refs,{evento:id(201),marca:id(201)});
+ await as();assert.deepEqual(await edit('local',id(201),1,change),result);await denied(()=>edit('local',id(201),1,{descricao:'stale'},id(9952)),/conflito_revisao/);
+});
+test('unpublished venue edits in place; published venue contact edits also keep its identity',async()=>{
+ const created=await call('local',local());const modified=await edit('local',created.id,1,{endereco:{...local().endereco,numero:'11'}});
+ assert.equal(modified.novo_endereco,false);assert.equal(modified.id,created.id);assert.equal(modified.registro.endereco.numero,'11');
+ const contact=await edit('local',id(201),1,{telefone:'27999999999'},id(9952));assert.equal(contact.id,id(201));assert.equal(contact.novo_endereco,false);assert.equal(contact.registro.dados.telefone,'27999999999');
+});
+test('non-global, injected identities, malformed fields and replay after revocation are refused',async()=>{
+ await as(1);await denied(()=>edit('marca',id(101),1,{nome:'Xyz'}),/somente_administrador_global/);await as();
+ for(const patch of [{slug:'fake'},{id_legado:'fake'},{revisao:100},{ativo:'false'},{site:'http://example.com'},{nome:''},{categorias:{}},{localPadraoId:id(999)}])await denied(()=>edit('marca',id(101),1,patch),/campo_nao_editavel|ativo_invalido|url_https|nome_obrigatorio|lista_invalida|local_padrao_indisponivel/);
+ await edit('marca',id(101),1,{descricao:'OK'});await owner('update public.administradores_sistema set ativo=false where usuario_id=$1',[id(6)]);await as();await denied(()=>edit('marca',id(101),1,{descricao:'OK'}),/somente_administrador_global/);
+});
+test('audit failure rolls back an edit, revision and idempotency',async()=>{
+ await owner("create function public.fail_edit_audit() returns trigger language plpgsql as $$begin raise exception 'audit_failed';end$$");await owner('create trigger fail_edit before insert on public.auditoria_catalogo for each row execute function public.fail_edit_audit()');await as();
+ await denied(()=>edit('marca',id(101),1,{nome:'Alterado'}),/audit_failed/);const row=(await owner('select nome,revisao from public.marcas where id=$1',[id(101)])).rows[0];assert.deepEqual(row,{nome:'Marca A',revisao:1});
+});
+
+test('deactivation and reactivation preserve records while public visibility follows existing rules',async()=>{
+ await edit('marca',id(101),1,{ativo:false});await as(null,'anon');assert.deepEqual((await db.query('select id from public.marcas where id=$1',[id(101)])).rows,[]);
+ await as();await edit('marca',id(101),2,{ativo:true},id(9952));await edit('local',id(201),1,{ativo:false},id(9953));await as(null,'anon');assert.deepEqual((await db.query('select id from public.locais where id=$1',[id(201)])).rows,[]);
+ await as();const reactivated=await edit('local',id(201),2,{ativo:true},id(9954));assert.equal(reactivated.id,id(201));assert.equal(reactivated.registro.revisao,3);
+});

@@ -45,3 +45,7 @@ Registros: [publicação inicial](PUBLICACAO_ADMINISTRATIVA_2026-11-15.md), [cri
 ## Incremento de cadastros oficiais
 
 Cadastro de novas marcas e locais implementado e validado com 184 testes. A ativação deste incremento leva produção de 16 para 17 migrações e de 38 para 43 arquivos críticos. Somente global cria; não concede acesso a produtores. Inclui busca e mapa com pino, local padrão e revisão antes de tornar público. Ver [contrato/validação/reversão](CADASTROS_MARCAS_LOCAIS.md) e [guia](GUIA_USO_PAINEL.md#cadastrar-marcas-e-locais). Homologação recebeu a migração 20261115204655, total 19; fixtures desta rodada permanecem somente nesse projeto.
+
+## Edição de marcas e locais
+
+Incremento de edição global na mesma tela, com seleção, revisão, auditoria e conflito sem sobrescrita. Novo endereço de local com publicação gera outro cadastro para preservar eventos/defaults anteriores. A ativação leva produção a 18 migrações; a coluna revisao é metadado novo nas marcas/locais, sem alteração do conteúdo anterior. Validação total esperada: 192 testes, 43 arquivos críticos. Ver CADASTROS_MARCAS_LOCAIS.md e GUIA_USO_PAINEL.md.

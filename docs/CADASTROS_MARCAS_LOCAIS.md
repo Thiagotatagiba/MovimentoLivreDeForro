@@ -13,3 +13,15 @@ Testes SQL/modelo incluem autorização, identidade, links, endereço/ponto, rep
 Ativação: comparar contagens/hashes atuais, aplicar apenas 20261115203953_cadastro_marcas_locais.sql, conferir permissões e arquivo público, publicar PR, verificar manifesto e catálogo. Reversão: revogar execução das duas novas RPCs e restaurar frontend; manter tabela de auditoria e cadastros, sem apagar eventos/favoritos/ingressos. O arquivo de pausa geral já inclui as RPCs.
 
 Migração de homologação: 20261115204655. Papel global temporário removido com registros de início/fim; sessões fictícias encerradas. Prova de navegador: marca e local criados sem membros, formulário de evento recebeu o local padrão. Mobile 390px/documento 375px sem overflow. Harness concorrente criou um só local/auditoria.
+
+## Edição de cadastros — 15/11/2026
+
+A edição global passa a ser feita na mesma tela, com revisão otimista e patches dos campos alterados. Ativos/inativos são listados. IDs/slugs permanecem estáveis; campos e imagens legados não editados são preservados. Histórico de auditoria registra antes/depois, ator e criação de novo endereço. Mudança de situação e de endereço com publicação devem ser feitas separadamente.
+
+Quando qualquer versão publicada usa o local, endereço/posição são copiados para novo ID. O cadastro original mantém endereço e ativo; sua revisão avança para bloquear concorrentes. Eventos e padrões de marcas não são transferidos. A marca pode escolher explicitamente o novo local para edições futuras. Local sem publicação pode ser corrigido no próprio ID. Publicar evento agora segura lock compartilhado do local, serializando com edição; não altera o contrato de versões/eventos. Esta decisão preserva também clientes antigos e o JSON público, sem depender de atualização do leitor público para proteger o endereço.
+
+Migração 20261115231441_edicao_marcas_locais.sql adiciona revisao=1 às marcas/locais existentes, consulta global e duas RPCs de edição; não altera conteúdo existente, versões ou referências. Validar preservação usando JSON das marcas/locais sem a nova coluna revisao; demais tabelas permanecem idênticas integralmente. Produção passa de 17 para 18 migrações. Manifesto permanece com 43 arquivos.
+
+Harness scripts/homologar-edicao-cadastros.mjs recusa produção, exige rodada UUID e conta fictícia com papel global temporário. Verificou edição concorrente 200/409, replay e auditoria única para a alteração. Navegador conferiu criação de novo endereço, preservação de cinco versões no local original, edição da marca/default, recarga e mobile 390px sem overflow.
+
+Reversão: bloquear consultar_cadastros_catalogo/editar_marca_catalogo/editar_local_catalogo e restaurar frontend; manter revisões, cadastros e auditoria. A pausa geral inclui as novas funções. Não remover colunas/tabelas ou migrar referências ao reverter.

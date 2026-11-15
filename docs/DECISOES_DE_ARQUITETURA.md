@@ -1303,3 +1303,7 @@ detalhes em docs/CRIACAO_EVENTOS.md.
 ## 2026-11-15 — Cadastro oficial de marcas e locais no Supabase
 
 Somente global cadastra novas marcas e locais canônicos; cadastro não concede equipe. Não há edição de registros existentes neste incremento para preservar endereços/referências históricas. Marca pode escolher local padrão ativo ou ficar itinerante. IDs e slugs gerados no servidor; RLS e auditoria global separada, idempotência e validação transacional. Tela usa Photon com busca moderada/cache e Leaflet 1.9.4/OpenStreetMap, configuração pública substituível, atribuição, sem geolocalização ou download offline. Pino ajustável por toque/mouse/teclado e confirmação explícita. Serviços externos são best-effort; cadastro de local exige mapa disponível, marca não depende dele. Ver CADASTROS_MARCAS_LOCAIS.md.
+
+## 2026-11-15 — Edição e preservação de endereço publicado
+
+Edição global de marcas/locais usa revisão otimista, idempotência e patches. Endereço/posição já referenciados por publicação não são atualizados: cria-se novo local, preservando referências, ID/slug e ativo anteriores. Padrões de marcas são escolhidos explicitamente, sem transferência automática. Isso protege inclusive o leitor público antigo. Publicação segura lock compartilhado da linha do local e edição usa lock exclusivo, eliminando corrida da primeira publicação. Metadados/contatos e locais sem publicação podem ser corrigidos no registro. Desativação mantém a regra pública existente de ocultar referências e exige revisão explícita.

@@ -116,4 +116,19 @@ No painel de eventos, clique em **Cadastrar marcas e locais**. Somente o adminis
 5. Em **Nova marca**, informe nome, descrição, cidade, frequência, categorias/dias e links públicos opcionais. Escolha o **Local padrão**, ou **Sem local fixo** para marca itinerante.
 6. Revise e confirme. Volte aos eventos e atualize a página: a nova marca estará disponível, sem precisar cadastrar um produtor.
 
-Não há edição de marcas/locais existentes nesta entrega. Endereços históricos não são alterados. Logo e capa aceitam URL HTTPS; envio de arquivo continua pendente. A busca/mapa usa serviços públicos externos: se a busca falhar, preencha o endereço e marque no mapa; se o mapa não carregar, tente atualizar antes de cadastrar o local. O cadastro de marca continua disponível.
+Marcas e locais existentes podem ser selecionados e editados na mesma tela. Endereços históricos são preservados conforme as regras abaixo. Logo e capa aceitam URL HTTPS; envio de arquivo continua pendente. A busca/mapa usa serviços públicos externos: se a busca falhar, preencha o endereço e marque no mapa; se o mapa não carregar, tente atualizar antes de cadastrar o local. O cadastro de marca continua disponível.
+
+## Editar marcas e locais
+
+1. Abra **Gerenciar marcas e locais** pelo painel de eventos.
+2. Escolha a aba **Marcas** ou **Locais** e use **Selecionar marca/local para editar**.
+3. Altere os dados e clique em **Revisar alterações**. Confira e use **Salvar alterações**.
+4. Para começar outro cadastro, use **Limpar para nova marca/novo local**. Campos não salvos pedem confirmação antes de serem descartados.
+
+IDs e slugs existentes são preservados. Logo/capa antigos em arquivos locais são mantidos quando não alterados; novos endereços de imagem devem ser HTTPS.
+
+Se o local já tiver sido usado em alguma publicação, alterar endereço ou posição cria **um novo local**, preservando o cadastro anterior e os eventos. O novo endereço aparece como opção separada, identificado pela rua/cidade. Depois, edite a marca para escolhê-lo como local padrão de novas edições. O padrão não muda automaticamente, e eventos existentes não são transferidos.
+
+Local sem publicação pode ter endereço corrigido no próprio cadastro. Dados de contato e descrição podem ser editados diretamente. Desativar uma marca/local oculta o cadastro e seus eventos vinculados do catálogo, preservando os registros; revise o aviso antes de salvar. Separe desativação e mudança de endereço quando houver publicações.
+
+Se outra pessoa salvar primeiro, o painel informa conflito e mantém seu formulário. **Recarregar cadastro** busca a versão atual e pede confirmação antes de descartar alterações. Não há sobrescrita automática.

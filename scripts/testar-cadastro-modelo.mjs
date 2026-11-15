@@ -1,5 +1,5 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';
-import {validarCadastro,criarSolicitadorCadastro} from '../admin/js/cadastroModelo.js';import {criarBuscaEnderecos} from '../admin/js/mapaCadastro.js';
+import {validarCadastro,criarSolicitadorCadastro,conteudoCadastro} from '../admin/js/cadastroModelo.js';import {criarBuscaEnderecos} from '../admin/js/mapaCadastro.js';
 const local={nome:'Local',endereco:{logradouro:'Rua',numero:'1',bairro:'Centro',cidade:'Vitoria',estado:'ES'},latitude:-20,longitude:-40};
 test('venue requires complete address and finite confirmed point; links must be credential-free HTTPS',()=>{
  assert.equal(validarCadastro('local',local),local);
@@ -18,4 +18,11 @@ test('address search is limited, cached, HTTPS-only and ignores malformed points
  let calls=0,clock=0;const search=criarBuscaEnderecos({url:'https://photon.komoot.io/api/',agora:()=>clock,fetchImpl:async url=>{calls++;assert.equal(url.searchParams.get('limit'),'5');return {ok:true,json:async()=>({features:[{geometry:{type:'Point',coordinates:[-40,-20]},properties:{name:'Local',city:'Vitoria'}},{geometry:{type:'Point',coordinates:['x',null]}}]})};}});
  assert.deepEqual(await search('ab'),[]);const rows=await search('local');assert.equal(rows.length,1);assert.equal(rows[0].latitude,-20);assert.deepEqual(await search('local'),rows);assert.equal(calls,1);
  await assert.rejects(search('outro'),/Aguarde/);clock=1200;await search('outro');assert.equal(calls,2);
+});
+
+test('editing sends only changed fields, preserves legacy asset paths and uses revision/id in requests',async()=>{
+ const row={id:'brand',nome:'Antiga',ativo:true,revisao:3,local_padrao_id:null,dados:{logo:'assets/marcas/old.webp',site:'http://legacy.example'}};const base=conteudoCadastro('marca',row);const calls=[];
+ const model=criarSolicitadorCadastro({novaChave:()=> 'key',servico:{editarMarca:async args=>{calls.push(args);return {id:'brand',registro:{...row,revisao:4}};}}});
+ await model.salvar('marca',{...base,descricao:'Atualizada'},{id:row.id,revisao:row.revisao,base});assert.deepEqual(calls,[{id:'brand',revisao:3,conteudo:{descricao:'Atualizada'},chave:'key'}]);
+ await assert.rejects(model.salvar('marca',base,{id:row.id,revisao:row.revisao,base}),/Nenhuma/);
 });

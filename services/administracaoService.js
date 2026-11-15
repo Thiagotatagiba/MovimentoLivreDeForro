@@ -59,6 +59,9 @@ export function criarServicoAdministrativo({
     listarLocais:()=>lista('locais','id,id_legado,slug,nome',q=>q.eq('ativo',true)).then(rows=>rows.filter(r=>r.id_legado)),
     criarMarca:({conteudo,chave})=>rpc('criar_marca_catalogo',{p_conteudo:conteudo,p_chave:chave}),
     criarLocal:({conteudo,chave})=>rpc('criar_local_catalogo',{p_conteudo:conteudo,p_chave:chave}),
+    async consultarCadastros(){const cliente=await obterCliente();const {data,error}=await cliente.rpc('consultar_cadastros_catalogo');if(error)throw traduzirErro(error);return data;},
+    editarMarca:({id,revisao,conteudo,chave})=>rpc('editar_marca_catalogo',{p_id:id,p_revisao:revisao,p_conteudo:conteudo,p_chave:chave}),
+    editarLocal:({id,revisao,conteudo,chave})=>rpc('editar_local_catalogo',{p_id:id,p_revisao:revisao,p_conteudo:conteudo,p_chave:chave}),
     criarEvento:({marcaId,localId,conteudo,chave})=>rpc('criar_evento_rascunho',{
       p_marca:marcaId,p_local:localId,p_conteudo:conteudo,p_chave:chave,
     }),
