@@ -4,6 +4,8 @@ Administração publicada com autorização pelo [PR #13](https://github.com/Thi
 
 ## Produção
 
+Atualizacao posterior: criacao de eventos publicada pelo PR #15; migracao 20261115190551, 38 arquivos conferidos. Ver [registro de criacao](CRIACAO_EVENTOS.md#publicacao-confirmada).
+
 Incremento posterior em desenvolvimento: botão **Novo evento**, validado em homologação
 com 172 testes, ainda sem ativação em produção nesta rodada. Ver [CRIACAO_EVENTOS.md](CRIACAO_EVENTOS.md).
 

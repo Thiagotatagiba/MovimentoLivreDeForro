@@ -1,6 +1,6 @@
 # Novo evento — 15/11/2026
 
-Incremento em `codex/criacao-eventos`, baseado na main publicada. Implementado e validado em homologação; **ainda não ativado em produção nesta entrega**. Resolve a falta de criação de edições no painel, especialmente para o administrador global que ainda não possui produtores/equipes cadastrados.
+Incremento em `codex/criacao-eventos`, baseado na main publicada. Implementado e validado em homologação; **ativado em produção em 15/11/2026, com autorização do responsável**. Resolve a falta de criação de edições no painel, especialmente para o administrador global que ainda não possui produtores/equipes cadastrados.
 
 ## Fluxo entregue
 
@@ -43,3 +43,11 @@ Validar **38 arquivos críticos**, incluindo admin/js/novoEventoModelo.js. Shell
 Em incidente, revogar EXECUTE apenas da nova RPC pública e restaurar o frontend anterior, preservando eventos, versões, auditoria, favoritos e ingressos. A pausa administrativa geral também inclui essa RPC. Não apagar edições para reverter interface.
 
 Guia em [GUIA_USO_PAINEL.md](GUIA_USO_PAINEL.md). Próximo passo: publicar o incremento revisado em produção.
+
+## Publicacao confirmada
+
+PR #15 integrado em ce6775ee3e318fb02ae7d6af2d13606b22a93273. Migracao de producao 20261115190551 (criacao_eventos_rascunho); historico passou de 14 para 15. As referencias anteriores a producao pendente descrevem a validacao antes da ativacao.
+
+Conferidos 38 arquivos criticos por hash, sem divergencias. Catalogo publico: 24 eventos, 15 marcas e 15 locais ativos, compativel com o legado. Contagens e hashes de eventos, versoes, perfis, interacoes e ingressos permaneceram iguais antes/depois. RPC publica INVOKER, sem EXECUTE para anon e com EXECUTE para authenticated; autorizacao de marca validada no banco. Advisors sem novos alertas.
+
+Painel HTTPS abriu sem erro, solicitando login autorizado. Criacao/publicacao autenticada foi validada em homologacao; nao foram criados eventos ficticios ou sessoes da conta do responsavel em producao. E-mail e agendamento continuam desativados.
