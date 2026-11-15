@@ -51,7 +51,7 @@ export function criarEditor({servico,novaChave=()=>crypto.randomUUID()}) {
     snapshot={...snapshot,conteudo:clone(conteudo),rascunho:{conteudo:clone(conteudo),revisao:result.revisao},revisao:result.revisao};
    } else if(tipo==='publicarEvento') {
     snapshot={...snapshot,revisao:result.revisao,rascunho:{conteudo:clone(conteudo),revisao:result.revisao},
-      evento:{...snapshot.evento,versao_publicada_id:result.versao_id,
+      evento:{...snapshot.evento,estado_publicacao:'publicado',versao_publicada_id:result.versao_id,
         versao:{conteudo:clone(conteudo),numero:result.numero,situacao:snapshot.evento.versao?.situacao??'confirmado'}}};
    } else if(tipo==='alterarSituacao') {
     snapshot.evento.versao_publicada_id=result.versao_id;

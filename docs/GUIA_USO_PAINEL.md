@@ -53,7 +53,21 @@ Na seção **Convites que você pode acompanhar**, clique em **Atualizar lista**
 
 Revogar impede a aceitação de um convite pendente. Não remove a participação de quem já aceitou. A remoção ou alteração de um membro exige operação administrativa própria, que ainda não tem tela dedicada nesta entrega.
 
-## 5. Editar e publicar um evento existente
+## 5. Criar um evento do zero
+
+Selecione a marca e clique em **Novo evento**. O administrador do sistema pode criar para as marcas existentes sem produtores/equipes cadastrados. Administradores de marca/equipe precisam da permissão **Editar eventos** na marca selecionada. Se o botão não aparecer em um ambiente ainda sem a atualização, a entrega precisa ser ativada ali; veja [CRIACAO_EVENTOS.md](CRIACAO_EVENTOS.md).
+
+1. Escolha o **Local desta edição**, entre os locais ativos já cadastrados.
+2. Preencha título, data/hora de início e data/hora de término. Na madrugada, use a data seguinte para o término.
+3. Confirme os horários e informe descrição, atrações e ingresso. Preço em branco significa não informado; zero representa gratuidade.
+4. Opcionalmente informe uma **URL HTTPS pública da arte**. Envio de arquivo e substituição posterior de imagem ainda não têm tela dedicada; confira a arte antes de criar.
+5. Clique em **Criar rascunho**. O evento passa a existir no painel, mas continua fora do catálogo.
+6. Confira, clique em **Revisar publicação** e depois **Publicar agora**, se tiver essa permissão.
+7. Use **Ver evento no site** para conferir a página e compartilhar seu endereço.
+
+Não preencha ID ou endereço: são gerados automaticamente e permanecem estáveis. Marca/local ficam vinculados à edição. **Cancelar criação** descarta o formulário não salvo; não apaga uma edição já criada. Trocar de evento com dados pendentes pede confirmação.
+
+## 6. Editar e publicar um evento existente
 
 1. Abra **Gestão de eventos**, selecione a marca e o evento.
 2. Atualize os campos necessários. Informe data e horário de início **e de término**. Se passar da meia-noite, use a data seguinte no término.
@@ -61,17 +75,17 @@ Revogar impede a aceitação de um convite pendente. Não remove a participaçã
 4. Clique em **Salvar rascunho**. Isso preserva a versão que o público está vendo.
 5. Quem tiver permissão de publicação deve clicar em **Revisar publicação**, conferir o resumo e confirmar. Só então o rascunho passa a ser a versão pública no ambiente usado.
 
-A opção **Exibir este evento no catálogo público** controla a visibilidade depois da publicação. Desmarcá-la no rascunho não muda imediatamente a versão pública. A imagem atual é exibida para conferência; esta tela ainda não faz upload ou substituição de imagem, nem cria eventos novos.
+A opção **Exibir este evento no catálogo público** controla a visibilidade depois da publicação. Desmarcá-la no rascunho não muda imediatamente a versão pública. A imagem atual é exibida para conferência; esta tela ainda não faz upload ou substituição de imagem de uma edição existente. Para criar outra edição, use **Novo evento**.
 
 Se aparecer **Outra pessoa alterou este rascunho**, compare as versões e escolha o que manter. **Preparar revisão escolhida** prepara os dados para sua revisão; não salva automaticamente. Confira e salve novamente. Evite recarregar antes de preservar alterações que deseja manter.
 
-## 6. Cancelar, adiar ou interromper
+## 7. Cancelar, adiar ou interromper
 
 Em **Situação do evento publicado**, escolha **Confirmado**, **Adiado**, **Cancelado** ou **Interrompido**, clique em **Revisar situação** e confirme. Exige permissão de publicação.
 
 A situação é uma operação separada do rascunho. Cancelar ou adiar mantém a informação pública com o aviso correspondente; ocultar o evento é outra decisão, feita pelo campo de visibilidade e publicação. Antes de alterar, confira o evento e o ambiente para evitar avisos incorretos ao público.
 
-## 7. Resolver problemas comuns
+## 8. Resolver problemas comuns
 
 | O que aconteceu | O que fazer |
 | --- | --- |

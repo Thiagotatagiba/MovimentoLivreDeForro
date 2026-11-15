@@ -9,7 +9,7 @@ declare assinatura text;
 begin
  for assinatura in select p.oid::regprocedure::text from pg_proc p join pg_namespace n on n.oid=p.pronamespace
  where n.nspname='public' and p.proname in (
- 'salvar_rascunho_evento','publicar_evento','alterar_situacao_evento','alterar_membro_marca',
+ 'criar_evento_rascunho','salvar_rascunho_evento','publicar_evento','alterar_situacao_evento','alterar_membro_marca',
  'criar_convite_marca','revogar_convite_marca','aceitar_convite_marca',
  'limpar_entregas_convites','reservar_entrega_convite','iniciar_entrega_convite','finalizar_entrega_convite',
  'criar_lista_vip','encerrar_lista_vip','consultar_lista_vip','confirmar_data_lista_vip',

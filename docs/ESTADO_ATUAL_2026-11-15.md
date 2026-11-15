@@ -4,6 +4,9 @@ Administração publicada com autorização pelo [PR #13](https://github.com/Thi
 
 ## Produção
 
+Incremento posterior em desenvolvimento: botão **Novo evento**, validado em homologação
+com 172 testes, ainda sem ativação em produção nesta rodada. Ver [CRIACAO_EVENTOS.md](CRIACAO_EVENTOS.md).
+
 - Catálogo Supabase: 15 marcas, 16 locais, 24 eventos e 24 versões. Foto do Festival preservada e carregamento conferido.
 - HTTPS obrigatório: HTTP redireciona à mesma rota HTTPS. Pages/CI passaram e 37 arquivos críticos foram verificados.
 - Painel de eventos existentes, rascunhos/publicação versionada, papéis por marca e auditoria publicados.

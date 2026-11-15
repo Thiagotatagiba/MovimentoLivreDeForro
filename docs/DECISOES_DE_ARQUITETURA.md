@@ -1289,3 +1289,13 @@ Ensaio preserva catálogo/usuários/interações/ingressos e testa pausa não de
 das novas RPCs. Publicação exige HTTPS obrigatório antes da atribuição global,
 migrações conferidas e Pages validado com manifesto de 37 arquivos. Preparação
 não executa alterações em produção. Plano: docs/LIBERACAO_ADMINISTRATIVA.md.
+
+## 15/11/2026 — Criação de edições no painel
+
+Novo evento cria evento/rascunho/auditoria/idempotência numa transação, sem publicar.
+Requer gerenciar_eventos por marca; administrador global opera sem equipe cadastrada.
+Servidor gera UUID/ID legado/slug e exige início/término confirmados. Cliente não
+envia identidade ou estado público. A resposta canônica alimenta o editor existente
+sem depender de refresh para distinguir criação confirmada de falha ambígua. Imagem
+opcional por HTTPS, sem upload nesta etapa. Migração testada somente em homologação;
+detalhes em docs/CRIACAO_EVENTOS.md.
