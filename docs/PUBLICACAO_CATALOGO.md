@@ -1,4 +1,6 @@
-# Candidata à primeira publicação — 14/11/2026
+# Primeira publicação — 14/11/2026
+
+Atualização: PR #7 publicado com autorização em main, commit 671efef597a4e94f5d3e4ac820b2e2bf9d824a65. Pages e os 19 arquivos críticos foram confirmados no domínio; home, agenda e foto do Festival foram conferidas no navegador. As seções abaixo preservam o relatório da preparação. A administração continua fora de produção.
 
 Branch codex/publicacao-catalogo, baseada exclusivamente na leitura pública
 codex/supabase-leitura-publica (b94c2f7). Não inclui a base, as páginas ou as

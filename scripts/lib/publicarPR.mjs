@@ -1,7 +1,11 @@
 import fs from 'node:fs';
 import { execFileSync } from 'node:child_process';
 
-const [branch, title, description, updateFlag] = process.argv.slice(2);
+const [branch, title, description, ...options] = process.argv.slice(2);
+const updateFlag = options.includes('--atualizar') ? '--atualizar' : '';
+const baseIndex = options.indexOf('--base');
+const baseBranch = baseIndex >= 0 ? options[baseIndex+1] : 'main';
+if (!baseBranch || branch === baseBranch) throw new Error('Distinct development and base branches are required.');
 const repo = 'Thiagotatagiba/MovimentoLivreDeForro';
 if (!branch || branch === 'main' || !title || !description) {
   throw new Error('Development branch, title and description are required.');
@@ -41,12 +45,12 @@ async function api(path, method = 'GET', body) {
   return data;
 }
 try {
-  const query = new URLSearchParams({state:'open',base:'main',head:'Thiagotatagiba:'+branch});
+  const query = new URLSearchParams({state:'open',base:baseBranch,head:'Thiagotatagiba:'+branch});
   const existing = await api('/pulls?'+query);
   git(['push','-u','https://github.com/'+repo+'.git',branch],{stdio:'inherit'});
   let pr = existing[0] ?? await api('/pulls','POST',{
     title,body:fs.readFileSync(description,'utf8').replace(/^\uFEFF/,''),
-    head:branch,base:'main',draft:true,
+    head:branch,base:baseBranch,draft:true,
   });
   if (existing[0] && updateFlag === '--atualizar') {
     pr = await api('/pulls/'+pr.number,'PATCH',{

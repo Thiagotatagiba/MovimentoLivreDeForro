@@ -9,12 +9,16 @@
 const out=document.querySelector('#resultado');
 async function conferir(){
  const reg=await navigator.serviceWorker.getRegistration('/'),keys=(await caches.keys()).filter(k=>k.startsWith('vai-ter-forro-'));
+ if(keys.includes('vai-ter-forro-v9')){
+  await Promise.all(['/lista-vip.html','/js/pages/lista-vip.js','/services/listasVipService.js'].map(url=>fetch(url)));
+ }
  const data={origem:location.origin,seguro:isSecureContext,worker:reg?.active?.state??null,caches:keys,
   estadoVazioOculto:getComputedStyle(document.querySelector('#estado-oculto')).display==='none',arquivos:{}};
  for(const key of keys){const cache=await caches.open(key),requests=await cache.keys();
   data.arquivos[key]={total:requests.length,configuracao:(await (await cache.match('/js/repositories/catalogoConfig.js'))?.text())??null,
    moduloSupabase:!!await cache.match('/js/repositories/catalogoSupabase.js'),
-   dadosPrivados:requests.some(r=>/supabase\.co|rascunhos|ingressos\?/.test(r.url))};}
+   dadosPrivados:requests.some(r=>/supabase\.co|rascunhos|ingressos\?|inscricoes_vip/.test(r.url)),
+   recursosVipEmCache:requests.some(r=>/lista-vip|listasVipService/.test(r.url))};}
  out.textContent=JSON.stringify(data,null,2);
 }
 document.querySelector('#instalar').onclick=async()=>{

@@ -14,7 +14,7 @@
 // - instalação: pré-cacheia a casca (incluindo os módulos JS), então o app
 //   instalado abre offline em vez de mostrar página vazia.
 
-const CACHE_NOME = 'vai-ter-forro-v8';
+const CACHE_NOME = 'vai-ter-forro-v9';
 
 const EH_LOCALHOST = self.location.hostname === 'localhost' || self.location.hostname === '127.0.0.1';
 
@@ -128,6 +128,14 @@ self.addEventListener('fetch', (evento) => {
 
   // Dados: sempre rede.
   if (url.pathname.includes('/data/')) {
+    evento.respondWith(fetch(request));
+    return;
+  }
+
+  // Administrative screens and demo APIs are online-only, including their shell.
+  if (url.pathname.includes('/admin/') || url.pathname.includes('/__admin_demo/') ||
+      url.pathname.endsWith('/services/administracaoService.js') ||
+      url.pathname.includes('lista-vip') || url.pathname.endsWith('/services/listasVipService.js')) {
     evento.respondWith(fetch(request));
     return;
   }

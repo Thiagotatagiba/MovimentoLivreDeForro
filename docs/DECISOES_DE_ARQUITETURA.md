@@ -1168,3 +1168,124 @@ ou escrita remota executada. Horarios de termino, estimativas e situacoes
 operacionais sao preservados na UI/ICS. Ver INTEGRACAO_CATALOGO_SUPABASE.md
 para diagnostico, testes e criterios de ativacao/reversao. Admin local
 continua distinto do painel multi-marca planejado; VIP ainda nao implementado.
+
+## 2026-11-11 - Base administrativa em validacao local
+
+Historico remoto de migracoes exportado com nomes/timestamps reais. Nova
+migracao pendente implementa permissoes por marca, rascunho com revisao,
+publicacao versionada, alteracao de situacao, ultimo administrador, auditoria
+e outbox. Entradas publicas SECURITY INVOKER; implementacoes privadas com
+autorizacao por auth.uid(), grants restritos e search_path vazio. Nenhum
+DDL remoto aplicado. Testes usam PostgreSQL descartavel (PGlite) somente como
+dependencia de desenvolvimento; o site continua ES modules sem build.
+O editor local admin/ foi preservado. Escopo, limitacoes e proximo incremento
+em BASE_ADMINISTRATIVA.md; nao confundir base SQL com painel multi-marca pronto.
+
+## 2026-11-11 — Interface incremental de gestão de eventos
+
+O incremento B2 usa módulos ES e os tokens visuais existentes, sem introduzir
+build/framework no site. A migração para Vue/Vite permanece uma avaliação
+futura; não é pré-condição para verificar o primeiro fluxo de rascunho/publicação.
+Novo painel em admin/gestao.html; editor local admin/index.html preservado.
+Revisão otimista, comparação explícita de conflitos e permissões são verificadas
+também pelo backend B1. A demonstração é somente loopback/PGlite e depende de
+opção explícita no servidor; nenhum parâmetro de URL ativa acesso administrativo
+real. Administração fica fora do cache do PWA. Ver PAINEL_EVENTOS.md.
+
+
+## 13/11/2026 — Homologação Auth/PostgREST separada (B3)
+
+O verificador de Auth/PostgREST usa chave pública e três contas de teste com
+permissões distintas, sem administrador global. Leitura é o padrão; escrita
+exige confirmação do ref separado e evento fictício evt-homologacao-. O projeto
+de produção conhecido é recusado. Não há promoção de usuário nem migração remota
+nesse fluxo. O servidor local pode substituir a configuração do cliente único
+somente com flag explícita, sem gravar credenciais nos arquivos do frontend.
+A disponibilidade do ambiente separado é pré-condição para comprovar os testes
+reais; APIs simuladas locais não comprovam Auth nem concorrência remota.
+Procedimento e limites: docs/HOMOLOGACAO_AUTH.md.
+
+
+## 13/11/2026 — Conflitos terminais e homologação Supabase real (B4)
+
+O projeto separado qmhrlexpnnbjntpecjis foi criado na organização confirmada,
+região sa-east-1, com cotação US$ 0/mês. Somente dados e contas fictícios.
+Os testes reais revelaram repetições no PostgREST 14 ao usar 40001 para revisão
+antiga. A migração corretiva usa PT409 nos conflitos de negócio; o serviço
+mantém compatibilidade e desativa retries administrativos do SDK. Uma revisão
+antiga exige comparação explícita, nunca repetição automática com nova revisão.
+O histórico remoto de instalação recebeu timestamps novos pelo conector; não
+executar db push/reset sem reconciliação. Produção permanece com sete migrações,
+sem a base administrativa. Relatório: docs/HOMOLOGACAO_SUPABASE.md.
+
+
+## 14/11/2026 — Convites de equipe com aceitação explícita (B5)
+
+A branch administrativa incorporou a main publicada 671efef, mantendo catálogo
+Supabase e worker v8. Convites são criados/revogados por administrador ativo da
+marca ou global. Aceitação exige token válido de uso único e e-mail primário
+confirmado correspondente, consultado em auth.users. Papel e permissões vêm do
+convite persistido, nunca de metadados ou do pedido de aceitação. Vínculo ativo
+não é sobrescrito por convite; vínculo inativo pode ser reativado explicitamente.
+O emissor deve manter autoridade ao aceitar. Criação, aceitação e revogação são
+atômicas, auditadas e idempotentes; conflitos usam PT409. Hash de verificação e
+fila de entrega ficam privados; a fila contém token sensível temporário e ainda
+não tem worker/provedor. Compartilhamento manual por link está disponível.
+Migração aplicada somente em homologação. Detalhes: docs/CONVITES_EQUIPE.md.
+
+## 14/11/2026 — Fila de entrega de convites (B6)
+
+Worker exclusivamente de servidor, desativado por padrão, com RPCs restritas a
+service_role e segredo adicional na chamada HTTP. Reserva temporária com fencing,
+revalidação de autoridade, corpo congelado e chave estável por tarefa impedem
+repetições ingênuas após respostas ambíguas. Até cinco tentativas dentro de 23 horas;
+não há garantia global de entrega exatamente uma vez. Tokens e corpos sensíveis
+são limpos em estados terminais. Adaptador Resend opcional, sem provedor ativado ou
+agendamento. Instalado somente em homologação. Guia: docs/ENVIO_CONVITES.md.
+
+## 14/11/2026 — Chamador e guia operacional de convites (B7)
+
+Agendamento preparado via GitHub Actions, condicionado a variável de repositório
+e environment com segredos. Chamador limitado ao projeto de homologação, JWT
+público anon e segredo separado; nenhuma chave administrativa no GitHub.
+Uma chamada por execução, sem retry HTTP; a recuperação permanece no worker.
+Sem alterações remotas ou agenda ativa. Publicação do workflow na branch padrão
+depende de revisão própria, pois main também publica o site. Guia de uso para
+administradores/equipe em docs/GUIA_USO_PAINEL.md; operação em
+docs/AGENDAMENTO_CONVITES.md.
+
+## 15/11/2026 — Configuração de listas VIP por edição (C1)
+
+Uma configuração opcional por eventos.id, independente de republicações. Somente
+metadados do benefício são públicos; nenhuma inscrição/nome é coletado nesta etapa.
+Criação/encerramento exigem gerenciar_listas, com idempotência, revisão e auditoria.
+Prazo é calculado no servidor sem cron; cancelamento/interrupção encerra de forma
+permanente via trigger. Adiamento sinaliza suspensão; a distinção de nova data deve
+ser integrada antes de habilitar inscrições. Migração somente em homologação,
+sem interface publicada. Detalhes: docs/LISTAS_VIP_BASE.md.
+
+## 15/11/2026 — Inscrições e operação completa de listas VIP (C2)
+
+Um grupo por conta/lista, titular por auth.uid(), acompanhantes sem conta e termos
+aceitos explicitamente. RLS direto somente do próprio grupo; produtores consultam
+RPC por permissão de listas e marca. Escritas usam revisão, idempotência e locks
+evento → lista → inscrição; prazo e suspensão são aplicados no servidor. Após
+fechamento, correções conservam quantidade e são auditadas; exportação somente
+textual e autorizada, sem fotos/CSV. Duplicidades são sinalizadas só ao produtor.
+Adiamento sem confirmação explícita de nova data suspende; a confirmação é ligada
+à versão publicada e não estende prazo nem reabre encerramento. Telas pública e
+administrativa usam polling de cinco segundos, sem dados pessoais em cache/localStorage.
+PWA candidato v9 validado em loopback. Migração e testes apenas em homologação;
+produção permanece v8. Guia: docs/GUIA_LISTAS_VIP.md.
+
+## 15/11/2026 — Candidata administrativa consolidada e liberação verificável
+
+Os PRs administrativos/VIP formam uma única candidata contra main. Preparação
+local congela sete SQLs e hashes, pré/pós-verificação e bootstrap privado da conta
+confirmada indicada pelo responsável. Nenhuma atribuição por metadados e nenhum
+e-mail pessoal em arquivos versionados. Hardening condicional retira EXECUTE de
+clientes do event trigger de RLS sem alterar sua definição ou funcionamento.
+Ensaio preserva catálogo/usuários/interações/ingressos e testa pausa não destrutiva
+das novas RPCs. Publicação exige HTTPS obrigatório antes da atribuição global,
+migrações conferidas e Pages validado com manifesto de 37 arquivos. Preparação
+não executa alterações em produção. Plano: docs/LIBERACAO_ADMINISTRATIVA.md.

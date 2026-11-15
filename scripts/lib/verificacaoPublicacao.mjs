@@ -9,6 +9,12 @@ export const arquivosPublicacao=[
  'js/utils/midiasLocais.js','js/utils/eventoPublico.js','js/utils/cardEvento.js',
  'js/pages/home.js','js/pages/evento.js','data/supabaseClient.js','sw.js','manifest.json',
  'assets/eventos/festival-praca-viva-2026-12.jpg',
+ 'admin/gestao.html','admin/convites.html','admin/listas.html',
+ 'admin/css/gestao.css','admin/css/convites.css',
+ 'admin/js/gestao.js','admin/js/gestaoDependencias.js','admin/js/editorModelo.js',
+ 'admin/js/convites.js','admin/js/conviteModelo.js','admin/js/listas.js',
+ 'lista-vip.html','css/listas-vip.css','js/pages/lista-vip.js','js/utils/vipModelo.js',
+ 'services/administracaoService.js','services/listasVipService.js','components/loginModal.js',
 ];
 const hash=(bytes,arquivo)=>createHash('sha256').update(/\.(?:html|js|json|css)$/.test(arquivo)?
  Buffer.from(bytes).toString('utf8').replace(/^\uFEFF/,'').replace(/\r\n/g,'\n'):bytes).digest('hex');

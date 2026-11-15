@@ -1,5 +1,19 @@
 # Vai Ter Forró! — Site público, PWA, admin e Carteira
 
+> **Estado consolidado em 15/11/2026:** [resumo do projeto](ESTADO_ATUAL_2026-11-15.md).
+> Listas VIP têm fluxo completo validado em homologação, sem publicação em produção.
+> [Guia de uso](GUIA_LISTAS_VIP.md) e [relatório técnico](LISTAS_VIP_IMPLEMENTACAO.md).
+> Candidata administrativa consolidada: [plano de liberação](LIBERACAO_ADMINISTRATIVA.md),
+> ainda sem alteração de produção.
+
+> **Continuidade em 14/11/2026:** catálogo público Supabase publicado; painel e
+> convites apenas em homologação, com envio automático desativado. Para usar o
+> painel, leia [GUIA_USO_PAINEL.md](GUIA_USO_PAINEL.md). Para operação técnica,
+> leia [ENVIO_CONVITES.md](ENVIO_CONVITES.md) e
+> [AGENDAMENTO_CONVITES.md](AGENDAMENTO_CONVITES.md). As seções históricas abaixo
+> descrevem a base anterior; para testar escrita use o servidor de homologação
+> específico, não um servidor estático genérico com a configuração de produção.
+
 Site + painel administrativo com o design system **Terra Acesa**, Supabase para
 autenticação/perfil/interações e **Carteira de ingressos** privada.
 

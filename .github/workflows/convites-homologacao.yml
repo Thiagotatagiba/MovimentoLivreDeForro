@@ -1,0 +1,35 @@
+name: Processar convites de homologacao
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: convites-homologacao
+  cancel-in-progress: false
+
+jobs:
+  processar:
+    # No credentials or requests until explicitly enabled. Never runs for PRs.
+    if: vars.VTF_CONVITES_AGENDAMENTO_ATIVO == 'true'
+    environment: homologacao-convites
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Acionar lote sem repetir chamadas HTTP
+        run: node scripts/acionar-fila-convites.mjs
+        env:
+          VTF_EXECUCAO_CONVITES_ATIVA: 'true'
+          VTF_CONVITES_PROJETO_AUTORIZADO: qmhrlexpnnbjntpecjis
+          VTF_CONVITES_ANON_JWT: ${{ secrets.VTF_CONVITES_ANON_JWT }}
+          VTF_CONVITES_WORKER_SECRET: ${{ secrets.VTF_CONVITES_WORKER_SECRET }}

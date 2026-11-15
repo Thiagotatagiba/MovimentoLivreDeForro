@@ -1,0 +1,7 @@
+Conclui o fluxo VIP/desconto em homologação: titular autenticado com até dez acompanhantes sem conta; uma inscrição por conta/edição; alteração/cancelamento/reinscrição enquanto aberta; bloqueio por prazo no servidor; consulta agrupada por produtor autorizado com avatar/inicial e duplicidades só ao produtor; correções de nomes pós-fechamento sem alterar quantidade; exportação exclusivamente textual após fechamento. Adiamento exige confirmação explícita da nova data na versão publicada, sem reabrir lista encerrada.
+
+Inclui página pública estável, gestão por edição, link no evento, revisão antes de ações, CAS/idempotência, auditoria e cache candidato v9 com telas VIP online-only. Guia completo em docs/GUIA_LISTAS_VIP.md; relatório em docs/LISTAS_VIP_IMPLEMENTACAO.md.
+
+Validação: 148 testes; Auth/PostgREST reais com duas escritas concorrentes (um sucesso/um 409), isolamento, replay, cancelamento/reinscrição e bloqueios pós-fechamento. Navegador confirmou criação, inscrição, fechamento, correção, exportação e clipboard, layout móvel sem overflow e link no evento. PWA loopback atualizado para v9 sem dados privados/recursos VIP no cache.
+
+Migração aplicada exclusivamente em homologação (versão remota 20261115120845), com um evento/lista e dois grupos fictícios preservados para revisão. Nenhuma alteração em produção, contas novas, promoção de acesso ou envio de e-mails. Base empilhada codex/listas-vip-base (PR #11). Não mesclar em main sem revisão e liberação administrativa próprias.
