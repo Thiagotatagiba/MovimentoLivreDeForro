@@ -156,3 +156,7 @@ Locais e marcas oficiais continuam restritos ao administrador global. Administra
 Se o evento ainda não estiver publicado ou houver alterações salvas ainda não publicadas, crie a lista após publicar. Se houver alterações não salvas, salve antes de continuar. Eventos cancelados/adiados/interrompidos não oferecem criação de lista nova; as listas existentes continuam seguindo as regras de suspensão/consulta já aprovadas.
 
 O menu **Listas** continua sendo a visão geral de gerenciamento. A seção do evento mostra somente metadados; participantes são consultados na gestão da lista com as permissões existentes. Um link de evento indisponível não seleciona outra edição automaticamente. Navegar, abrir formulário ou revisar não cria lista.
+
+## Atalho no menu do site — 16/11/2026
+
+Após entrar na sua conta, abra **Menu → Gestão** para acessar o painel. O atalho aparece somente para contas com permissões de gestão confirmadas. Quem tem acesso apenas a listas é encaminhado diretamente às listas. Ao sair, ele desaparece. Se a conexão falhar, tente abrir o menu novamente para conferir o acesso.

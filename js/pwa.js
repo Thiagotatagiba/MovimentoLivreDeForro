@@ -84,6 +84,7 @@ function gerarMenuLateral() {
     <a href="perfil.html">Meu Perfil</a>
     <a href="agenda.html">Agenda</a>
     <a href="carteira.html" id="menu-carteira" hidden>Carteira de ingressos</a>
+    <a id="menu-gestao-publico" hidden>Gestão</a>
     <a href="sobre.html">Sobre</a>
     <a href="configuracoes.html">Configurações</a>
     <a href="privacidade.html">Privacidade</a>
@@ -100,9 +101,10 @@ function configurarMenuLateral() {
   const overlay = document.getElementById('menu-overlay');
   if (!botaoMenu || !menuLateral || !overlay) return;
 
-  const focaveis = () => [...menuLateral.querySelectorAll('a[href], button:not([disabled])')];
+  const focaveis = () => [...menuLateral.querySelectorAll('a[href], button:not([disabled])')].filter(el=>!el.hidden);
 
   function abrirMenu() {
+    window.dispatchEvent(new Event('menu-aberto'));
     menuLateral.inert = false;
     menuLateral.classList.add('aberto');
     overlay.hidden = false;
