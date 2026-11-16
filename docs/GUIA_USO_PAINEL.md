@@ -160,3 +160,7 @@ O menu **Listas** continua sendo a visão geral de gerenciamento. A seção do e
 ## Atalho no menu do site — 16/11/2026
 
 Após entrar na sua conta, abra **Menu → Gestão** para acessar o painel. O atalho aparece somente para contas com permissões de gestão confirmadas. Quem tem acesso apenas a listas é encaminhado diretamente às listas. Ao sair, ele desaparece. Se a conexão falhar, tente abrir o menu novamente para conferir o acesso.
+
+## Escolher marca com busca — 16/11/2026
+
+Na Gestão de eventos, clique no nome da **Marca** para abrir as opções. Use **Buscar marca** para filtrar e clique no resultado desejado. Digitar não troca a marca automaticamente. A marca selecionada aparece com ✓. Pelo teclado, use as setas e Enter; Escape fecha a busca mantendo a marca atual.

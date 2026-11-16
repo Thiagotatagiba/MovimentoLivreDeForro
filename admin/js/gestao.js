@@ -5,7 +5,9 @@ import {criarNovoEvento,conteudoNovoEvento} from './novoEventoModelo.js?v=menu-1
 import {criarServicoListasVip} from '../../services/listasVipService.js';
 import {criarSolicitadorVip,mensagemErroVip} from '../../js/utils/vipModelo.js';
 import {eventoDaBusca,estadoListaNoEvento} from './listaNoEventoModelo.js?v=1';
+import {criarSeletorMarca} from './seletorMarca.js?v=1';
 const $=id=>document.getElementById(id);
+const seletorMarca=criarSeletorMarca({raiz:$('seletor-marca'),select:$('marca'),botao:$('marca-abrir'),busca:$('marca-busca'),painel:$('marca-painel'),lista:$('marcas-opcoes'),vazio:$('marca-vazia'),status:$('marca-resultados')});
 
 let contexto=null,marca=null,editor=null,busy=false,epoch=0,verificacaoSessao=0,usuarioId=null,confirmarAcao=null;
 let novo=false,criacao=null;
@@ -95,7 +97,7 @@ function escreverForm(c){
  if(imagem) $('imagem').src=new URL(imagem,new URL('../',location.href)).href; else $('imagem').removeAttribute('src');
 }
 function atualizar(){
- $('marca').disabled=busy;$('marca-busca').disabled=busy;
+ $('marca').disabled=busy;seletorMarca.desabilitar(busy);
  $('novo-evento').hidden=deps.demonstracao||!pode('gerenciar_eventos');$('novo-evento').disabled=busy;
  $('dados-novos').hidden=!novo;$('imagem-nova').hidden=!novo;$('cancelar-novo').hidden=!novo;$('cancelar-novo').disabled=busy;
  $('salvar').textContent=novo?'Criar rascunho':'Salvar rascunho';$('recarregar').hidden=novo;
@@ -234,7 +236,7 @@ async function iniciar(){
  ++epoch;busy=false;limparListaDoEvento();sairModoNovo();confirmarAcao=null;if($('confirmacao').open)$('confirmacao').close();usuarioId=user?.id??null;contexto=null;marca=null;editor=null;
  $('form-evento').reset();$('local-novo').replaceChildren();$('imagem').removeAttribute('src');
  $('painel').hidden=true;$('editor').hidden=true;$('conflito').hidden=true;$('entrar').hidden=!!user;
- $('marca').replaceChildren();$('marcas-opcoes').replaceChildren();$('marca-busca').value='';$('eventos').replaceChildren();
+ $('marca').replaceChildren();seletorMarca.fechar();sincronizarMarca();$('eventos').replaceChildren();
  if(!user){mensagem('Entre com a conta autorizada pela sua marca.');return;}
  const atual=epoch;
  try{
@@ -242,7 +244,7 @@ async function iniciar(){
   if(!contexto.marcas.length){mensagem('Sua conta ainda não tem acesso à gestão de eventos.');return;}
   for(const m of contexto.marcas){
    const nome=contexto.marcas.filter(x=>x.nome===m.nome).length>1?m.nome+' ('+m.slug+')':m.nome;
-   $('marca').append(new Option(nome,m.id));$('marcas-opcoes').append(new Option(nome,nome));
+   $('marca').append(new Option(nome,m.id));
   }
   const solicitado=eventoDaBusca(location.search);
   if(solicitado){const destino=await deps.servico.carregarEvento(solicitado);if(atual!==epoch)return;if(!contexto.marcas.some(m=>m.id===destino.evento.marca_id))throw Error('Evento solicitado indisponível para sua conta.');$('marca').value=destino.evento.marca_id;}
@@ -251,14 +253,7 @@ async function iniciar(){
   if(!solicitado&&new URLSearchParams(location.search).get('acao')==='novo'&&pode('gerenciar_eventos')&&!deps.demonstracao)await abrirNovoEvento();
  }catch(e){if(atual===epoch){contexto=null;mensagem(e.codigo==='SEM_PERMISSAO'?e.message:'A gestão de eventos está indisponível no momento. Tente novamente mais tarde.',true);}}
 }
-function sincronizarMarca(){ $('marca-busca').value=$('marca').selectedOptions[0]?.textContent??''; }
-$('marca-busca').addEventListener('input',()=>{
- if(busy)return;
- const opcao=[...$('marca').options].find(o=>o.textContent===$('marca-busca').value);
- if(opcao&&opcao.value!==$('marca').value){$('marca').value=opcao.value;escolherMarca();}
-});
-$('marca-busca').addEventListener('blur',sincronizarMarca);
-$('marca-busca').addEventListener('focus',()=>{if(!busy)$('marca-busca').select();});
+function sincronizarMarca(){seletorMarca.sincronizar();}
 $('marca').addEventListener('change',escolherMarca);
 $('novo-evento').addEventListener('click',abrirNovoEvento);
 $('cancelar-novo').addEventListener('click',()=>{if(busy||!aceitarTroca())return;sairModoNovo();editor=null;escolherMarca();});
