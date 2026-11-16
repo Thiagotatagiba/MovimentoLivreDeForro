@@ -5,9 +5,10 @@ import {criarNovoEvento,conteudoNovoEvento} from './novoEventoModelo.js?v=menu-1
 import {criarServicoListasVip} from '../../services/listasVipService.js';
 import {criarSolicitadorVip,mensagemErroVip} from '../../js/utils/vipModelo.js';
 import {eventoDaBusca,estadoListaNoEvento} from './listaNoEventoModelo.js?v=1';
-import {criarSeletorMarca} from './seletorMarca.js?v=1';
+import {criarSeletorMarca,melhorarSelect} from './seletorMarca.js?v=2';
 const $=id=>document.getElementById(id);
 const seletorMarca=criarSeletorMarca({raiz:$('seletor-marca'),select:$('marca'),botao:$('marca-abrir'),busca:$('marca-busca'),painel:$('marca-painel'),lista:$('marcas-opcoes'),vazio:$('marca-vazia'),status:$('marca-resultados')});
+const seletorLocal=melhorarSelect($('local-novo'),{singular:'local',plural:'locais',buscar:'Buscar local',vazio:'Nenhum local encontrado.',marcarAlteracao:true});
 
 let contexto=null,marca=null,editor=null,busy=false,epoch=0,verificacaoSessao=0,usuarioId=null,confirmarAcao=null;
 let novo=false,criacao=null;
@@ -111,6 +112,7 @@ function atualizar(){
   b.textContent=s.evento.versao?.conteudo.titulo??s.conteudo.titulo??s.evento.slug;
  $('campos').disabled=travado||!pode('gerenciar_eventos');
  $('local-novo').disabled=!novo||travado||!pode('gerenciar_eventos');$('imagem-url-nova').disabled=$('local-novo').disabled;
+ seletorLocal.sincronizar();
  $('salvar').disabled=travado||!pode('gerenciar_eventos');
  $('publicar').disabled=travado||!pode('publicar_eventos')||state.alterado||!state.publicacaoPendente;
  $('recarregar').disabled=busy;

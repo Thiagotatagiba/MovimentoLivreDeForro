@@ -7,6 +7,9 @@ test('brand search ignores accents, case and extra spaces without selecting or c
  assert.deepEqual(filtrarMarcas(marcas,''),marcas);
  assert.deepEqual(filtrarMarcas(marcas,'inexistente'),[]);
  assert.equal(filtrarMarcas(marcas,'deck')[0].value,'id-2');
+ const locais=[{textContent:'Sem local fixo',value:''},{textContent:'Praça — Vitória (inativo)',value:'local-1'}];
+ assert.equal(filtrarMarcas(locais,'sem fixo')[0].value,'');
+ assert.equal(filtrarMarcas(locais,'vitoria')[0].value,'local-1');
 });
 import {criarEditor,compararEdicoes,normalizarConteudoEditor,validarParaPublicar} from '../admin/js/editorModelo.js';
 import {criarApiDemo} from './fixtures/adminDemoApi.mjs';

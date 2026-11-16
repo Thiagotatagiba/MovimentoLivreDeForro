@@ -1,0 +1,14 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Seletores — teste local</title>
+<link rel="stylesheet" href="/css/tokens.css"><link rel="stylesheet" href="/admin/css/gestao.css">
+<main><h1>Seletores de locais e marcas</h1><p>Dados fictícios. Nenhum cadastro é enviado ao banco.</p>
+<form id="teste" class="cartao"><label for="local">Selecionar local para editar</label><select id="local"><option value="">Escolha um local cadastrado</option><option value="l1">Praça Viva — Vitória</option><option value="l2">Deck — Vila Velha (inativo)</option></select>
+<label for="marca">Selecionar marca para editar</label><select id="marca"><option value="">Escolha uma marca cadastrada</option><option value="m1">Forró Praça Viva</option><option value="m2">Forró Praça Viva (inativa)</option></select>
+<fieldset id="dados"><legend>Dados da marca</legend><label for="padrao">Local padrão</label><select id="padrao" name="localPadraoId"><option value="">Sem local fixo</option><option value="l1" selected>Praça Viva — Vitória</option><option value="l2">Deck — Vila Velha</option></select></fieldset>
+<button type="reset" class="secundario">Limpar formulário</button><button type="button" id="travar">Alternar bloqueio</button></form><p id="resultado" role="status"></p></main>
+<script type="module">
+import {melhorarSelect} from '/admin/js/seletorMarca.js?v=2';
+const $=id=>document.getElementById(id);
+const controles=[['local','local','locais'],['marca','marca','marcas'],['padrao','local','locais']].map(([id,singular,plural])=>melhorarSelect($(id),{singular,plural,buscar:'Buscar '+singular,vazio:'Nenhum resultado encontrado.',marcarAlteracao:id==='padrao'}));
+let alteracoes=0;$('teste').addEventListener('input',()=>{$('resultado').textContent='Alterações: '+(++alteracoes)+' · Local padrão: '+new FormData($('teste')).get('localPadraoId');});
+$('travar').onclick=()=>{$('dados').disabled=!$('dados').disabled;controles.forEach(c=>c.sincronizar());};
+</script></html>
