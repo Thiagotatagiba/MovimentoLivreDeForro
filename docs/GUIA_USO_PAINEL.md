@@ -144,3 +144,15 @@ Para começar do zero: cadastre o local, a marca e seu local padrão, depois o e
 **Convidar gerente de marca** abre Equipe e convites com o papel **Gerente de marca (administrador)** selecionado. Escolha a marca, informe o e-mail e revise as permissões antes de criar o convite. O acesso só é concedido após a aceitação com e-mail verificado. O envio automático de e-mail continua desativado; compartilhe o link gerado. Também é possível escolher Equipe e permissões específicas.
 
 Locais e marcas oficiais continuam restritos ao administrador global. Administrador de marca pode convidar gerentes da própria marca; membro de equipe só vê os acessos concedidos. Navegar e abrir formulários não cria registros nem envia convites.
+
+## Criar a lista dentro do evento — 16/11/2026
+
+1. Cadastre o evento, salve o rascunho e publique a edição.
+2. No próprio formulário, abra **Lista VIP e desconto** e clique em **Criar lista deste evento**.
+3. Preencha título, termos, prazo de inscrição, início/fim do benefício e acompanhantes. Horários usam o fuso deste dispositivo; não são preenchidos automaticamente.
+4. Use **Revisar criação da lista**, confira o nome/data da edição e confirme em **Criar lista**. Termos/prazos continuam sem edição posterior nesta versão.
+5. A seção passa a mostrar **Gerenciar lista deste evento**. A gestão abre com aquela edição fixada, e **Voltar ao evento** retorna à mesma edição. **Ver todas as listas** sai desse contexto explicitamente.
+
+Se o evento ainda não estiver publicado ou houver alterações salvas ainda não publicadas, crie a lista após publicar. Se houver alterações não salvas, salve antes de continuar. Eventos cancelados/adiados/interrompidos não oferecem criação de lista nova; as listas existentes continuam seguindo as regras de suspensão/consulta já aprovadas.
+
+O menu **Listas** continua sendo a visão geral de gerenciamento. A seção do evento mostra somente metadados; participantes são consultados na gestão da lista com as permissões existentes. Um link de evento indisponível não seleciona outra edição automaticamente. Navegar, abrir formulário ou revisar não cria lista.

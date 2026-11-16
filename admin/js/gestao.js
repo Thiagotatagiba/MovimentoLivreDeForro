@@ -2,11 +2,64 @@ import {dependencias as deps} from './gestaoDependencias.js?v=menu-1';
 import {criarEditor,validarParaPublicar} from './editorModelo.js?v=menu-1';
 import {imagemDoEvento} from '../../js/utils/format.js';
 import {criarNovoEvento,conteudoNovoEvento} from './novoEventoModelo.js?v=menu-1';
+import {criarServicoListasVip} from '../../services/listasVipService.js';
+import {criarSolicitadorVip,mensagemErroVip} from '../../js/utils/vipModelo.js';
+import {eventoDaBusca,estadoListaNoEvento} from './listaNoEventoModelo.js?v=1';
 const $=id=>document.getElementById(id);
 
 let contexto=null,marca=null,editor=null,busy=false,epoch=0,verificacaoSessao=0,usuarioId=null,confirmarAcao=null;
 let novo=false,criacao=null;
 const pode=p=>!!marca?.permissoes.includes(p);
+const servicoListas=criarServicoListasVip(),solicitacoesLista=criarSolicitadorVip();
+let listaEvento={geracao:-1,id:null,registro:null,carregando:false,erro:false},listaFormAberto=false,listaFormAlterado=false,acaoLista=null;
+function limparListaDoEvento(){
+ listaEvento={geracao:epoch,id:null,registro:null,carregando:false,erro:false};listaFormAberto=listaFormAlterado=false;acaoLista=null;solicitacoesLista.limpar();$('form-lista-evento').reset();if($('confirmacao-lista-evento').open)$('confirmacao-lista-evento').close();
+}
+async function conferirListaDoEvento(id){
+ const geracao=epoch,versao=editor?.estado().snapshot?.evento.versao_publicada_id;listaEvento.id=id;listaEvento.versao=versao;listaEvento.carregando=true;listaEvento.erro=false;
+ try{const rows=await servicoListas.gestao();if(geracao!==epoch||listaEvento.id!==id||listaEvento.versao!==versao)return;listaEvento.registro=rows.find(r=>r.evento_id===id)??null;}
+ catch{if(geracao===epoch&&listaEvento.id===id&&listaEvento.versao===versao)listaEvento.erro=true;}
+ finally{if(geracao===epoch&&listaEvento.id===id&&listaEvento.versao===versao){listaEvento.carregando=false;atualizar();}}
+}
+function atualizarListaDoEvento(state){
+ if(listaEvento.geracao!==epoch)limparListaDoEvento();
+ const e=state?.snapshot?.evento;$('lista-do-evento').hidden=!e;if(!e)return;
+ const permitido=pode('gerenciar_listas')||pode('consultar_listas');
+ if(e.id&&e.versao_publicada_id&&permitido&&(listaEvento.id!==e.id||listaEvento.versao!==e.versao_publicada_id)&&!deps.demonstracao)conferirListaDoEvento(e.id);
+ const view=estadoListaNoEvento({evento:e,podeGerenciar:pode('gerenciar_listas'),podeConsultar:pode('consultar_listas'),alterado:state.alterado,publicacaoPendente:state.publicacaoPendente,registro:listaEvento.registro,carregando:listaEvento.carregando,erro:listaEvento.erro});
+ $('lista-evento-status').textContent=deps.demonstracao?'Listas integradas disponíveis no ambiente Supabase. Nenhuma operação de lista é executada nesta demonstração local.':view.texto;
+ $('abrir-lista-evento').hidden=deps.demonstracao||!view.criar||listaFormAberto;$('abrir-lista-evento').disabled=busy;
+ $('gerenciar-lista-evento').hidden=deps.demonstracao||!view.gerenciar||busy;
+ if(view.gerenciar){const url=new URL('listas.html',location.href);url.searchParams.set('evento',e.id);$('gerenciar-lista-evento').href=url.href;$('gerenciar-lista-evento').textContent=view.acao;}else $('gerenciar-lista-evento').removeAttribute('href');
+ $('atualizar-lista-evento').hidden=deps.demonstracao||!e.id||!e.versao_publicada_id||!permitido;$('atualizar-lista-evento').disabled=busy||listaEvento.carregando;
+ $('form-lista-evento').hidden=!view.criar||!listaFormAberto||deps.demonstracao;$('campos-lista-evento').disabled=busy;
+}
+$('abrir-lista-evento').onclick=()=>{if(busy)return;listaFormAberto=true;atualizar();$('lista-titulo').focus();};
+$('cancelar-lista-evento').onclick=()=>{if(busy||listaFormAlterado&&!window.confirm('Descartar os dados ainda não salvos da lista?'))return;listaFormAberto=listaFormAlterado=false;$('form-lista-evento').reset();atualizar();};
+$('form-lista-evento').addEventListener('input',()=>{listaFormAlterado=true;});
+$('atualizar-lista-evento').onclick=()=>{const id=editor?.estado().snapshot?.evento.id;if(!busy&&id)conferirListaDoEvento(id);};
+$('gerenciar-lista-evento').onclick=e=>{if(busy||!aceitarTroca())e.preventDefault();};
+$('form-lista-evento').onsubmit=event=>{
+ event.preventDefault();if(busy||!pode('gerenciar_listas'))return;const state=editor?.estado(),e=state?.snapshot?.evento;
+ if(!e?.versao_publicada_id||state.alterado||listaEvento.registro?.lista)return;
+ try{
+  const params={eventoId:e.id,titulo:$('lista-titulo').value.trim(),termos:$('lista-termos').value.trim(),prazo:new Date($('lista-prazo').value).toISOString(),inicio:new Date($('lista-inicio').value).toISOString(),fim:new Date($('lista-fim').value).toISOString(),maxAcompanhantes:Number($('lista-maximo').value)};
+  if(!params.titulo||!params.termos)throw Error('Informe o título e os termos da lista.');
+  const publicado=e.versao?.conteudo??state.conteudo,date=x=>new Date(x).toLocaleString('pt-BR');
+  $('resumo-lista-evento').textContent='Evento: '+publicado.titulo+' · '+publicado.data+' às '+publicado.horario+'\n\nLista: '+params.titulo+'\n'+params.termos+'\n\nPrazo: '+date(params.prazo)+'\nBenefício: '+date(params.inicio)+' a '+date(params.fim)+'\nAcompanhantes por titular: '+params.maxAcompanhantes;
+  const geracao=epoch;
+  acaoLista=async()=>{
+   try{
+    const result=await solicitacoesLista.executar('criar',params,p=>servicoListas.criar(p));if(geracao!==epoch)return;
+    listaEvento.registro={...listaEvento.registro,lista:{id:result.lista_id,titulo:params.titulo,estado:'aberta',revisao:result.revisao}};listaFormAberto=listaFormAlterado=false;$('form-lista-evento').reset();
+    await conferirListaDoEvento(e.id);
+   }catch(error){if(geracao===epoch&&error.codigo!=='INDISPONIVEL')await conferirListaDoEvento(e.id);throw Error(mensagemErroVip(error));}
+  };$('confirmacao-lista-evento').showModal();
+ }catch(error){mensagem(error instanceof RangeError?'Confira as datas e horários da lista.':error.message,true);}
+};
+$('voltar-lista-evento').onclick=()=>{acaoLista=null;$('confirmacao-lista-evento').close();};
+$('confirmacao-lista-evento').addEventListener('cancel',()=>{acaoLista=null;});
+$('confirmar-lista-evento').onclick=()=>{const fn=acaoLista;acaoLista=null;$('confirmacao-lista-evento').close();if(fn)rodar(fn,'Lista criada para este evento.');};
 const rotuloSituacao=s=>({confirmado:'Confirmado',adiado:'Adiado',cancelado:'Cancelado',interrompido:'Interrompido'})[s]??'Não publicado';
 function mensagem(texto,erro=false){$('mensagem').textContent=texto;$('mensagem').classList.toggle('erro',erro);}
 function listaLinhas(value){return value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);}
@@ -48,8 +101,10 @@ function atualizar(){
  $('salvar').textContent=novo?'Criar rascunho':'Salvar rascunho';$('recarregar').hidden=novo;
  for(const button of $('eventos').querySelectorAll('button')) button.disabled=busy;
  const state=editor?.estado();
+ atualizarListaDoEvento(state);
  if(!state?.snapshot) return;
  const s=state.snapshot,travado=busy||!!state.conflito;
+ if(!deps.demonstracao){const url=new URL(location.href);if(s.evento.id){url.searchParams.set('evento',s.evento.id);url.searchParams.delete('acao');}else if(novo){url.searchParams.delete('evento');url.searchParams.set('acao','novo');}if(url.href!==location.href)history.replaceState(null,'',url.href);}
  for(const b of $('eventos').querySelectorAll('button'))if(b.dataset.id===s.evento.id)
   b.textContent=s.evento.versao?.conteudo.titulo??s.conteudo.titulo??s.evento.slug;
  $('campos').disabled=travado||!pode('gerenciar_eventos');
@@ -120,7 +175,7 @@ async function rodar(fn,texto){
  }finally{if(atual===epoch){busy=false;atualizar();}}
 }
 function aceitarTroca(){
- return (!editor?.estado().alterado&&!(novo&&$('local-novo').value))||window.confirm('Há alterações não salvas. Deseja descartá-las e continuar?');
+ return (!listaFormAlterado&&!editor?.estado().alterado&&!(novo&&$('local-novo').value))||window.confirm('Há alterações não salvas. Deseja descartá-las e continuar?');
 }
 function sairModoNovo(){novo=false;criacao?.limpar();criacao=null;}
 function botaoEvento(e){
@@ -176,7 +231,7 @@ async function iniciar(){
  try{user=await deps.obterUsuario();}catch{if(verificacao===verificacaoSessao)mensagem('Não foi possível verificar sua sessão. Tente recarregar.',true);return;}
  if(verificacao!==verificacaoSessao)return;
  if(user?.id===usuarioId&&contexto)return;
- ++epoch;busy=false;sairModoNovo();confirmarAcao=null;if($('confirmacao').open)$('confirmacao').close();usuarioId=user?.id??null;contexto=null;marca=null;editor=null;
+ ++epoch;busy=false;limparListaDoEvento();sairModoNovo();confirmarAcao=null;if($('confirmacao').open)$('confirmacao').close();usuarioId=user?.id??null;contexto=null;marca=null;editor=null;
  $('form-evento').reset();$('local-novo').replaceChildren();$('imagem').removeAttribute('src');
  $('painel').hidden=true;$('editor').hidden=true;$('conflito').hidden=true;$('entrar').hidden=!!user;
  $('marca').replaceChildren();$('marcas-opcoes').replaceChildren();$('marca-busca').value='';$('eventos').replaceChildren();
@@ -189,8 +244,11 @@ async function iniciar(){
    const nome=contexto.marcas.filter(x=>x.nome===m.nome).length>1?m.nome+' ('+m.slug+')':m.nome;
    $('marca').append(new Option(nome,m.id));$('marcas-opcoes').append(new Option(nome,nome));
   }
+  const solicitado=eventoDaBusca(location.search);
+  if(solicitado){const destino=await deps.servico.carregarEvento(solicitado);if(atual!==epoch)return;if(!contexto.marcas.some(m=>m.id===destino.evento.marca_id))throw Error('Evento solicitado indisponível para sua conta.');$('marca').value=destino.evento.marca_id;}
   $('painel').hidden=false;await escolherMarca();
-  if(new URLSearchParams(location.search).get('acao')==='novo'&&pode('gerenciar_eventos')&&!deps.demonstracao)await abrirNovoEvento();
+  if(solicitado)await abrirEvento(solicitado);
+  if(!solicitado&&new URLSearchParams(location.search).get('acao')==='novo'&&pode('gerenciar_eventos')&&!deps.demonstracao)await abrirNovoEvento();
  }catch(e){if(atual===epoch){contexto=null;mensagem(e.codigo==='SEM_PERMISSAO'?e.message:'A gestão de eventos está indisponível no momento. Tente novamente mais tarde.',true);}}
 }
 function sincronizarMarca(){ $('marca-busca').value=$('marca').selectedOptions[0]?.textContent??''; }
@@ -269,7 +327,7 @@ $('form-conflito').addEventListener('submit',event=>{
  }catch(e){mensagem(e.message,true);}
 });
 window.addEventListener('beforeunload',event=>{
- if(editor?.estado().alterado||(novo&&$('local-novo').value)){event.preventDefault();event.returnValue='';}
+ if(listaFormAlterado||editor?.estado().alterado||(novo&&$('local-novo').value)){event.preventDefault();event.returnValue='';}
 });
 if(deps.demonstracao){$('demo').hidden=false;$('perfil-demo').textContent='Perfil fictício atual: '+deps.perfil;}
 window.addEventListener('pageshow',iniciar);

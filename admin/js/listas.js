@@ -2,12 +2,15 @@ import {criarServicoListasVip} from '../../services/listasVipService.js';
 import {obterUsuarioAtual,aoMudarAutenticacao} from '../../services/authService.js';
 import {abrirModalLogin} from '../../components/loginModal.js';
 import {acompanhantesDoTexto,criarSolicitadorVip,mensagemErroVip,estadosVip} from '../../js/utils/vipModelo.js';
+import {eventoDaBusca,selecionarEventoLista} from './listaNoEventoModelo.js?v=1';
+let eventoSolicitado=null,erroDestino=null;try{eventoSolicitado=eventoDaBusca(location.search);}catch(e){erroDestino=e;}
 const $=id=>document.getElementById(id),service=criarServicoListasVip(),requests=criarSolicitadorVip();
+if(eventoSolicitado){$('titulo-pagina-listas').textContent='Lista deste evento';$('ajuda-pagina-listas').textContent='A edição escolhida no evento fica preservada nesta tela. Gerencie a lista ou volte ao mesmo evento.';}
 let eventos=[],atual=null,busy=false,epoch=0,confirmar=null;
 const date=x=>new Date(x).toLocaleString('pt-BR');
 function mensagem(text){$('mensagem').textContent=text;}
-function travar(value){busy=value;$('campos-criar').disabled=value;$('evento').disabled=value;$('atualizar').disabled=value;for(const id of ['encerrar','nova-data','exportar','copiar'])$(id).disabled=value;}
-function limpar(){eventos=[];atual=null;requests.limpar();$('painel').hidden=true;$('grupos').replaceChildren();$('texto-exportacao').value='';$('texto-painel').hidden=true;$('url-publica').value='';$('conta').textContent='';$('confirmacao').close();confirmar=null;}
+function travar(value){busy=value;$('campos-criar').disabled=value;$('evento').disabled=value||!!eventoSolicitado||!!erroDestino;$('atualizar').disabled=value;for(const id of ['encerrar','nova-data','exportar','copiar'])$(id).disabled=value;}
+function limpar(){eventos=[];atual=null;requests.limpar();$('painel').hidden=true;$('grupos').replaceChildren();$('texto-exportacao').value='';$('texto-painel').hidden=true;$('url-publica').value='';$('conta').textContent='';$('contexto-evento').hidden=true;$('contexto-evento-titulo').textContent='';$('confirmacao').close();confirmar=null;}
 function revisar(text,action){if(busy)return;confirmar=action;$('resumo').textContent=text;$('confirmacao').showModal();}
 async function operar(action,params){const generation=epoch;travar(true);try{await requests.executar(action,params,p=>service[action](p));
  if(generation!==epoch)return;travar(false);await carregar();mensagem('Operação confirmada.');
@@ -35,7 +38,7 @@ function renderGrupos(data){
  });$('total').textContent=data.grupos.length+' titulares · '+total+' pessoas no total';
 }
 async function selecionar(){
- atual=eventos.find(e=>e.evento_id===$('evento').value)??null;$('criar').hidden=!atual?.gerenciar||!!atual.lista;$('lista').hidden=!atual?.lista;
+ atual=eventos.find(e=>e.evento_id===$('evento').value)??null;$('criar').hidden=!atual?.gerenciar||!!atual.lista||atual.situacao!=='confirmado';$('lista').hidden=!atual?.lista;
  $('texto-painel').hidden=true;$('texto-exportacao').value='';if(!atual?.lista)return;
  const list=atual.lista,generation=epoch;
  $('lista-titulo').textContent=list.titulo;$('lista-estado').textContent=estadosVip[list.estado];$('lista-termos').textContent=list.termos;
@@ -47,10 +50,13 @@ async function selecionar(){
 }
 async function carregar(){if(busy)return;const generation=++epoch,selected=$('evento').value;travar(true);
  try{const user=await obterUsuarioAtual();if(generation!==epoch)return;$('entrar').hidden=!!user;if(!user){limpar();mensagem('Entre para gerenciar as listas das suas marcas.');return;}
-  $('conta').textContent='Conta atual: '+user.email;const rows=await service.gestao();if(generation!==epoch)return;eventos=rows;
-  $('painel').hidden=!rows.length;$('evento').replaceChildren(...rows.map(e=>new Option(e.marca+' · '+e.titulo+' · '+e.data,e.evento_id)));
-  if(rows.some(e=>e.evento_id===selected))$('evento').value=selected;await selecionar();if(generation!==epoch)return;
-  mensagem(rows.length?'Selecione a edição. Nomes ficam restritos a quem tem permissão de listas.':'Nenhuma edição disponível com permissão de listas.');
+  $('conta').textContent='Conta atual: '+user.email;if(erroDestino)throw erroDestino;const rows=await service.gestao();if(generation!==epoch)return;
+  const escolhido=selecionarEventoLista(rows,eventoSolicitado,selected);eventos=eventoSolicitado?[escolhido]:rows;
+  $('painel').hidden=!eventos.length;$('evento').replaceChildren(...eventos.map(e=>new Option(e.marca+' · '+e.titulo+' · '+e.data,e.evento_id)));
+  $('evento').value=escolhido?.evento_id??'';
+  $('contexto-evento').hidden=!eventoSolicitado;if(eventoSolicitado){$('contexto-evento-titulo').textContent='Lista do evento: '+escolhido.marca+' · '+escolhido.titulo+' · '+escolhido.data;const url=new URL('gestao.html',location.href);url.searchParams.set('evento',eventoSolicitado);$('voltar-evento').href=url.href;}
+  await selecionar();if(generation!==epoch)return;
+  mensagem(eventoSolicitado?'Você está gerenciando a lista desta edição.':rows.length?'Selecione a edição. Nomes ficam restritos a quem tem permissão de listas.':'Nenhuma edição disponível com permissão de listas.');
  }catch(e){if(generation===epoch){limpar();mensagem(mensagemErroVip(e));}}finally{if(generation===epoch)travar(false);}
 }
 $('form-criar').onsubmit=e=>{e.preventDefault();if(busy||!atual?.gerenciar)return;try{
@@ -68,6 +74,6 @@ aoMudarAutenticacao(()=>{epoch++;limpar();travar(false);setTimeout(carregar,0);}
 setInterval(async()=>{if(busy||document.hidden||!atual?.lista||$('confirmacao').open||$('grupos').contains(document.activeElement)||!$('texto-painel').hidden)return;
  const generation=epoch,selected=atual.evento_id;try{const rows=await service.gestao();if(generation!==epoch)return;
  const fresh=rows.find(e=>e.evento_id===selected);if(!fresh){limpar();mensagem('Acesso à lista indisponível.');return;}
- atual=fresh;eventos=rows;await selecionar();}catch(e){if(generation===epoch){$('grupos').replaceChildren();mensagem(mensagemErroVip(e));}}
+ atual=fresh;eventos=eventoSolicitado?[fresh]:rows;await selecionar();}catch(e){if(generation===epoch){$('grupos').replaceChildren();mensagem(mensagemErroVip(e));}}
 },5000);
 carregar();

@@ -1,5 +1,5 @@
 import {dependencias as deps} from './gestaoDependencias.js?v=menu-1';
-import {acessosMenu,itensGestao,destinoAtalho} from './navegacaoModelo.js?v=1';
+import {acessosMenu,itensGestao,destinoAtalho} from './navegacaoModelo.js?v=lista-evento-1';
 const menu=document.getElementById('menu-gestao'),atalhos=document.getElementById('atalhos-gestao');
 let geracao=0,abaAtual=new URLSearchParams(location.search).get('aba')==='marca'?'marca':'local';
 function paginaAtual(){const path=location.pathname;return path.endsWith('cadastros.html')?(abaAtual==='marca'?'marcas':'locais'):path.endsWith('listas.html')?'listas':path.endsWith('convites.html')?'gerentes':'eventos';}

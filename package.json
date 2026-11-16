@@ -2,7 +2,7 @@
   "name": "vai-ter-forro-checks",
   "private": true,
   "scripts": {
-    "test": "node --test scripts/testar-catalogo.mjs scripts/testar-administracao.mjs scripts/testar-servico-administrativo.mjs scripts/testar-editor-gestao.mjs scripts/testar-homologacao-auth.mjs scripts/testar-publicacao.mjs scripts/testar-convites.mjs scripts/testar-convite-modelo.mjs scripts/testar-fila-convites.mjs scripts/testar-worker-convites.mjs scripts/testar-acionamento-convites.mjs scripts/testar-listas-vip.mjs scripts/testar-servico-listas-vip.mjs scripts/testar-inscricoes-vip.mjs scripts/testar-vip-modelo.mjs scripts/testar-auto-rls.mjs scripts/testar-liberacao-administrativa.mjs scripts/testar-criacao-eventos.mjs scripts/testar-novo-evento-modelo.mjs scripts/testar-cadastros.mjs scripts/testar-cadastro-modelo.mjs scripts/testar-navegacao-gestao.mjs"
+    "test": "node --test scripts/testar-catalogo.mjs scripts/testar-administracao.mjs scripts/testar-servico-administrativo.mjs scripts/testar-editor-gestao.mjs scripts/testar-homologacao-auth.mjs scripts/testar-publicacao.mjs scripts/testar-convites.mjs scripts/testar-convite-modelo.mjs scripts/testar-fila-convites.mjs scripts/testar-worker-convites.mjs scripts/testar-acionamento-convites.mjs scripts/testar-listas-vip.mjs scripts/testar-servico-listas-vip.mjs scripts/testar-inscricoes-vip.mjs scripts/testar-vip-modelo.mjs scripts/testar-auto-rls.mjs scripts/testar-liberacao-administrativa.mjs scripts/testar-criacao-eventos.mjs scripts/testar-novo-evento-modelo.mjs scripts/testar-cadastros.mjs scripts/testar-cadastro-modelo.mjs scripts/testar-navegacao-gestao.mjs scripts/testar-lista-no-evento.mjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.16"

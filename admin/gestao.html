@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/tokens.css">
-<link rel="stylesheet" href="css/gestao.css?v=edicao-cadastros-1">
+<link rel="stylesheet" href="css/gestao.css?v=lista-evento-1">
 <link rel="stylesheet" href="../components/modal-login.css">
 <link rel="stylesheet" href="css/navegacao.css?v=1"></head>
 <body>
@@ -51,11 +51,23 @@
 <div class="acoes"><button id="salvar" type="submit">Salvar rascunho</button><button id="publicar" type="button">Revisar publicação</button><button id="cancelar-novo" type="button" class="secundario" hidden>Cancelar criação</button></div>
 <p id="alteracoes" class="apoio"></p>
 </form>
+<section id="lista-do-evento" class="situacao" aria-labelledby="titulo-lista-evento">
+<h3 id="titulo-lista-evento">Lista VIP e desconto</h3><p id="lista-evento-status" role="status"></p>
+<button id="abrir-lista-evento" type="button" hidden>Criar lista deste evento</button><a id="gerenciar-lista-evento" hidden>Gerenciar lista deste evento</a><button id="atualizar-lista-evento" type="button" class="secundario" hidden>Atualizar lista</button>
+<form id="form-lista-evento" hidden><fieldset id="campos-lista-evento"><legend>Criar lista desta edição publicada</legend>
+<label for="lista-titulo">Título da lista</label><input id="lista-titulo" required maxlength="200"><label for="lista-termos">Termos do benefício</label><textarea id="lista-termos" required maxlength="4000" rows="4"></textarea>
+<label for="lista-prazo">Prazo de inscrição</label><input id="lista-prazo" type="datetime-local" required>
+<div class="dupla"><div><label for="lista-inicio">Início da validade do benefício</label><input id="lista-inicio" type="datetime-local" required></div><div><label for="lista-fim">Fim da validade do benefício</label><input id="lista-fim" type="datetime-local" required></div></div>
+<p class="apoio">Informe datas e horários no fuso deste dispositivo. O prazo de inscrição é separado da validade do benefício. Confira: termos e prazos não podem ser editados depois de criar a lista nesta versão.</p>
+<label for="lista-maximo">Máximo de acompanhantes por titular (0 = individual)</label><input id="lista-maximo" type="number" min="0" max="10" step="1" value="0" required>
+<div class="acoes"><button type="submit">Revisar criação da lista</button><button id="cancelar-lista-evento" type="button" class="secundario">Cancelar criação da lista</button></div>
+</fieldset></form></section>
 <section id="situacao-painel" class="situacao" aria-labelledby="titulo-situacao"><h3 id="titulo-situacao">Situação do evento publicado</h3><p class="apoio">Cancelamentos e adiamentos são publicados com histórico, separados do rascunho.</p><label for="situacao">Situação</label><select id="situacao"><option value="confirmado">Confirmado</option><option value="adiado">Adiado</option><option value="cancelado">Cancelado</option><option value="interrompido">Interrompido</option></select><button id="alterar-situacao" type="button" class="secundario">Revisar situação</button></section>
 </section>
 <section id="conflito" class="cartao conflito" hidden aria-labelledby="titulo-conflito"><h2 id="titulo-conflito">Outra pessoa alterou este rascunho</h2><p>Suas alterações foram preservadas. Compare e escolha o que manter. Nada será salvo automaticamente.</p><form id="form-conflito"><div id="comparacao"></div><button type="submit">Preparar revisão escolhida</button></form></section>
 </div>
 <dialog id="confirmacao" aria-labelledby="titulo-confirmacao"><h2 id="titulo-confirmacao"></h2><p id="texto-confirmacao"></p><dl id="resumo-confirmacao"></dl><div class="acoes"><button id="cancelar-confirmacao" type="button" class="secundario">Voltar</button><button id="confirmar" type="button">Confirmar</button></div></dialog>
+<dialog id="confirmacao-lista-evento" aria-labelledby="titulo-confirmacao-lista"><h2 id="titulo-confirmacao-lista">Criar lista deste evento?</h2><p id="resumo-lista-evento" class="resumo-lista-evento"></p><div class="acoes"><button id="voltar-lista-evento" type="button" class="secundario">Voltar</button><button id="confirmar-lista-evento" type="button">Criar lista</button></div></dialog>
 </main>
-<script type="module" src="js/gestao.js?v=menu-1"></script>
-<script type="module" src="js/navegacaoGestao.js?v=1"></script></body></html>
+<script type="module" src="js/gestao.js?v=lista-evento-1"></script>
+<script type="module" src="js/navegacaoGestao.js?v=lista-evento-1"></script></body></html>

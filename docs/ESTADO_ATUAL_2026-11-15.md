@@ -53,3 +53,7 @@ Incremento de edição global na mesma tela, com seleção, revisão, auditoria 
 ## Menu da Gestão — 16/11/2026
 
 Menu compartilhado e cinco atalhos para eventos, locais, marcas, listas e gerentes de marcas. Acessos de listas preservados no contexto; permissões e autorização no banco não mudam. Sem migração. Validação: 196 testes e manifesto de 46 arquivos críticos. Guia em GUIA_USO_PAINEL.md.
+
+## Lista no cadastro do evento — 16/11/2026
+
+Criação dentro do editor após publicação, reutilizando operações existentes. Lista já criada oferece gerenciamento; menu Listas é visão geral. Contexto por UUID preserva edição e recusa fallback para outra. Sem migração. Validação: 200 testes, manifesto de 47 arquivos. Guia atualizado em GUIA_USO_PAINEL.md.
