@@ -1,7 +1,9 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"><title>Listas VIP — Gestão — Vai Ter Forró!</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="../css/tokens.css"><link rel="stylesheet" href="css/gestao.css"><link rel="stylesheet" href="../css/listas-vip.css"></head>
-<body class="vip"><header class="topo"><a href="../index.html">Vai Ter Forró!</a><a href="gestao.html">Gestão de eventos</a><a href="convites.html">Equipe e convites</a></header><main>
-<h1>Listas VIP e desconto</h1><p id="mensagem" role="status" aria-live="polite">Carregando seu acesso…</p><button id="entrar" hidden>Entrar para gerenciar listas</button><p id="conta"></p>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="../css/tokens.css"><link rel="stylesheet" href="css/gestao.css"><link rel="stylesheet" href="../css/listas-vip.css"><link rel="stylesheet" href="css/navegacao.css?v=1"></head>
+<body class="vip"><header class="topo"><a href="../index.html">Vai Ter Forró!</a><span>Gestão de listas</span></header>
+<nav id="menu-gestao" class="gestao-menu" aria-label="Menu da Gestão" hidden></nav>
+<main>
+<h1>Cadastrar e gerenciar listas</h1><p class="apoio">Selecione uma edição publicada para cadastrar uma lista VIP ou de desconto, ou acompanhar uma lista existente.</p><p id="mensagem" role="status" aria-live="polite">Carregando seu acesso…</p><button id="entrar" hidden>Entrar para gerenciar listas</button><p id="conta"></p>
 <section id="painel" hidden><label for="evento">Edição do evento</label><select id="evento"></select><button id="atualizar" class="secundario">Atualizar</button>
 <section id="criar" class="cartao" hidden><h2>Criar lista desta edição</h2><form id="form-criar"><fieldset id="campos-criar">
 <label for="titulo">Título da lista</label><input id="titulo" required maxlength="200"><label for="termos">Termos do benefício</label><textarea id="termos" required maxlength="4000"></textarea>
@@ -13,4 +15,4 @@
 <p id="duplicados" class="aviso" hidden></p><p id="total"></p><p>Atualização automática a cada cinco segundos enquanto esta página estiver visível. Formulários em edição são preservados.</p><div id="grupos"></div>
 <section id="exportacao" hidden><h3>Lista encerrada — texto para compartilhar</h3><p>Cópias já enviadas não serão atualizadas após correções. A exportação não contém fotos.</p><button id="exportar">Preparar texto</button><div id="texto-painel" hidden><textarea id="texto-exportacao" readonly aria-label="Texto da lista encerrada"></textarea><button id="copiar">Copiar texto</button></div></section>
 </section></section><dialog id="confirmacao"><h2>Confira a operação</h2><p id="resumo" class="termos"></p><div class="acoes"><button id="voltar" class="secundario">Voltar</button><button id="confirmar">Confirmar</button></div></dialog>
-</main><script type="module" src="js/listas.js"></script></body></html>
+</main><script type="module" src="js/listas.js"></script><script type="module" src="js/navegacaoGestao.js?v=1"></script></body></html>

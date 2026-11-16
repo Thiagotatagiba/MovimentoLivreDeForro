@@ -2,22 +2,27 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gestão de eventos — Vai Ter Forró!</title>
+<title>Gestão — Vai Ter Forró!</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/tokens.css">
 <link rel="stylesheet" href="css/gestao.css?v=edicao-cadastros-1">
 <link rel="stylesheet" href="../components/modal-login.css">
-</head>
+<link rel="stylesheet" href="css/navegacao.css?v=1"></head>
 <body>
-<header class="topo"><a href="../index.html"><img src="../assets/icons/logo-64.png" alt="">Vai Ter Forró!</a><span>Gestão de eventos</span></header>
+<header class="topo"><a href="../index.html"><img src="../assets/icons/logo-64.png" alt="">Vai Ter Forró!</a><span>Gestão</span></header>
+<nav id="menu-gestao" class="gestao-menu" aria-label="Menu da Gestão" hidden></nav>
+
 <div id="demo" class="demo" hidden><strong>Demonstração local</strong><p>Dados fictícios. Nenhuma alteração será enviada ao site ou ao Supabase.</p><nav aria-label="Perfis de demonstração"><a href="?perfil=administrador">Administrador</a><a href="?perfil=editor">Editor</a><a href="?perfil=publicador">Publicador</a><a href="?perfil=outra-marca">Outra marca</a></nav><p id="perfil-demo"></p></div>
 <main>
-<h1>Seus eventos</h1>
-<p id="link-cadastros" hidden><a href="cadastros.html">Gerenciar marcas e locais</a></p>
-<p id="link-equipe"><a href="convites.html">Equipe e convites</a></p>
-<p><a href="listas.html">Listas VIP e desconto</a></p>
+<h1>Gestão</h1>
+<p class="apoio">Cadastre e gerencie os bailes, espaços, marcas, listas e responsáveis.</p>
+<section id="atalhos-gestao" class="gestao-atalhos" aria-label="Atalhos de cadastro" hidden></section>
+<h2>Seus eventos</h2>
+
+
+
 <p class="apoio">Prepare as alterações em um rascunho. A versão pública só muda quando alguém com permissão publica.</p>
 <p id="mensagem" role="status" aria-live="polite">Carregando seu acesso…</p>
 <button id="entrar" type="button" hidden>Entrar para gerenciar</button>
@@ -52,5 +57,5 @@
 </div>
 <dialog id="confirmacao" aria-labelledby="titulo-confirmacao"><h2 id="titulo-confirmacao"></h2><p id="texto-confirmacao"></p><dl id="resumo-confirmacao"></dl><div class="acoes"><button id="cancelar-confirmacao" type="button" class="secundario">Voltar</button><button id="confirmar" type="button">Confirmar</button></div></dialog>
 </main>
-<script type="module" src="js/gestao.js?v=edicao-cadastros-1"></script>
-</body></html>
+<script type="module" src="js/gestao.js?v=menu-1"></script>
+<script type="module" src="js/navegacaoGestao.js?v=1"></script></body></html>

@@ -4,8 +4,10 @@
 <link rel="stylesheet" href="../css/tokens.css"><link rel="stylesheet" href="css/gestao.css?v=edicao-cadastros-1"><link rel="stylesheet" href="../components/modal-login.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-</head><body><header class="topo"><a href="../index.html">Vai Ter Forró!</a><span>Marcas e locais</span></header>
-<main><h1>Gerenciar marcas e locais</h1><p><a href="gestao.html">Voltar aos eventos</a> · <a href="convites.html">Equipe e convites</a></p>
+<link rel="stylesheet" href="css/navegacao.css?v=1"></head><body><header class="topo"><a href="../index.html">Vai Ter Forró!</a><span>Marcas e locais</span></header>
+<nav id="menu-gestao" class="gestao-menu" aria-label="Menu da Gestão" hidden></nav>
+
+<main><h1>Gerenciar marcas e locais</h1>
 <p class="apoio">Cadastros oficiais compartilhados, disponíveis somente ao administrador do sistema. Salvar atualiza o catálogo público imediatamente. Não concede acesso a produtores ou equipes.</p>
 <p id="mensagem" role="status" aria-live="polite">Carregando seu acesso…</p><button id="entrar" type="button" hidden>Entrar para cadastrar</button>
 <section id="painel" hidden><div class="acoes"><button id="aba-local" type="button" aria-pressed="true">Locais</button><button id="aba-marca" type="button" class="secundario" aria-pressed="false">Marcas</button></div>
@@ -32,4 +34,4 @@
 <label for="marca-site">Site (URL HTTPS)</label><input id="marca-site" name="site" type="url" maxlength="2000"><label for="logo">Logo (URL HTTPS opcional)</label><input id="logo" name="logo" type="text" maxlength="2000"><label for="capa">Capa (URL HTTPS opcional)</label><input id="capa" name="capa" type="text" maxlength="2000">
 <div id="estado-marca" hidden><label class="check"><input id="ativo-marca" type="checkbox" checked>Marca ativa no catálogo</label></div><div class="acoes"><button type="submit">Revisar cadastro da marca</button></div></fieldset></form>
 </section><dialog id="confirmacao"><h2 id="titulo-confirmacao">Confirmar cadastro público</h2><p>Confira os dados. Salvar atualiza o catálogo imediatamente. Não concede acesso a outra pessoa. Se o endereço já tiver sido usado em publicação, será criado um novo local, preservando o anterior e os eventos.</p><p id="impacto-edicao" class="aviso" hidden></p><pre id="resumo-cadastro"></pre><div class="acoes"><button id="voltar" type="button" class="secundario">Voltar</button><button id="confirmar" type="button">Cadastrar agora</button></div></dialog></main>
-<script type="module" src="js/cadastros.js?v=edicao-1"></script></body></html>
+<script type="module" src="js/cadastros.js?v=menu-1"></script><script type="module" src="js/navegacaoGestao.js?v=1"></script></body></html>

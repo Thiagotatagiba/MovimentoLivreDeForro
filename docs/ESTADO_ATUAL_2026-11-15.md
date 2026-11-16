@@ -49,3 +49,7 @@ Cadastro de novas marcas e locais implementado e validado com 184 testes. A ativ
 ## Edição de marcas e locais
 
 Incremento de edição global na mesma tela, com seleção, revisão, auditoria e conflito sem sobrescrita. Novo endereço de local com publicação gera outro cadastro para preservar eventos/defaults anteriores. A ativação leva produção a 18 migrações; a coluna revisao é metadado novo nas marcas/locais, sem alteração do conteúdo anterior. Validação total esperada: 192 testes, 43 arquivos críticos. Ver CADASTROS_MARCAS_LOCAIS.md e GUIA_USO_PAINEL.md.
+
+## Menu da Gestão — 16/11/2026
+
+Menu compartilhado e cinco atalhos para eventos, locais, marcas, listas e gerentes de marcas. Acessos de listas preservados no contexto; permissões e autorização no banco não mudam. Sem migração. Validação: 196 testes e manifesto de 46 arquivos críticos. Guia em GUIA_USO_PAINEL.md.

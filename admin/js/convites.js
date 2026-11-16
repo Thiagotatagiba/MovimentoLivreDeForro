@@ -3,6 +3,7 @@ import {obterUsuarioAtual,aoMudarAutenticacao} from '../../services/authService.
 import {abrirModalLogin} from '../../components/loginModal.js';
 import {permissoesConvite,chaveEntradaConvite,lerEntradaConvite,novoTokenConvite,linkConvite,estadoConvite} from './conviteModelo.js';
 const $=id=>document.getElementById(id);
+let atalhoAplicadoPara=null;
 let usuario=null,marcas=[],busy=false,geracao=0,link=null,criacao=null,aceitacao=null,acaoConfirmada=null;
 const revogacoes=new Map();
 const data=value=>new Date(value).toLocaleString('pt-BR',{timeZone:'America/Sao_Paulo'});
@@ -120,6 +121,7 @@ async function iniciar(){
   marcas=contexto.marcas.filter(m=>m.administrador);
   $('conta').textContent='Conta atual: '+usuario.email;$('conta').hidden=false;
   $('marca').replaceChildren(...marcas.map(m=>new Option(m.nome,m.id)));
+  if(marcas.length&&new URLSearchParams(location.search).get('acao')==='convidar-gerente'&&atalhoAplicadoPara!==usuario.id){$('papel').value='administrador';$('papel').onchange();atalhoAplicadoPara=usuario.id;}
   $('criar-painel').hidden=!marcas.length;$('lista-painel').hidden=false;renderizarLista(convites);
   const entrada=lerEntradaConvite(sessionStorage);
   if(entrada){
