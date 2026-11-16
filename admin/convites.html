@@ -16,9 +16,11 @@ capturarEntradaConvite();
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/tokens.css"><link rel="stylesheet" href="css/gestao.css">
 <link rel="stylesheet" href="css/convites.css"><link rel="stylesheet" href="../components/modal-login.css">
-</head><body>
-<header class="topo"><a href="../index.html"><img src="../assets/icons/logo-64.png" alt="">Vai Ter Forró!</a><a href="gestao.html">Gestão de eventos</a></header>
-<main><h1>Equipe e convites</h1><p class="apoio">O acesso à marca começa depois que a pessoa convidada aceita com o e-mail verificado correspondente.</p>
+<link rel="stylesheet" href="css/navegacao.css?v=1"></head><body>
+<header class="topo"><a href="../index.html"><img src="../assets/icons/logo-64.png" alt="">Vai Ter Forró!</a><span>Gerentes e equipes</span></header>
+<nav id="menu-gestao" class="gestao-menu" aria-label="Menu da Gestão" hidden></nav>
+
+<main><h1>Convidar gerentes de marcas e equipes</h1><p class="apoio">O acesso à marca começa depois que a pessoa convidada aceita com o e-mail verificado correspondente.</p>
 <p id="mensagem" role="status" aria-live="polite">Carregando seu acesso…</p>
 <button id="entrar" type="button" hidden>Entrar com o e-mail convidado</button>
 <p id="conta" class="apoio" hidden></p>
@@ -26,7 +28,7 @@ capturarEntradaConvite();
 <section id="criar-painel" class="cartao" hidden><h2>Convidar para uma marca</h2>
 <form id="form-convite"><fieldset id="campos-convite"><label for="marca">Marca</label><select id="marca" required></select>
 <label for="email">E-mail da pessoa convidada</label><input id="email" type="email" required maxlength="254" autocomplete="off">
-<label for="papel">Papel na marca</label><select id="papel"><option value="equipe">Equipe</option><option value="administrador">Administrador da marca</option></select>
+<label for="papel">Papel na marca</label><select id="papel"><option value="equipe">Equipe</option><option value="administrador">Gerente de marca (administrador)</option></select>
 <p id="aviso-admin" class="aviso" hidden>Administradores podem gerenciar a equipe, convidar outras pessoas e publicar eventos desta marca.</p>
 <fieldset id="permissoes"><legend>Permissões da equipe</legend><div id="opcoes-permissoes"></div></fieldset>
 <p class="apoio">O convite vale por sete dias. O envio automático de e-mails ainda não está ativo; copie e compartilhe o link com a pessoa convidada.</p>
@@ -35,4 +37,4 @@ capturarEntradaConvite();
 </section>
 <section id="lista-painel" class="cartao" hidden><h2>Convites que você pode acompanhar</h2><button type="button" id="recarregar" class="secundario">Atualizar lista</button><div id="lista-convites"></div></section>
 <dialog id="confirmacao" aria-labelledby="titulo-confirmacao"><h2 id="titulo-confirmacao"></h2><p id="resumo-confirmacao"></p><p id="permissoes-confirmacao"></p><div class="acoes"><button id="cancelar-confirmacao" type="button" class="secundario">Voltar</button><button id="confirmar" type="button">Confirmar</button></div></dialog>
-</main><script type="module" src="js/convites.js"></script></body></html>
+</main><script type="module" src="js/convites.js?v=menu-1"></script><script type="module" src="js/navegacaoGestao.js?v=1"></script></body></html>

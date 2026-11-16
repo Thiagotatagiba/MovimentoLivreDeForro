@@ -68,6 +68,7 @@ test('management context derives access from database membership, never user_met
  })});
  const context=await service.carregarContexto();
  assert.deepEqual(context.marcas.map(m=>m.id),['a']);
+ assert.deepEqual(context.acessos.map(m=>m.id),['a','b']);
  assert.deepEqual(context.marcas[0].permissoes,['gerenciar_eventos']);
  assert.equal(context.marcas[0].administrador,false);
  assert.ok(filters.some(f=>f.table==='membros_marca'&&f.k==='usuario_id'&&f.v==='current-user'));

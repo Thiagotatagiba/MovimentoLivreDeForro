@@ -49,9 +49,9 @@ export function criarServicoAdministrativo({
       const membros=await lista('membros_marca',
         'id,marca_id,papel,permissoes:permissoes_membro(permissao),marca:marcas(id,id_legado,slug,nome,local_padrao_id)',
         q=>q.eq('usuario_id',user.id).eq('ativo',true));
-      return {administradorSistema:false,marcas:membros.filter(m=>m.marca).map(m=>({...m.marca,administrador:m.papel==='administrador',
-        permissoes:m.papel==='administrador'?todas:m.permissoes.map(p=>p.permissao)}))
-        .filter(m=>m.permissoes.some(p=>['gerenciar_eventos','publicar_eventos'].includes(p)))};
+      const acessos=membros.filter(m=>m.marca).map(m=>({...m.marca,administrador:m.papel==='administrador',
+        permissoes:m.papel==='administrador'?todas:m.permissoes.map(p=>p.permissao)}));
+      return {administradorSistema:false,acessos,marcas:acessos.filter(m=>m.permissoes.some(p=>['gerenciar_eventos','publicar_eventos'].includes(p)))};
     },
     listarEventos:marcaId=>lista('eventos',
       'id,id_legado,slug,estado_publicacao,versao_publicada_id,versao:versoes_evento!eventos_versao_publicada_do_mesmo_evento(numero,conteudo,situacao),rascunho:rascunhos_evento(conteudo)',

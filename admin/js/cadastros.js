@@ -1,4 +1,4 @@
-import {administracao as servico} from '../../services/administracaoService.js?v=edicao-cadastros-1';
+import {administracao as servico} from '../../services/administracaoService.js?v=menu-1';
 import {obterUsuarioAtual,aoMudarAutenticacao} from '../../services/authService.js';
 import {abrirModalLogin} from '../../components/loginModal.js';
 import {criarSolicitadorCadastro,validarCadastro,conteudoCadastro,mudouEndereco} from './cadastroModelo.js?v=edicao-1';
@@ -30,7 +30,7 @@ function prepararMapa(atual){
   }catch{if(atual===epoch)$('mapa-status').textContent='Mapa indisponível. Atualize para mudar o endereço. Os outros dados podem ser editados sem alterar o ponto existente.';return null;}
  });return filaMapa;
 }
-function aba(tipo){$('form-local').hidden=tipo!=='local';$('form-marca').hidden=tipo!=='marca';for(const t of ['local','marca']){$('aba-'+t).setAttribute('aria-pressed',String(t===tipo));$('aba-'+t).classList.toggle('secundario',t!==tipo);}if(tipo==='local')prepararMapa(epoch);}
+function aba(tipo){$('form-local').hidden=tipo!=='local';$('form-marca').hidden=tipo!=='marca';for(const t of ['local','marca']){$('aba-'+t).setAttribute('aria-pressed',String(t===tipo));$('aba-'+t).classList.toggle('secundario',t!==tipo);}window.dispatchEvent(new CustomEvent('gestao-aba',{detail:tipo}));if(tipo==='local')prepararMapa(epoch);}
 function descartar(tipo){return !alterados.has(tipo)||window.confirm('Há alterações não salvas neste cadastro. Deseja descartá-las?');}
 function limpar(tipo){
  edicoes[tipo]=bases[tipo]=null;alterados.delete(tipo);solic.limpar();$('form-'+tipo).reset();$('editar-'+tipo).value='';$('estado-'+tipo).hidden=true;$('recarregar-'+tipo).hidden=true;
@@ -60,7 +60,7 @@ async function iniciar(){
  mensagem('Verificando seu acesso…');$('entrar').hidden=!!usuario;if(!usuario){mensagem('Entre com a conta de administrador do sistema.');return;}
  try{
   const contexto=await servico.carregarContexto();if(atual!==epoch)return;if(!contexto.administradorSistema){mensagem('Somente o administrador do sistema pode gerenciar marcas e locais oficiais.');return;}
-  const dados=await servico.consultarCadastros();if(atual!==epoch)return;locais=dados.locais;marcas=dados.marcas;autorizado=true;opcoes();$('painel').hidden=false;controles();mensagem('Selecione um cadastro para editar ou preencha um novo.');aba('local');
+  const dados=await servico.consultarCadastros();if(atual!==epoch)return;locais=dados.locais;marcas=dados.marcas;autorizado=true;opcoes();$('painel').hidden=false;controles();mensagem('Selecione um cadastro para editar ou preencha um novo.');aba(new URLSearchParams(location.search).get('aba')==='marca'?'marca':'local');
  }catch{if(atual===epoch)mensagem('Não foi possível carregar os cadastros. Atualize a página.');}
 }
 function ler(tipo){

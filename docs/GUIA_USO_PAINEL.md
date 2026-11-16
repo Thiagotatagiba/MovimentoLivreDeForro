@@ -132,3 +132,15 @@ Se o local já tiver sido usado em alguma publicação, alterar endereço ou pos
 Local sem publicação pode ter endereço corrigido no próprio cadastro. Dados de contato e descrição podem ser editados diretamente. Desativar uma marca/local oculta o cadastro e seus eventos vinculados do catálogo, preservando os registros; revise o aviso antes de salvar. Separe desativação e mudança de endereço quando houver publicações.
 
 Se outra pessoa salvar primeiro, o painel informa conflito e mantém seu formulário. **Recarregar cadastro** busca a versão atual e pede confirmação antes de descartar alterações. Não há sobrescrita automática.
+
+## Menu da Gestão — 16/11/2026
+
+A entrada **Gestão** reúne cinco áreas no mesmo menu, disponível também nas telas internas: **Eventos**, **Locais**, **Marcas**, **Listas** e **Gerentes de marcas**. A área atual fica destacada.
+
+Na entrada, os cartões oferecem **Cadastrar evento**, **Cadastrar local**, **Cadastrar marca**, **Cadastrar lista** e **Convidar gerente de marca**. Quem só consulta listas ou publica eventos vê ações de consulta/gerenciamento compatíveis com suas permissões.
+
+Para começar do zero: cadastre o local, a marca e seu local padrão, depois o evento. Publique a edição antes de cadastrar sua lista VIP/desconto. O atalho de evento já abre o formulário novo; os atalhos de marca/local abrem a aba correta. Os seletores continuam disponíveis para editar cadastros existentes.
+
+**Convidar gerente de marca** abre Equipe e convites com o papel **Gerente de marca (administrador)** selecionado. Escolha a marca, informe o e-mail e revise as permissões antes de criar o convite. O acesso só é concedido após a aceitação com e-mail verificado. O envio automático de e-mail continua desativado; compartilhe o link gerado. Também é possível escolher Equipe e permissões específicas.
+
+Locais e marcas oficiais continuam restritos ao administrador global. Administrador de marca pode convidar gerentes da própria marca; membro de equipe só vê os acessos concedidos. Navegar e abrir formulários não cria registros nem envia convites.

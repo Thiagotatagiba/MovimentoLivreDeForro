@@ -1,9 +1,9 @@
-import {dependencias as deps} from './gestaoDependencias.js?v=edicao-cadastros-1';
-import {criarEditor,validarParaPublicar} from './editorModelo.js?v=edicao-cadastros-1';
+import {dependencias as deps} from './gestaoDependencias.js?v=menu-1';
+import {criarEditor,validarParaPublicar} from './editorModelo.js?v=menu-1';
 import {imagemDoEvento} from '../../js/utils/format.js';
-import {criarNovoEvento,conteudoNovoEvento} from './novoEventoModelo.js?v=edicao-cadastros-1';
+import {criarNovoEvento,conteudoNovoEvento} from './novoEventoModelo.js?v=menu-1';
 const $=id=>document.getElementById(id);
-$('link-equipe').hidden=deps.demonstracao;
+
 let contexto=null,marca=null,editor=null,busy=false,epoch=0,verificacaoSessao=0,usuarioId=null,confirmarAcao=null;
 let novo=false,criacao=null;
 const pode=p=>!!marca?.permissoes.includes(p);
@@ -178,18 +178,19 @@ async function iniciar(){
  if(user?.id===usuarioId&&contexto)return;
  ++epoch;busy=false;sairModoNovo();confirmarAcao=null;if($('confirmacao').open)$('confirmacao').close();usuarioId=user?.id??null;contexto=null;marca=null;editor=null;
  $('form-evento').reset();$('local-novo').replaceChildren();$('imagem').removeAttribute('src');
- $('link-cadastros').hidden=true;$('painel').hidden=true;$('editor').hidden=true;$('conflito').hidden=true;$('entrar').hidden=!!user;
+ $('painel').hidden=true;$('editor').hidden=true;$('conflito').hidden=true;$('entrar').hidden=!!user;
  $('marca').replaceChildren();$('marcas-opcoes').replaceChildren();$('marca-busca').value='';$('eventos').replaceChildren();
  if(!user){mensagem('Entre com a conta autorizada pela sua marca.');return;}
  const atual=epoch;
  try{
-  const novoContexto=await deps.servico.carregarContexto();if(atual!==epoch)return;contexto=novoContexto;$('link-cadastros').hidden=!contexto.administradorSistema;
+  const novoContexto=await deps.servico.carregarContexto();if(atual!==epoch)return;contexto=novoContexto;
   if(!contexto.marcas.length){mensagem('Sua conta ainda não tem acesso à gestão de eventos.');return;}
   for(const m of contexto.marcas){
    const nome=contexto.marcas.filter(x=>x.nome===m.nome).length>1?m.nome+' ('+m.slug+')':m.nome;
    $('marca').append(new Option(nome,m.id));$('marcas-opcoes').append(new Option(nome,nome));
   }
   $('painel').hidden=false;await escolherMarca();
+  if(new URLSearchParams(location.search).get('acao')==='novo'&&pode('gerenciar_eventos')&&!deps.demonstracao)await abrirNovoEvento();
  }catch(e){if(atual===epoch){contexto=null;mensagem(e.codigo==='SEM_PERMISSAO'?e.message:'A gestão de eventos está indisponível no momento. Tente novamente mais tarde.',true);}}
 }
 function sincronizarMarca(){ $('marca-busca').value=$('marca').selectedOptions[0]?.textContent??''; }
