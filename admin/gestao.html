@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/tokens.css">
-<link rel="stylesheet" href="css/gestao.css?v=lista-evento-1">
+<link rel="stylesheet" href="css/gestao.css?v=seletor-marca-1">
 <link rel="stylesheet" href="../components/modal-login.css">
 <link rel="stylesheet" href="css/navegacao.css?v=1"></head>
 <body>
@@ -27,7 +27,16 @@
 <p id="mensagem" role="status" aria-live="polite">Carregando seu acesso…</p>
 <button id="entrar" type="button" hidden>Entrar para gerenciar</button>
 <div id="painel" class="layout" hidden>
-<aside class="cartao navegacao"><label for="marca-busca">Marca</label><input id="marca-busca" type="text" list="marcas-opcoes" autocomplete="off" placeholder="Digite ou selecione a marca" aria-describedby="marca-ajuda"><datalist id="marcas-opcoes"></datalist><small id="marca-ajuda">Digite para buscar e escolha uma marca da lista.</small><select id="marca" hidden aria-hidden="true" tabindex="-1"></select><button id="novo-evento" type="button" class="novo-evento" hidden>Novo evento</button><h2>Eventos</h2><div id="eventos" class="lista-eventos" role="group" aria-label="Escolher evento"></div></aside>
+<aside class="cartao navegacao">
+<div id="seletor-marca" class="seletor-marca">
+<label id="marca-rotulo" for="marca-abrir">Marca</label>
+<button id="marca-abrir" class="marca-abrir" type="button" aria-labelledby="marca-rotulo marca-nome" aria-expanded="false" aria-controls="marca-painel"><span id="marca-nome">Selecione uma marca</span><svg aria-hidden="true" viewBox="0 0 20 20" width="20" height="20"><path d="m5 7 5 5 5-5" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+<div id="marca-painel" class="marca-painel" hidden>
+<label for="marca-busca">Buscar marca</label><input id="marca-busca" type="search" autocomplete="off" placeholder="Digite o nome…" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="marcas-opcoes">
+<div id="marcas-opcoes" class="marcas-opcoes" role="listbox" aria-label="Marcas disponíveis"></div>
+<p id="marca-vazia" class="apoio" hidden>Nenhuma marca encontrada.</p><small id="marca-resultados" role="status" aria-live="polite"></small>
+</div></div>
+<select id="marca" hidden aria-hidden="true" tabindex="-1"></select><button id="novo-evento" type="button" class="novo-evento" hidden>Novo evento</button><h2>Eventos</h2><div id="eventos" class="lista-eventos" role="group" aria-label="Escolher evento"></div></aside>
 <section id="editor" class="cartao" hidden aria-labelledby="titulo-editor">
 <div class="editor-topo"><div><p class="rotulo" id="estado-editor"></p><h2 id="titulo-editor">Editar evento</h2></div><button type="button" id="recarregar" class="secundario">Recarregar</button></div>
 <p id="publicado" class="apoio"></p><p><a id="ver-publico" target="_blank" rel="noopener" hidden>Ver evento no site</a></p><p id="papel" class="aviso"></p>
@@ -69,5 +78,5 @@
 <dialog id="confirmacao" aria-labelledby="titulo-confirmacao"><h2 id="titulo-confirmacao"></h2><p id="texto-confirmacao"></p><dl id="resumo-confirmacao"></dl><div class="acoes"><button id="cancelar-confirmacao" type="button" class="secundario">Voltar</button><button id="confirmar" type="button">Confirmar</button></div></dialog>
 <dialog id="confirmacao-lista-evento" aria-labelledby="titulo-confirmacao-lista"><h2 id="titulo-confirmacao-lista">Criar lista deste evento?</h2><p id="resumo-lista-evento" class="resumo-lista-evento"></p><div class="acoes"><button id="voltar-lista-evento" type="button" class="secundario">Voltar</button><button id="confirmar-lista-evento" type="button">Criar lista</button></div></dialog>
 </main>
-<script type="module" src="js/gestao.js?v=lista-evento-1"></script>
+<script type="module" src="js/gestao.js?v=seletor-marca-1"></script>
 <script type="module" src="js/navegacaoGestao.js?v=lista-evento-1"></script></body></html>

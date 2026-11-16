@@ -38,6 +38,7 @@ jobs:
         run: node scripts/validar-dados.js
       - name: Sintaxe de paginas e gerador
         run: |
+          node --check admin/js/seletorMarca.js
           node --check components/atalhoGestao.js
           node --check components/painelUsuario.js
           node --check js/pwa.js

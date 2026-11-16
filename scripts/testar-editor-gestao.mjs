@@ -1,5 +1,13 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
+import {filtrarMarcas} from '../admin/js/seletorMarca.js';
+test('brand search ignores accents, case and extra spaces without selecting or changing identities',()=>{
+ const marcas=[{textContent:'Forró Praça Viva',value:'id-1'},{textContent:'Deck 16',value:'id-2'},{textContent:'Forró Praça Viva (outra-edicao)',value:'id-3'}];
+ assert.deepEqual(filtrarMarcas(marcas,'  PRACA forro '),[marcas[0],marcas[2]]);
+ assert.deepEqual(filtrarMarcas(marcas,''),marcas);
+ assert.deepEqual(filtrarMarcas(marcas,'inexistente'),[]);
+ assert.equal(filtrarMarcas(marcas,'deck')[0].value,'id-2');
+});
 import {criarEditor,compararEdicoes,normalizarConteudoEditor,validarParaPublicar} from '../admin/js/editorModelo.js';
 import {criarApiDemo} from './fixtures/adminDemoApi.mjs';
 import {id,conteudoInicial} from './fixtures/bancoAdministrativo.mjs';
