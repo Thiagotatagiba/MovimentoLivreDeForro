@@ -4,3 +4,5 @@
 .condicao-editor{display:grid;gap:10px;margin:16px 0;padding:16px;border:1px solid var(--borda);border-radius:10px}.condicao-editor button{justify-self:start}
 
 .cadastro-form{margin-top:24px}.cadastro-form #mapa-local{height:360px;max-width:100%;z-index:0}.cadastro-form #resultados-endereco{margin-top:12px}#resumo-cadastro{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
+
+.resumo-lista-evento{white-space:pre-wrap;overflow-wrap:anywhere}#form-lista-evento{margin-top:18px}#gerenciar-lista-evento{display:inline-flex;align-items:center;min-height:44px;padding:10px 0}
