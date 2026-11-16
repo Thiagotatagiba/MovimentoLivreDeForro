@@ -3,7 +3,10 @@ import {obterUsuarioAtual,aoMudarAutenticacao} from '../../services/authService.
 import {abrirModalLogin} from '../../components/loginModal.js';
 import {criarSolicitadorCadastro,validarCadastro,conteudoCadastro,mudouEndereco} from './cadastroModelo.js?v=edicao-1';
 import {criarMapaCadastro} from './mapaCadastro.js';
+import {melhorarSelect} from './seletorMarca.js?v=2';
 const $=id=>document.getElementById(id),solic=criarSolicitadorCadastro({servico});
+const seletores=[['editar-local','local','locais'],['editar-marca','marca','marcas'],['local-padrao','local','locais']].map(([id,singular,plural])=>melhorarSelect($(id),{singular,plural,buscar:'Buscar '+singular,vazio:'Nenhum resultado encontrado.',marcarAlteracao:id==='local-padrao'}));
+const sincronizarSeletores=()=>seletores.forEach(s=>s.sincronizar());
 let autorizado=false,busy=false,epoch=0,usuario=undefined,pendente=null,mapa=null,ponto=null,locais=[],marcas=[],verificacao=0;
 let buscaEpoch=0,timerBusca=null,filaMapa=Promise.resolve(),suprimirMapa=false;
 const edicoes={local:null,marca:null},bases={local:null,marca:null},alterados=new Set();
@@ -13,6 +16,7 @@ function mensagem(t){$('mensagem').textContent=t;}
 function controles(){
  for(const tipo of ['local','marca']){const form=$('form-'+tipo);form.querySelector('fieldset').disabled=busy||!autorizado;
   for(const prefix of ['aba-','editar-','novo-','recarregar-'])$(prefix+tipo).disabled=busy||!autorizado;}
+ sincronizarSeletores();
 }
 function opcoes(padrao=null){
  locais.sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));marcas.sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
@@ -20,6 +24,7 @@ function opcoes(padrao=null){
  $('local-padrao').replaceChildren(new Option('Sem local fixo',''),...locais.filter(l=>l.ativo||l.id===atual).map(l=>new Option(rotuloLocal(l),l.id)));
  if(locais.some(l=>l.id===atual))$('local-padrao').value=atual;
  for(const tipo of ['local','marca']){$('editar-'+tipo).replaceChildren(new Option(tipo==='local'?'Escolha um local cadastrado':'Escolha uma marca cadastrada',''),...registros(tipo).map(r=>new Option(tipo==='local'?rotuloLocal(r):r.nome+(r.ativo?'':' (inativa)'),r.id)));$('editar-'+tipo).value=edicoes[tipo]?.id??'';}
+ sincronizarSeletores();
 }
 function prepararMapa(atual){
  filaMapa=filaMapa.catch(()=>{}).then(async()=>{
@@ -35,7 +40,7 @@ function descartar(tipo){return !alterados.has(tipo)||window.confirm('Há altera
 function limpar(tipo){
  edicoes[tipo]=bases[tipo]=null;alterados.delete(tipo);solic.limpar();$('form-'+tipo).reset();$('editar-'+tipo).value='';$('estado-'+tipo).hidden=true;$('recarregar-'+tipo).hidden=true;
  $('titulo-'+tipo).textContent=tipo==='local'?'Novo local':'Nova marca';$('form-'+tipo).querySelector('[type=submit]').textContent=tipo==='local'?'Revisar cadastro do local':'Revisar cadastro da marca';
- if(tipo==='local'){++buscaEpoch;clearTimeout(timerBusca);ponto=null;mapa?.limpar();$('resultados-endereco').replaceChildren();$('ponto-confirmado').required=true;}
+ if(tipo==='local'){++buscaEpoch;clearTimeout(timerBusca);ponto=null;mapa?.limpar();$('resultados-endereco').replaceChildren();$('ponto-confirmado').required=true;}sincronizarSeletores();
 }
 async function carregarFormulario(tipo,row){
  const atual=epoch;const base=conteudoCadastro(tipo,row);edicoes[tipo]={id:row.id,revisao:row.revisao,base};bases[tipo]=base;
@@ -44,6 +49,7 @@ async function carregarFormulario(tipo,row){
  if(tipo==='marca'){opcoes(base.localPadraoId);$('local-padrao').value=base.localPadraoId;}
  $('ativo-'+tipo).checked=base.ativo;$('estado-'+tipo).hidden=false;$('recarregar-'+tipo).hidden=false;$('editar-'+tipo).value=row.id;
  $('titulo-'+tipo).textContent='Editar: '+row.nome;form.querySelector('[type=submit]').textContent='Revisar alterações';alterados.delete(tipo);
+ sincronizarSeletores();
  if(tipo==='local'){
   ++buscaEpoch;clearTimeout(timerBusca);$('resultados-endereco').replaceChildren();ponto=Number.isFinite(base.latitude)&&Number.isFinite(base.longitude)?{latitude:base.latitude,longitude:base.longitude}:null;
   $('ponto-confirmado').required=false;$('ponto-confirmado').checked=!!ponto;

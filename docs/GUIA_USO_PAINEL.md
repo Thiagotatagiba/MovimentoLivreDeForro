@@ -164,3 +164,7 @@ Após entrar na sua conta, abra **Menu → Gestão** para acessar o painel. O at
 ## Escolher marca com busca — 16/11/2026
 
 Na Gestão de eventos, clique no nome da **Marca** para abrir as opções. Use **Buscar marca** para filtrar e clique no resultado desejado. Digitar não troca a marca automaticamente. A marca selecionada aparece com ✓. Pelo teclado, use as setas e Enter; Escape fecha a busca mantendo a marca atual.
+
+## Busca em locais e marcas
+
+O mesmo seletor com busca está disponível para escolher cadastros de **Locais** e **Marcas**, o **Local padrão** da marca, o **Local desta edição** ao criar evento e a marca dos convites. Clique no nome selecionado, digite para filtrar e escolha o resultado. Buscar não altera o cadastro. **Sem local fixo** continua disponível para marcas itinerantes; cadastros inativos continuam identificados na edição.

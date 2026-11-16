@@ -2,7 +2,9 @@ import {administracao as servico,novaChaveAdministrativa} from '../../services/a
 import {obterUsuarioAtual,aoMudarAutenticacao} from '../../services/authService.js';
 import {abrirModalLogin} from '../../components/loginModal.js';
 import {permissoesConvite,chaveEntradaConvite,lerEntradaConvite,novoTokenConvite,linkConvite,estadoConvite} from './conviteModelo.js';
+import {melhorarSelect} from './seletorMarca.js?v=2';
 const $=id=>document.getElementById(id);
+const seletorMarca=melhorarSelect($('marca'),{singular:'marca',plural:'marcas',buscar:'Buscar marca',vazio:'Nenhuma marca encontrada.'});
 let atalhoAplicadoPara=null;
 let usuario=null,marcas=[],busy=false,geracao=0,link=null,criacao=null,aceitacao=null,acaoConfirmada=null;
 const revogacoes=new Map();
@@ -12,6 +14,7 @@ const textoPermissoes=(papel,perms)=>papel==='administrador'?'Todas as permissõ
 function mensagem(texto,erro=false){$('mensagem').textContent=texto;$('mensagem').classList.toggle('erro',erro);}
 function travar(valor){
  busy=valor;$('campos-convite').disabled=valor;$('recarregar').disabled=valor;$('copiar').disabled=valor;
+ seletorMarca.sincronizar();
  for(const b of $('lista-convites').querySelectorAll('button'))b.disabled=valor;
  $('aceitar').disabled=valor||!$('aceitar').dataset.disponivel;
 }
