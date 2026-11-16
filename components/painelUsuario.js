@@ -6,12 +6,22 @@
 import { obterUsuarioAtual, aoMudarAutenticacao, logout } from '../services/authService.js';
 import { obterPerfil } from '../services/perfilService.js';
 import { abrirModalLogin } from './loginModal.js';
+import {criarAtalhoGestao} from './atalhoGestao.js';
 
 export function inicializarPainelUsuario() {
   const nomeEl = document.getElementById('painel-usuario-nome');
   const acaoEl = document.getElementById('painel-usuario-acao');
   // Item do menu que só faz sentido pra quem está logado (pode não existir na página).
   const carteiraEl = document.getElementById('menu-carteira');
+  const atualizarGestao=criarAtalhoGestao({elemento:document.getElementById('menu-gestao-publico'),
+    carregarContexto:async()=>{
+      const {administracao}=await import('../services/administracaoService.js');
+      return administracao.carregarContexto();
+    }});
+  let geracao=0;
+  let usuarioMenu=null;
+  window.addEventListener('menu-aberto',()=>atualizarGestao(usuarioMenu));
+  window.addEventListener('pageshow',()=>atualizarGestao(usuarioMenu));
   const entrarTopoEl = document.getElementById('topo-entrar');
   const favoritosTopoEl = document.getElementById('topo-favoritos');
   const perfilTopoEl = document.getElementById('topo-perfil');
@@ -35,9 +45,10 @@ export function inicializarPainelUsuario() {
 
   renderizarDeslogado(); // estado inicial, enquanto a sessão é verificada
 
+  const inicial=geracao;
   obterUsuarioAtual()
-    .then((usuario) => (usuario ? renderizarLogado(usuario) : renderizarDeslogado()))
-    .catch(() => renderizarDeslogado());
+    .then((usuario) => {if(inicial===geracao) usuario ? renderizarLogado(usuario) : renderizarDeslogado();})
+    .catch(() => {if(inicial===geracao)renderizarDeslogado();});
 
   aoMudarAutenticacao((usuario) => {
     if (usuario) {
@@ -48,6 +59,11 @@ export function inicializarPainelUsuario() {
   });
 
   async function renderizarLogado(usuario) {
+    const atual=++geracao;
+    usuarioMenu=usuario;
+    // Leave the auth callback before making further Supabase requests.
+    atualizarGestao(null);
+    setTimeout(()=>{if(atual===geracao)atualizarGestao(usuario);},0);
     // Nome do Google como fallback imediato, enquanto o apelido real do
     // perfil (que pode já ter sido customizado) ainda está carregando.
     nomeEl.textContent = usuario.user_metadata?.full_name || usuario.email || 'Forrozeiro';
@@ -63,6 +79,7 @@ export function inicializarPainelUsuario() {
 
     try {
       const perfil = await obterPerfil(usuario.id);
+      if(atual!==geracao)return;
       if (perfil?.apelido) nomeEl.textContent = perfil.apelido;
       definirAvatar(perfil?.avatar_url);
     } catch (erro) {
@@ -71,6 +88,9 @@ export function inicializarPainelUsuario() {
   }
 
   function renderizarDeslogado() {
+    ++geracao;
+    usuarioMenu=null;
+    atualizarGestao(null);
     nomeEl.textContent = 'Forrozeiro';
     if (carteiraEl) carteiraEl.hidden = true;
     nomeEl.style.cursor = '';
