@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 
 export const arquivosPublicacao=[
+ 'admin/js/entradaEvento.js',
  'admin/js/seletorMarca.js',
  'js/pwa.js','components/painelUsuario.js','components/atalhoGestao.js',
  'admin/js/listaNoEventoModelo.js',

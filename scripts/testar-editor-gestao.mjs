@@ -1,6 +1,12 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {filtrarMarcas} from '../admin/js/seletorMarca.js';
+import {estadoTipoEntrada,lerTipoEntrada,TIPOS_ENTRADA} from '../admin/js/entradaEvento.js';
+test('ticket selector preserves canonical and custom legacy values without changing price or inventing a default',()=>{
+ for(const original of ['',...TIPOS_ENTRADA,'Contribuição consciente','  Contribuição livre  ']){const estado=estadoTipoEntrada(original);assert.equal(lerTipoEntrada(estado.opcao,estado.outro),original);}
+ assert.deepEqual(estadoTipoEntrada(),{opcao:'',outro:''});assert.deepEqual(estadoTipoEntrada('Contribuição consciente'),{opcao:'__outro__',outro:'Contribuição consciente'});
+ assert.equal(lerTipoEntrada('Gratuito','Outro valor antigo'),'Gratuito');
+});
 test('brand search ignores accents, case and extra spaces without selecting or changing identities',()=>{
  const marcas=[{textContent:'Forró Praça Viva',value:'id-1'},{textContent:'Deck 16',value:'id-2'},{textContent:'Forró Praça Viva (outra-edicao)',value:'id-3'}];
  assert.deepEqual(filtrarMarcas(marcas,'  PRACA forro '),[marcas[0],marcas[2]]);
