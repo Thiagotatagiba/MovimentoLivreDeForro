@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/tokens.css">
-<link rel="stylesheet" href="css/gestao.css?v=seletores-2">
+<link rel="stylesheet" href="css/gestao.css?v=revisao-evento-1">
 <link rel="stylesheet" href="../components/modal-login.css">
 <link rel="stylesheet" href="css/navegacao.css?v=1"></head>
 <body>
@@ -41,12 +41,15 @@
 <div class="editor-topo"><div><p class="rotulo" id="estado-editor"></p><h2 id="titulo-editor">Editar evento</h2></div><button type="button" id="recarregar" class="secundario">Recarregar</button></div>
 <p id="publicado" class="apoio"></p><p><a id="ver-publico" target="_blank" rel="noopener" hidden>Ver evento no site</a></p><p id="papel" class="aviso"></p>
 <form id="form-evento" novalidate>
+<div id="erros-novo-evento" class="erros-cadastro" hidden role="alert"><h3 id="titulo-erros-evento" tabindex="-1">Confira antes de criar o rascunho</h3><ul id="lista-erros-evento"></ul></div>
 <fieldset id="campos"><legend>Conteúdo do rascunho</legend>
 <div id="dados-novos" hidden><p class="aviso">Crie uma edição para a marca selecionada. Não é necessário cadastrar uma conta de produtor. Salvar cria um rascunho; publicar é uma ação separada.</p><label for="local-novo">Local desta edição</label><select id="local-novo" required disabled></select><p class="apoio">Escolha um local já cadastrado. Marca e local ficam vinculados a esta edição.</p></div>
 <label for="titulo">Título</label><input id="titulo" name="titulo" required maxlength="200">
+<h3>Data e horários</h3>
 <div class="dupla"><div><label for="data">Data de início</label><input id="data" name="data" type="date" required></div><div><label for="horario">Horário de início</label><input id="horario" name="horario" type="time" required></div></div>
 <div class="dupla"><div><label for="dataTermino">Data de término</label><input id="dataTermino" name="dataTermino" type="date" required></div><div><label for="horarioTermino">Horário de término</label><input id="horarioTermino" name="horarioTermino" type="time" required></div></div>
 <p class="apoio">Use a data do dia seguinte se o baile atravessar a meia-noite. Horários de Brasília.</p>
+<p id="duracao-evento" class="aviso" hidden></p>
 <label class="check"><input id="horarios-confirmados" type="checkbox">Confirmo os horários de início e término com o produtor</label>
 <label for="descricao">Descrição</label><textarea id="descricao" name="descricao" rows="6"></textarea>
 <h3>Condições especiais</h3><p class="apoio">Informe benefícios e regras, como gratuidade para aniversariantes, documentos e horário limite.</p><div id="condicoes-lista"></div><button id="adicionar-condicao" type="button" class="secundario">+ Adicionar condição</button>
@@ -57,6 +60,7 @@
 <label class="check"><input id="ativo" type="checkbox">Exibir este evento no catálogo público</label>
 </fieldset>
 <section class="imagem-atual" aria-label="Imagem atual"><h3>Imagem atual</h3><img id="imagem" alt="Arte atual do evento" hidden><p id="sem-imagem" class="apoio">Imagem não informada.</p></section>
+<section id="resumo-novo-evento" class="resumo-cadastro-evento" aria-labelledby="titulo-resumo-evento" hidden><h3 id="titulo-resumo-evento">Confira esta edição</h3><p class="apoio">Este é um resumo do formulário. Criar o rascunho ainda não publica o evento.</p><dl id="dados-resumo-evento"></dl></section>
 <div class="acoes"><button id="salvar" type="submit">Salvar rascunho</button><button id="publicar" type="button">Revisar publicação</button><button id="cancelar-novo" type="button" class="secundario" hidden>Cancelar criação</button></div>
 <p id="alteracoes" class="apoio"></p>
 </form>
@@ -75,8 +79,8 @@
 </section>
 <section id="conflito" class="cartao conflito" hidden aria-labelledby="titulo-conflito"><h2 id="titulo-conflito">Outra pessoa alterou este rascunho</h2><p>Suas alterações foram preservadas. Compare e escolha o que manter. Nada será salvo automaticamente.</p><form id="form-conflito"><div id="comparacao"></div><button type="submit">Preparar revisão escolhida</button></form></section>
 </div>
-<dialog id="confirmacao" aria-labelledby="titulo-confirmacao"><h2 id="titulo-confirmacao"></h2><p id="texto-confirmacao"></p><dl id="resumo-confirmacao"></dl><div class="acoes"><button id="cancelar-confirmacao" type="button" class="secundario">Voltar</button><button id="confirmar" type="button">Confirmar</button></div></dialog>
+<dialog id="confirmacao" aria-labelledby="titulo-confirmacao"><h2 id="titulo-confirmacao" tabindex="-1"></h2><p id="texto-confirmacao"></p><dl id="resumo-confirmacao"></dl><div class="acoes"><button id="cancelar-confirmacao" type="button" class="secundario">Voltar</button><button id="confirmar" type="button">Confirmar</button></div></dialog>
 <dialog id="confirmacao-lista-evento" aria-labelledby="titulo-confirmacao-lista"><h2 id="titulo-confirmacao-lista">Criar lista deste evento?</h2><p id="resumo-lista-evento" class="resumo-lista-evento"></p><div class="acoes"><button id="voltar-lista-evento" type="button" class="secundario">Voltar</button><button id="confirmar-lista-evento" type="button">Criar lista</button></div></dialog>
 </main>
-<script type="module" src="js/gestao.js?v=seletores-2"></script>
+<script type="module" src="js/gestao.js?v=revisao-evento-1"></script>
 <script type="module" src="js/navegacaoGestao.js?v=lista-evento-1"></script></body></html>

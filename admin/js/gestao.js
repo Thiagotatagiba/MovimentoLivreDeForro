@@ -1,7 +1,7 @@
 import {dependencias as deps} from './gestaoDependencias.js?v=menu-1';
 import {criarEditor,validarParaPublicar} from './editorModelo.js?v=menu-1';
 import {imagemDoEvento} from '../../js/utils/format.js';
-import {criarNovoEvento,conteudoNovoEvento} from './novoEventoModelo.js?v=menu-1';
+import {criarNovoEvento,conteudoNovoEvento,errosNovoEvento,resumoNovoEvento} from './novoEventoModelo.js?v=revisao-1';
 import {criarServicoListasVip} from '../../services/listasVipService.js';
 import {criarSolicitadorVip,mensagemErroVip} from '../../js/utils/vipModelo.js';
 import {eventoDaBusca,estadoListaNoEvento} from './listaNoEventoModelo.js?v=1';
@@ -12,6 +12,18 @@ const seletorLocal=melhorarSelect($('local-novo'),{singular:'local',plural:'loca
 
 let contexto=null,marca=null,editor=null,busy=false,epoch=0,verificacaoSessao=0,usuarioId=null,confirmarAcao=null;
 let novo=false,criacao=null;
+let tentouCriar=false,mensagemConfirmacao='Alteração publicada com histórico.';
+function escreverResumo(destino,linhas){destino.replaceChildren();for(const [rotulo,texto] of linhas){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=rotulo;dd.textContent=texto;destino.append(dt,dd);}}
+function linhasNovoEvento(c){return resumoNovoEvento({conteudo:c,marca:marca?.nome,local:$('local-novo').value?$('local-novo').selectedOptions[0]?.textContent:null});}
+function errosCadastro(c,focar=false){
+ const erros=novo&&tentouCriar?errosNovoEvento(c,$('local-novo').value):[];
+ for(const id of ['local-novo','titulo','data','horario','dataTermino','horarioTermino','horarios-confirmados','preco','imagem-url-nova']){const el=$(id==='local-novo'?'local-novo-abrir':id);el.removeAttribute('aria-invalid');el.removeAttribute('aria-describedby');}
+ $('lista-erros-evento').replaceChildren();
+ for(const [i,erro] of erros.entries()){
+  const alvo=erro.campo==='local-novo'?$('local-novo-abrir'):$(erro.campo),li=document.createElement('li'),a=document.createElement('a');li.id='erro-evento-'+i;a.href='#'+alvo.id;a.textContent=erro.mensagem;a.onclick=event=>{event.preventDefault();alvo.focus();};li.append(a);$('lista-erros-evento').append(li);alvo.setAttribute('aria-invalid','true');alvo.setAttribute('aria-describedby',li.id);
+ }
+ $('erros-novo-evento').hidden=!erros.length;if(focar&&erros.length)$('titulo-erros-evento').focus();return erros;
+}
 const pode=p=>!!marca?.permissoes.includes(p);
 const servicoListas=criarServicoListasVip(),solicitacoesLista=criarSolicitadorVip();
 let listaEvento={geracao:-1,id:null,registro:null,carregando:false,erro:false},listaFormAberto=false,listaFormAlterado=false,acaoLista=null;
@@ -101,9 +113,11 @@ function atualizar(){
  $('marca').disabled=busy;seletorMarca.desabilitar(busy);
  $('novo-evento').hidden=deps.demonstracao||!pode('gerenciar_eventos');$('novo-evento').disabled=busy;
  $('dados-novos').hidden=!novo;$('imagem-nova').hidden=!novo;$('cancelar-novo').hidden=!novo;$('cancelar-novo').disabled=busy;
- $('salvar').textContent=novo?'Criar rascunho':'Salvar rascunho';$('recarregar').hidden=novo;
+ $('salvar').textContent=novo?'Revisar novo evento':'Salvar rascunho';$('recarregar').hidden=novo;
  for(const button of $('eventos').querySelectorAll('button')) button.disabled=busy;
  const state=editor?.estado();
+ $('resumo-novo-evento').hidden=!novo;$('duracao-evento').hidden=!novo;
+ if(novo&&state){const linhas=linhasNovoEvento(state.conteudo);escreverResumo($('dados-resumo-evento'),linhas.slice(0,8));$('duracao-evento').textContent='Duração desta edição: '+linhas.find(([r])=>r==='Duração')[1]+'. Horários de Brasília.';errosCadastro(state.conteudo);}
  atualizarListaDoEvento(state);
  if(!state?.snapshot) return;
  const s=state.snapshot,travado=busy||!!state.conflito;
@@ -181,7 +195,7 @@ async function rodar(fn,texto){
 function aceitarTroca(){
  return (!listaFormAlterado&&!editor?.estado().alterado&&!(novo&&$('local-novo').value))||window.confirm('Há alterações não salvas. Deseja descartá-las e continuar?');
 }
-function sairModoNovo(){novo=false;criacao?.limpar();criacao=null;}
+function sairModoNovo(){novo=false;tentouCriar=false;errosCadastro({});criacao?.limpar();criacao=null;}
 function botaoEvento(e){
  const b=document.createElement('button');b.type='button';b.dataset.id=e.id;b.setAttribute('aria-pressed','false');
  b.textContent=e.versao?.conteudo.titulo??e.rascunho?.conteudo?.titulo??e.slug;b.addEventListener('click',()=>abrirEvento(e.id));return b;
@@ -268,13 +282,19 @@ $('form-evento').addEventListener('input',()=>{
 $('form-evento').addEventListener('submit',event=>{
  event.preventDefault();if(!pode('gerenciar_eventos'))return;
  if(novo){
-  if(!$('form-evento').reportValidity())return;editor.editar(lerForm());const atual=epoch;
-  rodar(async()=>{
-   const data=await criacao.salvar({marcaId:marca.id,localId:$('local-novo').value,conteudo:editor.estado().conteudo});
-   if(atual!==epoch)return;
+  if(busy)return;editor.editar(lerForm());tentouCriar=true;const conteudo=editor.estado().conteudo;
+  if(errosCadastro(conteudo,true).length)return;
+  if(!$('form-evento').reportValidity())return;
+  const atual=epoch,args={marcaId:marca.id,localId:$('local-novo').value,conteudo:structuredClone(conteudo)};
+  confirmarAcao=async()=>{
+   if(atual!==epoch||!novo)throw Error('O evento em edição mudou. Confira os dados novamente.');
+   const data=await criacao.salvar(args);if(atual!==epoch)return;
    editor.carregar(data);sairModoNovo();escreverForm(data.conteudo);
    const button=botaoEvento({...data.evento,rascunho:data.rascunho});button.setAttribute('aria-pressed','true');$('eventos').prepend(button);
-  },'Novo evento criado como rascunho. Confira os dados e use Revisar publicação para colocá-lo no site.');
+  };
+  mensagemConfirmacao='Novo evento criado como rascunho. Confira os dados e use Revisar publicação para colocá-lo no site.';
+  $('titulo-confirmacao').textContent='Criar o rascunho deste evento?';$('texto-confirmacao').textContent='Confira a marca, o local e os horários de Brasília. Confirmar salva um rascunho; o evento só entra no site após Revisar publicação.';
+  escreverResumo($('resumo-confirmacao'),linhasNovoEvento(conteudo));$('confirmar').textContent='Criar rascunho';$('confirmacao').showModal();$('titulo-confirmacao').focus();$('confirmacao').scrollTop=0;
   return;
  }
  editor.editar(lerForm());rodar(()=>editor.salvar(),'Rascunho salvo. A versão pública não mudou.');
@@ -288,6 +308,7 @@ function revisar(tipo){
    validarParaPublicar(state.conteudo);
   }
   const situacaoEscolhida=$('situacao').value;
+  mensagemConfirmacao='Alteração publicada com histórico.';
   confirmarAcao=tipo==='publicar'?()=>editor.publicar():()=>editor.alterarSituacao(situacaoEscolhida);
   $('titulo-confirmacao').textContent=tipo==='publicar'?'Publicar este rascunho?':'Atualizar a situação pública?';
   $('texto-confirmacao').textContent=tipo==='publicar'?
@@ -311,10 +332,11 @@ function revisar(tipo){
 }
 $('publicar').addEventListener('click',()=>revisar('publicar'));
 $('alterar-situacao').addEventListener('click',()=>revisar('situacao'));
-$('cancelar-confirmacao').addEventListener('click',()=>$('confirmacao').close());
+$('cancelar-confirmacao').addEventListener('click',()=>{confirmarAcao=null;$('confirmacao').close();});
+$('confirmacao').addEventListener('cancel',()=>{confirmarAcao=null;});
 $('confirmar').addEventListener('click',()=>{
- const fn=confirmarAcao;confirmarAcao=null;$('confirmacao').close();
- if(fn)rodar(fn,'Alteração publicada com histórico.');
+ const fn=confirmarAcao,sucesso=mensagemConfirmacao;confirmarAcao=null;$('confirmacao').close();
+ if(fn)rodar(fn,sucesso);
 });
 $('form-conflito').addEventListener('submit',event=>{
  event.preventDefault();
