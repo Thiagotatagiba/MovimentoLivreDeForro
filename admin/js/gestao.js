@@ -6,9 +6,13 @@ import {criarServicoListasVip} from '../../services/listasVipService.js';
 import {criarSolicitadorVip,mensagemErroVip} from '../../js/utils/vipModelo.js';
 import {eventoDaBusca,estadoListaNoEvento} from './listaNoEventoModelo.js?v=1';
 import {criarSeletorMarca,melhorarSelect} from './seletorMarca.js?v=2';
+import {estadoTipoEntrada,lerTipoEntrada} from './entradaEvento.js?v=1';
 const $=id=>document.getElementById(id);
 const seletorMarca=criarSeletorMarca({raiz:$('seletor-marca'),select:$('marca'),botao:$('marca-abrir'),busca:$('marca-busca'),painel:$('marca-painel'),lista:$('marcas-opcoes'),vazio:$('marca-vazia'),status:$('marca-resultados')});
 const seletorLocal=melhorarSelect($('local-novo'),{singular:'local',plural:'locais',buscar:'Buscar local',vazio:'Nenhum local encontrado.',marcarAlteracao:true});
+function atualizarTipoEntrada(){const outro=$('tipo-entrada').value==='__outro__';$('entrada-personalizada').hidden=!outro;$('tipo-entrada-outro').disabled=!outro;$('tipo-entrada-outro').required=outro;}
+$('tipo-entrada').addEventListener('input',atualizarTipoEntrada);
+$('tipo-entrada').addEventListener('change',atualizarTipoEntrada);
 
 let contexto=null,marca=null,editor=null,busy=false,epoch=0,verificacaoSessao=0,usuarioId=null,confirmarAcao=null;
 let novo=false,criacao=null;
@@ -85,7 +89,7 @@ function lerForm(){
   terminoEstimado:!$('horarios-confirmados').checked,descricao:$('descricao').value,
   condicoesEspeciais:[...$('condicoes-lista').children].map(row=>({tipo:row.querySelector('select').value,descricao:row.querySelector('textarea').value})).filter(c=>c.descricao.trim()),
   lineup:{bandas:listaLinhas($('bandas').value),djs:listaLinhas($('djs').value)},
-  ingresso:{...base.ingresso,tipoEntrada:$('tipo-entrada').value,
+  ingresso:{...base.ingresso,tipoEntrada:lerTipoEntrada($('tipo-entrada').value,$('tipo-entrada-outro').value),
    precoAPartirDe:$('preco').value===''?null:Number($('preco').value),
    link:$('link-ingresso').value.trim()||'em breve'},ativo:$('ativo').checked};
  if(novo){const url=$('imagem-url-nova').value.trim();if(url)conteudo.imagemUrl=url;else delete conteudo.imagemUrl;}
@@ -104,7 +108,7 @@ function escreverForm(c){
  for(const id of ['titulo','data','horario','dataTermino','horarioTermino','descricao']) $(id).value=c[id]??'';
  $('horarios-confirmados').checked=!c.terminoEstimado;
  $('bandas').value=(c.lineup?.bandas??[]).join('\n');$('djs').value=(c.lineup?.djs??[]).join('\n');
- $('tipo-entrada').value=c.ingresso?.tipoEntrada??'';$('preco').value=c.ingresso?.precoAPartirDe??'';
+ const entrada=estadoTipoEntrada(c.ingresso?.tipoEntrada??'');$('tipo-entrada').value=entrada.opcao;$('tipo-entrada-outro').value=entrada.outro;atualizarTipoEntrada();$('preco').value=c.ingresso?.precoAPartirDe??'';
  $('link-ingresso').value=c.ingresso?.link==='em breve'?'':c.ingresso?.link??'';$('ativo').checked=!!c.ativo;
  const imagem=imagemDoEvento(c);$('imagem').hidden=!imagem;$('sem-imagem').hidden=!!imagem;
  if(imagem) $('imagem').src=new URL(imagem,new URL('../',location.href)).href; else $('imagem').removeAttribute('src');

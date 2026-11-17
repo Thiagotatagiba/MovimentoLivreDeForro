@@ -174,3 +174,9 @@ O mesmo seletor com busca está disponível para escolher cadastros de **Locais*
 Ao preencher um **Novo evento**, confira a duração calculada pelos horários que você informou e o resumo da edição. Nenhum horário é preenchido automaticamente. Para bailes que terminam depois da meia-noite, informe a data do dia seguinte.
 
 Clique em **Revisar novo evento**. Se faltar algo, o formulário mostra os campos que precisam de correção; clique na mensagem para ir ao campo. Na revisão, confira marca, local, início, término, atrações, ingresso e condições especiais. **Voltar** mantém os dados para ajustar. **Criar rascunho** salva a edição, mas ainda não publica no site. Depois, use **Revisar publicação**, se sua conta tiver permissão.
+
+## Organização do formulário e tipo de entrada
+
+O editor tem cinco seções. Use os atalhos **Sobre**, **Data e horários**, **Atrações**, **Entrada** e **Arte** para ir direto ao campo desejado. As ações de salvar/revisar acompanham a rolagem.
+
+Em **Tipo de entrada**, selecione **Gratuito**, **Ingresso online**, **Ingresso no local** ou **Cover**. Para uma condição diferente, escolha **Outro tipo** e descreva. Tipos personalizados de eventos antigos são preservados. Trocar o tipo não altera automaticamente o preço nem o link do ingresso; confira os dois antes de salvar.
