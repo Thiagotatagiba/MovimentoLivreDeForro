@@ -168,3 +168,9 @@ Na Gestão de eventos, clique no nome da **Marca** para abrir as opções. Use *
 ## Busca em locais e marcas
 
 O mesmo seletor com busca está disponível para escolher cadastros de **Locais** e **Marcas**, o **Local padrão** da marca, o **Local desta edição** ao criar evento e a marca dos convites. Clique no nome selecionado, digite para filtrar e escolha o resultado. Buscar não altera o cadastro. **Sem local fixo** continua disponível para marcas itinerantes; cadastros inativos continuam identificados na edição.
+
+## Revisar um novo evento antes de criar — 17/11/2026
+
+Ao preencher um **Novo evento**, confira a duração calculada pelos horários que você informou e o resumo da edição. Nenhum horário é preenchido automaticamente. Para bailes que terminam depois da meia-noite, informe a data do dia seguinte.
+
+Clique em **Revisar novo evento**. Se faltar algo, o formulário mostra os campos que precisam de correção; clique na mensagem para ir ao campo. Na revisão, confira marca, local, início, término, atrações, ingresso e condições especiais. **Voltar** mantém os dados para ajustar. **Criar rascunho** salva a edição, mas ainda não publica no site. Depois, use **Revisar publicação**, se sua conta tiver permissão.

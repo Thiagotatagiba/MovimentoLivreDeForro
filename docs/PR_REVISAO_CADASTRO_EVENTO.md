@@ -1,0 +1,7 @@
+O cadastro novo criava o primeiro rascunho diretamente e erros de horários eram mostrados na mensagem geral. Agora o formulário oferece resumo da edição e duração calculada dos horários informados, identifica campos pendentes com links/foco e exige revisar antes de criar. O diálogo mostra marca, local, início/término, duração, atrações, ingresso, descrição, condições especiais, imagem e visibilidade. Voltar preserva o formulário e não cria registros.
+
+Mantém horários obrigatórios preenchidos manualmente, local padrão da marca, permissão de edição e publicação separadas, idempotência e criação apenas de rascunho. O payload revisado é uma cópia capturada; a confirmação verifica se a edição continua sendo a mesma. Sem autosave, sem gravação em produção durante testes e sem mudança no contrato das RPCs. Edição de rascunhos existentes continua aceitando o fluxo anterior.
+
+Validação: testes do modelo e editor; navegador com editor fictício em homologação confirmou erros do formulário vazio, término antes do início, correção para o dia seguinte/duração 4h, retorno sem gravação e criação explícita apenas de rascunho. Criados dois rascunhos fictícios em homologação (um fluxo completo e outro para verificar o ajuste de foco móvel), nenhum publicado. A revisão móvel abre pelo título, com scroll 0 e sem overflow horizontal. Sessão de teste encerrada.
+
+Frontend apenas: gestao.html, gestao.css, gestao.js, novoEventoModelo.js, testes e documentação. Sem migração ou alteração de dados/permissões em produção. Reversão pelo frontend anterior.

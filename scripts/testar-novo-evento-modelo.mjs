@@ -1,7 +1,25 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';
-import {criarNovoEvento,conteudoNovoEvento,validarImagemNova} from '../admin/js/novoEventoModelo.js';import {criarEditor} from '../admin/js/editorModelo.js';
+import {criarNovoEvento,conteudoNovoEvento,validarImagemNova,errosNovoEvento,resumoNovoEvento} from '../admin/js/novoEventoModelo.js';import {criarEditor} from '../admin/js/editorModelo.js';
 const content=()=>({...conteudoNovoEvento(),titulo:'Baile',data:'2026-12-20',horario:'22:00',dataTermino:'2026-12-21',horarioTermino:'02:00',terminoEstimado:false});
 const serverResult=c=>({evento_id:'server-uuid',id_legado:'evt-generated',slug:'baile-generated',marca_id:'brand',local_id:'venue',revisao:1,conteudo:{...c,id:'evt-generated',slug:'baile-generated',marcaId:'legacy-brand',localId:'legacy-venue'}});
+
+test('new-event feedback identifies missing fields without filling or changing the form',()=>{
+ const c=conteudoNovoEvento(),before=structuredClone(c),errors=errosNovoEvento(c,'');
+ assert.deepEqual(errors.map(e=>e.campo),['local-novo','titulo','data','horario','dataTermino','horarioTermino','horarios-confirmados']);assert.deepEqual(c,before);
+ assert.deepEqual(errosNovoEvento(content(),'venue'),[]);
+});
+test('feedback catches impossible dates, same-day midnight ending, prices and unsafe image addresses',()=>{
+ assert.ok(errosNovoEvento({...content(),dataTermino:'2026-02-30'},'venue').some(e=>e.campo==='dataTermino'));
+ assert.match(errosNovoEvento({...content(),dataTermino:'2026-12-20'},'venue').find(e=>e.campo==='dataTermino').mensagem,/meia-noite/);
+ assert.ok(errosNovoEvento({...content(),ingresso:{precoAPartirDe:-1},imagemUrl:'javascript:alert(1)'},'venue').some(e=>e.campo==='preco'));
+ assert.ok(errosNovoEvento({...content(),imagemUrl:'http://test/arte.jpg'},'venue').some(e=>e.campo==='imagem-url-nova'));
+});
+test('review displays the exact edition, midnight duration and optional information without guessing defaults',()=>{
+ const c={...content(),lineup:{bandas:['Trio A'],djs:['DJ B']},condicoesEspeciais:[{tipo:'aniversariante',descricao:'Documento obrigatório'}],ingresso:{tipoEntrada:'Ingresso no Local',precoAPartirDe:0,link:'em breve'},ativo:false};
+ const rows=Object.fromEntries(resumoNovoEvento({conteudo:c,marca:'Marca escolhida',local:'Local escolhido'}));
+ assert.equal(rows.Marca,'Marca escolhida');assert.equal(rows.Local,'Local escolhido');assert.equal(rows.Início,'20/12/2026 às 22:00');assert.equal(rows.Término,'21/12/2026 às 02:00');assert.equal(rows.Duração,'4h');assert.match(rows.Ingresso,/0,00/);assert.match(rows['Condições especiais'],/Documento/);assert.equal(rows['Após publicar'],'Oculto do catálogo');
+ const initial=Object.fromEntries(resumoNovoEvento({conteudo:conteudoNovoEvento()}));assert.equal(initial.Duração,'Informe início e término');assert.equal(initial.Local,'Não selecionado');assert.equal(initial.Imagem,'Não informada');
+});
 test('new form never guesses an end time and rejects missing venue/end confirmation before any RPC',async()=>{
  const initial=conteudoNovoEvento();assert.equal(initial.horarioTermino,'');assert.equal(initial.terminoEstimado,true);
  const model=criarNovoEvento({servico:{criarEvento:()=>assert.fail()}});
